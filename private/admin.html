@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin · instacode</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.png">
+<style>
+:root{--bg:#FCFCFF;--s:rgba(255,255,255,.66);--b:rgba(22,24,60,.08);--t:#0E1122;--m:#636A85;--ok:#067647;--warn:#B54708;--v:#6D4BFF}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--t);font:15px/1.45 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(40% 40% at 10% 0%,rgba(139,108,255,.18),transparent 70%),radial-gradient(40% 40% at 95% 10%,rgba(56,214,255,.15),transparent 70%),radial-gradient(50% 50% at 60% 100%,rgba(255,120,210,.12),transparent 70%)}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--b)}
+header img{width:30px;height:30px;border-radius:9px}
+header b{font-size:18px;letter-spacing:-.03em}
+header a{margin-left:auto;color:var(--m);font-size:13px;text-decoration:none}
+.mode{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px}
+.mode.test{background:#FEF0C7;color:#93370D}.mode.live{background:#DCFAE6;color:var(--ok)}
+main{max-width:980px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.tabs button{flex:none;border:1.5px solid var(--b);background:var(--s);border-radius:999px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer;color:var(--t)}
+.tabs button.on{background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,0) 52%),linear-gradient(135deg,#8B6CFF,#4F46E5);color:#fff;border-color:transparent}
+.n{display:inline-block;min-width:20px;margin-left:6px;padding:0 6px;border-radius:10px;background:#F04438;color:#fff;font-size:12px;text-align:center}
+.card{background:var(--s);border:1px solid var(--b);border-radius:22px;padding:16px;margin-top:12px;-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 1px 0 #fff inset,0 14px 34px -24px rgba(60,40,160,.35)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.muted{color:var(--m);font-size:13px}
+.st{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;margin-left:6px}
+.it{border-top:1px solid var(--b);margin-top:12px;padding-top:12px}
+.hold{margin-top:10px;padding:10px 12px;border-radius:12px;background:#FFFAEB;color:#93370D;font-size:14px}
+.auto{display:inline-block;margin-left:6px;font-size:12px;font-weight:700;color:var(--ok)}
+input,textarea,select{width:100%;font:inherit;border:1.5px solid var(--b);border-radius:12px;padding:10px 12px;margin-top:6px;background:#fff;color:var(--t)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--t)}
+textarea.codes{font-family:ui-monospace,Menlo,monospace;min-height:140px}
+.btn{border:0;border-radius:999px;padding:10px 18px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn[disabled]{opacity:.5}
+.p{background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,0) 52%),linear-gradient(135deg,#8B6CFF,#4F46E5);color:#fff;box-shadow:0 8px 20px -10px rgba(91,75,240,.8)}.r{background:#FEE4E2;color:#B42318}.g{background:var(--bg);color:var(--t);border:1.5px solid var(--b)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+code{font-family:ui-monospace,Menlo,monospace;background:#F6F7FA;padding:4px 8px;border-radius:8px;display:inline-block;margin:6px 6px 0 0;word-break:break-all}
+.empty{text-align:center;color:var(--m);padding:40px 10px}
+label.chk{display:flex;gap:8px;align-items:center;margin-top:8px;font-weight:600}
+label.chk input{width:auto;margin:0}
+.grid2{display:grid;gap:10px}
+@media(min-width:640px){.grid2{grid-template-columns:1fr 1fr}}
+.lbl{display:block;font-size:13px;font-weight:700;color:var(--m);margin-top:10px}
+.stock{width:100%;border-collapse:collapse;font-size:14px}
+.stock td{padding:9px 6px;border-top:1px solid var(--b);vertical-align:top}
+.stock tr:first-child td{border-top:0}
+.chip{display:inline-block;margin:2px 4px 2px 0;padding:3px 9px;border-radius:999px;background:var(--bg);border:1px solid var(--b);font-size:13px;white-space:nowrap}
+.chip.zero{background:#FEF3F2;border-color:#FECDCA;color:#B42318}
+.chip i{font-style:normal;color:var(--warn);font-weight:700}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--t);color:#fff;padding:12px 16px;border-radius:12px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1}
+.pfil{display:grid;grid-template-columns:1fr 200px;gap:8px;margin-top:12px}
+.plist{margin-top:12px;background:var(--s);border:1px solid var(--b);border-radius:18px;overflow:hidden}
+.prow{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 14px;border-top:1px solid var(--b)}
+.prow:first-child{border-top:0}
+.prow.off{opacity:.55}
+.thumb{width:96px;aspect-ratio:1.586;border-radius:10px;display:grid;place-items:center;overflow:hidden;font-weight:800;font-size:11px;text-align:center;padding:6px;line-height:1.1;box-shadow:0 4px 10px rgba(11,15,25,.12)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pacts{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.btn.sm{padding:7px 11px;font-size:13px;border-radius:10px}
+.sw{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;cursor:pointer;color:var(--m)}
+.sw input{appearance:none;-webkit-appearance:none;width:38px;height:22px;margin:0;padding:0;border:0;border-radius:11px;background:#D0D5DD;cursor:pointer;position:relative;transition:background .2s}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw input:checked{background:var(--ok)}
+.sw input:checked::after{transform:translateX(16px)}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;color:var(--m);background:var(--bg);border:1px solid var(--b);border-radius:6px;padding:1px 6px;margin-left:6px}
+.stars{color:#F79009;letter-spacing:1px}
+.pl{display:grid;gap:8px}.plr{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--b)}.plr:first-child{border-top:0}
+.plv{width:84px;height:36px;border:1px solid var(--b);border-radius:8px;display:grid;place-items:center;background:#fff;overflow:hidden}.plv img{max-width:90%;max-height:80%}.plv i{font-size:11px;color:var(--m);font-style:normal}
+.rv.hid{opacity:.55}
+@media(max-width:640px){.prow{grid-template-columns:72px minmax(0,1fr)}.thumb{width:72px}.pacts{grid-column:1/-1;justify-content:flex-start}.pfil{grid-template-columns:1fr}}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+@media(min-width:760px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.kpi{padding:14px;border-radius:18px;background:var(--s);border:1px solid var(--b);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.kpi small{display:block;color:var(--m);font-size:12.5px}.kpi b{display:block;font-size:22px;letter-spacing:-.02em;margin-top:2px}
+.svc{display:grid;gap:10px;margin-top:12px}@media(min-width:760px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.svc .card{margin-top:0}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:#D0D5DD}.dot.ok{background:#12B76A}.dot.warn{background:#F79009}.dot.bad{background:#F04438}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.links a{font-size:13px;font-weight:700;color:var(--t);text-decoration:none;padding:7px 12px;border-radius:999px;border:1px solid var(--b);background:#fff}
+.drop{margin-top:10px;border:1.5px dashed rgba(109,75,255,.35);border-radius:16px;padding:18px;text-align:center;background:rgba(109,75,255,.04);cursor:pointer}
+.drop.on{background:rgba(109,75,255,.1)}
+table.pv{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}table.pv td{padding:8px 6px;border-top:1px solid var(--b)}
+.warnbox{margin-top:10px;padding:10px 12px;border-radius:12px;background:#FFFAEB;color:#93370D;font-size:13.5px}
+</style>
+</head>
+<body>
+<header><img src="/logo.svg" alt=""><b>instacode Admin</b><span id="mode"></span><a href="/">Zum Shop</a></header>
+<main id="m"><p class="muted">Lade …</p></main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(()=>{"use strict";
+const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const eur=c=>(c/100).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
+async function API(p,o={}){const r=await fetch("/api"+p,{method:o.method||"GET",headers:{"Content-Type":"application/json","X-IC":"1"},body:o.body?JSON.stringify(o.body):undefined,credentials:"same-origin"});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Fehler "+r.status);return j}
+const TABS=[["overview","Übersicht"],["processing","Prüfen"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"]];
+const STC={awaiting_payment:"#B54708",payment_pending:"#B54708",processing:"#3B5BDB",delivered:"#067647",canceled:"#6B7280",refunded:"#6B7280"};
+const STN={awaiting_payment:"Warte auf Zahlung",payment_pending:"Zahlung läuft",processing:"Prüfen",delivered:"Geliefert",canceled:"Storniert",refunded:"Erstattet"};
+let tab="overview",timer,tt,counts={},mode=null;
+const toast=t=>{const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>el.classList.remove("show"),2800)};
+const typing=()=>[...document.querySelectorAll("main input:not([type=checkbox]),main textarea")].some(i=>i.value);
+const setMode=j=>{if(j.testmode==null)return;mode=j;$("#mode").innerHTML=j.testmode?`<span class="mode test">Testmodus</span>`:`<span class="mode live">Live</span>`};
+const tabsHTML=()=>`<div class="tabs">${TABS.map(t=>`<button class="${t[0]===tab?"on":""}" data-tab="${t[0]}">${t[1]}${t[0]==="processing"&&counts.processing?`<span class="n">${counts.processing}</span>`:""}</button>`).join("")}</div>`;
+
+async function load(force){
+  clearTimeout(timer);
+  if(tab==="stock"){if(force)loadStock();return}
+  if(tab==="products"){if(force)loadProducts();return}
+  if(tab==="reviews"){if(force)loadReviews();return}
+  if(tab==="reloadly"){if(force)loadRL();return}
+  if(tab==="overview"){if(force)loadOV();return}
+  timer=setTimeout(()=>load(),30000);
+  if(!force&&typing())return;
+  try{const j=await API("/admin/orders?status="+tab);counts=j.counts||{};setMode(j);render(j)}catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
+}
+function render(j){
+  document.title=(counts.processing?`(${counts.processing}) `:"")+"Admin · instacode";
+  $("#m").innerHTML=tabsHTML()+(j.orders.length?j.orders.map(card).join(""):`<div class="empty">${tab==="processing"?"Nichts zu prüfen. Bezahlte Bestellungen werden automatisch ausgeliefert.":"Keine Bestellungen in dieser Ansicht."}</div>`);
+}
+const fill=i=>i.stock==null?"leer lassen: Testcode wird erzeugt":i.stock>0?`leer lassen: aus Lager (${i.stock} frei)`:"Lager leer, bitte Code eintragen";
+function card(o){
+  const open=o.status==="processing";
+  return `<div class="card" data-o="${esc(o.id)}"><div class="row"><div><b>${esc(o.id)}</b><span class="st" style="color:${STC[o.status]};background:${STC[o.status]}1a">${STN[o.status]||esc(o.status)}</span>${o.delivered_by==="auto"?`<span class="auto">automatisch</span>`:""}
+   <div class="muted">${new Date(o.created_at).toLocaleString("de-DE")} · ${esc(o.email)}${o.paid_at?" · bezahlt "+new Date(o.paid_at).toLocaleString("de-DE"):""}</div></div><b>${eur(o.total)}</b></div>
+   ${open&&o.hold_reason?`<div class="hold"><b>Nicht automatisch geliefert:</b> ${esc(o.hold_reason)}</div>`:""}
+   ${o.items.map(i=>`<div class="it"><b>${esc(i.name)} ${eur(i.face)}</b> × ${i.qty} <span class="muted">${i.type==="topup"?"Aufladung für "+esc(i.phone):i.gift_to?"Geschenk an "+esc(i.gift_to)+(i.gift_from?" von "+esc(i.gift_from):""):"Code"}</span>${i.gift_msg?`<div class="muted">„${esc(i.gift_msg)}“</div>`:""}
+    ${open?(i.type==="topup"?`<label class="chk"><input type="checkbox" data-done="${i.id}"> Aufladung beim Anbieter ausgeführt</label><input placeholder="Referenz oder Transaktionsnummer (optional)" data-ref="${i.id}">`
+      :Array.from({length:i.qty},(_,k)=>`<input placeholder="Code${i.qty>1?" "+(k+1):""} · ${fill(i)}" data-code="${i.id}" autocomplete="off" autocapitalize="characters" spellcheck="false">`).join(""))
+      :(i.codes&&i.codes.length?`<div>${i.codes.map(x=>`<code>${esc(x)}</code>`).join("")}</div>`:"")}</div>`).join("")}
+   ${open?`<textarea placeholder="Interne Notiz (optional, sieht nur das Team)" data-note rows="2"></textarea><div class="acts"><button class="btn p" data-deliver="${esc(o.id)}">Ausliefern und E-Mail senden</button><button class="btn g" data-rlbuy="${esc(o.id)}">Über Reloadly kaufen und ausliefern</button><button class="btn r" data-refund="${esc(o.id)}">Erstatten</button></div>`:o.note?`<div class="muted" style="margin-top:10px">Notiz: ${esc(o.note)}</div>`:""}
+   ${o.status==="payment_pending"?`<div class="acts"><button class="btn r" data-refund="${esc(o.id)}">Erstatten</button></div>`:""}</div>`;
+}
+
+/* ---------- Code-Lager ---------- */
+let S=null;
+async function loadStock(){
+  try{S=await API("/admin/stock");setMode(S);renderStock()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}
+}
+const optP=()=>S.products.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");
+const optA=id=>{const p=S.products.find(x=>x.id===id)||S.products[0];return p.amts.map(a=>`<option value="${a.a}">${esc(a.label||a.a+" €")}</option>`).join("")};
+function renderStock(){
+  const r=S.rules,t=S.testmode;
+  const chips=p=>p.amts.map(a=>{const free=t?a.test_free:a.free;return `<span class="chip${!t&&!a.free?" zero":""}">${a.a} € · <b>${free}</b> frei${t&&a.free?` · <i>${a.free} echt</i>`:""}</span>`}).join("");
+  $("#m").innerHTML=tabsHTML()+`
+  <div class="card"><b>So wird ausgeliefert</b>
+   <p class="muted" style="margin:6px 0 0">${r.auto?`Bezahlte Bestellungen gehen sofort raus, wenn der Bestellwert bis ${eur(r.max)} beträgt, der Kunde heute nicht mehr als ${eur(r.day)} automatisch bekommen hat und Stripe das Risiko als normal einstuft. Handy-Aufladungen und alles andere landen unter „Prüfen“.`:"Automatische Auslieferung ist ausgeschaltet (AUTO_DELIVERY=0). Alle Bestellungen landen unter „Prüfen“."}</p>
+   ${t?`<p class="muted" style="margin:8px 0 0"><b style="color:#93370D">Testmodus:</b> Testkäufe bekommen nur Testcodes. ${S.generator?"Fehlen welche, erzeugt der Generator sie automatisch.":""} Echte Codes bleiben für den Live-Betrieb reserviert.</p>`:`<p class="muted" style="margin:8px 0 0"><b style="color:#067647">Live:</b> Es werden nur echte Codes aus dem Lager verkauft. Leere Beträge erscheinen im Shop als ausverkauft.</p>`}
+  </div>
+  <div class="grid2">
+   <div class="card" style="margin-top:12px"><b>Codes hochladen</b><p class="muted" style="margin:4px 0 0">Ein Code pro Zeile. Doppelte Codes werden übersprungen.</p>
+    <label class="lbl" for="upB">Produkt</label><select id="upB" data-sync="upA">${optP()}</select>
+    <label class="lbl" for="upA">Betrag</label><select id="upA">${optA(S.products[0].id)}</select>
+    <label class="lbl" for="upC">Codes</label><textarea id="upC" class="codes" placeholder="XXXX-XXXX-XXXX&#10;YYYY-YYYY-YYYY"></textarea>
+    ${t?`<label class="chk"><input type="checkbox" id="upT"> Als Testcodes hochladen (nur für Testkäufe)</label>`:""}
+    <div class="acts"><button class="btn p" data-up>Hochladen</button></div></div>
+   <div class="card" style="margin-top:12px"><b>Codes aus Datei importieren</b><p class="muted" style="margin:4px 0 0">Textdatei (.txt oder .csv) hochladen. Produkt und Betrag werden pro Zeile erkannt, zum Beispiel „Steam 20 € XXXX-XXXX-XXXX“ oder eine Überschrift „Amazon 25 €“ über mehreren Codes. Was nicht erkannt wird, bekommt das Produkt unten.</p>
+    <div class="drop" id="fDrop"><b>Datei hierher ziehen</b><br><span class="muted">oder tippen zum Auswählen</span><input type="file" id="fFile" accept=".txt,.csv,text/plain,text/csv" hidden></div>
+    <label class="lbl" for="fB">Produkt für nicht erkannte Zeilen (optional)</label><select id="fB" data-sync="fA"><option value="">– keins –</option>${optP()}</select>
+    <label class="lbl" for="fA">Betrag</label><select id="fA"><option value="">–</option></select>
+    ${t?`<label class="chk"><input type="checkbox" id="fT"> Als Testcodes importieren</label>`:""}
+    <div id="fPrev"></div></div>
+   ${S.generator?`<div class="card" style="margin-top:12px"><b>Testcode-Generator</b><p class="muted" style="margin:4px 0 0">Erzeugt Codes im Format TEST-XXXX-XXXX-XXXX. Nur im Testmodus, nicht einlösbar.</p>
+    <label class="lbl" for="genB">Produkt</label><select id="genB" data-sync="genA">${optP()}</select>
+    <label class="lbl" for="genA">Betrag</label><select id="genA">${optA(S.products[0].id)}</select>
+    <label class="lbl" for="genN">Anzahl</label><input id="genN" type="number" min="1" max="500" value="10">
+    <div class="acts"><button class="btn p" data-gen>Testcodes erzeugen</button><button class="btn g" data-purge>Freie Testcodes löschen</button></div></div>`:""}
+  </div>
+  <div class="card"><b>Bestand</b><span class="muted"> · ${t?"freie Testcodes":"freie Codes"} pro Betrag</span>
+   <table class="stock" style="margin-top:8px">${S.products.map(p=>`<tr><td style="width:34%"><b>${esc(p.name)}</b></td><td>${chips(p)}</td></tr>`).join("")}</table></div>`;
+}
+
+/* ---------- Produkte: Bilder und Sichtbarkeit ---------- */
+const CATN={topup:"Handy aufladen",keys:"Spiele-Keys",gaming:"Gaming-Guthaben",currency:"Spielwährungen",subs:"Abos",apps:"App Stores",entertainment:"Streaming & Musik",shopping:"Shopping & Essen",software:"Software",payment:"Prepaid-Karten"};
+const PLATN={steam:"Steam",pc:"PC",ea:"EA app",bnet:"Battle.net",ubi:"Ubisoft Connect",rockstar:"Rockstar",ps5:"PS5",xbox:"Xbox",xpc:"Xbox & PC",switch:"Switch",switch2:"Switch 2"};
+let P=null,PQ="",PC="all";
+async function loadProducts(){
+  try{P=(await API("/admin/products")).products;renderProducts()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}
+}
+const prow=p=>`<div class="prow${p.active?"":" off"}" data-p="${esc(p.id)}">
+  <div class="thumb" style="background:${esc(p.bg)};color:${esc(p.fg||"#fff")}">${p.img?`<img src="${esc(p.img)}" alt="">`:p.logo?`<img src="${esc(p.logo)}" alt="" style="object-fit:contain;max-width:72%;max-height:60%">`:esc(p.name)}</div>
+  <div style="min-width:0"><b>${esc(p.name)}</b>${p.plat?`<span class="tag">${esc(PLATN[p.plat]||p.plat)}</span>`:""}${p.img?`<span class="tag" style="color:var(--ok)">eigenes Bild</span>`:""}${p.logo?`<span class="tag" style="color:var(--ok)">Logo</span>`:""}
+   <div class="muted">${esc(CATN[p.cat]||p.cat)} · ${esc(p.id)}</div>
+   <div class="muted">${p.amts.map((a,i)=>p.labels&&p.labels[i]?`${esc(p.labels[i])} ${eur(Math.round(a*100))}`:eur(Math.round(a*100))).join(" · ")}</div></div>
+  <div class="pacts"><label class="sw"><input type="checkbox" data-act="${esc(p.id)}"${p.active?" checked":""}>${p.active?"im Shop":"versteckt"}</label>
+   <button class="btn g sm" data-picklogo="${esc(p.id)}">${p.logo?"Logo ersetzen":"Logo"}</button>${p.logo?`<button class="btn r sm" data-dellogo="${esc(p.id)}">Logo weg</button>`:""}<button class="btn g sm" data-pick="${esc(p.id)}">${p.img?"Kartenbild ersetzen":"Kartenbild"}</button>${p.img?`<button class="btn r sm" data-delimg="${esc(p.id)}">Bild weg</button>`:""}</div></div>`;
+const pfilter=()=>P.filter(p=>(PC==="all"||p.cat===PC)&&(!PQ||(p.name+" "+p.id).toLowerCase().includes(PQ)));
+function drawProducts(){const l=pfilter();$("#plist").innerHTML=l.length?l.map(prow).join(""):`<div class="empty">Keine Produkte gefunden.</div>`;$("#pcount").textContent=`${l.length} von ${P.length} Produkten · ${P.filter(p=>p.img).length} mit eigenem Bild · ${P.filter(p=>!p.active).length} versteckt`}
+function renderProducts(){
+  $("#m").innerHTML=tabsHTML()+`<div class="card"><b>Produktbilder</b>
+   <p class="muted" style="margin:6px 0 0">Ohne eigenes Bild zeigt der Shop eine gestaltete Karte in den Markenfarben. Lade hier die offiziellen Kartenbilder hoch, die du von deinem Code-Großhändler oder aus dem Markenportal des Herstellers bekommst. Nutze nur Bilder, für die du eine Nutzungserlaubnis hast.</p>
+   <p class="muted" style="margin:6px 0 0"><b>Logo</b>: nur das Markenlogo (PNG mit transparentem Hintergrund, am besten in Weiß oder passend zur Kartenfarbe). Es ersetzt den Schriftzug, Kartenfarben und Effekte bleiben. <b>Kartenbild</b>: komplettes Kartenmotiv, ideal 1200 × 756 Pixel; Spiele-Keys dürfen Hochformat-Cover sein. Format PNG, JPG oder WebP, höchstens 4 MB.</p></div>
+   <div class="card"><b>Zahlungslogos</b><p class="muted" style="margin:6px 0 10px">Offizielle Logos für die Zahlungsleisten im Shop. Bezugsquellen: Apple Pay (developer.apple.com/apple-pay/marketing), Google Pay (Brand Guidelines bei Google), Visa (Visa Brand Center), Mastercard (Brand Center), PayPal, Amazon Pay, Link (Stripe). Ohne Logo zeigt der Shop den Namen.</p><div id="paylogos" class="pl"></div><input type="file" id="plfile" accept="image/png,image/jpeg,image/webp" hidden></div>
+   <div class="pfil"><input id="pq" type="search" placeholder="Suchen: Name oder ID" value="${esc(PQ)}" style="margin:0"><select id="pc" style="margin:0"><option value="all">Alle Kategorien</option>${Object.entries(CATN).map(([k,v])=>`<option value="${k}"${k===PC?" selected":""}>${v}</option>`).join("")}</select></div>
+   <div class="muted" id="pcount" style="margin-top:10px"></div>
+   <div class="plist" id="plist"></div><input type="file" id="pfile" accept="image/png,image/jpeg,image/webp" hidden>`;
+  drawProducts();loadPayLogos();
+}
+let pickFor=null,pickKind="image",plFor=null;
+const PLN={apple_pay:"Apple Pay",google_pay:"Google Pay",paypal:"PayPal",amazon_pay:"Amazon Pay",link:"Link",visa:"Visa",mastercard:"Mastercard",amex:"American Express",eps:"EPS",bancontact:"Bancontact"};
+async function loadPayLogos(){try{const j=await API("/admin/paylogos");drawPayLogos(j.keys,j.logos)}catch(e){}}
+function drawPayLogos(keys,logos){const el=$("#paylogos");if(!el)return;el.innerHTML=keys.map(k=>`<div class="plr"><span class="plv">${logos[k]?`<img src="${esc(logos[k])}" alt="">`:`<i>${esc(PLN[k])}</i>`}</span><b>${esc(PLN[k])}</b><span style="margin-left:auto;display:flex;gap:6px"><button class="btn g sm" data-pl="${k}">${logos[k]?"Ersetzen":"Hochladen"}</button>${logos[k]?`<button class="btn r sm" data-pldel="${k}">Entfernen</button>`:""}</span></div>`).join("")}
+async function uploadTo(url,file){if(file.size>4*1024*1024)throw new Error("Das Bild ist zu groß (höchstens 4 MB).");const r=await fetch(url,{method:"POST",headers:{"X-IC":"1","Content-Type":file.type||"application/octet-stream"},body:file,credentials:"same-origin"});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Fehler "+r.status);return j}
+async function uploadLogo(id,file){const j=await uploadTo(`/api/admin/products/${encodeURIComponent(id)}/logo`,file);const p=P.find(x=>x.id===id);if(p)p.logo=j.logo;drawProducts();toast("Logo gespeichert, im Shop sofort sichtbar")}
+async function uploadImg(id,file){
+  if(file.size>4*1024*1024)return alert("Das Bild ist zu groß (höchstens 4 MB).");
+  const r=await fetch(`/api/admin/products/${encodeURIComponent(id)}/image`,{method:"POST",headers:{"X-IC":"1","Content-Type":file.type||"application/octet-stream"},body:file,credentials:"same-origin"});
+  let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Fehler "+r.status);
+  const p=P.find(x=>x.id===id);if(p)p.img=j.img;drawProducts();toast("Bild gespeichert, im Shop sofort sichtbar");
+}
+document.addEventListener("input",e=>{if(e.target.id==="pq"){PQ=e.target.value.trim().toLowerCase();drawProducts()}});
+
+/* ---------- Code-Datei importieren ---------- */
+let FTXT="";
+const fBody=()=>({text:FTXT,brand:($("#fB")||{}).value||"",a:+(($("#fA")||{}).value||0)||null,test:!!($("#fT")&&$("#fT").checked)});
+async function fPreview(){
+  const box=$("#fPrev");if(!FTXT){box.innerHTML="";return}box.innerHTML='<p class="muted">Wird ausgewertet …</p>';
+  try{const j=await API("/admin/codes/parse",{method:"POST",body:fBody()});const n=j.groups.reduce((a,g)=>a+g.count,0);
+    box.innerHTML=`<table class="pv">${j.groups.map(g=>`<tr><td><b>${esc(g.name)}</b>${g.region!=="DE"?` <span class="muted">(${esc(g.region)})</span>`:""}</td><td>${esc(g.label)}</td><td style="text-align:right"><b>${g.count}</b> Codes</td></tr>`).join("")||'<tr><td class="muted">Keine Codes erkannt.</td></tr>'}</table>
+    ${j.skippedCount?`<div class="warnbox">${j.skippedCount} Zeilen ohne Zuordnung, zum Beispiel: ${j.skipped.slice(0,3).map(esc).join(" · ")}. Wähle unten ein Produkt für diese Zeilen.</div>`:""}
+    ${n?`<div class="acts"><button class="btn p" data-fimport>${n} Codes einsortieren</button></div>`:""}`}
+  catch(x){box.innerHTML=`<div class="warnbox">${esc(x.message)}</div>`}
+}
+function fRead(f){if(!f)return;if(f.size>2e6){alert("Die Datei ist zu groß (höchstens 2 MB).");return}const r=new FileReader();r.onload=()=>{FTXT=String(r.result||"");fPreview()};r.readAsText(f)}
+document.addEventListener("click",e=>{if(e.target.closest("#fDrop"))$("#fFile").click()});
+document.addEventListener("change",e=>{if(e.target.id==="fFile"){fRead(e.target.files[0]);e.target.value=""}if(e.target.id==="fB"||e.target.id==="fA"||e.target.id==="fT")setTimeout(fPreview,0)});
+document.addEventListener("dragover",e=>{const d=e.target.closest("#fDrop");if(d){e.preventDefault();d.classList.add("on")}});
+document.addEventListener("dragleave",e=>{const d=e.target.closest("#fDrop");if(d)d.classList.remove("on")});
+document.addEventListener("drop",e=>{const d=e.target.closest("#fDrop");if(d){e.preventDefault();d.classList.remove("on");fRead(e.dataTransfer.files[0])}});
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-fimport]");if(!b)return;b.disabled=true;try{const j=await API("/admin/codes/import-text",{method:"POST",body:fBody()});toast(`${j.added} Codes einsortiert${j.duplicates?`, ${j.duplicates} doppelt`:""}`);FTXT="";loadStock()}catch(x){alert(x.message);b.disabled=false}});
+
+/* ---------- Übersicht ---------- */
+let OV=null;
+async function loadOV(){try{OV=await API("/admin/overview");drawOV()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+function drawOV(){
+  const o=OV,rl=o.reloadly,bal=rl.balance&&!rl.balance.error?`${Number(rl.balance.amount).toLocaleString("de-DE",{minimumFractionDigits:2})} ${esc(rl.balance.currency)}`:"–";
+  const lnk=(h,t)=>`<a href="${h}" target="_blank" rel="noopener">${t}</a>`;
+  const CATS={gaming:"Gaming-Guthaben",currency:"Spielwährungen",subs:"Abos",apps:"App Stores",entertainment:"Streaming & Musik",shopping:"Shopping & Essen",software:"Software",keys:"Spiele-Keys"};
+  $("#m").innerHTML=tabsHTML()+`
+  <div class="kpis">
+   <div class="kpi"><small>Umsatz 24 h</small><b>${eur(o.orders.today.s)}</b><small>${o.orders.today.n} Bestellungen</small></div>
+   <div class="kpi"><small>Umsatz 7 Tage</small><b>${eur(o.orders.week.s)}</b><small>${o.orders.week.n} Bestellungen</small></div>
+   <div class="kpi"><small>Wartet auf Prüfung</small><b style="color:${o.orders.processing?"#B54708":"inherit"}">${o.orders.processing}</b><small>${o.orders.delivered} geliefert gesamt</small></div>
+   <div class="kpi"><small>Sortiment</small><b>${o.catalog.products.toLocaleString("de-DE")}</b><small>${o.catalog.groups.toLocaleString("de-DE")} Marken · ${o.catalog.stockFree} Codes im Lager</small></div>
+  </div>
+  <div class="svc">
+   <div class="card"><b><span class="dot ${o.stripe?(o.mode==="live"?"ok":"warn"):"bad"}"></span>Stripe</b><p class="muted" style="margin:6px 0 0">${o.stripe?(o.mode==="live"?"Live-Zahlungen aktiv.":"Testmodus."):"Nicht verbunden."} Zahlungsarten: ${esc(o.payMethods.join(", "))}</p>
+    <div class="links">${lnk("https://dashboard.stripe.com/payments","Zahlungen")}${lnk("https://dashboard.stripe.com/settings/payment_methods","Zahlungsarten")}${lnk("https://dashboard.stripe.com/payouts","Auszahlungen")}${lnk("https://dashboard.stripe.com/disputes","Streitfälle")}</div></div>
+   <div class="card"><b><span class="dot ${rl.active?"ok":rl.on?"warn":"bad"}"></span>Reloadly</b><p class="muted" style="margin:6px 0 0">${rl.on?`Guthaben: <b>${bal}</b> · ${rl.imported.toLocaleString("de-DE")} Produkte importiert${rl.lastImport?` · ${new Date(rl.lastImport).toLocaleString("de-DE")}`:""}`:"Nicht verbunden."}${rl.on&&!rl.active?" · Einkäufe pausiert (Testmodus)":""}</p>
+    <div class="acts" style="margin-top:10px">${rl.on?`<button class="btn g" data-ovimport>Katalog jetzt aktualisieren</button>`:""}</div>
+    <div class="links">${lnk("https://www.reloadly.com/dashboard","Reloadly-Dashboard")}${lnk("https://www.reloadly.com/dashboard/wallet","Guthaben aufladen")}</div></div>
+   <div class="card"><b><span class="dot ${o.mail.on?"ok":"bad"}"></span>E-Mail (Resend)</b><p class="muted" style="margin:6px 0 0">${o.mail.on?`Absender ${esc(o.mail.from||"")} · Support ${esc(o.mail.support)}`:"RESEND_API_KEY fehlt."}</p>
+    <div class="acts" style="margin-top:10px">${o.mail.on?`<button class="btn g" data-testmail>Testmail an mich senden</button>`:""}</div>
+    <div class="links">${lnk("https://resend.com/emails","Gesendete E-Mails")}${lnk("https://resend.com/domains","Domain")}</div></div>
+   <div class="card"><b><span class="dot ok"></span>Shop und Server</b><p class="muted" style="margin:6px 0 0">Automatische Auslieferung ${o.auto.on?`an, bis ${eur(o.auto.max)} pro Bestellung, ${eur(o.auto.day)} pro Kunde und Tag`:"aus"}. ${o.auto.neverSoldout?"Nichts wird als ausverkauft angezeigt.":""}</p>
+    <div class="links">${lnk(o.base,"Shop öffnen")}${lnk(o.base+"/sitemap.xml","Sitemap")}${lnk("https://search.google.com/search-console","Google Search Console")}${lnk("https://railway.com/dashboard","Railway")}${lnk("https://mein.online-impressum.de/instacode/","Impressum")}</div></div>
+  </div>
+  <div class="card"><b><span class="dot ${o.klarna.on?"warn":""}"></span>Klarna (Rechnungskauf)</b>
+   <div class="warnbox">Stripe führt „Gutscheine und Geschenkkarten“ als verbotene Branche für Klarna. Schalte Kategorien nur frei, wenn Stripe dir das schriftlich bestätigt hat, sonst kann Klarna oder Stripe dein Konto sperren.</div>
+   <p class="muted" style="margin:8px 0 0">${o.klarna.available?"Klarna ist in Stripe eingeschaltet.":"Klarna ist in Stripe nicht aktiv, die Auswahl wirkt erst danach."} Freigegebene Kategorien:</p>
+   <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">${Object.entries(CATS).map(([k,n])=>`<label class="chk" style="margin:0;padding:6px 10px;border:1px solid var(--b);border-radius:999px;background:#fff"><input type="checkbox" data-kl="${k}" ${o.klarna.cats.includes(k)?"checked":""} style="width:auto;margin:0"> ${n}</label>`).join("")}</div>
+   <div class="acts"><button class="btn g" data-klsave>Speichern</button></div></div>`;
+}
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-ovimport],[data-testmail],[data-klsave]");if(!t)return;
+  if(t.hasAttribute("data-ovimport")){t.disabled=true;t.textContent="Läuft …";try{const j=await API("/admin/reloadly/import",{method:"POST",body:{}});toast(`${j.products} Produkte im Shop`);loadOV()}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.hasAttribute("data-testmail")){t.disabled=true;try{const j=await API("/admin/testmail",{method:"POST",body:{}});toast(`Testmail an ${j.to} gesendet`)}catch(x){alert(x.message)}t.disabled=false;return}
+  if(t.hasAttribute("data-klsave")){const cats=$$("[data-kl]").filter(x=>x.checked).map(x=>x.dataset.kl);if(cats.length&&!confirm("Klarna für diese Kategorien freischalten? Nur mit schriftlicher Freigabe von Stripe."))return;try{await API("/admin/klarna",{method:"POST",body:{cats}});toast(cats.length?"Klarna-Kategorien gespeichert":"Klarna ausgeschaltet");loadOV()}catch(x){alert(x.message)}return}
+});
+
+/* ---------- Reloadly ---------- */
+let RLD=null;
+async function loadRL(){try{RLD=await API("/admin/reloadly");drawRL()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+function drawRL(){
+  const d=RLD,mapped=d.products.filter(p=>p.map&&p.map.product_id).length;
+  const bal=d.balance&&!d.balance.error?`${Number(d.balance.amount).toLocaleString("de-DE",{minimumFractionDigits:2})} ${esc(d.balance.currency)}`:d.balance?`<span style="color:#DC2626">${esc(d.balance.error)}</span>`:"–";
+  $("#m").innerHTML=tabsHTML()+`<div class="card"><b>Reloadly</b>
+   <p class="muted" style="margin:6px 0 0">${!d.on?"Nicht verbunden. Trage RELOADLY_CLIENT_ID und RELOADLY_CLIENT_SECRET bei Railway unter Variables ein.":d.active?`Verbunden${d.sandbox?" (Sandbox)":""}. Bezahlte Bestellungen holen fehlende Codes und Aufladungen automatisch bei Reloadly.`:"Verbunden, aber im Testmodus pausiert. Erst mit Live-Stripe-Schlüssel oder RELOADLY_SANDBOX=1 aktiv."}</p>
+   <p style="margin:10px 0 0">Guthaben bei Reloadly: <b>${bal}</b> · ${mapped} von ${d.products.length} Produkten zugeordnet</p>
+   <p style="margin:6px 0 0">Aus dem Reloadly-Katalog im Shop: <b>${d.imported}</b> Produkte mit Originalbild${d.lastImport?` · zuletzt aktualisiert ${new Date(d.lastImport).toLocaleString("de-DE")}`:""}. Der Katalog aktualisiert sich täglich von selbst.</p>
+   ${d.on?`<div class="acts"><button class="btn p" data-rlimport>Gesamten Katalog jetzt importieren</button><button class="btn g" data-rlsync>Eigene Produkte zuordnen</button></div>`:""}<div id="rlmiss"></div></div>`+
+   [...d.products].sort((a,b)=>!!(a.map&&a.map.product_id)-!!(b.map&&b.map.product_id)).map(p=>`<div class="card"><div class="row"><div><b>${esc(p.name)}${p.labels?" · "+esc(p.labels[0]):""}</b><div class="muted">${p.map&&p.map.product_id?`Reloadly #${p.map.product_id} · ${esc(p.map.country||"")} · ${esc(p.map.name||"")}${p.map.amts?` · Beträge: ${JSON.parse(p.map.amts).join(", ")||"keine passenden"} €`:""}`:"nicht zugeordnet"}</div></div>
+   <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm g" data-rlfind="${esc(p.id)}" data-q="${esc(p.name)}">Bei Reloadly suchen</button><input data-rlid="${esc(p.id)}" placeholder="Reloadly-ID" value="${p.map&&p.map.product_id||""}" style="width:110px"><button class="btn sm" data-rlset="${esc(p.id)}">Speichern</button></div></div><div data-rlres="${esc(p.id)}"></div></div>`).join("");
+}
+document.addEventListener("click",async e=>{
+  const s=e.target.closest("[data-rlsync]");
+  if(s){s.disabled=true;s.textContent="Suche läuft …";try{const j=await API("/admin/reloadly/sync",{method:"POST",body:{}});await loadRL();toast(`${j.found} Produkte zugeordnet, ${j.images} Originalbilder übernommen`);if(j.missing.length)$("#rlmiss").innerHTML=`<p class="muted" style="margin:10px 0 0">Nicht gefunden: ${esc(j.missing.join(", "))}</p>`}catch(x){alert(x.message);s.disabled=false}return}
+  const im=e.target.closest("[data-rlimport]");
+  if(im){im.disabled=true;im.textContent="Import läuft, das dauert 1–3 Minuten …";try{const j=await API("/admin/reloadly/import",{method:"POST",body:{}});await loadRL();toast(`${j.products} Produkte im Shop, ${j.images} neue Bilder`)}catch(x){alert(x.message);im.disabled=false}return}
+  const f=e.target.closest("[data-rlfind]");
+  if(f){const id=f.dataset.rlfind,q=prompt("Suchbegriff bei Reloadly",f.dataset.q);if(!q)return;const box=document.querySelector(`[data-rlres="${id}"]`);box.innerHTML='<p class="muted">Suche …</p>';
+    try{const j=await API(`/admin/reloadly/search?q=${encodeURIComponent(q)}`);box.innerHTML=j.results.length?j.results.map(r=>`<div class="row" style="margin-top:8px;gap:10px;align-items:center">${r.logo?`<img src="${esc(r.logo)}" style="width:56px;height:36px;object-fit:cover;border-radius:6px">`:""}<div style="flex:1"><b>${esc(r.name)}</b><div class="muted">#${r.productId} · ${esc(r.country)} · ${esc(r.currency)} · ${esc(r.amounts)}</div></div><button class="btn sm p" data-rlpick="${id}" data-pid="${r.productId}" data-c="${esc(r.country)}" data-n="${esc(r.name)}" data-l="${esc(r.logo||"")}">Übernehmen</button></div>`).join(""):'<p class="muted">Nichts gefunden. Probier einen kürzeren Begriff.</p>'}catch(x){box.innerHTML=`<p class="muted">${esc(x.message)}</p>`}return}
+  const pk=e.target.closest("[data-rlpick]");
+  if(pk){try{await API(`/admin/reloadly/map/${encodeURIComponent(pk.dataset.rlpick)}`,{method:"POST",body:{productId:pk.dataset.pid,country:pk.dataset.c,name:pk.dataset.n,logo:pk.dataset.l}});await loadRL();toast("Zugeordnet, Bild übernommen")}catch(x){alert(x.message)}return}
+  const m=e.target.closest("[data-rlset]");
+  if(m){const id=m.dataset.rlset,v=document.querySelector(`[data-rlid="${id}"]`).value.trim();try{await API(`/admin/reloadly/map/${encodeURIComponent(id)}`,{method:"POST",body:{productId:v}});await loadRL();toast(v?"Zugeordnet":"Zuordnung entfernt")}catch(x){alert(x.message)}return}
+  const b=e.target.closest("[data-rlbuy]");
+  if(b){if(!confirm("Jetzt bei Reloadly einkaufen und an den Kunden ausliefern? Das kostet Reloadly-Guthaben."))return;b.disabled=true;try{await API(`/admin/orders/${encodeURIComponent(b.dataset.rlbuy)}/deliver`,{method:"POST",body:{reloadly:true}});toast("Über Reloadly ausgeliefert");load(true)}catch(x){alert(x.message);b.disabled=false}return}
+});
+
+/* ---------- Bewertungen ---------- */
+let R=null;
+async function loadReviews(){
+  try{R=(await API("/admin/reviews")).reviews;renderReviews()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}
+}
+function renderReviews(){
+  const vis=R.filter(r=>!r.hidden),avg=vis.length?vis.reduce((s,r)=>s+r.rating,0)/vis.length:0;
+  $("#m").innerHTML=tabsHTML()+`<div class="card"><b>Bewertungen aus echten Bestellungen</b>
+   <p class="muted" style="margin:6px 0 0">Nur Kunden mit gelieferter Bestellung können bewerten, eine Bewertung pro Bestellung. Im Shop erscheinen sie ab 3 sichtbaren Bewertungen. Verstecke nur Beiträge, die gegen Regeln verstoßen (Beleidigungen, persönliche Daten, Spam), nicht einfach schlechte Bewertungen.</p>
+   <p style="margin:10px 0 0"><b>${vis.length}</b> sichtbar${vis.length?` · Durchschnitt <b>${avg.toFixed(1).replace(".",",")}</b> <span class="stars">★</span>`:""}${R.length-vis.length?` · ${R.length-vis.length} versteckt`:""}</p></div>`+
+   (R.length?R.map(r=>`<div class="card rv${r.hidden?" hid":""}"><div class="row"><div><span class="stars">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</span> <b>${esc(r.name)}</b>${r.hidden?`<span class="st" style="color:#6B7280;background:#6B72801a">versteckt</span>`:""}
+     <div class="muted">${new Date(r.created_at).toLocaleString("de-DE")} · ${esc(r.email)} · ${esc(r.order_id)}${r.brands.length?" · "+esc(r.brands.join(", ")):""}</div></div>
+     <button class="btn ${r.hidden?"g":"r"} sm" data-rhide="${r.id}" data-h="${r.hidden?0:1}">${r.hidden?"Wieder anzeigen":"Verstecken"}</button></div>
+     ${r.text?`<p style="margin:10px 0 0">${esc(r.text)}</p>`:""}</div>`).join(""):`<div class="empty">Noch keine Bewertungen. Nach jeder Lieferung bekommt der Kunde in der E-Mail einen Link zum Bewerten.</div>`);
+}
+
+document.addEventListener("change",async e=>{
+  if(e.target.id==="pc"){PC=e.target.value;drawProducts();return}
+  if(e.target.id==="pfile"){const f=e.target.files[0];e.target.value="";if(f&&pickFor){try{await (pickKind==="logo"?uploadLogo:uploadImg)(pickFor,f)}catch(x){alert(x.message)}}return}
+  if(e.target.id==="plfile"){const f=e.target.files[0];e.target.value="";if(f&&plFor){try{const j=await uploadTo(`/api/admin/paylogos/${plFor}`,f);drawPayLogos(Object.keys(PLN),j.logos);toast("Zahlungslogo gespeichert")}catch(x){alert(x.message)}}return}
+  const a=e.target.closest("[data-act]");
+  if(a){const id=a.dataset.act,on=a.checked;try{await API(`/admin/products/${encodeURIComponent(id)}`,{method:"POST",body:{active:on}});const p=P.find(x=>x.id===id);p.active=on;drawProducts();toast(on?"Wieder im Shop":"Im Shop versteckt")}catch(x){alert(x.message);a.checked=!on}}
+});
+document.addEventListener("change",e=>{const s=e.target.closest("[data-sync]");if(s)$("#"+s.dataset.sync).innerHTML=optA(s.value)});
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-tab],[data-deliver],[data-refund],[data-up],[data-gen],[data-purge],[data-pick],[data-picklogo],[data-dellogo],[data-pl],[data-pldel],[data-delimg],[data-rhide]");if(!t)return;
+  if(t.dataset.pick){pickFor=t.dataset.pick;pickKind="image";$("#pfile").click();return}
+  if(t.dataset.picklogo){pickFor=t.dataset.picklogo;pickKind="logo";$("#pfile").click();return}
+  if(t.dataset.dellogo){try{await API(`/admin/products/${encodeURIComponent(t.dataset.dellogo)}/logo`,{method:"DELETE"});P.find(x=>x.id===t.dataset.dellogo).logo=null;drawProducts();toast("Logo entfernt")}catch(x){alert(x.message)}return}
+  if(t.dataset.pl){plFor=t.dataset.pl;$("#plfile").click();return}
+  if(t.dataset.pldel){try{const j=await API(`/admin/paylogos/${t.dataset.pldel}`,{method:"DELETE"});drawPayLogos(Object.keys(PLN),j.logos);toast("Entfernt")}catch(x){alert(x.message)}return}
+  if(t.dataset.delimg){if(!confirm("Eigenes Bild entfernen? Der Shop zeigt dann wieder die gestaltete Karte."))return;try{await API(`/admin/products/${encodeURIComponent(t.dataset.delimg)}/image`,{method:"DELETE"});P.find(x=>x.id===t.dataset.delimg).img=null;drawProducts();toast("Bild entfernt")}catch(x){alert(x.message)}return}
+  if(t.dataset.rhide){try{await API(`/admin/reviews/${t.dataset.rhide}`,{method:"POST",body:{hidden:t.dataset.h==="1"}});loadReviews();toast(t.dataset.h==="1"?"Versteckt":"Wieder sichtbar")}catch(x){alert(x.message)}return}
+  if(t.dataset.tab){tab=t.dataset.tab;load(true);return}
+  if(t.hasAttribute("data-up")){
+    t.disabled=true;
+    try{const j=await API("/admin/codes",{method:"POST",body:{brand:$("#upB").value,a:+$("#upA").value,codes:$("#upC").value,test:!!($("#upT")&&$("#upT").checked)}});toast(`${j.added} Codes hinzugefügt${j.duplicates?`, ${j.duplicates} doppelt übersprungen`:""}`);loadStock()}
+    catch(x){alert(x.message);t.disabled=false}return}
+  if(t.hasAttribute("data-gen")){
+    t.disabled=true;
+    try{const j=await API("/admin/codes/generate",{method:"POST",body:{brand:$("#genB").value,a:+$("#genA").value,count:+$("#genN").value}});toast(`${j.added} Testcodes erzeugt`);loadStock()}
+    catch(x){alert(x.message);t.disabled=false}return}
+  if(t.hasAttribute("data-purge")){
+    if(!confirm("Alle freien Testcodes löschen?"))return;
+    try{const j=await API("/admin/codes/purge-test",{method:"POST"});toast(`${j.removed} Testcodes gelöscht`);loadStock()}catch(x){alert(x.message)}return}
+  const box=t.closest("[data-o]");
+  if(t.dataset.deliver){
+    const items={};
+    box.querySelectorAll("[data-code]").forEach(i=>{const k=i.dataset.code;(items[k]=items[k]||{id:+k,codes:[]}).codes.push(i.value.trim())});
+    box.querySelectorAll("[data-done]").forEach(i=>{const k=i.dataset.done;items[k]={id:+k,done:i.checked,ref:(box.querySelector(`[data-ref="${k}"]`)||{}).value||""}});
+    if(!confirm("Jetzt ausliefern? Der Kunde bekommt die Codes sofort per E-Mail."))return;
+    t.disabled=true;
+    try{await API(`/admin/orders/${encodeURIComponent(t.dataset.deliver)}/deliver`,{method:"POST",body:{items:Object.values(items),note:(box.querySelector("[data-note]")||{}).value||""}});box.querySelectorAll("input,textarea").forEach(i=>i.value="");toast("Ausgeliefert, E-Mail ist raus");load(true)}
+    catch(x){alert(x.message);t.disabled=false}
+  }
+  if(t.dataset.refund){
+    const reason=prompt("Grund für die Erstattung (wird dem Kunden mitgeteilt):","Artikel derzeit nicht verfügbar");if(reason===null)return;
+    t.disabled=true;
+    try{await API(`/admin/orders/${encodeURIComponent(t.dataset.refund)}/refund`,{method:"POST",body:{reason}});toast("Erstattet");load(true)}
+    catch(x){alert(x.message);t.disabled=false}
+  }
+});
+(async()=>{
+  try{const me=(await API("/me")).user;
+    if(!me||!me.admin){$("#m").innerHTML=`<div class="card"><b>Kein Zugriff</b><p class="muted">Deine Sitzung ist abgelaufen.</p><a class="btn p" href="/">Zum Shop</a></div>`;return}
+    load(true);
+  }catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
+})();
+})();
+</script>
+</body>
+</html>

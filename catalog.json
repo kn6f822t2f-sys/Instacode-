@@ -1,0 +1,4279 @@
+{
+ "lyca": {
+  "id": "lyca",
+  "name": "Lycamobile",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   5,
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#262A5B",
+  "fg": "#fff",
+  "mark": {
+   "t": "Lyca",
+   "s": 44,
+   "w": 600,
+   "ls": "-.02em",
+   "two": "Mobile"
+  },
+  "region": "DE"
+ },
+ "lebara": {
+  "id": "lebara",
+  "name": "Lebara",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   5,
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#4285F4",
+  "fg": "#fff",
+  "mark": {
+   "t": "LEBARA",
+   "s": 38,
+   "w": 800,
+   "ls": "0"
+  },
+  "region": "DE"
+ },
+ "vodafone": {
+  "id": "vodafone",
+  "name": "Vodafone",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   25,
+   30,
+   50
+  ],
+  "disc": 0,
+  "bg": "#E60000",
+  "fg": "#fff",
+  "mark": {
+   "t": "vodafone",
+   "s": 30,
+   "w": 700,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "telekom": {
+  "id": "telekom",
+  "name": "Telekom",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   25,
+   30,
+   50
+  ],
+  "disc": 0,
+  "bg": "#E20074",
+  "fg": "#fff",
+  "mark": {
+   "t": "Telekom",
+   "s": 32,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "o2": {
+  "id": "o2",
+  "name": "o2",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#0019A5",
+  "fg": "#fff",
+  "mark": {
+   "t": "o2",
+   "s": 58,
+   "w": 800,
+   "ls": "-.04em"
+  },
+  "region": "DE"
+ },
+ "congstar": {
+  "id": "congstar",
+  "name": "congstar",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#F7A800",
+  "fg": "#1B1B1B",
+  "mark": {
+   "t": "congstar",
+   "s": 30,
+   "w": 800,
+   "ls": "-.03em"
+  },
+  "region": "DE"
+ },
+ "alditalk": {
+  "id": "alditalk",
+  "name": "ALDI TALK",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   5,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#1C3F94",
+  "fg": "#fff",
+  "mark": {
+   "t": "ALDI TALK",
+   "s": 27,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "region": "DE"
+ },
+ "blau": {
+  "id": "blau",
+  "name": "blau",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#00A3E0",
+  "fg": "#fff",
+  "mark": {
+   "t": "blau.",
+   "s": 46,
+   "w": 800,
+   "ls": "-.04em"
+  },
+  "region": "DE"
+ },
+ "fonic": {
+  "id": "fonic",
+  "name": "FONIC",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#1D1D1B",
+  "fg": "#FFD200",
+  "mark": {
+   "t": "FONIC",
+   "s": 38,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "region": "DE"
+ },
+ "lidlconnect": {
+  "id": "lidlconnect",
+  "name": "Lidl Connect",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#0050AA",
+  "fg": "#FFF000",
+  "mark": {
+   "t": "Lidl Connect",
+   "s": 25,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "nettokom": {
+  "id": "nettokom",
+  "name": "NettoKOM",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#FFE500",
+  "fg": "#E2001A",
+  "mark": {
+   "t": "NettoKOM",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "ortel": {
+  "id": "ortel",
+  "name": "Ortel Mobile",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   5,
+   10,
+   15,
+   20
+  ],
+  "disc": 0,
+  "bg": "#E4002B",
+  "fg": "#fff",
+  "mark": {
+   "t": "ortel",
+   "s": 40,
+   "w": 800,
+   "ls": "-.03em",
+   "two": "mobile"
+  },
+  "region": "DE"
+ },
+ "ayyildiz": {
+  "id": "ayyildiz",
+  "name": "AY YILDIZ",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   10,
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#C8102E",
+  "fg": "#fff",
+  "mark": {
+   "t": "AY YILDIZ",
+   "s": 28,
+   "w": 800,
+   "ls": ".03em"
+  },
+  "region": "DE"
+ },
+ "edekasmart": {
+  "id": "edekasmart",
+  "name": "EDEKA smart",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   15,
+   25,
+   30
+  ],
+  "disc": 0,
+  "bg": "#FFD400",
+  "fg": "#1D428A",
+  "mark": {
+   "t": "EDEKA smart",
+   "s": 25,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "pennymobil": {
+  "id": "pennymobil",
+  "name": "PENNY mobil",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   15,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#CD1719",
+  "fg": "#fff",
+  "mark": {
+   "t": "PENNY mobil",
+   "s": 25,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "turkcell": {
+  "id": "turkcell",
+  "name": "Turkcell",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   5,
+   10,
+   20,
+   30
+  ],
+  "disc": 0,
+  "bg": "#0A3A80",
+  "fg": "#FFC72C",
+  "mark": {
+   "t": "Turkcell",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "TR"
+ },
+ "apple": {
+  "id": "apple",
+  "name": "Apple Gift Card",
+  "cat": "apps",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#F2F3F7",
+  "fg": "#0B1B3F",
+  "mark": {
+   "t": "",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em",
+   "g": "gem"
+  },
+  "tags": [
+   "app store",
+   "itunes",
+   "icloud",
+   "apple music"
+  ],
+  "hot": 1,
+  "region": "DE"
+ },
+ "gplay": {
+  "id": "gplay",
+  "name": "Google Play",
+  "cat": "apps",
+  "type": "card",
+  "amts": [
+   5,
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#EAF6F0",
+  "fg": "#0B1B3F",
+  "mark": {
+   "t": "Google Play",
+   "s": 24,
+   "w": 600,
+   "ls": "-.01em",
+   "g": "playg"
+  },
+  "tags": [
+   "android",
+   "play store"
+  ],
+  "region": "DE"
+ },
+ "microsoft": {
+  "id": "microsoft",
+  "name": "Microsoft Gift Card",
+  "cat": "apps",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0067B8",
+  "fg": "#fff",
+  "mark": {
+   "t": "Microsoft",
+   "s": 30,
+   "w": 700,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "windows",
+   "store"
+  ],
+  "region": "DE"
+ },
+ "steam": {
+  "id": "steam",
+  "name": "Steam",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   5,
+   10,
+   20,
+   50,
+   100
+  ],
+  "disc": 0.05,
+  "bg": "linear-gradient(135deg,#171A21,#2A475E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STEAM",
+   "s": 27,
+   "w": 800,
+   "ls": ".1em",
+   "g": "ring"
+  },
+  "tags": [
+   "valve",
+   "pc"
+  ],
+  "hot": 1,
+  "region": "DE"
+ },
+ "psn": {
+  "id": "psn",
+  "name": "PlayStation",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   50,
+   100
+  ],
+  "disc": 0.05,
+  "bg": "#003791",
+  "fg": "#fff",
+  "mark": {
+   "t": "PlayStation",
+   "s": 28,
+   "w": 700,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "psn",
+   "ps5",
+   "ps4",
+   "sony"
+  ],
+  "hot": 1,
+  "region": "DE"
+ },
+ "xbox": {
+  "id": "xbox",
+  "name": "Xbox",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0.05,
+  "bg": "#107C10",
+  "fg": "#fff",
+  "mark": {
+   "t": "XBOX",
+   "s": 40,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "microsoft",
+   "series x"
+  ],
+  "region": "DE"
+ },
+ "nintendo": {
+  "id": "nintendo",
+  "name": "Nintendo eShop",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#E60012",
+  "fg": "#fff",
+  "mark": {
+   "t": "Nintendo",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "switch",
+   "switch 2"
+  ],
+  "region": "DE"
+ },
+ "battlenet": {
+  "id": "battlenet",
+  "name": "Battle.net",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   20,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E1A2B,#1B3A6B)",
+  "fg": "#57B7FF",
+  "mark": {
+   "t": "BATTLE.NET",
+   "s": 25,
+   "w": 800,
+   "ls": ".05em"
+  },
+  "tags": [
+   "blizzard",
+   "diablo",
+   "warcraft",
+   "overwatch"
+  ],
+  "region": "DE"
+ },
+ "ea": {
+  "id": "ea",
+  "name": "EA Guthaben",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#0B0F19",
+  "fg": "#FF4747",
+  "mark": {
+   "t": "EA",
+   "s": 70,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "electronic arts",
+   "ea app"
+  ],
+  "region": "DE"
+ },
+ "epic": {
+  "id": "epic",
+  "name": "Epic Games",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#121212",
+  "fg": "#fff",
+  "mark": {
+   "t": "EPIC GAMES",
+   "s": 27,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "epic games store",
+   "fortnite"
+  ],
+  "region": "DE"
+ },
+ "razer": {
+  "id": "razer",
+  "name": "Razer Gold",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0B0B0B",
+  "fg": "#E7B34A",
+  "mark": {
+   "t": "RAZER GOLD",
+   "s": 26,
+   "w": 800,
+   "ls": ".06em"
+  },
+  "tags": [
+   "razer"
+  ],
+  "region": "DE"
+ },
+ "fortnite": {
+  "id": "fortnite",
+  "name": "Fortnite V-Bucks",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   8.99,
+   22.99,
+   36.99,
+   89.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#3A1C8C,#1F5BFF)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FORTNITE",
+   "s": 28,
+   "w": 800,
+   "ls": ".06em"
+  },
+  "labels": [
+   "1.000 V-Bucks",
+   "2.800 V-Bucks",
+   "5.000 V-Bucks",
+   "13.500 V-Bucks"
+  ],
+  "tags": [
+   "vbucks",
+   "v-bucks",
+   "epic"
+  ],
+  "hot": 1,
+  "region": "DE"
+ },
+ "roblox": {
+  "id": "roblox",
+  "name": "Roblox",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#232527",
+  "fg": "#fff",
+  "mark": {
+   "t": "ROBLOX",
+   "s": 32,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "robux"
+  ],
+  "region": "DE"
+ },
+ "valorant": {
+  "id": "valorant",
+  "name": "VALORANT Points",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   35,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0F1923",
+  "fg": "#FF4655",
+  "mark": {
+   "t": "VALORANT",
+   "s": 28,
+   "w": 800,
+   "ls": ".08em"
+  },
+  "tags": [
+   "riot",
+   "vp",
+   "valorant points"
+  ],
+  "region": "DE"
+ },
+ "lol": {
+  "id": "lol",
+  "name": "League of Legends",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   35,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0A1428",
+  "fg": "#C8AA6E",
+  "mark": {
+   "t": "LEAGUE",
+   "s": 30,
+   "w": 800,
+   "ls": ".1em",
+   "two": "OF LEGENDS"
+  },
+  "tags": [
+   "riot",
+   "rp",
+   "riot points"
+  ],
+  "region": "DE"
+ },
+ "apex": {
+  "id": "apex",
+  "name": "Apex Legends Coins",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   9.99,
+   19.99,
+   39.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "#8C1D1D",
+  "fg": "#fff",
+  "mark": {
+   "t": "APEX",
+   "s": 40,
+   "w": 800,
+   "ls": ".08em",
+   "two": "LEGENDS"
+  },
+  "labels": [
+   "1.000 Coins",
+   "2.150 Coins",
+   "4.350 Coins",
+   "11.500 Coins"
+  ],
+  "tags": [
+   "ea",
+   "apex coins"
+  ],
+  "region": "DE"
+ },
+ "fcpoints": {
+  "id": "fcpoints",
+  "name": "EA SPORTS FC Points",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   9.99,
+   19.99,
+   39.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B3D2E,#0F5F45)",
+  "fg": "#3AFF8C",
+  "mark": {
+   "t": "FC POINTS",
+   "s": 30,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "labels": [
+   "1.050 FC Points",
+   "2.800 FC Points",
+   "5.900 FC Points",
+   "12.000 FC Points"
+  ],
+  "tags": [
+   "fifa",
+   "ultimate team",
+   "fc 26"
+  ],
+  "region": "DE"
+ },
+ "codpoints": {
+  "id": "codpoints",
+  "name": "Call of Duty Points",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   9.99,
+   19.99,
+   49.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "#111111",
+  "fg": "#F2A900",
+  "mark": {
+   "t": "COD POINTS",
+   "s": 28,
+   "w": 800,
+   "ls": ".06em"
+  },
+  "labels": [
+   "1.100 Points",
+   "2.400 Points",
+   "5.000 Points",
+   "13.000 Points"
+  ],
+  "tags": [
+   "cod",
+   "warzone",
+   "black ops"
+  ],
+  "region": "DE"
+ },
+ "pubg": {
+  "id": "pubg",
+  "name": "PUBG Mobile UC",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   9.99,
+   24.99,
+   49.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "#F2A900",
+  "fg": "#111",
+  "mark": {
+   "t": "PUBG",
+   "s": 46,
+   "w": 800,
+   "ls": ".06em",
+   "two": "MOBILE UC"
+  },
+  "labels": [
+   "660 UC",
+   "1.800 UC",
+   "3.850 UC",
+   "8.100 UC"
+  ],
+  "tags": [
+   "uc",
+   "pubg"
+  ],
+  "region": "DE"
+ },
+ "freefire": {
+  "id": "freefire",
+  "name": "Free Fire Diamanten",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   4.99,
+   9.99,
+   19.99,
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#F26B1D,#C2410C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FREE FIRE",
+   "s": 30,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "labels": [
+   "520 Diamanten",
+   "1.060 Diamanten",
+   "2.180 Diamanten",
+   "5.600 Diamanten"
+  ],
+  "tags": [
+   "garena",
+   "diamonds"
+  ],
+  "region": "DE"
+ },
+ "genshin": {
+  "id": "genshin",
+  "name": "Genshin Impact",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   4.99,
+   14.99,
+   29.99,
+   49.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1B2A4A,#3B4F7A)",
+  "fg": "#F2D69B",
+  "mark": {
+   "t": "GENSHIN",
+   "s": 32,
+   "w": 800,
+   "ls": ".06em",
+   "two": "IMPACT"
+  },
+  "labels": [
+   "300 Kristalle",
+   "980 Kristalle",
+   "1.980 Kristalle",
+   "3.280 Kristalle",
+   "6.480 Kristalle"
+  ],
+  "tags": [
+   "hoyoverse",
+   "genesis crystals"
+  ],
+  "region": "DE"
+ },
+ "mlbb": {
+  "id": "mlbb",
+  "name": "Mobile Legends",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   4.99,
+   9.99,
+   24.99,
+   49.99
+  ],
+  "disc": 0,
+  "bg": "#0B2A6F",
+  "fg": "#F8C537",
+  "mark": {
+   "t": "MOBILE",
+   "s": 34,
+   "w": 800,
+   "ls": ".06em",
+   "two": "LEGENDS"
+  },
+  "labels": [
+   "250 Diamanten",
+   "530 Diamanten",
+   "1.400 Diamanten",
+   "2.900 Diamanten"
+  ],
+  "tags": [
+   "mlbb",
+   "diamonds"
+  ],
+  "region": "DE"
+ },
+ "minecoins": {
+  "id": "minecoins",
+  "name": "Minecraft Minecoins",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   9.99,
+   19.99,
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#3C8527,#2A5E1C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MINECOINS",
+   "s": 28,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "labels": [
+   "1.720 Minecoins",
+   "3.500 Minecoins",
+   "8.000 Minecoins"
+  ],
+  "tags": [
+   "minecraft",
+   "marketplace"
+  ],
+  "region": "DE"
+ },
+ "r6": {
+  "id": "r6",
+  "name": "Rainbow Six Credits",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   9.99,
+   19.99,
+   49.99
+  ],
+  "disc": 0,
+  "bg": "#1A1A1A",
+  "fg": "#fff",
+  "mark": {
+   "t": "R6",
+   "s": 66,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "CREDITS"
+  },
+  "labels": [
+   "1.200 Credits",
+   "2.670 Credits",
+   "7.560 Credits"
+  ],
+  "tags": [
+   "rainbow six siege",
+   "ubisoft"
+  ],
+  "region": "DE"
+ },
+ "rocketleague": {
+  "id": "rocketleague",
+  "name": "Rocket League Credits",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   4.99,
+   9.99,
+   24.99,
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1E4A,#1D4ED8,#F97316)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ROCKET",
+   "s": 36,
+   "w": 800,
+   "ls": ".06em",
+   "two": "LEAGUE"
+  },
+  "labels": [
+   "500 Credits",
+   "1.100 Credits",
+   "3.000 Credits",
+   "6.500 Credits"
+  ],
+  "tags": [
+   "psyonix",
+   "epic"
+  ],
+  "region": "DE"
+ },
+ "overwatch": {
+  "id": "overwatch",
+  "name": "Overwatch Coins",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   9.99,
+   19.99,
+   49.99
+  ],
+  "disc": 0,
+  "bg": "#F99E1A",
+  "fg": "#1C1C1C",
+  "mark": {
+   "t": "OVERWATCH",
+   "s": 28,
+   "w": 800,
+   "ls": ".04em",
+   "two": "COINS"
+  },
+  "labels": [
+   "1.000 Coins",
+   "2.200 Coins",
+   "5.700 Coins"
+  ],
+  "tags": [
+   "blizzard",
+   "ow2"
+  ],
+  "region": "DE"
+ },
+ "hsr": {
+  "id": "hsr",
+  "name": "Honkai: Star Rail",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   4.99,
+   14.99,
+   29.99,
+   49.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#16133A,#3B2F7A,#F5D49A)",
+  "fg": "#F5D49A",
+  "mark": {
+   "t": "HONKAI",
+   "s": 32,
+   "w": 800,
+   "ls": ".06em",
+   "two": "STAR RAIL"
+  },
+  "labels": [
+   "300 Splitter",
+   "980 Splitter",
+   "1.980 Splitter",
+   "3.280 Splitter",
+   "6.480 Splitter"
+  ],
+  "tags": [
+   "hoyoverse",
+   "oneiric shards"
+  ],
+  "region": "DE"
+ },
+ "wow": {
+  "id": "wow",
+  "name": "WoW Spielzeit",
+  "cat": "currency",
+  "type": "sub",
+  "amts": [
+   12.99,
+   34.99
+  ],
+  "disc": 0,
+  "bg": "#0B0B0B",
+  "fg": "#F8B700",
+  "mark": {
+   "t": "WORLD OF",
+   "s": 26,
+   "w": 800,
+   "ls": ".08em",
+   "two": "WARCRAFT"
+  },
+  "labels": [
+   "30 Tage",
+   "60 Tage"
+  ],
+  "tags": [
+   "world of warcraft",
+   "game time",
+   "blizzard"
+  ],
+  "region": "DE"
+ },
+ "fc26-ps5": {
+  "id": "fc26-ps5",
+  "name": "EA SPORTS FC 26",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B3D2E,#14805E,#9CF57A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EA SPORTS FC 26",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "fc26",
+  "region": "EU",
+  "tags": [
+   "fifa",
+   "fußball"
+  ],
+  "hot": 1
+ },
+ "fc26-xbox": {
+  "id": "fc26-xbox",
+  "name": "EA SPORTS FC 26",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B3D2E,#14805E,#9CF57A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EA SPORTS FC 26",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "fc26",
+  "region": "EU",
+  "tags": [
+   "fifa",
+   "fußball"
+  ],
+  "hot": 1
+ },
+ "fc26-ea": {
+  "id": "fc26-ea",
+  "name": "EA SPORTS FC 26",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B3D2E,#14805E,#9CF57A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EA SPORTS FC 26",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "fc26",
+  "region": "EU",
+  "tags": [
+   "fifa",
+   "fußball"
+  ],
+  "hot": 1
+ },
+ "bo7-ps5": {
+  "id": "bo7-ps5",
+  "name": "Call of Duty: Black Ops 7",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E0E10,#3A2A12,#F2A900)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: BLACK OPS 7",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "bo7",
+  "region": "EU",
+  "tags": [
+   "cod"
+  ]
+ },
+ "bo7-xbox": {
+  "id": "bo7-xbox",
+  "name": "Call of Duty: Black Ops 7",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E0E10,#3A2A12,#F2A900)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: BLACK OPS 7",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "bo7",
+  "region": "EU",
+  "tags": [
+   "cod"
+  ]
+ },
+ "bo7-steam": {
+  "id": "bo7-steam",
+  "name": "Call of Duty: Black Ops 7",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E0E10,#3A2A12,#F2A900)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: BLACK OPS 7",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "bo7",
+  "region": "EU",
+  "tags": [
+   "cod"
+  ]
+ },
+ "bf6-ps5": {
+  "id": "bf6-ps5",
+  "name": "Battlefield 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1220,#22416B,#F26B1D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BATTLEFIELD 6",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "bf6",
+  "region": "EU",
+  "tags": [
+   "ea",
+   "shooter"
+  ]
+ },
+ "bf6-xbox": {
+  "id": "bf6-xbox",
+  "name": "Battlefield 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1220,#22416B,#F26B1D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BATTLEFIELD 6",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "bf6",
+  "region": "EU",
+  "tags": [
+   "ea",
+   "shooter"
+  ]
+ },
+ "bf6-ea": {
+  "id": "bf6-ea",
+  "name": "Battlefield 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1220,#22416B,#F26B1D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BATTLEFIELD 6",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "bf6",
+  "region": "EU",
+  "tags": [
+   "ea",
+   "shooter"
+  ]
+ },
+ "gta5-ps5": {
+  "id": "gta5-ps5",
+  "name": "GTA V Premium",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F19,#1E7B4F,#F5C451)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GTA V PREMIUM",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "gta5",
+  "region": "EU",
+  "tags": [
+   "grand theft auto",
+   "gta online"
+  ]
+ },
+ "gta5-xbox": {
+  "id": "gta5-xbox",
+  "name": "GTA V Premium",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F19,#1E7B4F,#F5C451)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GTA V PREMIUM",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "gta5",
+  "region": "EU",
+  "tags": [
+   "grand theft auto",
+   "gta online"
+  ]
+ },
+ "gta5-rockstar": {
+  "id": "gta5-rockstar",
+  "name": "GTA V Premium",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F19,#1E7B4F,#F5C451)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GTA V PREMIUM",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "rockstar",
+  "labels": [
+   "Rockstar-Key"
+  ],
+  "grp": "gta5",
+  "region": "EU",
+  "tags": [
+   "grand theft auto",
+   "gta online"
+  ]
+ },
+ "rdr2-rockstar": {
+  "id": "rdr2-rockstar",
+  "name": "Red Dead Redemption 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2B0B0B,#8E1B1B,#E8C27A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RED DEAD REDEMPTION 2",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "rockstar",
+  "labels": [
+   "Rockstar-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "rockstar",
+   "western"
+  ]
+ },
+ "eldenring-steam": {
+  "id": "eldenring-steam",
+  "name": "Elden Ring",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#16120A,#5A4520,#D9B45A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ELDEN RING",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "eldenring",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls"
+  ]
+ },
+ "eldenring-ps5": {
+  "id": "eldenring-ps5",
+  "name": "Elden Ring",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#16120A,#5A4520,#D9B45A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ELDEN RING",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "eldenring",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls"
+  ]
+ },
+ "eldenring-xbox": {
+  "id": "eldenring-xbox",
+  "name": "Elden Ring",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#16120A,#5A4520,#D9B45A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ELDEN RING",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "eldenring",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls"
+  ]
+ },
+ "minecraft-pc": {
+  "id": "minecraft-pc",
+  "name": "Minecraft Java & Bedrock",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2A5E1C,#5BA33F,#8BD16C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MINECRAFT JAVA & BEDROCK",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "pc",
+  "labels": [
+   "PC-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "mojang"
+  ],
+  "hot": 1
+ },
+ "cp2077-steam": {
+  "id": "cp2077-steam",
+  "name": "Cyberpunk 2077",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0B12,#3B0A45,#F3E600)",
+  "fg": "#F3E600",
+  "mark": {
+   "t": "CYBERPUNK 2077",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "cd projekt"
+  ]
+ },
+ "bg3-steam": {
+  "id": "bg3-steam",
+  "name": "Baldur's Gate 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#140B1E,#4A1F5E,#C9A24A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BALDUR'S GATE 3",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "larian",
+   "rpg"
+  ]
+ },
+ "hogwarts-steam": {
+  "id": "hogwarts-steam",
+  "name": "Hogwarts Legacy",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0D1420,#2B3A55,#C7A25B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HOGWARTS LEGACY",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hogwarts",
+  "region": "EU",
+  "tags": [
+   "harry potter"
+  ]
+ },
+ "hogwarts-ps5": {
+  "id": "hogwarts-ps5",
+  "name": "Hogwarts Legacy",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0D1420,#2B3A55,#C7A25B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HOGWARTS LEGACY",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "hogwarts",
+  "region": "EU",
+  "tags": [
+   "harry potter"
+  ]
+ },
+ "fh5-xpc": {
+  "id": "fh5-xpc",
+  "name": "Forza Horizon 5",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B2440,#E2483D,#F6B03C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FORZA HORIZON 5",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "rennspiel",
+   "xbox"
+  ]
+ },
+ "diablo4-bnet": {
+  "id": "diablo4-bnet",
+  "name": "Diablo IV",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120707,#5E0F0F,#C2410C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DIABLO IV",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "bnet",
+  "labels": [
+   "Battle.net-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "blizzard"
+  ]
+ },
+ "mhwilds-steam": {
+  "id": "mhwilds-steam",
+  "name": "Monster Hunter Wilds",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A1208,#6B4A1C,#E7B66B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MONSTER HUNTER WILDS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mhwilds",
+  "region": "EU",
+  "tags": [
+   "capcom"
+  ]
+ },
+ "mhwilds-ps5": {
+  "id": "mhwilds-ps5",
+  "name": "Monster Hunter Wilds",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A1208,#6B4A1C,#E7B66B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MONSTER HUNTER WILDS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "mhwilds",
+  "region": "EU",
+  "tags": [
+   "capcom"
+  ]
+ },
+ "acshadows-ubi": {
+  "id": "acshadows-ubi",
+  "name": "Assassin's Creed Shadows",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120A0A,#6E1414,#E4D3B0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASSASSIN'S CREED SHADOWS",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "acshadows",
+  "region": "EU",
+  "tags": [
+   "ubisoft"
+  ]
+ },
+ "acshadows-ps5": {
+  "id": "acshadows-ps5",
+  "name": "Assassin's Creed Shadows",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120A0A,#6E1414,#E4D3B0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASSASSIN'S CREED SHADOWS",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "acshadows",
+  "region": "EU",
+  "tags": [
+   "ubisoft"
+  ]
+ },
+ "kcd2-steam": {
+  "id": "kcd2-steam",
+  "name": "Kingdom Come: Deliverance II",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#15110A,#4B3A1F,#C9B07A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "KINGDOM COME: DELIVERANCE II",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "warhorse",
+   "mittelalter"
+  ]
+ },
+ "splitfiction-ea": {
+  "id": "splitfiction-ea",
+  "name": "Split Fiction",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0F2E,#7C3AED,#F472B6)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SPLIT FICTION",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "splitfiction",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "hazelight"
+  ]
+ },
+ "splitfiction-ps5": {
+  "id": "splitfiction-ps5",
+  "name": "Split Fiction",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0F2E,#7C3AED,#F472B6)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SPLIT FICTION",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "splitfiction",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "hazelight"
+  ]
+ },
+ "silksong-steam": {
+  "id": "silksong-steam",
+  "name": "Hollow Knight: Silksong",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120B10,#5E1F2E,#F4E1C1)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HOLLOW KNIGHT: SILKSONG",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "team cherry",
+   "indie"
+  ]
+ },
+ "stardew-steam": {
+  "id": "stardew-steam",
+  "name": "Stardew Valley",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   13.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1F5E2A,#5FA4D9,#F6D365)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STARDEW VALLEY",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "farming",
+   "indie"
+  ]
+ },
+ "helldivers2-steam": {
+  "id": "helldivers2-steam",
+  "name": "Helldivers 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F14,#2E3A46,#F2C230)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HELLDIVERS 2",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "helldivers2",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "shooter"
+  ]
+ },
+ "helldivers2-ps5": {
+  "id": "helldivers2-ps5",
+  "name": "Helldivers 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F14,#2E3A46,#F2C230)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HELLDIVERS 2",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "helldivers2",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "shooter"
+  ]
+ },
+ "witcher3-steam": {
+  "id": "witcher3-steam",
+  "name": "The Witcher 3: Complete",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F14,#3A2A1A,#C8A15A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE WITCHER 3: COMPLETE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "cd projekt",
+   "rpg"
+  ]
+ },
+ "palworld-steam": {
+  "id": "palworld-steam",
+  "name": "Palworld",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E3B5C,#2B8FBF,#9BE0F2)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PALWORLD",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "pocketpair",
+   "survival"
+  ]
+ },
+ "fs25-steam": {
+  "id": "fs25-steam",
+  "name": "Landwirtschafts-Simulator 25",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1E3D12,#4D7C2A,#E9C46A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LANDWIRTSCHAFTS-SIMULATOR 25",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "farming simulator",
+   "giants"
+  ]
+ },
+ "ets2-steam": {
+  "id": "ets2-steam",
+  "name": "Euro Truck Simulator 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1E3B,#1F5FAD,#F2B035)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EURO TRUCK SIMULATOR 2",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "scs",
+   "lkw"
+  ]
+ },
+ "civ7-steam": {
+  "id": "civ7-steam",
+  "name": "Sid Meier's Civilization VII",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1A2B,#1E4C6B,#E4C27A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SID MEIER'S CIVILIZATION VII",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "firaxis",
+   "strategie"
+  ]
+ },
+ "seaofthieves-xpc": {
+  "id": "seaofthieves-xpc",
+  "name": "Sea of Thieves",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#05222E,#0F6E7A,#4FD1C5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SEA OF THIEVES",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "rare",
+   "piraten"
+  ]
+ },
+ "cs2-steam": {
+  "id": "cs2-steam",
+  "name": "Counter-Strike 2 Prime",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   14.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F14,#2B3846,#E8A33D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "COUNTER-STRIKE 2 PRIME",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "cs",
+   "valve",
+   "prime status"
+  ]
+ },
+ "mkworld-switch2": {
+  "id": "mkworld-switch2",
+  "name": "Mario Kart World",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#B91C1C,#F59E0B,#FDE047)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARIO KART WORLD",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch2",
+  "labels": [
+   "Switch 2-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "switch 2"
+  ],
+  "hot": 1
+ },
+ "zeldatotk-switch": {
+  "id": "zeldatotk-switch",
+  "name": "Zelda: Tears of the Kingdom",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E2A22,#2F6B4F,#C9B37E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ZELDA: TEARS OF THE KINGDOM",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "zelda"
+  ]
+ },
+ "pokemonza-switch": {
+  "id": "pokemonza-switch",
+  "name": "Pokémon-Legenden: Z-A",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1B3A,#1D4ED8,#F9D649)",
+  "fg": "#fff",
+  "mark": {
+   "t": "POKÉMON-LEGENDEN: Z-A",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "pokemon"
+  ]
+ },
+ "acnh-switch": {
+  "id": "acnh-switch",
+  "name": "Animal Crossing: New Horizons",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1F8A70,#7DD3A8,#FDE68A)",
+  "fg": "#0B2A1F",
+  "mark": {
+   "t": "ANIMAL CROSSING: NEW HORIZONS",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "nintendo"
+  ]
+ },
+ "smbwonder-switch": {
+  "id": "smbwonder-switch",
+  "name": "Super Mario Bros. Wonder",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D4ED8,#DC2626,#FACC15)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SUPER MARIO BROS. WONDER",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "mario"
+  ]
+ },
+ "ghostyotei-ps5": {
+  "id": "ghostyotei-ps5",
+  "name": "Ghost of Yōtei",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#14080A,#7F1D1D,#F5E6C8)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GHOST OF YŌTEI",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "sucker punch",
+   "playstation"
+  ]
+ },
+ "re4-steam": {
+  "id": "re4-steam",
+  "name": "Resident Evil 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#140A0A,#4A1010,#B91C1C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RESIDENT EVIL 4",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "horror"
+  ]
+ },
+ "sf6-steam": {
+  "id": "sf6-steam",
+  "name": "Street Fighter 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0B2E,#C2185B,#FFB300)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STREET FIGHTER 6",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "sf6",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "fighting"
+  ]
+ },
+ "sf6-ps5": {
+  "id": "sf6-ps5",
+  "name": "Street Fighter 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0B2E,#C2185B,#FFB300)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STREET FIGHTER 6",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "sf6",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "fighting"
+  ]
+ },
+ "tekken8-steam": {
+  "id": "tekken8-steam",
+  "name": "Tekken 8",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0B12,#7A1A0B,#F59E0B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TEKKEN 8",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "tekken8",
+  "region": "EU",
+  "tags": [
+   "bandai namco",
+   "fighting"
+  ]
+ },
+ "tekken8-ps5": {
+  "id": "tekken8-ps5",
+  "name": "Tekken 8",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0B12,#7A1A0B,#F59E0B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TEKKEN 8",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "tekken8",
+  "region": "EU",
+  "tags": [
+   "bandai namco",
+   "fighting"
+  ]
+ },
+ "doomtda-xpc": {
+  "id": "doomtda-xpc",
+  "name": "DOOM: The Dark Ages",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120707,#6B1E0B,#F97316)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DOOM: THE DARK AGES",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "grp": "doomtda",
+  "region": "EU",
+  "tags": [
+   "id software",
+   "shooter"
+  ]
+ },
+ "doomtda-ps5": {
+  "id": "doomtda-ps5",
+  "name": "DOOM: The Dark Ages",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120707,#6B1E0B,#F97316)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DOOM: THE DARK AGES",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "doomtda",
+  "region": "EU",
+  "tags": [
+   "id software",
+   "shooter"
+  ]
+ },
+ "indiana-xpc": {
+  "id": "indiana-xpc",
+  "name": "Indiana Jones und der Große Kreis",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A1208,#7A5222,#E8C27A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "INDIANA JONES UND DER GROSSE KREIS",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "machinegames",
+   "abenteuer"
+  ]
+ },
+ "ds2-ps5": {
+  "id": "ds2-ps5",
+  "name": "Death Stranding 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F14,#1F3A4D,#E8D9B0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DEATH STRANDING 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "kojima",
+   "playstation"
+  ]
+ },
+ "mgsdelta-steam": {
+  "id": "mgsdelta-steam",
+  "name": "Metal Gear Solid Delta",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F140B,#3A4A22,#C9B37E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "METAL GEAR SOLID DELTA",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mgsdelta",
+  "region": "EU",
+  "tags": [
+   "konami",
+   "snake eater"
+  ]
+ },
+ "mgsdelta-ps5": {
+  "id": "mgsdelta-ps5",
+  "name": "Metal Gear Solid Delta",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F140B,#3A4A22,#C9B37E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "METAL GEAR SOLID DELTA",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "mgsdelta",
+  "region": "EU",
+  "tags": [
+   "konami",
+   "snake eater"
+  ]
+ },
+ "wukong-steam": {
+  "id": "wukong-steam",
+  "name": "Black Myth: Wukong",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120B05,#5E3A12,#E9B44C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BLACK MYTH: WUKONG",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "game science",
+   "action"
+  ]
+ },
+ "satisfactory-steam": {
+  "id": "satisfactory-steam",
+  "name": "Satisfactory",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   38.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0E05,#C2410C,#FDBA74)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SATISFACTORY",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "coffee stain",
+   "aufbau"
+  ]
+ },
+ "valheim-steam": {
+  "id": "valheim-steam",
+  "name": "Valheim",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1A1A,#1F4D4D,#9AD1C4)",
+  "fg": "#fff",
+  "mark": {
+   "t": "VALHEIM",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "survival",
+   "wikinger"
+  ]
+ },
+ "terraria-steam": {
+  "id": "terraria-steam",
+  "name": "Terraria",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   9.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B2A4A,#2E7D32,#8BC34A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TERRARIA",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "re-logic",
+   "sandbox"
+  ]
+ },
+ "rust-steam": {
+  "id": "rust-steam",
+  "name": "Rust",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0F0A,#8A3B12,#D97706)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RUST",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "facepunch",
+   "survival"
+  ]
+ },
+ "dbd-steam": {
+  "id": "dbd-steam",
+  "name": "Dead by Daylight",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0B0B,#5E0B0B,#DC2626)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DEAD BY DAYLIGHT",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "behaviour",
+   "horror"
+  ]
+ },
+ "ittakestwo-ea": {
+  "id": "ittakestwo-ea",
+  "name": "It Takes Two",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0B2E,#2563EB,#F59E0B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "IT TAKES TWO",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "koop",
+   "hazelight"
+  ]
+ },
+ "mpjamboree-switch": {
+  "id": "mpjamboree-switch",
+  "name": "Mario Party Jamboree",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#7C3AED,#EC4899,#FACC15)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARIO PARTY JAMBOREE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "party"
+  ]
+ },
+ "dkbananza-switch2": {
+  "id": "dkbananza-switch2",
+  "name": "Donkey Kong Bananza",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#7C2D12,#D97706,#FDE047)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DONKEY KONG BANANZA",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch2",
+  "labels": [
+   "Switch 2-Key"
+  ],
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "switch 2"
+  ]
+ },
+ "gpu": {
+  "id": "gpu",
+  "name": "Xbox Game Pass Ultimate",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   26.99,
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B3D0B,#107C10,#3DDC84)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GAME PASS",
+   "s": 30,
+   "w": 800,
+   "ls": ".05em",
+   "two": "ULTIMATE"
+  },
+  "labels": [
+   "1 Monat",
+   "3 Monate"
+  ],
+  "tags": [
+   "xbox",
+   "gamepass"
+  ],
+  "hot": 1,
+  "region": "DE"
+ },
+ "pcgp": {
+  "id": "pcgp",
+  "name": "PC Game Pass",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   14.99,
+   44.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B2E0B,#107C10)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PC GAME",
+   "s": 30,
+   "w": 800,
+   "ls": ".05em",
+   "two": "PASS"
+  },
+  "labels": [
+   "1 Monat",
+   "3 Monate"
+  ],
+  "tags": [
+   "xbox",
+   "gamepass",
+   "pc"
+  ],
+  "region": "DE"
+ },
+ "psplus-essential": {
+  "id": "psplus-essential",
+  "name": "PlayStation Plus Essential",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   26.99,
+   71.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#00246B,#0050D9)",
+  "fg": "#FFD84D",
+  "mark": {
+   "t": "PS PLUS",
+   "s": 34,
+   "w": 800,
+   "ls": ".04em",
+   "two": "ESSENTIAL"
+  },
+  "labels": [
+   "3 Monate",
+   "12 Monate"
+  ],
+  "grp": "psplus",
+  "tags": [
+   "psn",
+   "ps5"
+  ],
+  "region": "DE"
+ },
+ "psplus-extra": {
+  "id": "psplus-extra",
+  "name": "PlayStation Plus Extra",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   44.99,
+   125.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#00246B,#5B2EBF)",
+  "fg": "#FFD84D",
+  "mark": {
+   "t": "PS PLUS",
+   "s": 34,
+   "w": 800,
+   "ls": ".04em",
+   "two": "EXTRA"
+  },
+  "labels": [
+   "3 Monate",
+   "12 Monate"
+  ],
+  "grp": "psplus",
+  "tags": [
+   "psn",
+   "ps5"
+  ],
+  "region": "DE"
+ },
+ "psplus-premium": {
+  "id": "psplus-premium",
+  "name": "PlayStation Plus Premium",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   151.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0F19,#00246B,#C9A24A)",
+  "fg": "#FFD84D",
+  "mark": {
+   "t": "PS PLUS",
+   "s": 34,
+   "w": 800,
+   "ls": ".04em",
+   "two": "PREMIUM"
+  },
+  "labels": [
+   "12 Monate"
+  ],
+  "grp": "psplus",
+  "tags": [
+   "psn",
+   "ps5"
+  ],
+  "region": "DE"
+ },
+ "nso": {
+  "id": "nso",
+  "name": "Nintendo Switch Online",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   7.99,
+   19.99
+  ],
+  "disc": 0,
+  "bg": "#E60012",
+  "fg": "#fff",
+  "mark": {
+   "t": "SWITCH",
+   "s": 34,
+   "w": 800,
+   "ls": ".05em",
+   "two": "ONLINE"
+  },
+  "labels": [
+   "3 Monate",
+   "12 Monate"
+  ],
+  "tags": [
+   "nintendo"
+  ],
+  "region": "DE"
+ },
+ "nsoplus": {
+  "id": "nsoplus",
+  "name": "Switch Online + Erweiterung",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#B0000E,#E60012)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SWITCH ONLINE",
+   "s": 26,
+   "w": 800,
+   "ls": ".04em",
+   "two": "+ ERWEITERUNG"
+  },
+  "labels": [
+   "12 Monate"
+  ],
+  "tags": [
+   "nintendo",
+   "expansion pack"
+  ],
+  "region": "DE"
+ },
+ "eaplay": {
+  "id": "eaplay",
+  "name": "EA Play",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   5.99,
+   29.99
+  ],
+  "disc": 0,
+  "bg": "#0B0F19",
+  "fg": "#FF4747",
+  "mark": {
+   "t": "EA PLAY",
+   "s": 36,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "labels": [
+   "1 Monat",
+   "12 Monate"
+  ],
+  "tags": [
+   "ea"
+  ],
+  "region": "DE"
+ },
+ "nitro": {
+  "id": "nitro",
+  "name": "Discord Nitro",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   9.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "#5865F2",
+  "fg": "#fff",
+  "mark": {
+   "t": "NITRO",
+   "s": 44,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "labels": [
+   "1 Monat",
+   "12 Monate"
+  ],
+  "tags": [
+   "discord"
+  ],
+  "region": "DE"
+ },
+ "netflix": {
+  "id": "netflix",
+  "name": "Netflix",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50
+  ],
+  "disc": 0.05,
+  "bg": "#141414",
+  "fg": "#E50914",
+  "mark": {
+   "t": "NETFLIX",
+   "s": 32,
+   "w": 800,
+   "ls": ".03em"
+  },
+  "hot": 1,
+  "region": "DE"
+ },
+ "spotify": {
+  "id": "spotify",
+  "name": "Spotify",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10,
+   30,
+   60
+  ],
+  "disc": 0.08,
+  "bg": "#1DB954",
+  "fg": "#0A0A0A",
+  "mark": {
+   "t": "Spotify",
+   "s": 36,
+   "w": 800,
+   "ls": "-.03em"
+  },
+  "tags": [
+   "musik",
+   "premium"
+  ],
+  "region": "DE"
+ },
+ "disney": {
+  "id": "disney",
+  "name": "Disney+",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   15,
+   30,
+   60
+  ],
+  "disc": 0,
+  "bg": "#0E2A8A",
+  "fg": "#fff",
+  "mark": {
+   "t": "Disney+",
+   "s": 34,
+   "w": 700,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "dazn": {
+  "id": "dazn",
+  "name": "DAZN",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   15,
+   30,
+   60
+  ],
+  "disc": 0,
+  "bg": "#111111",
+  "fg": "#F5FF00",
+  "mark": {
+   "t": "DAZN",
+   "s": 42,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "fußball",
+   "sport"
+  ],
+  "region": "DE"
+ },
+ "twitch": {
+  "id": "twitch",
+  "name": "Twitch",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#9146FF",
+  "fg": "#fff",
+  "mark": {
+   "t": "twitch",
+   "s": 38,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "subs",
+   "bits"
+  ],
+  "region": "DE"
+ },
+ "crunchyroll": {
+  "id": "crunchyroll",
+  "name": "Crunchyroll",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#F47521",
+  "fg": "#fff",
+  "mark": {
+   "t": "crunchyroll",
+   "s": 27,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "anime"
+  ],
+  "region": "DE"
+ },
+ "paramount": {
+  "id": "paramount",
+  "name": "Paramount+",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#0064FF",
+  "fg": "#fff",
+  "mark": {
+   "t": "Paramount+",
+   "s": 28,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "wowtv": {
+  "id": "wowtv",
+  "name": "WOW",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#0B0B0B",
+  "fg": "#FFE400",
+  "mark": {
+   "t": "WOW",
+   "s": 58,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "sky",
+   "serien"
+  ],
+  "region": "DE"
+ },
+ "rtlplus": {
+  "id": "rtlplus",
+  "name": "RTL+",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#111111",
+  "fg": "#fff",
+  "mark": {
+   "t": "RTL+",
+   "s": 50,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "deezer": {
+  "id": "deezer",
+  "name": "Deezer",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   15,
+   30
+  ],
+  "disc": 0,
+  "bg": "#A238FF",
+  "fg": "#fff",
+  "mark": {
+   "t": "deezer",
+   "s": 36,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "musik"
+  ],
+  "region": "DE"
+ },
+ "audible": {
+  "id": "audible",
+  "name": "Audible",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#F8991D",
+  "fg": "#111",
+  "mark": {
+   "t": "audible",
+   "s": 34,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "hörbuch",
+   "amazon"
+  ],
+  "region": "DE"
+ },
+ "m365p": {
+  "id": "m365p",
+  "name": "Microsoft 365 Personal",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B2E5E,#0067B8)",
+  "fg": "#fff",
+  "mark": {
+   "t": "365",
+   "s": 60,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "PERSONAL"
+  },
+  "labels": [
+   "12 Monate · 1 Person"
+  ],
+  "grp": "m365",
+  "tags": [
+   "office",
+   "word",
+   "excel"
+  ],
+  "region": "DE"
+ },
+ "m365f": {
+  "id": "m365f",
+  "name": "Microsoft 365 Family",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   129
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#3B0B5E,#0067B8)",
+  "fg": "#fff",
+  "mark": {
+   "t": "365",
+   "s": 60,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "FAMILY"
+  },
+  "labels": [
+   "12 Monate · bis 6 Personen"
+  ],
+  "grp": "m365",
+  "tags": [
+   "office",
+   "word",
+   "excel"
+  ],
+  "region": "DE"
+ },
+ "kaspersky": {
+  "id": "kaspersky",
+  "name": "Kaspersky Standard",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   29.99,
+   44.99
+  ],
+  "disc": 0,
+  "bg": "#00A88E",
+  "fg": "#fff",
+  "mark": {
+   "t": "kaspersky",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "labels": [
+   "1 Gerät · 1 Jahr",
+   "3 Geräte · 1 Jahr"
+  ],
+  "tags": [
+   "antivirus"
+  ],
+  "region": "DE"
+ },
+ "norton": {
+  "id": "norton",
+  "name": "Norton 360 Deluxe",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "#FFC800",
+  "fg": "#111",
+  "mark": {
+   "t": "norton",
+   "s": 40,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "labels": [
+   "5 Geräte · 1 Jahr"
+  ],
+  "tags": [
+   "antivirus"
+  ],
+  "region": "DE"
+ },
+ "bitdefender": {
+  "id": "bitdefender",
+  "name": "Bitdefender Total Security",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "#ED1C24",
+  "fg": "#fff",
+  "mark": {
+   "t": "Bitdefender",
+   "s": 28,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "labels": [
+   "5 Geräte · 1 Jahr"
+  ],
+  "tags": [
+   "antivirus"
+  ],
+  "region": "DE"
+ },
+ "nordvpn": {
+  "id": "nordvpn",
+  "name": "NordVPN",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   59.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "#3E5FFF",
+  "fg": "#fff",
+  "mark": {
+   "t": "NordVPN",
+   "s": 34,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "labels": [
+   "1 Jahr",
+   "2 Jahre"
+  ],
+  "tags": [
+   "vpn"
+  ],
+  "region": "DE"
+ },
+ "amazon": {
+  "id": "amazon",
+  "name": "Amazon",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   5,
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#FF9900",
+  "fg": "#111",
+  "mark": {
+   "t": "amazon",
+   "s": 38,
+   "w": 700,
+   "ls": "-.03em"
+  },
+  "hot": 1,
+  "region": "DE"
+ },
+ "zalando": {
+  "id": "zalando",
+  "name": "Zalando",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0.1,
+  "bg": "#FF6900",
+  "fg": "#fff",
+  "mark": {
+   "t": "zalando",
+   "s": 34,
+   "w": 800,
+   "ls": "-.03em"
+  },
+  "tags": [
+   "mode"
+  ],
+  "region": "DE"
+ },
+ "ikea": {
+  "id": "ikea",
+  "name": "IKEA",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0051BA",
+  "fg": "#FFDA1A",
+  "mark": {
+   "t": "IKEA",
+   "s": 46,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "möbel"
+  ],
+  "region": "DE"
+ },
+ "lieferando": {
+  "id": "lieferando",
+  "name": "Lieferando",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   30
+  ],
+  "disc": 0.07,
+  "bg": "#FF8000",
+  "fg": "#fff",
+  "mark": {
+   "t": "lieferando",
+   "s": 27,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "essen",
+   "lieferung"
+  ],
+  "region": "DE"
+ },
+ "douglas": {
+  "id": "douglas",
+  "name": "Douglas",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#1C1C1C",
+  "fg": "#fff",
+  "mark": {
+   "t": "DOUGLAS",
+   "s": 26,
+   "w": 600,
+   "ls": ".14em"
+  },
+  "tags": [
+   "parfum",
+   "beauty"
+  ],
+  "region": "DE"
+ },
+ "mediamarkt": {
+  "id": "mediamarkt",
+  "name": "MediaMarkt",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#DF0000",
+  "fg": "#fff",
+  "mark": {
+   "t": "MediaMarkt",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "elektronik"
+  ],
+  "region": "DE"
+ },
+ "saturn": {
+  "id": "saturn",
+  "name": "SATURN",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#111111",
+  "fg": "#FF8800",
+  "mark": {
+   "t": "SATURN",
+   "s": 36,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "elektronik"
+  ],
+  "region": "DE"
+ },
+ "hm": {
+  "id": "hm",
+  "name": "H&M",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#E50010",
+  "fg": "#fff",
+  "mark": {
+   "t": "H&M",
+   "s": 52,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "mode"
+  ],
+  "region": "DE"
+ },
+ "aboutyou": {
+  "id": "aboutyou",
+  "name": "ABOUT YOU",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0B0B0B",
+  "fg": "#fff",
+  "mark": {
+   "t": "ABOUT YOU",
+   "s": 28,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "mode"
+  ],
+  "region": "DE"
+ },
+ "otto": {
+  "id": "otto",
+  "name": "OTTO",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#D52B1E",
+  "fg": "#fff",
+  "mark": {
+   "t": "OTTO",
+   "s": 46,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "region": "DE"
+ },
+ "uber": {
+  "id": "uber",
+  "name": "Uber",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#000000",
+  "fg": "#fff",
+  "mark": {
+   "t": "Uber",
+   "s": 46,
+   "w": 700,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "fahrt",
+   "taxi"
+  ],
+  "region": "DE"
+ },
+ "ubereats": {
+  "id": "ubereats",
+  "name": "Uber Eats",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#06C167",
+  "fg": "#0B0B0B",
+  "mark": {
+   "t": "Uber Eats",
+   "s": 32,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "essen"
+  ],
+  "region": "DE"
+ },
+ "airbnb": {
+  "id": "airbnb",
+  "name": "Airbnb",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   50,
+   100,
+   200
+  ],
+  "disc": 0,
+  "bg": "#FF5A5F",
+  "fg": "#fff",
+  "mark": {
+   "t": "airbnb",
+   "s": 36,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "reisen",
+   "urlaub"
+  ],
+  "region": "DE"
+ },
+ "nike": {
+  "id": "nike",
+  "name": "Nike",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#111111",
+  "fg": "#fff",
+  "mark": {
+   "t": "NIKE",
+   "s": 46,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "sport",
+   "schuhe"
+  ],
+  "region": "DE"
+ },
+ "adidas": {
+  "id": "adidas",
+  "name": "adidas",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#000000",
+  "fg": "#fff",
+  "mark": {
+   "t": "adidas",
+   "s": 38,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "sport",
+   "schuhe"
+  ],
+  "region": "DE"
+ },
+ "decathlon": {
+  "id": "decathlon",
+  "name": "Decathlon",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0082C3",
+  "fg": "#fff",
+  "mark": {
+   "t": "DECATHLON",
+   "s": 27,
+   "w": 800,
+   "ls": ".03em"
+  },
+  "tags": [
+   "sport"
+  ],
+  "region": "DE"
+ },
+ "thalia": {
+  "id": "thalia",
+  "name": "Thalia",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#00335E",
+  "fg": "#fff",
+  "mark": {
+   "t": "Thalia",
+   "s": 38,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "bücher"
+  ],
+  "region": "DE"
+ },
+ "rossmann": {
+  "id": "rossmann",
+  "name": "Rossmann",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#C3002F",
+  "fg": "#fff",
+  "mark": {
+   "t": "ROSSMANN",
+   "s": 28,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "drogerie"
+  ],
+  "region": "DE"
+ },
+ "paysafe": {
+  "id": "paysafe",
+  "name": "paysafecard",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#1E36B4",
+  "fg": "#fff",
+  "mark": {
+   "t": "paysafecard",
+   "s": 25,
+   "w": 700,
+   "ls": "-.02em",
+   "g": "diam"
+  },
+  "tags": [
+   "prepaid",
+   "online bezahlen"
+  ],
+  "region": "DE"
+ },
+ "neosurf": {
+  "id": "neosurf",
+  "name": "Neosurf",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#E4312B",
+  "fg": "#fff",
+  "mark": {
+   "t": "neosurf",
+   "s": 34,
+   "w": 800,
+   "ls": "-.03em"
+  },
+  "region": "DE"
+ },
+ "visa": {
+  "id": "visa",
+  "name": "Visa Geschenkkarte",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100,
+   200
+  ],
+  "disc": 0,
+  "bg": "#1A1F71",
+  "fg": "#fff",
+  "mark": {
+   "t": "VISA",
+   "s": 44,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "kreditkarte",
+   "prepaid"
+  ],
+  "region": "DE"
+ },
+ "mastercard": {
+  "id": "mastercard",
+  "name": "Mastercard Geschenkkarte",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100,
+   200
+  ],
+  "disc": 0,
+  "bg": "#1C1C28",
+  "fg": "#fff",
+  "mark": {
+   "t": "Mastercard",
+   "s": 28,
+   "w": 700,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "kreditkarte",
+   "prepaid"
+  ],
+  "region": "DE"
+ },
+ "cashtocode": {
+  "id": "cashtocode",
+  "name": "CashtoCode",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0ABF53",
+  "fg": "#fff",
+  "mark": {
+   "t": "CashtoCode",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "region": "DE"
+ },
+ "flexepin": {
+  "id": "flexepin",
+  "name": "Flexepin",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#1E2A78",
+  "fg": "#fff",
+  "mark": {
+   "t": "FLEXEPIN",
+   "s": 32,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "region": "DE"
+ }
+}
