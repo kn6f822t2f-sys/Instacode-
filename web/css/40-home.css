@@ -42,7 +42,9 @@ html:not(.lite) .fc{filter:blur(max(0px,calc((.95 - var(--d)) * 3px)))}
 .bsl-track::-webkit-scrollbar{display:none}
 .bsl-track.drag{scroll-snap-type:none;cursor:grabbing}
 .bs{flex:0 0 min(64vw,300px);min-width:0;display:flex;flex-direction:column;scroll-snap-align:center;color:var(--ink);
-  transform:perspective(1100px) rotateY(calc(var(--cf,0) * -22deg)) scale(calc(1 - var(--cfa,0) * .09));transform-origin:50% 40%;will-change:transform}
+  transform:perspective(1100px) rotateY(calc(var(--cf,0) * -22deg)) scale(calc(1 - var(--cfa,0) * .09));transform-origin:50% 40%}
+/* Touch: nur flaches Verkleinern statt 3D-Drehung */
+.lite .bs{transform:scale(calc(1 - var(--cfa,0) * .08))}
 .bs .gc{width:100%}
 @media (hover:hover) and (pointer:fine){.bs:hover .gc{translate:0 -6px}}
 .bs-n{display:block;margin-top:14px;font-size:16px;font-weight:560;line-height:1.25;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:calc(1 - var(--cfa,0) * .45)}
