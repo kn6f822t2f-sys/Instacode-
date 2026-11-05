@@ -13,24 +13,24 @@
    ========================================================= */
 :root{
   /* Glas über abgedunkeltem Grund (Menü, Fenster, Suche) */
-  --ov-bg:linear-gradient(180deg,rgba(27,29,45,.84),rgba(12,13,21,.88));
+  --ov-bg:linear-gradient(180deg,rgba(28,28,32,.84),rgba(13,13,15,.88));
   /* Glas direkt über Inhalt (Schnellpanels, Mia, Cookie, Hinweis) */
-  --ov-bg-hi:linear-gradient(180deg,rgba(27,29,45,.95),rgba(12,13,21,.96));
+  --ov-bg-hi:linear-gradient(180deg,rgba(28,28,32,.95),rgba(13,13,15,.96));
   /* Licht von oben, wie auf der Kopfzeile: nur ein schmaler Saum, damit Hinweistext darunter kontrastreich bleibt */
-  --ov-sheen:radial-gradient(90% 72px at 50% 0%,rgba(170,155,255,.12),rgba(170,155,255,0));
+  --ov-sheen:radial-gradient(90% 72px at 50% 0%,rgba(201,170,255,.12),rgba(201,170,255,0));
   --ov-bf:blur(30px) saturate(1.8);
-  --ov-rim:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.06),inset 0 -24px 36px -30px rgba(124,108,255,.55);
-  --ov-drop:0 2px 4px rgba(0,0,0,.35),0 42px 90px -30px rgba(0,0,0,.95),0 0 0 .5px rgba(0,0,0,.9),0 0 100px -44px rgba(124,108,255,.4);
+  --ov-rim:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.06),inset 0 -24px 36px -30px rgba(180,165,255,.55);
+  --ov-drop:0 2px 4px rgba(0,0,0,.35),0 42px 90px -30px rgba(0,0,0,.95),0 0 0 .5px rgba(0,0,0,.9),0 0 100px -44px rgba(180,165,255,.4);
   --ov-shadow:var(--ov-rim),var(--ov-drop);
   /* Lichtkante: oben links und unten rechts hell (wie .hdr::before) */
   --ov-edge:var(--edge);
-  --ov-scrim:rgba(3,4,9,.62);
+  --ov-scrim:rgba(3,3,4,.62);
   /* Gruppierte Zeilen, Zeiger und Auswahl innerhalb der Flächen */
   --ov-group:rgba(255,255,255,.045);
   --ov-hover:rgba(255,255,255,.06);
   --ov-press:rgba(255,255,255,.1);
-  --ov-sel:linear-gradient(180deg,rgba(124,108,255,.26),rgba(61,125,255,.12));
-  --ov-sel-rim:inset 0 0 0 1px rgba(175,164,255,.36),inset 0 1px 0 rgba(255,255,255,.1);
+  --ov-sel:linear-gradient(180deg,rgba(180,165,255,.26),rgba(131,153,255,.12));
+  --ov-sel-rim:inset 0 0 0 1px rgba(201,170,255,.36),inset 0 1px 0 rgba(255,255,255,.1);
 }
 .lite{--ov-bg:var(--glass-solid);--ov-bg-hi:var(--glass-solid);--ov-bf:none}
 
@@ -69,7 +69,7 @@
 .menu.open .menu-body>:nth-child(n+4){animation-delay:.12s}
 .menu:not(.open) .btn-primary.btn-lg::before{animation-play-state:paused}
 .menu-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 8px 2px 18px}
-.menu-top .lg-mark{width:30px;height:30px;filter:drop-shadow(0 4px 12px rgba(111,92,255,.5))}
+.menu-top .lg-mark{width:30px;height:30px;filter:drop-shadow(0 4px 12px rgba(201,170,255,.5))}
 .menu-top .wordmark{font-size:20px}
 .menu-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 12px 22px;
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 12px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(180deg,transparent,#000 12px,#000 calc(100% - 18px),transparent)}
@@ -81,17 +81,17 @@
 .m-cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 /* Kategorie-Kachel: Glas mit leisem Schein in der Kategoriefarbe */
 .m-cat{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;gap:10px;min-height:60px;padding:10px;border-radius:var(--r-m);font-size:14.5px;font-weight:580;line-height:1.22;letter-spacing:-.01em;color:var(--ink);
-  background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--c,#7C6CFF) 22%,transparent),transparent 62%),var(--ov-group);box-shadow:var(--rim);transition:transform .3s var(--spring),box-shadow .25s}
+  background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--c,#8F9BFF) 22%,transparent),transparent 62%),var(--ov-group);box-shadow:var(--rim);transition:transform .3s var(--spring),box-shadow .25s}
 @media (hover:hover){.m-cat:hover{box-shadow:var(--rim-hi)}}
 .m-cat:active{transform:scale(.96)}
-.m-cat .cc-ic{width:36px;height:36px;border-radius:11px;color:color-mix(in srgb,var(--c,#AFA4FF) 62%,#fff)}
+.m-cat .cc-ic{width:36px;height:36px;border-radius:11px;color:color-mix(in srgb,var(--c,#C3B6FF) 62%,#fff)}
 .m-cat .cc-ic .ico{width:19px;height:19px}
 .m-list{border-radius:var(--r-m);background:var(--ov-group);box-shadow:var(--rim);overflow:hidden}
 .mi{position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:8px 14px 8px 11px;font-size:16px;font-weight:560;letter-spacing:-.01em;color:var(--ink);text-align:left;transition:background .15s}
 .m-list .mi+.mi::before{content:"";position:absolute;top:0;right:0;left:57px;height:1px;background:var(--line)}
 .mi:active{background:var(--ov-press)}
 @media (hover:hover){.mi:hover{background:var(--ov-hover)}}
-.mi .si-ic{width:34px;height:34px;border-radius:10px;color:color-mix(in srgb,var(--c,#AFA4FF) 62%,#fff)}
+.mi .si-ic{width:34px;height:34px;border-radius:10px;color:color-mix(in srgb,var(--c,#C3B6FF) 62%,#fff)}
 .mi .si-ic .ico{width:19px;height:19px}
 .mi-t{flex:1;min-width:0}
 .mi-t small{display:block;margin-top:1px;font-size:13px;font-weight:450;color:var(--ink-3)}
@@ -138,10 +138,10 @@
 .clist button{position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:56px;padding:0 16px;font-size:16px;font-weight:500;color:var(--ink);text-align:left;transition:background .15s}
 .clist button+button::before{content:"";position:absolute;top:0;right:0;left:58px;height:1px;background:var(--line)}
 .clist button span{flex:1;min-width:0}
-.clist button[aria-current="true"]{font-weight:620;background:rgba(124,108,255,.12)}
+.clist button[aria-current="true"]{font-weight:620;background:rgba(180,165,255,.12)}
 .clist button .ico{color:var(--iris-2)}
 .clist button:active{background:var(--ov-press)}
-@media (hover:hover){.clist button:hover{background:var(--ov-hover)}.clist button[aria-current="true"]:hover{background:rgba(124,108,255,.16)}}
+@media (hover:hover){.clist button:hover{background:var(--ov-hover)}.clist button[aria-current="true"]:hover{background:rgba(180,165,255,.16)}}
 /* Teilen (Markup aus 15-effects) */
 .sh-share{display:grid;gap:16px}
 .sh-prev{display:flex;align-items:center;gap:14px;min-width:0;padding-right:40px}
@@ -178,8 +178,8 @@
 .qp-t small{display:block;margin-top:1px;font-size:13px;color:var(--ink-3)}
 .qp-cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
 .qp-cat{position:relative;display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 12px;border-radius:var(--r-m);transition:background .2s,box-shadow .2s}
-.qp-cat:hover,.qp-cat:focus-visible{background:radial-gradient(120% 160% at 0% 50%,color-mix(in srgb,var(--c,#7C6CFF) 16%,transparent),transparent 70%),var(--ov-hover);box-shadow:var(--rim)}
-.qp-cat .cc-ic{color:color-mix(in srgb,var(--c,#AFA4FF) 62%,#fff)}
+.qp-cat:hover,.qp-cat:focus-visible{background:radial-gradient(120% 160% at 0% 50%,color-mix(in srgb,var(--c,#8F9BFF) 16%,transparent),transparent 70%),var(--ov-hover);box-shadow:var(--rim)}
+.qp-cat .cc-ic{color:color-mix(in srgb,var(--c,#C3B6FF) 62%,#fff)}
 .qp-cat:hover .qp-t small,.qp-cat:focus-visible .qp-t small{color:var(--ink-2)}
 .qp-fan{position:relative;width:84px;height:46px;flex:none}
 .qp-fan img{position:absolute;right:2px;top:5px;width:58px;aspect-ratio:1.586;object-fit:cover;border-radius:5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 1px 1px rgba(0,0,0,.5),0 6px 14px -5px rgba(0,0,0,.85);transition:transform .5s var(--spring)}
@@ -244,7 +244,7 @@
 .pal-item[aria-selected="true"] .pr{color:var(--ink)}
 .pal-item .mini-gc{width:52px}
 .pal-item .mini{width:52px}
-.pal-item .si-ic{width:40px;height:40px;margin:0 6px;color:color-mix(in srgb,var(--c,#AFA4FF) 62%,#fff)}
+.pal-item .si-ic{width:40px;height:40px;margin:0 6px;color:color-mix(in srgb,var(--c,#C3B6FF) 62%,#fff)}
 .pal-t{flex:1;min-width:0}
 .pal-t b{display:block;font-size:15.5px;font-weight:580;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pal-t small{display:block;margin-top:1px;font-size:13px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -267,7 +267,7 @@
 .chat-h b{display:block;font-size:16px;font-weight:620;letter-spacing:-.01em;color:var(--ink)}
 .chat-h small{display:block;font-size:13px;color:var(--ink-3)}
 :is(.chat-h,.nudge) .av{position:relative;width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:50%;
-  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));box-shadow:var(--rim-hi),0 6px 16px -6px rgba(111,92,255,.55)}
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));box-shadow:var(--rim-hi),0 6px 16px -6px rgba(201,170,255,.55)}
 :is(.chat-h,.nudge) .av .lg-mark{width:26px;height:26px}
 .chat-h .av::after{content:"";position:absolute;right:0;bottom:1px;width:11px;height:11px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 2px #171927,0 0 10px rgba(61,220,151,.7)}
 .chat-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:8px;padding:16px 14px 10px;
@@ -277,12 +277,12 @@
 .msg.bot{align-self:flex-start;border-bottom-left-radius:7px;color:var(--ink);background:rgba(255,255,255,.07);box-shadow:var(--rim),0 8px 18px -14px rgba(0,0,0,.9);transform-origin:0 100%}
 /* Eigene Nachricht: dunkler Verlauf, weiße Schrift bleibt über 4.5:1 */
 .msg.user{align-self:flex-end;border-bottom-right-radius:7px;color:#fff;background:linear-gradient(135deg,#6B57F6,#4A50EE 55%,#3567E8);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 0 0 1px rgba(160,145,255,.25),0 10px 24px -12px rgba(111,92,255,.75);transform-origin:100% 100%}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 0 0 1px rgba(201,170,255,.25),0 10px 24px -12px rgba(201,170,255,.75);transform-origin:100% 100%}
 .msg b{font-weight:650}
 .mact{position:relative;display:flex;align-items:center;gap:2px;width:max-content;max-width:100%;min-height:40px;margin-top:8px;padding:0 10px 0 14px;border-radius:var(--pill);font-size:14px;font-weight:600;color:var(--iris-2);
-  background:rgba(124,108,255,.16);box-shadow:inset 0 0 0 1px rgba(175,164,255,.22);transition:background .2s,color .2s}
+  background:rgba(180,165,255,.16);box-shadow:inset 0 0 0 1px rgba(201,170,255,.22);transition:background .2s,color .2s}
 .mact::after{content:"";position:absolute;inset:-2px 0}
-.mact:hover{color:#fff;background:rgba(124,108,255,.28)}
+.mact:hover{color:#fff;background:rgba(180,165,255,.28)}
 .mact .ico{width:16px;height:16px}
 .msg.typing{display:flex;gap:4px;padding:15px 16px}
 .msg.typing i{width:7px;height:7px;border-radius:50%;background:var(--ink-2);opacity:.35;animation:typing 1s var(--ease) infinite}
@@ -294,15 +294,15 @@
   -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent)}
 .chat-qr::-webkit-scrollbar{display:none}
 .chat-qr button{flex:none;min-height:44px;padding:0 16px;border-radius:var(--pill);font-size:14px;font-weight:550;white-space:nowrap;color:var(--iris-2);
-  background:rgba(124,108,255,.1);box-shadow:inset 0 0 0 1px rgba(175,164,255,.26),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .25s var(--spring),background .2s,color .2s}
+  background:rgba(180,165,255,.1);box-shadow:inset 0 0 0 1px rgba(201,170,255,.26),inset 0 1px 0 rgba(255,255,255,.06);transition:transform .25s var(--spring),background .2s,color .2s}
 .chat-qr button:active{transform:scale(.95)}
-@media (hover:hover){.chat-qr button:hover{color:#fff;background:rgba(124,108,255,.22)}}
+@media (hover:hover){.chat-qr button:hover{color:#fff;background:rgba(180,165,255,.22)}}
 .chat-f{flex:none;display:flex;gap:8px;padding:4px 12px 8px}
 .chat-f input{flex:1;min-width:0;min-height:48px;padding:0 18px;border:0;border-radius:var(--pill);font-size:16px;color:var(--ink);caret-color:var(--iris-2);background:var(--field);box-shadow:var(--well);transition:box-shadow .2s,background .2s}
 .chat-f input::placeholder{color:var(--ink-3)}
-.chat-f input:focus{outline:none;background:var(--field-hi);box-shadow:inset 0 0 0 1.5px #9283FF,0 0 0 4px rgba(124,108,255,.2)}
+.chat-f input:focus{outline:none;background:var(--field-hi);box-shadow:inset 0 0 0 1.5px #C9AAFF,0 0 0 4px rgba(180,165,255,.2)}
 .chat-f button{position:relative;width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:50%;color:#fff;background:var(--brand-grad);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 0 0 1px rgba(160,145,255,.32),0 10px 24px -10px rgba(111,92,255,.85);transition:transform .25s var(--spring),filter .2s}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 0 0 1px rgba(201,170,255,.32),0 10px 24px -10px rgba(201,170,255,.85);transition:transform .25s var(--spring),filter .2s}
 @media (hover:hover){.chat-f button:hover{filter:brightness(1.08)}}
 .chat-f button:active{transform:scale(.9)}
 .chat-f button .ico{width:19px;height:19px;margin-left:-2px}
@@ -325,7 +325,7 @@
 .cookie.show{opacity:1;visibility:visible;transform:none;transition:transform .55s var(--spring),opacity .25s}
 @media (min-width:768px){.cookie{left:24px;right:auto;bottom:24px;width:400px;padding:18px 18px 16px}}
 .ck-h{display:flex;align-items:center;gap:10px}
-.ck-h .lg-mark{filter:drop-shadow(0 4px 10px rgba(111,92,255,.5))}
+.ck-h .lg-mark{filter:drop-shadow(0 4px 10px rgba(201,170,255,.5))}
 .ck-h h2{margin:0;font-size:16px;font-weight:620;letter-spacing:-.012em;color:var(--ink)}
 .cookie p{margin:8px 0 14px;font-size:14px;line-height:1.5;color:var(--ink-2)}
 .cookie p a{font-weight:550;color:var(--ink)}
@@ -337,18 +337,18 @@
    ========================================================= */
 .toast{position:fixed;z-index:130;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:14px;width:max-content;max-width:calc(100vw - 24px);min-height:52px;padding:4px 4px 4px 20px;
   border-radius:var(--pill);font-size:15px;font-weight:560;line-height:1.3;color:var(--ink);
-  background:radial-gradient(120% 160% at 50% 0%,rgba(160,145,255,.2),rgba(160,145,255,0) 62%),linear-gradient(180deg,rgba(48,50,74,.9),rgba(28,29,46,.94));
+  background:radial-gradient(120% 160% at 50% 0%,rgba(201,170,255,.2),rgba(201,170,255,0) 62%),linear-gradient(180deg,rgba(52,52,58,.9),rgba(30,30,34,.94));
   -webkit-backdrop-filter:var(--ov-bf);backdrop-filter:var(--ov-bf);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 .5px rgba(0,0,0,.9),0 22px 50px -18px rgba(0,0,0,.95),0 0 60px -26px rgba(124,108,255,.65);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 .5px rgba(0,0,0,.9),0 22px 50px -18px rgba(0,0,0,.95),0 0 60px -26px rgba(180,165,255,.65);
   opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(-50%,16px,0) scale(.92);transition:transform .22s var(--ease),opacity .2s,visibility 0s .22s}
 .toast.show{opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(-50%,0,0);transition:transform .5s var(--spring),opacity .2s}
 .toast span{position:relative;z-index:1;min-width:0;padding:10px 0}
 .toast span:last-child{padding-right:16px}
-.toast a{position:relative;z-index:5;flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:var(--pill);font-size:14px;font-weight:620;color:#0A0B12;background:#F3F4F8;
-  box-shadow:0 0 0 1px rgba(255,255,255,.6),0 8px 22px -10px rgba(160,145,255,.65);transition:background .2s,transform .25s var(--spring)}
+.toast a{position:relative;z-index:5;flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:var(--pill);font-size:14px;font-weight:620;color:#0A0A0C;background:#F5F5F5;
+  box-shadow:0 0 0 1px rgba(255,255,255,.6),0 8px 22px -10px rgba(201,170,255,.65);transition:background .2s,transform .25s var(--spring)}
 .toast a:hover{background:#fff}
 .toast a:active{transform:scale(.96)}
-.lite .toast{background:radial-gradient(120% 160% at 50% 0%,rgba(160,145,255,.2),rgba(160,145,255,0) 62%),linear-gradient(180deg,#2C2E45,#1B1C2D)}
+.lite .toast{background:radial-gradient(120% 160% at 50% 0%,rgba(201,170,255,.2),rgba(201,170,255,0) 62%),linear-gradient(180deg,#2C2E45,#1B1C2D)}
 /* Produktseite (Handy): über der klebenden Kaufleiste .pd-bar */
 @media (max-width:767px){.has-buybar .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 

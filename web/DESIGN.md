@@ -1,19 +1,20 @@
-# instacode – Design „Nachtglas“ (dunkel & edel)
+# instacode – Design „Nachtglas“ (neutrales Schwarz, Framer-Stil)
 
 Shop für digitale Gutscheine, Spielguthaben und Handy-Aufladungen (Deutschland, Du-Form, überwiegend iPhone-Nutzer).
 Hauptaufgabe jeder Seite: Marke finden → Betrag wählen → bezahlen → Code sofort bekommen.
+Vorbild: das Framer-Template „Primary Button“ des Inhabers – neutrales Schwarz, weiße Pillen-Knöpfe, große Typografie, Pastell-Akzente, viel Bewegung.
 
 ## Leitidee
-1. **Fast schwarzer Grund, Licht als Material.** Grund `--bg #07080D` mit langsamem Polarlicht (Violett/Blau, `.bgfx`) und feinem Korn. Flächen sind dunkles Glas: kaum sichtbare weiße Füllung, feine Lichtkante oben (`--rim`), tiefer Schatten (`--lift`). Keine harten Umrisse.
-2. **Leuchten nur am Wichtigsten.** Akzent ist der Verlauf `--brand-grad` (Violett → Blau). Der Hauptknopf leuchtet; großer Hauptknopf und gewählter Betrag tragen den umlaufenden Lichtring (`--ring`). Pro Ansicht höchstens ein Element mit Daueranimation (Lichtring/Chrom).
-3. **Die Karte ist das Objekt.** Jede Gutscheinkarte (`.gc`) neigt sich zum Zeiger/Finger, fängt Licht und wirft ihre Markenfarbe (`--g`) als Leuchten auf den dunklen Grund.
-4. **Bewegung macht es wertig, nicht unruhig.** Inhalte steigen beim Scrollen weich auf und werden scharf (`.rv`), Seitenwechsel blenden ein, Glasflächen bekommen mit Maus einen Lichtpunkt unter dem Zeiger und eine aufleuchtende Kante (`.card`, `.catcard`, `.qa`, eigene Flächen mit `.spot`). Knöpfe federn.
-5. **Klarheit vor Deko.** Keine Labels über Überschriften, keine Großbuchstaben-Eyebrows, keine Nummern-Marker außer bei echten Abfolgen, kein einzelnes farbiges Wort in Überschriften, keine Emoji, keine Pfeile „→“ in Knopftexten.
+1. **Neutrales Schwarz, Licht in Pastell.** Grund `--bg #050506` ohne Blaustich, weiches Pastell-Licht (Rosa, Lavendel, Periwinkel, Himmelblau) und feines Korn. Flächen sind dunkles Glas (`--glass`, `--rim`), keine harten Umrisse.
+2. **Weiß ist der Hauptakzent.** Hauptknopf, gewählter Betrag und aktiver Chip sind weiße Pillen mit dunkler Schrift; der große Hauptknopf und der gewählte Betrag tragen einen umlaufenden Pastell-Lichtring (`--ring`). `--brand-grad` (Logo-Verlauf) nur für kleine Markenelemente.
+3. **Karten schweben.** Gutscheinkarten (`.gc`) neigen sich zum Zeiger, werfen ihre Markenfarbe, schweben in Wolken (`.fc` mit Tiefe `--d`, Zeiger- und Scroll-Parallax) und drehen sich im Bestseller-Karussell (3D).
+4. **Bewegung macht es wertig.** Einblenden mit Unschärfe (`.rv`), Sätze hellen sich Wort für Wort auf (`[data-words]`), Kennzahlen zählen hoch (`[data-count]`), Schritt-Karten stapeln sich (sticky), Kategorie-Zeilen mit mitfliegendem Kartenfächer (`[data-crows]`), Lichtpunkt unter dem Zeiger (`.card`, `.catcard`, `.qa`, `.spot`). Bewegungs-Code: `js/16-motion.js`.
+5. **Klarheit vor Deko.** Keine Labels über Überschriften, keine Großbuchstaben-Eyebrows, kein einzelnes farbiges Wort in Überschriften, keine Emoji, keine Pfeile „→“ in Knopftexten.
 
 ## Tokens (in `css/01-base.css`)
-- Grund: `--bg #07080D`, `--bg-2 #0D0F17`, `--bg-3 #151826` (feste Flächen, z. B. Sheets/Menüs), `--frost` = `--bg`.
-- Text: `--ink #F3F4F8`, `--ink-2 #B0B5C9` (Zweittext), `--ink-3 #8C92A9` (Hinweise, mind. 13 px). Nie dunkle Schrift auf dunklem Grund; weiße Flächen (z. B. Zahlungs-Badges) bekommen eigene dunkle Schrift.
-- Akzent: `--iris #7C6CFF` (Flächen, Ringe), `--iris-2 #AFA4FF` (Akzent als Text/Icon), `--volt #3D8BFF`, `--cyan`, `--mint #3DDC97` (Erfolg), `--rose #FF6B7A` (Fehler), `--amber #FFB547`. `--brand-grad`, `--text-grad` (Überschriften), `--tint`.
+- Grund: `--bg #050506`, `--bg-2 #0C0C0E`, `--bg-3 #161618` (feste Flächen, z. B. Sheets/Menüs), `--frost` = `--bg`.
+- Text: `--ink #F5F5F5`, `--ink-2 #A8A8AD` (Zweittext), `--ink-3 #8C8C92` (Hinweise, mind. 13 px). Nie dunkle Schrift auf dunklem Grund; weiße Flächen (z. B. Zahlungs-Badges) bekommen eigene dunkle Schrift.
+- Akzent: Pastell `--pink --lav --peri --sky --lime` und `--pastel` (Verlauf), `--iris`/`--iris-2` (Akzent als Text/Icon), `--mint` (Erfolg), `--rose` (Fehler), `--amber`. `--brand-grad` (Logo), `--text-grad` (Überschriften), `--tint`.
 - Linien: `--line` (8 % weiß), `--line-2` (14 %). Trennung über `box-shadow:0 -1px 0 var(--line)`, nie `border:1px solid`.
 - Glas: `--glass` (Standard), `--glass-hi` (heller, z. B. aktive Fläche), `--glass-lo` (sehr leise), `--glass-solid` (deckend, für Overlays auf `.lite`), `--rim` / `--rim-hi` (Lichtkante innen), `--lift` / `--lift-2` (Schatten), `--glow` (violettes Leuchten), `--well` + `--field`/`--field-hi` (Eingabefelder), `--focus`, `--blur`/`--blur-s`.
 - Licht/Metall: `--ring` (umlaufender Glanzpunkt, mit `--ang` über `animation:metalSpin` animierbar), `--chrome`/`--chrome-flat` (dunkles Titan).

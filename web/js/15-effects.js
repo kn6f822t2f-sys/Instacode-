@@ -25,6 +25,7 @@ function fx(root){
   }
   if(offIO){if(root===app){offIO.disconnect();parVis.clear()}$$("[data-par],[data-off]",root).forEach(el=>offIO.observe(el))}
   rails(root);
+  MOTION.mount(root);
   requestAnimationFrame(parUpdate);
 }
 /* Maus: Karte neigt sich und glänzt, Bühnen folgen leicht dem Zeiger */

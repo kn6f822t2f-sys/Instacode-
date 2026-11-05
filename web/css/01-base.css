@@ -15,48 +15,54 @@
 @property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
 :root{
   color-scheme:dark;
-  /* Grund */
-  --bg:#07080D;
-  --bg-2:#0D0F17;
-  --bg-3:#151826;
+  /* Grund: neutrales Schwarz (wie das Framer-Template), keine Blaustich-Flächen */
+  --bg:#050506;
+  --bg-2:#0C0C0E;
+  --bg-3:#161618;
   --frost:var(--bg);
   /* Text */
-  --ink:#F3F4F8;
-  --ink-2:#B0B5C9;
-  --ink-3:#8C92A9;
-  /* Akzent */
-  --iris:#7C6CFF;
-  --iris-2:#AFA4FF;
-  --volt:#3D8BFF;
-  --cyan:#62C6FF;
-  --mint:#3DDC97;
-  --rose:#FF6B7A;
-  --amber:#FFB547;
+  --ink:#F5F5F5;
+  --ink-2:#A8A8AD;
+  --ink-3:#8C8C92;
+  /* Akzent: Pastell (Rosa · Lavendel · Periwinkel · Himmelblau) */
+  --pink:#FFCCFD;
+  --lav:#C9AAFF;
+  --peri:#8399FF;
+  --sky:#B3E1FF;
+  --lime:#FDFFBC;
+  --pastel:linear-gradient(90deg,#FFCCFD 0%,#C9AAFF 34%,#8399FF 68%,#B3E1FF 100%);
+  --iris:#8F9BFF;
+  --iris-2:#C3B6FF;
+  --volt:#5C8DFF;
+  --cyan:#8AD2FF;
+  --mint:#5EE0A6;
+  --rose:#FF7A86;
+  --amber:#FFC266;
   --line:rgba(255,255,255,.08);
   --line-2:rgba(255,255,255,.14);
-  --tint:rgba(124,108,255,.14);
-  --brand-grad:linear-gradient(135deg,#A190FF 0%,#6F5CFF 46%,#3D7DFF 100%);
-  --text-grad:linear-gradient(180deg,#FFFFFF 10%,#C4C8D9 100%);
-  /* Dunkles Glas */
-  --glass:linear-gradient(180deg,rgba(255,255,255,.062),rgba(255,255,255,.024));
-  --glass-hi:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.05));
-  --glass-lo:linear-gradient(180deg,rgba(255,255,255,.042),rgba(255,255,255,.014));
-  --glass-solid:linear-gradient(180deg,#161927,#0F111B);
-  --blur:blur(22px) saturate(1.5);
-  --blur-s:blur(12px) saturate(1.4);
-  --rim:inset 0 1px 0 rgba(255,255,255,.085),inset 0 0 0 1px rgba(255,255,255,.06);
-  --rim-hi:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 1px rgba(255,255,255,.1);
-  --lift:0 1px 1px rgba(0,0,0,.45),0 22px 46px -28px rgba(0,0,0,.95);
-  --lift-2:0 2px 2px rgba(0,0,0,.5),0 38px 72px -34px rgba(0,0,0,1),0 0 70px -34px rgba(124,108,255,.45);
-  --glow:0 0 0 1px rgba(160,145,255,.42),0 14px 40px -14px rgba(111,92,255,.8),0 0 60px -24px rgba(61,125,255,.55);
-  --well:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 2px 4px rgba(0,0,0,.3);
-  --field:rgba(255,255,255,.045);
-  --field-hi:rgba(255,255,255,.075);
-  --focus:0 0 0 2px var(--bg),0 0 0 4px #A190FF;
+  --tint:rgba(201,170,255,.12);
+  --brand-grad:linear-gradient(135deg,#9A88FF 0%,#6C63FF 48%,#4F8BFF 100%);
+  --text-grad:linear-gradient(180deg,#FFFFFF 30%,#BDBDC2 100%);
+  /* Dunkles Glas (neutral) */
+  --glass:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+  --glass-hi:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));
+  --glass-lo:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  --glass-solid:linear-gradient(180deg,#18181B,#101012);
+  --blur:blur(22px) saturate(1.4);
+  --blur-s:blur(12px) saturate(1.3);
+  --rim:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.065);
+  --rim-hi:inset 0 1px 0 rgba(255,255,255,.15),inset 0 0 0 1px rgba(255,255,255,.1);
+  --lift:0 1px 1px rgba(0,0,0,.5),0 24px 48px -28px rgba(0,0,0,1);
+  --lift-2:0 2px 2px rgba(0,0,0,.5),0 40px 80px -36px rgba(0,0,0,1),0 0 80px -40px rgba(201,170,255,.4);
+  --glow:0 0 0 1px rgba(201,170,255,.4),0 14px 44px -14px rgba(160,140,255,.7),0 0 60px -24px rgba(131,153,255,.5);
+  --well:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 2px 4px rgba(0,0,0,.35);
+  --field:rgba(255,255,255,.04);
+  --field-hi:rgba(255,255,255,.07);
+  --focus:0 0 0 2px var(--bg),0 0 0 4px #C9AAFF;
   /* Lichtkante schwebender Glasflächen (Kopfzeile, Overlays): oben links und unten rechts hell */
-  --edge:linear-gradient(115deg,rgba(255,255,255,.4),rgba(255,255,255,.06) 28%,rgba(255,255,255,0) 50%,rgba(160,145,255,.22) 74%,rgba(255,255,255,.32));
-  /* Lichtring: ein Glanzpunkt läuft um den Rand (mit --ang animierbar) */
-  --ring:conic-gradient(from var(--ang),rgba(255,255,255,.06) 0deg,rgba(255,255,255,.06) 200deg,rgba(175,164,255,.85) 262deg,#fff 290deg,rgba(98,198,255,.8) 318deg,rgba(255,255,255,.06) 360deg);
+  --edge:linear-gradient(115deg,rgba(255,255,255,.42),rgba(255,255,255,.06) 28%,rgba(255,255,255,0) 50%,rgba(201,170,255,.24) 74%,rgba(255,255,255,.3));
+  /* Lichtring: ein Pastell-Glanzpunkt läuft um den Rand (mit --ang animierbar) */
+  --ring:conic-gradient(from var(--ang),rgba(255,255,255,.06) 0deg,rgba(255,255,255,.06) 196deg,#FFCCFD 248deg,#fff 280deg,#8399FF 312deg,#B3E1FF 330deg,rgba(255,255,255,.06) 360deg);
   /* Flüssigmetall: dunkles Titan */
   --chrome:conic-gradient(from var(--ang),#f4f5fa 0deg,#8b91a6 40deg,#2b2f3d 85deg,#c9ccd8 125deg,#fff 150deg,#6b7187 200deg,#20232d 246deg,#aeb3c4 292deg,#f4f5fa 332deg,#8b91a6 360deg);
   --chrome-flat:linear-gradient(135deg,#dfe2ea 0%,#80869b 24%,#2a2e3b 45%,#bcc0cd 62%,#4b5062 80%,#e6e8ef 100%);
@@ -76,11 +82,11 @@
 }
 /* ---------- Grundlagen ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-padding-top:96px;-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip;scrollbar-color:#2A2D3B var(--bg)}
+html{scroll-padding-top:96px;-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip;scrollbar-color:#2A2A2E var(--bg)}
 body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:var(--font);font-size:16px;line-height:1.55;letter-spacing:-.006em;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip;padding-bottom:env(safe-area-inset-bottom,0px)}
 body.lock{overflow:hidden}
-::selection{background:rgba(124,108,255,.5);color:#fff}
+::selection{background:rgba(201,170,255,.45);color:#fff}
 button{font:inherit;letter-spacing:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
 input,select,textarea{font:inherit;color:inherit}
 a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
@@ -89,7 +95,7 @@ img,svg{display:block}
 img{max-width:100%}
 .ico{width:20px;height:20px;flex:none}
 /* Fokusring als Umriss: bleibt sichtbar, auch wenn ein Bauteil eigene Schatten hat */
-:focus-visible{outline:2px solid #A190FF;outline-offset:2px}
+:focus-visible{outline:2px solid #C9AAFF;outline-offset:2px}
 .qa>button:focus-visible{outline-offset:-3px;border-radius:var(--r-m)}
 #app:focus{outline:none}
 [hidden]{display:none!important}
@@ -104,13 +110,13 @@ img{max-width:100%}
 /* ---------- Umgebung: Polarlicht, Lichtkegel, feines Korn ---------- */
 .bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:var(--bg)}
 .bgfx i{position:absolute;display:block;border-radius:50%;will-change:transform;animation:aurora 48s ease-in-out infinite alternate}
-.bgfx i:nth-child(1){left:-24vmax;top:-38vmax;width:76vmax;height:76vmax;background:radial-gradient(closest-side,rgba(111,92,255,.30),rgba(111,92,255,.08) 55%,rgba(111,92,255,0))}
-.bgfx i:nth-child(2){right:-30vmax;top:-20vmax;width:64vmax;height:64vmax;background:radial-gradient(closest-side,rgba(50,110,255,.22),rgba(50,110,255,.05) 58%,rgba(50,110,255,0));animation-duration:60s;animation-delay:-22s}
-.bgfx i:nth-child(3){left:18vmax;bottom:-56vmax;width:84vmax;height:84vmax;background:radial-gradient(closest-side,rgba(170,80,255,.13),rgba(170,80,255,0));animation-duration:70s;animation-delay:-38s}
+.bgfx i:nth-child(1){left:-22vmax;top:-40vmax;width:74vmax;height:74vmax;background:radial-gradient(closest-side,rgba(201,170,255,.17),rgba(201,170,255,.04) 55%,rgba(201,170,255,0))}
+.bgfx i:nth-child(2){right:-28vmax;top:-24vmax;width:62vmax;height:62vmax;background:radial-gradient(closest-side,rgba(131,153,255,.15),rgba(131,153,255,.03) 58%,rgba(131,153,255,0));animation-duration:60s;animation-delay:-22s}
+.bgfx i:nth-child(3){left:16vmax;bottom:-60vmax;width:84vmax;height:84vmax;background:radial-gradient(closest-side,rgba(255,204,253,.07),rgba(255,204,253,0));animation-duration:70s;animation-delay:-38s}
 @keyframes aurora{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(7vmax,5vmax,0) scale(1.08)}100%{transform:translate3d(-5vmax,9vmax,0) scale(.95)}}
 /* Lichtkegel von oben */
 .bgfx b{position:absolute;left:50%;top:-12vh;width:min(1100px,140vw);height:70vh;translate:-50% 0;
-  background:radial-gradient(50% 60% at 50% 0%,rgba(190,180,255,.10),rgba(190,180,255,0) 70%)}
+  background:radial-gradient(50% 60% at 50% 0%,rgba(255,255,255,.07),rgba(255,255,255,0) 70%)}
 /* Korn gegen Farbstufen im Verlauf */
 .bgfx u{position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .lite .bgfx i{animation:none}
@@ -143,7 +149,7 @@ img{max-width:100%}
 @keyframes tick{40%{transform:scale(1.1)}}
 .shake{animation:shake .4s var(--ease)}
 @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-.spin{width:40px;height:40px;margin:0 auto 16px;border-radius:50%;border:3px solid rgba(255,255,255,.1);border-top-color:#A190FF;animation:spin .8s linear infinite}
+.spin{width:40px;height:40px;margin:0 auto 16px;border-radius:50%;border:3px solid rgba(255,255,255,.1);border-top-color:#C9AAFF;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* Leuchtender Lichtring um ein Element (sparsam: ein Element pro Ansicht) */
 .ring{position:relative;isolation:isolate}

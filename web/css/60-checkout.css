@@ -57,7 +57,7 @@
 
 /* Aktionscode: eingeklappt eine ruhige Glaszeile */
 .ck-promo-d{border-radius:var(--r-m);background:var(--glass);box-shadow:var(--rim),var(--lift);transition:background .25s var(--ease)}
-.lite .ck-promo-d{background:linear-gradient(180deg,#12141E,#0D0F17)}
+.lite .ck-promo-d{background:linear-gradient(180deg,#121214,#0D0D0F)}
 @media (hover:hover){.ck-promo-d:not([open]):hover{background:var(--glass-hi)}}
 .ck-promo-d>summary{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 18px;border-radius:inherit;font-size:15.5px;font-weight:560;color:var(--ink);cursor:pointer;list-style:none;-webkit-tap-highlight-color:transparent}
 .ck-promo-d>summary::-webkit-details-marker{display:none}
@@ -85,8 +85,8 @@
 
 /* ---------- Bezahl-Karte ---------- */
 /* Ein Hauch Licht von oben: hier wird bezahlt */
-.ck .paybox{padding:2px 20px 20px;background:radial-gradient(120% 46% at 50% 0%,rgba(124,108,255,.075),rgba(124,108,255,0) 70%),var(--glass)}
-.lite .ck .paybox{background:radial-gradient(120% 46% at 50% 0%,rgba(124,108,255,.075),rgba(124,108,255,0) 70%),linear-gradient(180deg,#12141E,#0D0F17)}
+.ck .paybox{padding:2px 20px 20px;background:radial-gradient(120% 46% at 50% 0%,rgba(180,165,255,.075),rgba(180,165,255,0) 70%),var(--glass)}
+.lite .ck .paybox{background:radial-gradient(120% 46% at 50% 0%,rgba(180,165,255,.075),rgba(180,165,255,0) 70%),linear-gradient(180deg,#121214,#0D0D0F)}
 .pb-sec{padding:18px 0}
 .pb-sec+.pb-sec{box-shadow:0 -1px 0 var(--line)}
 .pb-h{margin:0 0 12px;font-size:15px;font-weight:600;letter-spacing:-.012em;color:var(--ink)}
@@ -100,7 +100,7 @@
 .pb-sum .sumrow.tot>span:last-child{font-size:24px;font-weight:680;letter-spacing:-.034em}
 .pb-sum .sumrow.vatrow,.pb-sum .sumrow.vatrow>span:last-child{padding-top:0;font-size:13px;color:var(--ink-3)}
 /* E-Mail bestätigen: leicht violette Mulde */
-.ck-ev{padding:14px;border-radius:var(--r-m);background:linear-gradient(180deg,rgba(124,108,255,.09),rgba(124,108,255,.025));box-shadow:inset 0 0 0 1px rgba(175,164,255,.16),inset 0 1px 0 rgba(255,255,255,.06)}
+.ck-ev{padding:14px;border-radius:var(--r-m);background:linear-gradient(180deg,rgba(180,165,255,.09),rgba(180,165,255,.025));box-shadow:inset 0 0 0 1px rgba(201,170,255,.16),inset 0 1px 0 rgba(255,255,255,.06)}
 .ck-ev-t{margin:0 2px 12px;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
 .ck-ev-row{display:flex;gap:8px}
 .ck-ev-row .inp{flex:1;min-width:0}
@@ -122,7 +122,7 @@
 .paybox .pb-ok{margin:0;padding:12px 14px;border-radius:var(--r-s);font-size:13.5px;color:var(--ink-2);background:rgba(255,255,255,.03);box-shadow:var(--rim);transition:background .25s,box-shadow .25s}
 .paybox .pb-ok a{color:var(--ink)}
 .paybox .pb-ok input{margin-top:1px}
-.paybox .pb-ok:has(input:checked){background:rgba(124,108,255,.08);box-shadow:inset 0 0 0 1px rgba(175,164,255,.24),inset 0 1px 0 rgba(255,255,255,.06)}
+.paybox .pb-ok:has(input:checked){background:rgba(180,165,255,.08);box-shadow:inset 0 0 0 1px rgba(201,170,255,.24),inset 0 1px 0 rgba(255,255,255,.06)}
 /* Weitere Zahlungsarten */
 .pb-more{margin-top:12px}
 .paymore{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:8px 16px 8px 12px;border-radius:var(--r-m);text-align:left;color:var(--ink);
@@ -181,14 +181,14 @@
 .xdev .xl{color:#011E0F;background:#00D66F}
 
 /* ---------- Seiten-Warenkorb: schwebendes dunkles Glas ---------- */
-.drawer-scrim{position:fixed;inset:0;z-index:94;background:rgba(3,4,8,.62);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.drawer-scrim{position:fixed;inset:0;z-index:94;background:rgba(3,3,4,.62);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .drawer-scrim.open{opacity:1;pointer-events:auto}
 .drawer{position:fixed;z-index:95;left:0;right:0;bottom:0;display:flex;flex-direction:column;max-height:calc(100dvh - 40px);visibility:hidden;color:var(--ink);isolation:isolate;
-  border-radius:var(--r-xl) var(--r-xl) 0 0;background:linear-gradient(180deg,rgba(24,26,40,.9),rgba(11,12,20,.95));-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;background:linear-gradient(180deg,rgba(26,26,30,.9),rgba(11,12,20,.95));-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -24px 60px -20px rgba(0,0,0,.95);transform:translate3d(0,104%,0);transition:transform .5s var(--ease),visibility 0s linear .5s}
 /* Lichtkante wie an der Kopfzeile: oben links hell, dann fast unsichtbar */
 .drawer::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:1px;pointer-events:none;
-  background:linear-gradient(160deg,rgba(255,255,255,.3),rgba(255,255,255,.05) 30%,rgba(255,255,255,0) 60%,rgba(160,145,255,.18));
+  background:linear-gradient(160deg,rgba(255,255,255,.3),rgba(255,255,255,.05) 30%,rgba(255,255,255,0) 60%,rgba(201,170,255,.18));
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .drawer.open{visibility:visible;transform:none;transition:transform .5s var(--ease),visibility 0s}
 .lite .drawer{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--glass-solid)}
@@ -219,7 +219,7 @@
 .qb{display:grid;gap:18px}
 /* Bühne: die Karte wirft ihre Markenfarbe auf den dunklen Grund */
 .qb-stage{position:relative;isolation:isolate;display:grid;place-items:center;padding:28px 14% 32px;border-radius:var(--r-l);overflow:hidden;
-  background:radial-gradient(75% 70% at 50% 100%,color-mix(in srgb,var(--g,#7C6CFF) 34%,transparent),transparent 72%),radial-gradient(60% 50% at 50% 0%,rgba(190,180,255,.08),transparent 70%),var(--glass-lo);
+  background:radial-gradient(75% 70% at 50% 100%,color-mix(in srgb,var(--g,#8F9BFF) 34%,transparent),transparent 72%),radial-gradient(60% 50% at 50% 0%,rgba(210,195,255,.08),transparent 70%),var(--glass-lo);
   box-shadow:var(--rim)}
 .qb-stage .gc{width:100%;max-width:300px}
 .qb-stage .gc.cover{max-width:170px}
@@ -230,7 +230,7 @@
 .qb-vars .chip{min-height:44px}
 .qb-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 /* Der große Knopf trägt hier den laufenden Lichtring; der gewählte Betrag bekommt einen ruhenden Rand */
-.qb .amt[aria-pressed="true"]::before{background:linear-gradient(135deg,rgba(196,186,255,.95),rgba(124,108,255,.7) 50%,rgba(98,198,255,.75));animation:none}
+.qb .amt[aria-pressed="true"]::before{background:linear-gradient(135deg,rgba(220,205,255,.95),rgba(180,165,255,.7) 50%,rgba(179,225,255,.75));animation:none}
 .qb-qty{display:flex;align-items:center;justify-content:space-between;margin-top:18px}
 .qb-qty .lbl{margin:0}
 .qb-qty .qty button{width:44px;height:44px}
@@ -262,7 +262,7 @@
   color:var(--ink-2);background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 .ostat::before{content:"";width:7px;height:7px;flex:none;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
 .ostat[data-s="delivered"]{color:var(--mint);background:rgba(61,220,151,.12);box-shadow:inset 0 0 0 1px rgba(61,220,151,.24)}
-.ostat[data-s="processing"]{color:var(--iris-2);background:rgba(124,108,255,.15);box-shadow:inset 0 0 0 1px rgba(175,164,255,.24)}
+.ostat[data-s="processing"]{color:var(--iris-2);background:rgba(180,165,255,.15);box-shadow:inset 0 0 0 1px rgba(201,170,255,.24)}
 .ostat[data-s="awaiting_payment"],.ostat[data-s="payment_pending"]{color:var(--amber);background:rgba(255,181,71,.12);box-shadow:inset 0 0 0 1px rgba(255,181,71,.24)}
 .ostat[data-s="canceled"],.ostat[data-s="refunded"]{color:var(--ink-2)}
 .ostat[data-s="canceled"]::before,.ostat[data-s="refunded"]::before{box-shadow:none}
@@ -270,7 +270,7 @@
 /* Belohnung: Karten werden ausgeteilt, dahinter geht Licht auf, die Medaille trägt den Chromrand */
 .od-deal{position:relative;isolation:isolate;height:156px;max-width:340px;margin:0 auto 28px}
 .od-deal::before{content:"";position:absolute;left:50%;top:50%;z-index:-1;width:min(560px,100vw);height:360px;translate:-50% -54%;border-radius:50%;pointer-events:none;
-  background:radial-gradient(closest-side,rgba(124,108,255,.36),rgba(61,125,255,.13) 52%,rgba(61,125,255,0));animation:odHalo 1.4s var(--ease-out) .1s both}
+  background:radial-gradient(closest-side,rgba(180,165,255,.36),rgba(131,153,255,.13) 52%,rgba(131,153,255,0));animation:odHalo 1.4s var(--ease-out) .1s both}
 .od-deal::after{content:"";position:absolute;left:50%;top:50%;z-index:-1;width:440px;height:440px;translate:-50% -56%;pointer-events:none;
   background:repeating-conic-gradient(from 4deg,rgba(214,208,255,.075) 0deg 2.5deg,rgba(214,208,255,0) 2.5deg 15deg);
   -webkit-mask:radial-gradient(closest-side,#000 18%,transparent);mask:radial-gradient(closest-side,#000 18%,transparent);animation:odRays 1.8s var(--ease-out) .25s both}
@@ -292,8 +292,8 @@
 /* Warten: leere dunkle Karte, über die Licht läuft */
 .od-mint{position:relative;isolation:isolate;width:196px;margin:0 auto 26px}
 .od-mint::before{content:"";position:absolute;left:50%;top:50%;z-index:-1;width:min(420px,100vw);height:260px;translate:-50% -50%;border-radius:50%;pointer-events:none;
-  background:radial-gradient(closest-side,rgba(124,108,255,.22),rgba(124,108,255,0))}
-.od-mint .gc{width:100%;--b:linear-gradient(135deg,#1C1F30,#10121C);--f:var(--ink-2);--g:#7C6CFF}
+  background:radial-gradient(closest-side,rgba(180,165,255,.22),rgba(180,165,255,0))}
+.od-mint .gc{width:100%;--b:linear-gradient(135deg,#1C1F30,#111113);--f:var(--ink-2);--g:#8F9BFF}
 .od-mint .gc::after{animation:gcflash 1.9s var(--ease) infinite}
 .od-mint.off .gc::after{animation-play-state:paused}
 .od-mint .art{flex-direction:column;gap:10px}
@@ -315,8 +315,8 @@
 .od-note .ico{width:18px;height:18px;color:var(--mint)}
 /* Der Code: die Belohnung. Leuchtende Mulde, groß, markierbar, ein Tipp zum Kopieren */
 .od-code{margin-top:14px;padding:16px;border-radius:var(--r-m);
-  background:radial-gradient(120% 160% at 0% 0%,rgba(124,108,255,.18),rgba(124,108,255,0) 58%),radial-gradient(90% 140% at 100% 100%,rgba(61,125,255,.1),rgba(61,125,255,0) 60%),rgba(255,255,255,.025);
-  box-shadow:inset 0 0 0 1px rgba(175,164,255,.3),inset 0 1px 0 rgba(255,255,255,.1),0 18px 40px -24px rgba(111,92,255,.75)}
+  background:radial-gradient(120% 160% at 0% 0%,rgba(180,165,255,.18),rgba(180,165,255,0) 58%),radial-gradient(90% 140% at 100% 100%,rgba(131,153,255,.1),rgba(131,153,255,0) 60%),rgba(255,255,255,.025);
+  box-shadow:inset 0 0 0 1px rgba(201,170,255,.3),inset 0 1px 0 rgba(255,255,255,.1),0 18px 40px -24px rgba(201,170,255,.75)}
 .od-code-l{display:block;font-size:13px;font-weight:550;color:var(--ink-2)}
 .od-code-v{display:block;margin:6px 0 14px;font-family:var(--mono);font-size:20px;font-weight:600;line-height:1.4;letter-spacing:.06em;color:#fff;overflow-wrap:anywhere;-webkit-user-select:all;user-select:all}
 .od-code-a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px}
@@ -330,11 +330,11 @@
 .tl-s{position:relative;display:flex;gap:14px;padding-bottom:16px}
 .tl-s:last-child{padding-bottom:0}
 .tl-s:not(:last-child)::before{content:"";position:absolute;left:13px;top:31px;bottom:3px;width:2px;border-radius:1px;background:rgba(255,255,255,.1)}
-.tl-s.done:not(:last-child)::before{background:linear-gradient(180deg,#8F80FF,#5A6BFF)}
+.tl-s.done:not(:last-child)::before{background:linear-gradient(180deg,#A99BFF,#5A6BFF)}
 .tl-d{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--bg-3);box-shadow:inset 0 0 0 2px rgba(255,255,255,.14)}
 .tl-d .ico{width:15px;height:15px}
-.tl-s.done .tl-d{color:#fff;background:var(--brand-grad);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 14px -3px rgba(111,92,255,.8)}
-.tl-s.now .tl-d{box-shadow:inset 0 0 0 2px var(--iris-2),0 0 0 4px rgba(124,108,255,.2)}
+.tl-s.done .tl-d{color:#fff;background:var(--brand-grad);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 14px -3px rgba(201,170,255,.8)}
+.tl-s.now .tl-d{box-shadow:inset 0 0 0 2px var(--iris-2),0 0 0 4px rgba(180,165,255,.2)}
 .tl-s b{display:block;font-size:15px;font-weight:600;line-height:1.35;color:var(--ink)}
 .tl-s small{display:block;font-size:13px;color:var(--ink-3)}
 .tl-s:not(.done):not(.now) b{color:var(--ink-2);font-weight:550}

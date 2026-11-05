@@ -6,12 +6,12 @@
    Ohne Weichzeichner: der Grund ist ohnehin weich. Mit Maus folgt ein Lichtpunkt dem Zeiger
    (--mx/--my setzt 15-effects), die Kante leuchtet an dieser Stelle auf. */
 .card{position:relative;isolation:isolate;border-radius:var(--r-l);background:var(--glass);box-shadow:var(--rim),var(--lift)}
-.lite .card{background:linear-gradient(180deg,#12141E,#0D0F17)}
+.lite .card{background:linear-gradient(180deg,#121214,#0D0D0F)}
 @media (hover:hover) and (pointer:fine){
   .card::after,.catcard::after,.qa::after,.spot::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
-    background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(140,124,255,.11),rgba(140,124,255,0) 62%)}
+    background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(201,170,255,.09),rgba(201,170,255,0) 62%)}
   .card::before,.catcard::before,.qa::before,.spot::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1px;pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
-    background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(196,186,255,.6),rgba(196,186,255,0) 70%);
+    background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.55),rgba(255,255,255,0) 70%);
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
   .card:hover::after,.catcard:hover::after,.qa:hover::after,.spot:hover::after,.card:hover::before,.catcard:hover::before,.qa:hover::before,.spot:hover::before{opacity:1}
 }
@@ -38,12 +38,13 @@
 .btn-block{width:100%}
 .btn:active{transform:scale(.97)}
 .btn[disabled]{opacity:.4;pointer-events:none}
-/* Hauptknopf: leuchtender Verlauf, Licht folgt dem Zeiger */
-.btn-primary{color:#fff;background:radial-gradient(150px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.3),rgba(255,255,255,0) 62%),var(--brand-grad);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(0,0,0,.18),0 0 0 1px rgba(160,145,255,.32),0 12px 30px -12px rgba(111,92,255,.85),0 0 46px -18px rgba(61,125,255,.7)}
-@media (hover:hover){.btn-primary:hover{transform:translateY(-1px);filter:brightness(1.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,0,0,.18),0 0 0 1px rgba(175,164,255,.5),0 16px 38px -12px rgba(111,92,255,.95),0 0 60px -16px rgba(61,125,255,.8)}}
+/* Hauptknopf: weiße Pille (wie im Framer-Template), Pastell-Schimmer folgt dem Zeiger */
+.btn-primary{color:#0A0A0B;background:radial-gradient(170px circle at var(--mx,50%) var(--my,0%),rgba(201,170,255,.55),rgba(255,204,253,.18) 45%,rgba(255,255,255,0) 70%),#fff;
+  box-shadow:inset 0 -2px 1px rgba(0,0,0,.14),inset 0 1px 0 #fff,0 0 0 1px rgba(255,255,255,.55),0 10px 34px -12px rgba(255,255,255,.4)}
+@media (hover:hover){.btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 -2px 1px rgba(0,0,0,.14),inset 0 1px 0 #fff,0 0 0 1px #fff,0 16px 44px -12px rgba(201,170,255,.75),0 0 60px -18px rgba(131,153,255,.6)}}
 .btn-primary:active{transform:scale(.97)}
-/* Großer Hauptknopf: ein Glanzpunkt läuft um den Rand */
+.btn-primary .spin{border-color:rgba(0,0,0,.15);border-top-color:#0A0A0B}
+/* Großer Hauptknopf: ein Pastell-Glanzpunkt läuft um den Rand */
 .btn-primary.btn-lg::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:1.5px;background:var(--ring);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 5s linear infinite}
 @keyframes metalSpin{to{--ang:360deg}}
@@ -51,7 +52,7 @@
 @media (hover:hover){.btn-soft:hover,.btn-outline:hover{background:rgba(255,255,255,.1)}}
 .btn-ghost{min-height:40px;padding:0 6px;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,.3)}
 /* Lichtpunkt beim Antippen */
-.rip{position:absolute;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.32),rgba(255,255,255,0) 65%);transform:scale(0);animation:rip .6s var(--ease) forwards}
+.rip{position:absolute;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,170,255,.35),rgba(201,170,255,0) 65%);transform:scale(0);animation:rip .6s var(--ease) forwards}
 @keyframes rip{to{transform:scale(1);opacity:0}}
 .shine::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);transform:skewX(-14deg);animation:btnshine 6s ease-in-out infinite}
 @keyframes btnshine{0%,64%{left:-60%}100%{left:130%}}
@@ -75,7 +76,7 @@
 .chip .ico{width:18px;height:18px}
 @media (hover:hover){.chip:hover{color:var(--ink);background:rgba(255,255,255,.08)}}
 .chip:active{transform:scale(.96)}
-.chip[aria-pressed="true"],.chip[aria-current="page"]{color:#0A0B12;background:#F3F4F8;box-shadow:0 0 0 1px rgba(255,255,255,.6),0 8px 24px -10px rgba(160,145,255,.65)}
+.chip[aria-pressed="true"],.chip[aria-current="page"]{color:#0A0A0B;background:#fff;box-shadow:inset 0 -2px 1px rgba(0,0,0,.1),0 0 0 1px rgba(255,255,255,.6),0 8px 24px -10px rgba(201,170,255,.6)}
 
 /* ---------- Beträge ---------- */
 .amounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -85,9 +86,9 @@
 .amt small{font-size:12px;font-weight:550;color:var(--mint)}
 @media (hover:hover){.amt:hover{background:rgba(255,255,255,.08)}}
 .amt:active{transform:scale(.96)}
-.amt[aria-pressed="true"]{color:#fff;background:linear-gradient(180deg,rgba(124,108,255,.28),rgba(61,125,255,.14));
-  box-shadow:inset 0 0 0 1px rgba(175,164,255,.7),inset 0 1px 0 rgba(255,255,255,.2),0 10px 30px -12px rgba(111,92,255,.8)}
-.amt[aria-pressed="true"]::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:1.5px;background:var(--ring);
+.amt[aria-pressed="true"]{color:#0A0A0B;background:#fff;box-shadow:inset 0 -2px 1px rgba(0,0,0,.12),0 0 0 1px #fff,0 12px 32px -12px rgba(201,170,255,.7)}
+.amt[aria-pressed="true"] small{color:#0B7A47}
+.amt[aria-pressed="true"]::before{content:"";position:absolute;inset:-3px;z-index:-1;border-radius:19px;padding:1.5px;background:var(--ring);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 6s linear infinite}
 .amt[disabled]{opacity:.4;pointer-events:none}
 .amt[disabled] small{color:var(--ink-3)}
@@ -97,8 +98,8 @@
 .inp,.phone,.field input,textarea.inp,.sel{width:100%;min-height:52px;border:0;border-radius:15px;background:var(--field);box-shadow:var(--well);font-size:16px;color:var(--ink);transition:box-shadow .2s,background .2s}
 .inp,.field input{padding:0 16px}
 textarea.inp{min-height:96px;padding:14px 16px;resize:vertical}
-.inp::placeholder,.field input::placeholder,.phone input::placeholder,textarea.inp::placeholder{color:#7A8098}
-.inp:focus,.field input:focus,textarea.inp:focus,.phone:focus-within,.sel:focus-visible{outline:none;background:var(--field-hi);box-shadow:inset 0 0 0 1.5px #9283FF,0 0 0 4px rgba(124,108,255,.2)}
+.inp::placeholder,.field input::placeholder,.phone input::placeholder,textarea.inp::placeholder{color:#7E7E86}
+.inp:focus,.field input:focus,textarea.inp:focus,.phone:focus-within,.sel:focus-visible{outline:none;background:var(--field-hi);box-shadow:inset 0 0 0 1.5px #C9AAFF,0 0 0 4px rgba(201,170,255,.16)}
 .inp.bad{box-shadow:inset 0 0 0 1.5px var(--rose),0 0 0 4px rgba(255,107,122,.15)}
 .field{position:relative}
 .field>.ico{position:absolute;left:16px;top:50%;z-index:1;transform:translateY(-50%);color:var(--ink-3);pointer-events:none}
@@ -111,17 +112,17 @@ textarea.inp{min-height:96px;padding:14px 16px;resize:vertical}
 .sel>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sel>.ico{color:var(--ink-3)}
 select.sel{appearance:none;-webkit-appearance:none;padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23B0B5C9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 9l7 7 7-7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
-select.sel option{background:#151826;color:var(--ink)}
+select.sel option{background:#161618;color:var(--ink)}
 .err{min-height:18px;margin-top:6px;font-size:13.5px;color:var(--rose)}
 .flag{flex:none;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 .switch{position:relative;flex:none;width:52px;height:32px;border-radius:16px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);transition:background .25s}
 .switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.45);transition:transform .35s var(--spring)}
-.switch[aria-checked="true"]{background:var(--brand-grad);box-shadow:0 0 18px -4px rgba(111,92,255,.7)}
+.switch[aria-checked="true"]{background:var(--brand-grad);box-shadow:0 0 18px -4px rgba(131,153,255,.7)}
 .switch[aria-checked="true"]::after{transform:translateX(20px)}
 .chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14px;line-height:1.45;color:var(--ink-2);cursor:pointer}
 .chk input{appearance:none;-webkit-appearance:none;position:relative;width:20px;height:20px;margin:1px 0 0;flex:none;border-radius:6px;background:var(--field);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.22);cursor:pointer;transition:background .2s,box-shadow .2s}
-.chk input::after{content:"";position:absolute;left:6.5px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .25s var(--spring)}
-.chk input:checked{background:var(--brand-grad);box-shadow:0 0 0 1px rgba(175,164,255,.5),0 4px 14px -4px rgba(111,92,255,.8)}
+.chk input::after{content:"";position:absolute;left:6.5px;top:3px;width:5px;height:10px;border:solid #0A0A0B;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .25s var(--spring)}
+.chk input:checked{background:#fff;box-shadow:0 0 0 1px #fff,0 4px 14px -4px rgba(201,170,255,.8)}
 .chk input:checked::after{transform:rotate(45deg) scale(1)}
 .qty{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:var(--pill);background:rgba(255,255,255,.05);box-shadow:var(--rim)}
 .qty button{width:40px;height:40px;border-radius:50%;font-size:20px;font-weight:500;line-height:1;transition:background .2s,transform .2s var(--spring)}
@@ -156,9 +157,9 @@ select.sel option{background:#151826;color:var(--ink)}
    Gutscheinkarte – das Objekt
    ========================================================= */
 .gc{position:relative;display:block;aspect-ratio:1.586;border-radius:6.5%/10.3%;overflow:hidden;isolation:isolate;container-type:inline-size;
-  background:var(--b,#151826);color:var(--f,#fff);
+  background:var(--b,#161618);color:var(--f,#fff);
   transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 1px 1px rgba(0,0,0,.5),0 14px 28px -14px color-mix(in srgb,var(--g,#6F5CFF) 70%,transparent),0 30px 56px -30px color-mix(in srgb,var(--g,#6F5CFF) 60%,#000);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 1px 1px rgba(0,0,0,.5),0 14px 28px -14px color-mix(in srgb,var(--g,#7D72FF) 70%,transparent),0 30px 56px -30px color-mix(in srgb,var(--g,#7D72FF) 60%,#000);
   transition:transform .5s var(--spring),translate .5s var(--spring),box-shadow .4s}
 /* Obenlicht wie auf glänzendem Kunststoff */
 .gc::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.24) 0%,rgba(255,255,255,.05) 34%,rgba(255,255,255,0) 52%)}
@@ -192,10 +193,10 @@ select.sel option{background:#151826;color:var(--ink)}
 .gc-glare{position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:inherit;opacity:var(--go,0);transition:opacity .35s;
   background:radial-gradient(circle at var(--gx,30%) var(--gy,0%),rgba(255,255,255,.6),rgba(255,255,255,0) 48%);mix-blend-mode:overlay}
 .gc-amt{position:absolute;z-index:7;left:5.5cqi;bottom:5.5cqi;padding:.32em .7em;border-radius:var(--pill);font-size:clamp(12px,6cqi,24px);font-weight:650;letter-spacing:-.01em;color:#fff;
-  background:rgba(8,9,16,.42);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26),inset 0 1px 0 rgba(255,255,255,.3);-webkit-backdrop-filter:blur(10px) saturate(1.6);backdrop-filter:blur(10px) saturate(1.6)}
+  background:rgba(8,8,10,.42);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26),inset 0 1px 0 rgba(255,255,255,.3);-webkit-backdrop-filter:blur(10px) saturate(1.6);backdrop-filter:blur(10px) saturate(1.6)}
 .gc-amt.tick{animation:tick .45s var(--spring)}
-.gc-badge{position:absolute;z-index:7;top:5.5cqi;left:5.5cqi;padding:.32em .7em;border-radius:var(--pill);font-size:clamp(11px,5.2cqi,18px);font-weight:650;font-style:normal;color:#0A0B12;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.gc-plat{position:absolute;z-index:7;top:5.5cqi;left:5.5cqi;padding:.3em .66em;border-radius:var(--pill);font-size:clamp(10px,4.8cqi,15px);font-weight:650;font-style:normal;color:#fff;background:rgba(5,7,12,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.gc-badge{position:absolute;z-index:7;top:5.5cqi;left:5.5cqi;padding:.32em .7em;border-radius:var(--pill);font-size:clamp(11px,5.2cqi,18px);font-weight:650;font-style:normal;color:#0A0A0C;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.gc-plat{position:absolute;z-index:7;top:5.5cqi;left:5.5cqi;padding:.3em .66em;border-radius:var(--pill);font-size:clamp(10px,4.8cqi,15px);font-weight:650;font-style:normal;color:#fff;background:rgba(5,5,7,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
 .gc.key .gc-badge{left:auto;right:5.5cqi}
 .gc.key .art{justify-content:flex-start;align-items:flex-end;padding:7cqi 8cqi 9cqi}
 .gc.key .art-logo{align-items:flex-end;justify-content:flex-start}
@@ -210,7 +211,7 @@ select.sel option{background:#151826;color:var(--ink)}
 @container (max-width:130px){.gc-plat,.gc-badge{display:none!important}}
 /* Neigen und Lichtreflex mit der Maus */
 @media (hover:hover) and (pointer:fine){
-  .gc.tilt:hover{--go:1;transition:transform .12s linear,translate .5s var(--spring),box-shadow .4s;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 2px 2px rgba(0,0,0,.5),0 20px 36px -14px color-mix(in srgb,var(--g,#6F5CFF) 80%,transparent),0 44px 70px -30px color-mix(in srgb,var(--g,#6F5CFF) 70%,#000)}
+  .gc.tilt:hover{--go:1;transition:transform .12s linear,translate .5s var(--spring),box-shadow .4s;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 2px 2px rgba(0,0,0,.5),0 20px 36px -14px color-mix(in srgb,var(--g,#7D72FF) 80%,transparent),0 44px 70px -30px color-mix(in srgb,var(--g,#7D72FF) 70%,#000)}
   .gc.tilt:hover::after{transform:translateX(480%) skewX(-16deg);transition:transform .9s var(--ease)}
 }
 /* Antippen auf dem Handy: Karte neigt sich zum Finger (setzt .press per Skript) */
@@ -231,13 +232,17 @@ select.sel option{background:#151826;color:var(--ink)}
 .mini-gc .gc{width:100%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 5px 12px -5px rgba(0,0,0,.75)}
 
 /* ---------- Kacheln: Karte + Name + Preis ---------- */
-.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 14px;margin-top:16px}
-@media (min-width:640px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 18px}}
-@media (min-width:980px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 22px}}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+@media (min-width:640px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media (min-width:980px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}}
 .tiles.covers{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (min-width:768px){.tiles.covers{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (min-width:1100px){.tiles.covers{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .tile{min-width:0}
+/* Im Raster liegt jede Kachel auf einer leisen Glas-Platte, die sich bei Hover hebt */
+.tiles .tile{position:relative;isolation:isolate;padding:10px 10px 14px;border-radius:22px;background:var(--glass-lo);box-shadow:var(--rim);transition:background .35s var(--ease),box-shadow .35s var(--ease),translate .45s var(--spring)}
+.tiles .tile-meta{padding:12px 6px 0}
+@media (hover:hover) and (pointer:fine){.tiles .tile:hover{translate:0 -4px;background:var(--glass);box-shadow:var(--rim-hi),var(--lift-2)}.tiles .tile:hover .gc{translate:none}}
 .tile-media{position:relative;display:block}
 .tile-media>a{display:block}
 .tile .gc{width:100%}
@@ -247,12 +252,12 @@ select.sel option{background:#151826;color:var(--ink)}
 .tile-sub{display:block;margin-top:3px;font-size:13.5px;font-weight:450;color:var(--ink-3)}
 /* Schnellkauf-Knopf oben rechts auf der Karte: dort liegt weder Titel noch Badge */
 .qadd{position:absolute;z-index:8;right:8px;top:8px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;
-  background:rgba(8,9,16,.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.25),0 6px 16px -6px rgba(0,0,0,.6);
+  background:rgba(8,8,10,.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.25),0 6px 16px -6px rgba(0,0,0,.6);
   -webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);transition:transform .25s var(--spring),opacity .2s,background .2s}
 .qadd .ico{width:17px;height:17px}
 .qadd::before{content:"";position:absolute;inset:-6px;border-radius:50%}
 .qadd:active{transform:scale(.9)}
-@media (hover:hover) and (pointer:fine){.qadd{opacity:0;transform:translateY(6px) scale(.9)}.tile:hover .qadd,.tile:focus-within .qadd{opacity:1;transform:none}.qadd:hover{background:rgba(111,92,255,.75)}}
+@media (hover:hover) and (pointer:fine){.qadd{opacity:0;transform:translateY(6px) scale(.9)}.tile:hover .qadd,.tile:focus-within .qadd{opacity:1;transform:none}.qadd:hover{color:#0A0A0B;background:#fff}}
 .more-wrap{display:flex;justify-content:center;margin-top:32px}
 
 /* ---------- Wischleisten ---------- */
@@ -274,7 +279,7 @@ select.sel option{background:#151826;color:var(--ink)}
 @media (min-width:768px){.catgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
 @media (min-width:1100px){.catgrid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .catcard{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;gap:3px;min-height:158px;padding:18px;border-radius:var(--r-l);color:var(--ink);
-  background:radial-gradient(120% 90% at 100% 100%,color-mix(in srgb,var(--c,#7C6CFF) 30%,transparent),transparent 62%),var(--glass);
+  background:radial-gradient(120% 90% at 100% 100%,color-mix(in srgb,var(--c,#8F9BFF) 30%,transparent),transparent 62%),var(--glass);
   box-shadow:var(--rim),var(--lift);transition:transform .45s var(--spring),box-shadow .35s}
 @media (hover:hover){.catcard:hover{transform:translateY(-4px);box-shadow:var(--rim-hi),var(--lift-2)}}
 .catcard .cc-ic{display:none}
@@ -299,7 +304,7 @@ select.sel option{background:#151826;color:var(--ink)}
 
 /* ---------- Seitenkopf ---------- */
 .phead{position:relative;overflow:hidden;isolation:isolate;margin:16px var(--gut) 0;padding:26px 22px;border-radius:var(--r-xl);background:var(--glass);box-shadow:var(--rim),var(--lift)}
-.phead::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(90% 130% at 100% 0%,color-mix(in srgb,var(--c,#7C6CFF) 30%,transparent),transparent 62%),radial-gradient(60% 80% at 0% 100%,rgba(61,125,255,.08),transparent 70%)}
+.phead::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(90% 130% at 100% 0%,color-mix(in srgb,var(--c,#8F9BFF) 30%,transparent),transparent 62%),radial-gradient(60% 80% at 0% 100%,rgba(131,153,255,.08),transparent 70%)}
 .phead::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
   background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:44px 44px;
   -webkit-mask-image:radial-gradient(80% 100% at 100% 0%,#000,transparent 70%);mask-image:radial-gradient(80% 100% at 100% 0%,#000,transparent 70%)}
@@ -328,7 +333,7 @@ select.sel option{background:#151826;color:var(--ink)}
 .qa[data-open="true"]{background:var(--glass);box-shadow:var(--rim-hi),var(--lift)}
 .qa>button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:60px;padding:17px 20px;text-align:left;font-size:15.5px;font-weight:550}
 .qa>button .ico{width:22px;height:22px;padding:3px;border-radius:50%;color:var(--ink-2);background:rgba(255,255,255,.06);transition:transform .35s var(--ease),background .25s,color .25s}
-.qa[data-open="true"]>button .ico{transform:rotate(180deg);color:#fff;background:rgba(124,108,255,.45)}
+.qa[data-open="true"]>button .ico{transform:rotate(180deg);color:#0A0A0B;background:#fff}
 .qa-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease-out)}
 .qa[data-open="true"] .qa-b{grid-template-rows:1fr}
 .qa-b>div{overflow:hidden;visibility:hidden;transition:visibility 0s .4s}

@@ -29,7 +29,7 @@
 .az-nav::-webkit-scrollbar{display:none}
 .az-nav a{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:14px;font-size:15px;font-weight:600;color:var(--ink-2);
   background:var(--glass-lo);box-shadow:var(--rim);transition:transform .25s var(--spring),background .2s,color .2s,box-shadow .25s}
-@media (hover:hover){.az-nav a:hover{color:#fff;background:var(--glass-hi);box-shadow:var(--rim-hi),0 8px 22px -12px rgba(124,108,255,.75)}}
+@media (hover:hover){.az-nav a:hover{color:#fff;background:var(--glass-hi);box-shadow:var(--rim-hi),0 8px 22px -12px rgba(180,165,255,.75)}}
 .az-nav a:active{transform:scale(.92)}
 @media (min-width:900px){.az-nav{flex-wrap:wrap;overflow:visible;margin:0 0 24px;padding:0}.az-nav a{width:40px;height:40px;border-radius:12px}}
 .az{column-gap:16px}
@@ -37,7 +37,7 @@
 @media (min-width:1040px){.az{columns:3}}
 .az-g{break-inside:avoid;margin:0 0 16px;padding:10px 6px 6px;border-radius:var(--r-l);background:var(--glass);box-shadow:var(--rim),var(--lift);transition:box-shadow .5s var(--ease)}
 /* angesprungener Buchstabe leuchtet kurz an der Kante */
-.az-g:target{box-shadow:var(--rim-hi),var(--lift),0 0 0 1px rgba(175,164,255,.45),0 0 44px -18px rgba(124,108,255,.8)}
+.az-g:target{box-shadow:var(--rim-hi),var(--lift),0 0 0 1px rgba(201,170,255,.45),0 0 44px -18px rgba(180,165,255,.8)}
 .az-k{margin:4px 12px 4px;font-size:20px;font-weight:650;letter-spacing:-.03em;line-height:1.3;color:var(--ink)}
 .az-g ul{margin:0;padding:0;list-style:none}
 .az-g li{position:relative}
@@ -87,7 +87,7 @@
   background:
     radial-gradient(75% 52% at 50% 104%,color-mix(in srgb,var(--lc) 22%,transparent),transparent 72%),
     radial-gradient(110% 70% at 50% -14%,rgba(255,255,255,.075),rgba(255,255,255,0) 60%),
-    linear-gradient(180deg,#10121C 0%,#0A0B12 100%);
+    linear-gradient(180deg,#111113 0%,#0A0A0C 100%);
   box-shadow:var(--rim),var(--lift)}
 @media (min-width:800px){.pd-stage{aspect-ratio:1.16}}
 /* Bodenraster, läuft zur Mitte hin aus (statisch) */
@@ -135,9 +135,9 @@
 
 /* Geschenk: Karte rutscht in einen Umschlag im gewählten Design (--gd) */
 .ge-back,.ge-front{position:absolute;left:-7%;right:-7%;pointer-events:none;opacity:0;transition:opacity .35s var(--ease),transform .8s var(--spring)}
-.ge-back{top:22%;bottom:-25%;z-index:1;border-radius:5% / 8%;background:linear-gradient(rgba(5,6,12,.3),rgba(5,6,12,.3)),var(--gd);transform:translate3d(0,26%,0) scale(.96);
+.ge-back{top:22%;bottom:-25%;z-index:1;border-radius:5% / 8%;background:linear-gradient(rgba(5,5,7,.3),rgba(5,5,7,.3)),var(--gd);transform:translate3d(0,26%,0) scale(.96);
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 30px 50px -24px rgba(0,0,0,.95)}
-.ge-back::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% - 1px);height:44%;background:linear-gradient(0deg,rgba(5,6,12,.24),rgba(5,6,12,.08)),var(--gd);clip-path:polygon(0 100%,50% 0,100% 100%)}
+.ge-back::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% - 1px);height:44%;background:linear-gradient(0deg,rgba(5,5,7,.24),rgba(5,5,7,.08)),var(--gd);clip-path:polygon(0 100%,50% 0,100% 100%)}
 .ge-front{top:46%;bottom:-25%;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:.25em;padding:0 11% 7.5%;border-radius:0 0 5% 5% / 0 0 12% 12%;text-align:center;color:#fff;
   background:radial-gradient(90% 70% at 50% 8%,rgba(255,255,255,.26),rgba(255,255,255,0) 62%),var(--gd);
   clip-path:polygon(0 0,50% 32%,100% 0,100% 100%,0 100%);transform:translate3d(0,34%,0)}
@@ -184,7 +184,7 @@
 .pd .regions .chip{gap:8px;padding:0 14px 0 12px;font-size:14px}
 .pd .regions small{font-size:12.5px;font-weight:600;opacity:.75}
 .pd .flg{width:20px;height:15px;flex:none;border-radius:3px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.16)}
-.pd .chip[aria-current="page"] .flg{box-shadow:0 0 0 1px rgba(10,11,18,.14)}
+.pd .chip[aria-current="page"] .flg{box-shadow:0 0 0 1px rgba(10,10,12,.14)}
 /* Gültig in / Lieferung: leise Infozeilen */
 .pd .pinfo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}
 .pd .pinfo>div{display:flex;align-items:center;gap:11px;min-width:0;padding:11px 12px;border-radius:var(--r-m);background:var(--glass-lo);box-shadow:var(--rim)}
@@ -202,7 +202,7 @@
 /* Licht unter dem Zeiger auf Betragsknöpfen (--mx/--my setzt der Router in px) */
 @media (hover:hover) and (pointer:fine){
   .pd .amt::after,.tu .amt::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s var(--ease);
-    background:radial-gradient(90px circle at var(--mx,50%) var(--my,50%),rgba(175,164,255,.2),rgba(175,164,255,0) 70%)}
+    background:radial-gradient(90px circle at var(--mx,50%) var(--my,50%),rgba(201,170,255,.2),rgba(201,170,255,0) 70%)}
   .pd .amt:hover::after,.tu .amt:hover::after{opacity:1}
 }
 .pd-sold{margin-top:10px}
@@ -227,10 +227,10 @@
 @media (hover:hover){.designs button:hover{color:var(--ink)}.designs button:hover i{transform:translateY(-2px)}}
 .designs button:active i{transform:scale(.94)}
 .designs button[aria-pressed="true"]{color:var(--ink)}
-.designs button[aria-pressed="true"] i{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 0 2px var(--bg),0 0 0 3.5px #F3F4F8,0 12px 22px -8px rgba(124,108,255,.65)}
+.designs button[aria-pressed="true"] i{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 0 2px var(--bg),0 0 0 3.5px #F5F5F5,0 12px 22px -8px rgba(180,165,255,.65)}
 /* Gesamt und Kaufen: die klarste Stelle der Seite */
 .pd-sum{margin-top:22px;padding:18px 20px 16px;border-radius:var(--r-l);
-  background:radial-gradient(120% 140% at 0% 0%,rgba(124,108,255,.17),rgba(124,108,255,0) 60%),var(--glass-hi);box-shadow:var(--rim-hi),var(--lift)}
+  background:radial-gradient(120% 140% at 0% 0%,rgba(180,165,255,.17),rgba(180,165,255,0) 60%),var(--glass-hi);box-shadow:var(--rim-hi),var(--lift)}
 .pd-tot{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .pd-tot span{font-size:15px;font-weight:550;color:var(--ink-2)}
 .pd-tot b{font-size:clamp(28px,8cqi,34px);font-weight:650;letter-spacing:-.04em;line-height:1.1;color:#fff;font-variant-numeric:tabular-nums}
@@ -267,13 +267,13 @@
 .pd-steps{display:grid;gap:14px;max-width:66ch;margin:0;padding:0;list-style:none;counter-reset:st}
 .pd-steps li{counter-increment:st;display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start}
 .pd-steps li::before{content:counter(st);display:grid;place-items:center;width:30px;height:30px;margin-top:-2px;border-radius:50%;font-size:14px;font-weight:650;color:#fff;
-  background:linear-gradient(180deg,rgba(124,108,255,.45),rgba(61,125,255,.22));box-shadow:inset 0 0 0 1px rgba(175,164,255,.45),inset 0 1px 0 rgba(255,255,255,.2)}
+  background:linear-gradient(180deg,rgba(180,165,255,.45),rgba(131,153,255,.22));box-shadow:inset 0 0 0 1px rgba(201,170,255,.45),inset 0 1px 0 rgba(255,255,255,.2)}
 
 /* Kaufleiste auf dem Handy: klebt unten, solange weder Karte noch Kaufknöpfe zu sehen sind */
 .pd-bar{position:sticky;z-index:55;bottom:calc(10px + env(safe-area-inset-bottom,0px));height:0;margin:0 var(--gut);pointer-events:none}
 .pd-bar-in{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:12px;padding:7px 7px 7px 20px;border-radius:var(--pill);visibility:hidden;opacity:0;transform:translate3d(0,140%,0);
-  background:linear-gradient(180deg,rgba(30,32,48,.76),rgba(14,15,24,.7));-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),inset 0 0 0 1px rgba(255,255,255,.07),0 18px 44px -14px rgba(0,0,0,.95),0 0 54px -22px rgba(124,108,255,.55);
+  background:linear-gradient(180deg,rgba(32,32,36,.76),rgba(14,15,24,.7));-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),inset 0 0 0 1px rgba(255,255,255,.07),0 18px 44px -14px rgba(0,0,0,.95),0 0 54px -22px rgba(180,165,255,.55);
   transition:opacity .25s var(--ease),transform .5s var(--spring),visibility 0s .5s}
 .pd-bar.show .pd-bar-in{visibility:visible;opacity:1;transform:none;pointer-events:auto;transition-delay:0s}
 .pd-bar-t{flex:1;min-width:0;line-height:1.2}
@@ -299,7 +299,7 @@
 .tu-sh{display:flex;align-items:center;gap:11px;margin:0 0 14px;font-size:18px;font-weight:600;line-height:1.3;letter-spacing:-.02em}
 /* Schrittnummer (echte Abfolge): violettes Glas */
 .tu-n{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:50%;font-size:14px;font-weight:650;color:#fff;
-  background:linear-gradient(180deg,rgba(124,108,255,.5),rgba(61,125,255,.26));box-shadow:inset 0 0 0 1px rgba(175,164,255,.5),inset 0 1px 0 rgba(255,255,255,.22),0 6px 16px -6px rgba(111,92,255,.7)}
+  background:linear-gradient(180deg,rgba(180,165,255,.5),rgba(131,153,255,.26));box-shadow:inset 0 0 0 1px rgba(201,170,255,.5),inset 0 1px 0 rgba(255,255,255,.22),0 6px 16px -6px rgba(201,170,255,.7)}
 .tu-step .sel,.tu-step .phone{max-width:520px}
 /* das Feld zeigt den Fokus schon über .phone:focus-within – kein zweiter Ring am inneren Eingabefeld */
 .tu .phone input:focus-visible{box-shadow:none}
@@ -311,7 +311,7 @@
 .tu-ops{display:flex;flex-wrap:wrap;gap:8px}
 .tu-ops .chip{gap:9px;padding:0 15px 0 12px}
 .tu-dot{width:14px;height:14px;flex:none;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 0 0 1px rgba(0,0,0,.3)}
-.tu-ops .chip[aria-pressed="true"] .tu-dot{box-shadow:inset 0 0 0 1px rgba(255,255,255,.3),0 0 0 2px #F3F4F8,0 0 0 3px rgba(10,11,18,.2)}
+.tu-ops .chip[aria-pressed="true"] .tu-dot{box-shadow:inset 0 0 0 1px rgba(255,255,255,.3),0 0 0 2px #F5F5F5,0 0 0 3px rgba(10,10,12,.2)}
 .tu .amounts{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
 .tu .amounts.off .amt::before{animation-play-state:paused}
 .tu-hint{grid-column:1/-1;margin:0;font-size:14.5px;color:var(--ink-3)}
@@ -322,7 +322,7 @@
 .tu-prev .phone-mock{width:min(52%,200px)}
 /* Zusammenfassung und Kaufen: die klarste Stelle der Seite */
 .tu-sum{padding:20px 18px 18px;border-radius:var(--r-l);
-  background:radial-gradient(120% 120% at 0% 0%,rgba(124,108,255,.17),rgba(124,108,255,0) 60%),var(--glass-hi);box-shadow:var(--rim-hi),var(--lift)}
+  background:radial-gradient(120% 120% at 0% 0%,rgba(180,165,255,.17),rgba(180,165,255,0) 60%),var(--glass-hi);box-shadow:var(--rim-hi),var(--lift)}
 .tu-sum>.h3{margin:0 0 4px}
 .tu-rows{margin:0}
 .tu-rows>div{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:10px 0;font-size:15px}
@@ -357,12 +357,12 @@
    dunkles Display im Stil des Shops, Licht in Anbieterfarbe (--pc)
    ========================================================= */
 .phone-mock{position:relative;isolation:isolate;width:min(100%,240px);aspect-ratio:9/19;margin:0 auto;padding:10px;border-radius:46px;background:var(--chrome-flat);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.3),inset 0 1px 1px rgba(255,255,255,.45),0 2px 3px rgba(0,0,0,.6),0 30px 60px -26px rgba(0,0,0,.95),0 0 90px -34px color-mix(in srgb,var(--pc,#6F5CFF) 70%,transparent)}
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.3),inset 0 1px 1px rgba(255,255,255,.45),0 2px 3px rgba(0,0,0,.6),0 30px 60px -26px rgba(0,0,0,.95),0 0 90px -34px color-mix(in srgb,var(--pc,#7D72FF) 70%,transparent)}
 .phone-mock>.lm{z-index:0}
 /* Glasglanz über dem Display */
 .phone-mock::after{content:"";position:absolute;inset:10px;z-index:2;border-radius:36px;pointer-events:none;background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,0) 30%)}
 .pm-screen{position:relative;z-index:1;height:100%;overflow:hidden;container-type:inline-size;display:flex;flex-direction:column;padding:50px 15px 18px;border-radius:36px;color:var(--ink);
-  background:radial-gradient(130% 52% at 50% 0%,color-mix(in srgb,var(--pc,#6F5CFF) 30%,transparent),transparent 72%),linear-gradient(180deg,#141622 0%,#0B0C14 58%,#07080D 100%);
+  background:radial-gradient(130% 52% at 50% 0%,color-mix(in srgb,var(--pc,#7D72FF) 30%,transparent),transparent 72%),linear-gradient(180deg,#141622 0%,#0B0C14 58%,#07080D 100%);
   box-shadow:0 0 0 6px #000}
 /* Dynamic Island und Uhrzeit */
 .pm-screen::before{content:"";position:absolute;top:11px;left:50%;width:32%;height:21px;border-radius:11px;background:#000;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);transform:translateX(-50%)}
