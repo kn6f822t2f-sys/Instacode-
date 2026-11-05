@@ -405,6 +405,8 @@ app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), (req,
 /* www.instacode.store → instacode.store */
 const BASE_HOST = (() => { try { return new URL(BASE).host; } catch (e) { return ""; } })();
 app.use((req, res, next) => (PROD && BASE_HOST && req.get("host") === "www." + BASE_HOST) ? res.redirect(301, BASE + req.originalUrl) : next());
+/* Vorschau-Adressen (z. B. *.up.railway.app) nicht von Suchmaschinen aufnehmen lassen – nur die echte Domain zählt */
+app.use((req, res, next) => { const h = String(req.get("host") || ""); if (BASE_HOST && h && h !== BASE_HOST && h !== "www." + BASE_HOST && !/^localhost|^127\./.test(h)) res.set("X-Robots-Tag", "noindex, nofollow"); next(); });
 
 app.use(express.json({ limit: "100kb" }));
 app.use((req, res, next) => {
