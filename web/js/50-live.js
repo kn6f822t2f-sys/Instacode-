@@ -18,7 +18,7 @@ function boot(){
   $$("[data-paytext]").forEach(e=>e.textContent=payNames());
   const kb=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent)?"⌘ K":"Strg K";$$(".kbdk").forEach(k=>k.textContent=kb);
   const start=()=>{route();API("/me").then(m=>{const had=!!S.user;setUser(m.user);if(had!==!!m.user||/^\/(konto|kasse|login)/.test(cur.path))route(true)}).catch(()=>{})};
-  if(BRANDS.length)return start();
+  if(BRANDS.length){API("/checkout/email").then(ev=>{const e=ev&&ev.email||null;if(e!==(CFG.ev||null)){CFG.ev=e;if(/^\/(kasse|warenkorb)/.test(cur.path))route(true)}}).catch(()=>{});return start()}
   Promise.all([API("/catalog"),API("/config"),API("/stock"),API("/checkout/email").catch(()=>({}))]).then(([c,f,st,ev])=>{setCatalog(c.products);cleanCart();CFG=Object.assign(CFG,f);CFG.ev=ev&&ev.email||null;STOCK=st;start()}).catch(()=>start());
 }
 /* Anmelde-Karte: ruhiges Glas, zwei Karten schweben dahinter */
@@ -289,4 +289,7 @@ ${CFG.trustpilot?`<li><b>Trustpilot:</b> Trustpilot A/S, Dänemark. Das Bewertun
 function legalPage(id){const x=LEGAL[id],toc=[];let n=0;
   const body=x[1]().replace(/<h2>([\s\S]*?)<\/h2>/g,(m,t)=>{const a=`${id}-${++n}`;toc.push([a,t.replace(/<[^>]+>/g,"")]);return `<h2 id="${a}">${t}</h2>`});
   return {title:x[0],html:`${crumb([[x[0]]])}<div class="lgl sec"><header class="lgl-head"><h1 class="lgl-h">${x[0]}</h1><p class="lgl-meta">Stand: ${LEGAL_STAND}</p></header>
-  <div class="lgl-grid"><nav class="lgl-toc" aria-label="Inhalt"><b>Inhalt</b><ul>${toc.map(([a,t])=>`<li><a href="#${a}">${esc(t)}</a></li>`).join("")}</ul></nav><article class="card lgl-doc prose">${body}</article></div></div>`}}
+  <div class="lgl-grid"><nav class="lgl-toc" aria-label="Inhalt"><b>Inhalt</b><ul>${toc.map(([a,t])=>`<li><a href="#${a}">${esc(t)}</a></li>`).join("")}</ul></nav><article class="card lgl-doc prose">${body}</article></div></div>`,
+  /* Sprung im Inhaltsverzeichnis ohne Navigation (sonst baut popstate die Seite neu auf und springt nach oben) */
+  after(){const t=$(".lgl-toc");t&&t.addEventListener("click",e=>{const a=e.target.closest("a[href^='#']"),h=a&&document.getElementById(a.hash.slice(1));if(!h)return;e.preventDefault();try{history.replaceState(null,"",a.hash)}catch(x){}
+    $$(".lgl-doc h2.on").forEach(x=>x.classList.remove("on"));h.classList.add("on");h.setAttribute("tabindex","-1");h.focus({preventScroll:true});h.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})})}}}

@@ -78,9 +78,14 @@ function payRefresh(){
 }
 /* Eingebettetes Stripe-Zahlungsfeld (Payment Element) – in der Vorschau ein Test-Kartenfeld */
 let PAY=null;
-const APPEAR=()=>({theme:"stripe",variables:{colorPrimary:"#5B4BF0",colorBackground:"#FFFFFF",colorText:"#0B0D1C",colorTextSecondary:"#3B4159",colorTextPlaceholder:"#7C8298",colorDanger:"#C8261C",borderRadius:"14px",spacingUnit:"4px",fontFamily:"-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif",fontSizeBase:"16px"},
-  rules:{".Input":{border:"none",boxShadow:"inset 0 0 0 1px rgba(16,20,48,.12),inset 0 1px 2px rgba(16,20,48,.06)",padding:"13px 15px"},".Input:focus":{boxShadow:"inset 0 0 0 1.5px #5B4BF0,0 0 0 4px rgba(91,75,240,.16)"},".Input--invalid":{boxShadow:"inset 0 0 0 1.5px #C8261C"},
-    ".Tab":{border:"none",boxShadow:"inset 0 0 0 1px rgba(16,20,48,.1)"},".Tab--selected":{boxShadow:"inset 0 0 0 1.5px #5B4BF0"},".AccordionItem":{border:"none",boxShadow:"inset 0 0 0 1px rgba(16,20,48,.1)"},".Label":{fontWeight:"600",color:"#3B4159"}}});
+/* Stripe-Erscheinungsbild im Nachtglas-Design – eine Quelle für Zahlungsfeld und Expresszahlung (o ersetzt einzelne Variablen, z. B. den Radius).
+   Geist kann Stripe nicht laden; dann greift die Systemschrift. */
+const APPEAR=(o={})=>({theme:"night",variables:Object.assign({colorPrimary:"#7C6CFF",colorBackground:"#12141E",colorText:"#F3F4F8",colorTextSecondary:"#B0B5C9",colorTextPlaceholder:"#7A8098",colorDanger:"#FF6B7A",colorSuccess:"#3DDC97",colorWarning:"#FFB547",colorIcon:"#B0B5C9",
+    borderRadius:"14px",spacingUnit:"4px",fontFamily:"Geist,-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif",fontSizeBase:"16px",fontWeightNormal:"450",fontWeightMedium:"550",focusOutline:"none",focusBoxShadow:"0 0 0 4px rgba(124,108,255,.24)"},o),
+  rules:{".Input":{border:"none",backgroundColor:"#1A1C25",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1),inset 0 2px 4px rgba(0,0,0,.3)",padding:"13px 15px"},".Input:hover":{boxShadow:"inset 0 0 0 1px rgba(255,255,255,.16),inset 0 2px 4px rgba(0,0,0,.3)"},
+    ".Input:focus":{backgroundColor:"#1E2030",boxShadow:"inset 0 0 0 1.5px #9283FF,0 0 0 4px rgba(124,108,255,.2)"},".Input--invalid":{boxShadow:"inset 0 0 0 1.5px #FF6B7A,0 0 0 4px rgba(255,107,122,.15)"},
+    ".Tab":{border:"none",backgroundColor:"#1A1C25",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1)"},".Tab:hover":{color:"#F3F4F8",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.18)"},".Tab--selected":{backgroundColor:"#1E1F33",boxShadow:"inset 0 0 0 1.5px #9283FF,0 0 0 4px rgba(124,108,255,.16)"},
+    ".AccordionItem":{border:"none",backgroundColor:"#1A1C25",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1)"},".Block":{backgroundColor:"#1A1C25",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1)"},".Label":{fontWeight:"550",color:"#B0B5C9"},".Error":{color:"#FF6B7A"}}});
 async function payAfter(){
   PAY={};
   if(CFG.express)PAY.x=xpayMount($("#cX"),cartItems,{ctx:"cart",okEl:$("#payOk"),onHide:()=>{const o=$("#payOr");if(o)o.hidden=true;if(evMail())A.payMore()}});

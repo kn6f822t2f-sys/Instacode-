@@ -43,7 +43,8 @@ A.qb=(id,a0)=>{
 /* ---------- Expresszahlung: Apple Pay, Google Pay, PayPal, Link … (Stripe Express Checkout) ---------- */
 let stripeP=null;
 const loadStripe=()=>stripeP||(stripeP=new Promise((ok,no)=>{if(window.Stripe)return ok(window.Stripe(CFG.pk));const s=document.createElement("script");s.src="https://js.stripe.com/v3/";s.async=true;s.onload=()=>window.Stripe?ok(window.Stripe(CFG.pk)):no(new Error("Stripe nicht verfügbar"));s.onerror=()=>{stripeP=null;no(new Error("Stripe.js konnte nicht geladen werden"))};document.head.appendChild(s)}));
-/* Das Design ist nur hell; Stripe-Felder und Widgets folgen dem */
+/* Das Design ist nur dunkel; Stripe-Felder (APPEAR in 40-cart.js) und Widgets folgen dem.
+   Apple Pay und Google Pay in Weiß, wie es die Richtlinien für dunklen Grund verlangen. */
 const isDark=()=>true;
 function xpayMount(box,getItems,o={}){
   if(!box||!CFG.express||!evMail()){if(box)box.hidden=true;if(o.onHide)o.onHide();return null}
@@ -71,8 +72,8 @@ function xpayMount(box,getItems,o={}){
   (async()=>{try{
     quote=await getQuote();if(dead||!quote)return;
     const stripe=await loadStripe();if(dead)return;
-    elements=stripe.elements({mode:"payment",amount:quote.total,currency:"eur",locale:"de",appearance:{theme:"stripe",variables:{borderRadius:"25px"}}});
-    ece=elements.create("expressCheckout",{emailRequired:true,buttonHeight:50,paymentMethods:{klarna:CFG.klarna&&CFG.klarna.length?"auto":"never"},buttonType:{applePay:"buy",googlePay:"buy",paypal:"buynow"}});
+    elements=stripe.elements({mode:"payment",amount:quote.total,currency:"eur",locale:"de",appearance:APPEAR({borderRadius:"25px"})});
+    ece=elements.create("expressCheckout",{emailRequired:true,buttonHeight:50,paymentMethods:{klarna:CFG.klarna&&CFG.klarna.length?"auto":"never"},buttonType:{applePay:"buy",googlePay:"buy",paypal:"buynow"},buttonTheme:{applePay:"white",googlePay:"white"}});
     ece.on("availablepaymentmethodschange",({paymentMethods})=>{avail=!!paymentMethods;vis();if(!avail&&o.onHide)o.onHide()});
     ece.on("click",ev=>{if(ok&&!ok.checked)return nudge();ev.resolve({lineItems:(quote?quote.lines:[]).map(l=>({name:l.label,amount:l.amount}))})});
     ece.on("confirm",async ev=>{say("");try{

@@ -48,7 +48,7 @@ function siArt(p,m){
 function artOf(p){
   const m=p.mark||{t:p.name,s:30,w:800,ls:"-.02em"};
   if(p.si&&p.type!=="key")return siArt(p,m);
-  if(p.type==="key"){const t=m.t||p.name,n=t.length,fs=n<=10?.3:n<=16?.24:n<=24?.19:.16;return `<span class="kt" style="font-size:${fs}em">${esc(t)}</span>`}
+  if(p.type==="key"){const t=m.t||p.name,n=t.length,lw=Math.max(...t.split(/\s+/).map(w=>w.length)),fs=Math.min(n<=10?.3:n<=16?.24:n<=24?.19:.16,2.5/lw).toFixed(3);return `<span class="kt" style="font-size:${fs}em">${esc(t)}</span>`}
   if(m.g==="gem")return GEM;
   const g={diam:DIAM,ring:RING,playg:PLAYG}[m.g]||"";
   if(m.two)return `${g}<span class="wm2"><b style="font-size:${m.s/100}em;font-weight:${m.w};letter-spacing:${m.ls}">${esc(m.t)}</b><small style="font-size:${Math.round(m.s*.43)/100}em;font-weight:700;letter-spacing:.06em">${esc(m.two)}</small></span>`;

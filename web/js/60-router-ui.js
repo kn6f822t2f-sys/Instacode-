@@ -1,5 +1,5 @@
 /* ---------- router ---------- */
-let cur={path:"/"};
+let cur={path:"/"},curKey="";
 const app=$("#app");
 const R=[[/^\/$/,home],[/^\/kategorien$/,cats],[/^\/kategorie\/([\w-]+)$/,category],[/^\/marke\/([\w-]+)$/,brandPage],[/^\/aufladen$/,topup],[/^\/suche$/,searchPage],[/^\/angebote$/,deals],[/^\/warenkorb$/,cartPage],[/^\/kasse$/,cartPage],[/^\/bestellung\/([\w-]+)$/,apiOrder],[/^\/login$/,apiLogin],[/^\/konto(?:\/(\w+))?$/,apiAccount],[/^\/hilfe$/,help],[/^\/verifizieren$/,apiVerify],[/^\/passwort$/,apiReset],[/^\/(agb|datenschutz|widerruf)$/,legalPage]];
 /* Lichtpunkt im Hauptknopf folgt Zeiger/Finger (--mx/--my, siehe .btn-primary) */
@@ -12,7 +12,7 @@ try{history.scrollRestoration="manual"}catch(e){}var SSR_T=/^\/(marke\/|kategori
 function route(keep){
   if(/^#\//.test(location.hash)){try{history.replaceState(null,"",location.hash.slice(1))}catch(e){}}const pth=location.pathname.replace(/\/index\.html$/,"/");
   const h=(pth||"/")+location.search,qi=h.indexOf("?"),path=(qi>-1?h.slice(0,qi):h)||"/",qs=new URLSearchParams(qi>-1?h.slice(qi+1):"");
-  cur={path,qs};
+  cur={path,qs};curKey=location.pathname+location.search;
   let v=null;for(const [re,fn] of R){const m=path.match(re);if(m){v=fn(m[1],qs);break}}
   v=v||notFound();
   const y=scrollY;
@@ -27,7 +27,7 @@ function route(keep){
   if(keep)$$(".rv",app).forEach(x=>x.classList.add("in"));
 }
 function go(p){p=String(p||"/").replace(/^#/,"");if(location.pathname+location.search===p)route();else{try{history.pushState(null,"",p)}catch(e){location.href=p;return}route()}}
-addEventListener("hashchange",()=>{if(/^#\//.test(location.hash))route()});addEventListener("popstate",()=>route());
+addEventListener("hashchange",()=>{if(/^#\//.test(location.hash))route()});addEventListener("popstate",()=>{if(/^#\//.test(location.hash)||location.pathname+location.search!==curKey)route()});
 
 /* ---------- Überlagerungen: gemeinsame Helfer ---------- */
 const isOpen=s=>{const e=$(s);return !!e&&e.classList.contains("open")};

@@ -66,7 +66,7 @@
 .srch .tiles{margin-top:14px}
 
 /* Spieletitel auf Key-Karten (Grundbauteil hat dafür keine Regel) */
-.pd .kt,.pd-more .kt,.cat-list .kt,.cat-sec .kt,.srch .kt{position:relative;display:block;max-width:88%;font-weight:850;line-height:1;letter-spacing:-.015em;text-transform:uppercase;text-wrap:balance;white-space:normal;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+/* etwas schmaler geschnitten, damit lange Einzelwörter (z. B. „Satisfactory“) im Kartenrand bleiben */
 
 /* =========================================================
    Produktseite /marke/<id>
@@ -97,6 +97,7 @@
   -webkit-mask-image:radial-gradient(50% 90% at 50% 100%,#000 0%,rgba(0,0,0,.5) 45%,transparent 80%);mask-image:radial-gradient(50% 90% at 50% 100%,#000 0%,rgba(0,0,0,.5) 45%,transparent 80%)}
 /* Kartenmotiv als weiches Umgebungslicht */
 .pd-ext{position:absolute;inset:-14%;z-index:-2;background:var(--bx) center/cover no-repeat;filter:blur(60px) saturate(1.6);opacity:.2;transform:scale(1.05)}
+.lite .pd-ext{filter:blur(34px) saturate(1.4);opacity:.16}
 .pd-glow{position:absolute;z-index:-1;left:8%;right:8%;top:8%;bottom:10%;border-radius:50%;pointer-events:none;
   background:radial-gradient(closest-side,color-mix(in srgb,var(--lc) 34%,transparent),color-mix(in srgb,var(--lc) 10%,transparent) 58%,transparent);
   transform:translate3d(calc(var(--mx,0) * -18px),calc(var(--my,0) * -12px),0);transition:transform .9s var(--ease)}
@@ -241,6 +242,22 @@
 @container (min-width:400px){.pd-buy{grid-template-columns:1fr 1fr}}
 .pd .xpay{margin-top:14px}
 .pd-side .paylogos{margin-top:16px}
+/* Desktop: Spalte etwas dichter, damit Gesamt und Kaufen schon im ersten Bild stehen */
+@media (min-width:800px){
+  .pd{padding-top:16px}
+  .pd-side>.h1{margin-top:10px;font-size:clamp(30px,2.9vw,42px)}
+  .pd .pact{margin-top:14px}
+  .pd .pact>button{min-height:54px;padding:6px 2px;gap:4px}
+  .pd .pinfo{margin-top:14px}
+  .pd .pinfo>div{padding:9px 11px}
+  .pd-side>.lbl{margin-top:18px}
+  .pd .amt{min-height:54px}
+  .pd .opts .amt{min-height:58px}
+  .pd-qty{margin-top:12px}
+  .pd .giftbox{margin-top:14px;padding:11px 12px 11px 14px}
+  .pd-sum{margin-top:16px;padding:15px 18px 13px}
+  .pd-buy{margin-top:10px}
+}
 /* Beschreibung / Einlösen / Hinweise */
 .pd-info .tabs{margin-top:0}
 .pd-info .tabs button{min-height:40px}
@@ -284,6 +301,8 @@
 .tu-n{width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:50%;font-size:14px;font-weight:650;color:#fff;
   background:linear-gradient(180deg,rgba(124,108,255,.5),rgba(61,125,255,.26));box-shadow:inset 0 0 0 1px rgba(175,164,255,.5),inset 0 1px 0 rgba(255,255,255,.22),0 6px 16px -6px rgba(111,92,255,.7)}
 .tu-step .sel,.tu-step .phone{max-width:520px}
+/* das Feld zeigt den Fokus schon über .phone:focus-within – kein zweiter Ring am inneren Eingabefeld */
+.tu .phone input:focus-visible{box-shadow:none}
 .tu-step .err:empty{min-height:8px}
 .tu-sl{margin-top:4px}
 .tu-saved{display:flex;flex-wrap:wrap;gap:8px}
@@ -297,7 +316,7 @@
 .tu .amounts.off .amt::before{animation-play-state:paused}
 .tu-hint{grid-column:1/-1;margin:0;font-size:14.5px;color:var(--ink-3)}
 .tu-aside{min-width:0;margin-top:30px}
-.tu-prev{position:relative;isolation:isolate;padding:6px 0 30px}
+.tu-prev{position:relative;isolation:isolate;padding:6px 0 28px}
 .tu-prev::before{content:"";position:absolute;z-index:-1;left:50%;top:46%;width:min(110%,460px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;
   background:radial-gradient(closest-side,color-mix(in srgb,var(--pc,#5B4BF0) 34%,transparent),color-mix(in srgb,var(--pc,#5B4BF0) 9%,transparent) 55%,transparent)}
 .tu-prev .phone-mock{width:min(52%,200px)}
@@ -322,8 +341,13 @@
   .tu{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px);grid-template-areas:"head aside" "steps aside";grid-template-rows:auto 1fr;column-gap:32px;align-items:start}
   .tu-head{grid-area:head}
   .tu-steps{grid-area:steps}
-  .tu-aside{grid-area:aside;margin-top:0;padding-top:12px;position:sticky;top:min(var(--top),calc(100vh - var(--h,0px) - 20px));top:min(var(--top),calc(100dvh - var(--h,0px) - 20px))}
-  .tu-prev .phone-mock{width:min(64%,216px)}
+  .tu-aside{grid-area:aside;margin-top:0;position:sticky;top:min(var(--top),calc(100vh - var(--h,0px) - 20px));top:min(var(--top),calc(100dvh - var(--h,0px) - 20px))}
+  .tu-prev{padding:0 0 18px}
+  .tu-prev .phone-mock{width:min(46%,170px)}
+  .tu-sum{padding-top:18px}
+  .tu-rows>div{padding:8px 0}
+  .tu-sum .chk{margin-top:10px}
+  .tu-buy{margin-top:14px}
 }
 @media (min-width:1100px){.tu{grid-template-columns:minmax(0,1fr) 392px;column-gap:56px}.tu-steps{max-width:720px}}
 
@@ -345,7 +369,7 @@
 .pm-screen::after{content:"9:41";position:absolute;top:11px;left:9%;font-size:12px;font-weight:600;line-height:21px;letter-spacing:-.01em;color:var(--ink)}
 .pm-card{margin:0 0 15px}
 .pm-card .gc{width:100%;border-radius:7%/11%}
-.pm-op{display:flex;align-items:center;gap:8px;min-width:0;font-size:15px;font-weight:650;line-height:1.25;letter-spacing:-.012em;color:var(--ink)}
+.pm-op{display:flex;align-items:center;gap:8px;min-width:0;font-size:clamp(13px,9cqi,15px);font-weight:650;line-height:1.25;letter-spacing:-.012em;color:var(--ink)}
 .pm-op i{width:20px;height:20px;flex:none;border-radius:6px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),inset 0 1px 0 rgba(255,255,255,.2)}
 .pm-op span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pm-num{margin-top:3px;font-size:13.5px;font-weight:500;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

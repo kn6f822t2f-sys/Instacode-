@@ -184,7 +184,7 @@
 .drawer-scrim{position:fixed;inset:0;z-index:94;background:rgba(3,4,8,.62);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .drawer-scrim.open{opacity:1;pointer-events:auto}
 .drawer{position:fixed;z-index:95;left:0;right:0;bottom:0;display:flex;flex-direction:column;max-height:calc(100dvh - 40px);visibility:hidden;color:var(--ink);isolation:isolate;
-  border-radius:var(--r-xl) var(--r-xl) 0 0;background:linear-gradient(180deg,rgba(26,28,42,.84),rgba(12,13,21,.9));-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;background:linear-gradient(180deg,rgba(24,26,40,.9),rgba(11,12,20,.95));-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 -24px 60px -20px rgba(0,0,0,.95);transform:translate3d(0,104%,0);transition:transform .5s var(--ease),visibility 0s linear .5s}
 /* Lichtkante wie an der Kopfzeile: oben links hell, dann fast unsichtbar */
 .drawer::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:1px;pointer-events:none;
@@ -243,7 +243,7 @@
 @media (hover:hover){.qb-more:hover{color:#fff}}
 @media (min-width:768px){
   .qb{grid-template-columns:minmax(0,.92fr) minmax(0,1fr);gap:28px;align-items:start}
-  .qb-stage{position:sticky;top:0;min-height:320px}
+  .qb-stage{position:sticky;top:0;min-height:clamp(320px,calc(100dvh - 280px),500px)}
 }
 
 /* =========================================================

@@ -13,17 +13,17 @@
    ========================================================= */
 :root{
   /* Glas über abgedunkeltem Grund (Menü, Fenster, Suche) */
-  --ov-bg:linear-gradient(180deg,rgba(27,29,45,.8),rgba(12,13,21,.86));
+  --ov-bg:linear-gradient(180deg,rgba(27,29,45,.84),rgba(12,13,21,.88));
   /* Glas direkt über Inhalt (Schnellpanels, Mia, Cookie, Hinweis) */
-  --ov-bg-hi:linear-gradient(180deg,rgba(27,29,45,.92),rgba(12,13,21,.95));
-  /* Licht von oben, wie auf der Kopfzeile */
-  --ov-sheen:radial-gradient(110% 70% at 50% -8%,rgba(160,145,255,.13),rgba(160,145,255,0) 62%);
+  --ov-bg-hi:linear-gradient(180deg,rgba(27,29,45,.95),rgba(12,13,21,.96));
+  /* Licht von oben, wie auf der Kopfzeile: nur ein schmaler Saum, damit Hinweistext darunter kontrastreich bleibt */
+  --ov-sheen:radial-gradient(90% 72px at 50% 0%,rgba(170,155,255,.12),rgba(170,155,255,0));
   --ov-bf:blur(30px) saturate(1.8);
   --ov-rim:inset 0 1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.06),inset 0 -24px 36px -30px rgba(124,108,255,.55);
   --ov-drop:0 2px 4px rgba(0,0,0,.35),0 42px 90px -30px rgba(0,0,0,.95),0 0 0 .5px rgba(0,0,0,.9),0 0 100px -44px rgba(124,108,255,.4);
   --ov-shadow:var(--ov-rim),var(--ov-drop);
   /* Lichtkante: oben links und unten rechts hell (wie .hdr::before) */
-  --ov-edge:linear-gradient(115deg,rgba(255,255,255,.34),rgba(255,255,255,.06) 26%,rgba(255,255,255,0) 50%,rgba(160,145,255,.2) 76%,rgba(255,255,255,.24));
+  --ov-edge:var(--edge);
   --ov-scrim:rgba(3,4,9,.62);
   /* Gruppierte Zeilen, Zeiger und Auswahl innerhalb der Flächen */
   --ov-group:rgba(255,255,255,.045);
@@ -35,7 +35,7 @@
 .lite{--ov-bg:var(--glass-solid);--ov-bg-hi:var(--glass-solid);--ov-bf:none}
 
 /* Lichtkante auf Flächen, die selbst nicht scrollen (Fenster und Schnellpanels scrollen: dort nur --ov-rim) */
-.menu::after,.pal-box::after,.chat::after,.nudge::after{content:"";position:absolute;inset:0;z-index:4;border-radius:inherit;padding:1px;pointer-events:none;background:var(--ov-edge);
+.menu::after,.pal-box::after,.chat::after,.nudge::after,.toast::after{content:"";position:absolute;inset:0;z-index:4;border-radius:inherit;padding:1px;pointer-events:none;background:var(--ov-edge);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 /* Dezente Scrollleisten im Glas */
 .menu-body,.sheet,.qpanel,.pal-list,.chat-log{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
@@ -68,10 +68,11 @@
 .menu.open .menu-body>:nth-child(3){animation-delay:.08s}
 .menu.open .menu-body>:nth-child(n+4){animation-delay:.12s}
 .menu:not(.open) .btn-primary.btn-lg::before{animation-play-state:paused}
-.menu-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 8px 6px 18px}
+.menu-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 8px 2px 18px}
 .menu-top .lg-mark{width:30px;height:30px;filter:drop-shadow(0 4px 12px rgba(111,92,255,.5))}
 .menu-top .wordmark{font-size:20px}
-.menu-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:6px 12px 20px}
+.menu-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 12px 22px;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 12px,#000 calc(100% - 18px),transparent);mask-image:linear-gradient(180deg,transparent,#000 12px,#000 calc(100% - 18px),transparent)}
 .m-search{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:0 18px;border-radius:var(--pill);font-size:16px;color:var(--ink-3);text-align:left;background:var(--field);box-shadow:var(--well);transition:background .2s}
 .m-search .ico{color:var(--ink-2)}
 @media (hover:hover){.m-search:hover{background:var(--field-hi)}}
@@ -94,6 +95,8 @@
 .mi .si-ic .ico{width:19px;height:19px}
 .mi-t{flex:1;min-width:0}
 .mi-t small{display:block;margin-top:1px;font-size:13px;font-weight:450;color:var(--ink-3)}
+.mi:active .mi-t small{color:var(--ink-2)}
+@media (hover:hover){.mi:hover .mi-t small{color:var(--ink-2)}}
 .mi-v{flex:none;font-size:15px;font-weight:450;color:var(--ink-2)}
 .mi .mi-c{width:16px;height:16px;color:var(--ink-3)}
 .m-acc{display:grid;gap:8px;margin-top:24px}
@@ -177,6 +180,7 @@
 .qp-cat{position:relative;display:flex;align-items:center;gap:12px;min-height:64px;padding:10px 12px;border-radius:var(--r-m);transition:background .2s,box-shadow .2s}
 .qp-cat:hover,.qp-cat:focus-visible{background:radial-gradient(120% 160% at 0% 50%,color-mix(in srgb,var(--c,#7C6CFF) 16%,transparent),transparent 70%),var(--ov-hover);box-shadow:var(--rim)}
 .qp-cat .cc-ic{color:color-mix(in srgb,var(--c,#AFA4FF) 62%,#fff)}
+.qp-cat:hover .qp-t small,.qp-cat:focus-visible .qp-t small{color:var(--ink-2)}
 .qp-fan{position:relative;width:84px;height:46px;flex:none}
 .qp-fan img{position:absolute;right:2px;top:5px;width:58px;aspect-ratio:1.586;object-fit:cover;border-radius:5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 1px 1px rgba(0,0,0,.5),0 6px 14px -5px rgba(0,0,0,.85);transition:transform .5s var(--spring)}
 .qp-fan img:nth-child(1){transform:translateX(-24px) rotate(-11deg)}
@@ -236,6 +240,8 @@
 .pal-h{padding:14px 12px 6px;font-size:13px;font-weight:600;color:var(--ink-3)}
 .pal-item{display:flex;align-items:center;gap:12px;min-height:58px;padding:8px 12px;border-radius:var(--r-s);color:var(--ink);transition:background .12s}
 .pal-item[aria-selected="true"]{background:var(--ov-sel);box-shadow:var(--ov-sel-rim)}
+.pal-item[aria-selected="true"] .pal-t small{color:var(--ink-2)}
+.pal-item[aria-selected="true"] .pr{color:var(--ink)}
 .pal-item .mini-gc{width:52px}
 .pal-item .mini{width:52px}
 .pal-item .si-ic{width:40px;height:40px;margin:0 6px;color:color-mix(in srgb,var(--c,#AFA4FF) 62%,#fff)}
@@ -264,7 +270,8 @@
   background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));box-shadow:var(--rim-hi),0 6px 16px -6px rgba(111,92,255,.55)}
 :is(.chat-h,.nudge) .av .lg-mark{width:26px;height:26px}
 .chat-h .av::after{content:"";position:absolute;right:0;bottom:1px;width:11px;height:11px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 2px #171927,0 0 10px rgba(61,220,151,.7)}
-.chat-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:8px;padding:16px 14px 10px}
+.chat-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:8px;padding:16px 14px 10px;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 14px);mask-image:linear-gradient(180deg,transparent,#000 14px)}
 .msg{max-width:86%;padding:10px 14px;border-radius:20px;font-size:15px;line-height:1.45;overflow-wrap:anywhere;animation:msgIn .45s var(--spring) both}
 @keyframes msgIn{from{opacity:0;transform:translate3d(0,8px,0) scale(.94)}}
 .msg.bot{align-self:flex-start;border-bottom-left-radius:7px;color:var(--ink);background:rgba(255,255,255,.07);box-shadow:var(--rim),0 8px 18px -14px rgba(0,0,0,.9);transform-origin:0 100%}
@@ -299,7 +306,7 @@
 @media (hover:hover){.chat-f button:hover{filter:brightness(1.08)}}
 .chat-f button:active{transform:scale(.9)}
 .chat-f button .ico{width:19px;height:19px;margin-left:-2px}
-.chat-note{flex:none;margin:0;padding:0 14px 12px;text-align:center;font-size:13px;color:var(--ink-3)}
+.chat-note{flex:none;margin:0;padding:0 14px 12px;text-align:center;font-size:13px;line-height:1.4;color:var(--ink-3);text-wrap:balance}
 /* Hinweis-Blase unter Mias Knopf (derzeit abgeschaltet, siehe NUDGE in 70-reviews-chat.js) */
 .nudge{position:fixed;z-index:94;top:var(--top,76px);right:max(12px,calc((100vw - 1180px)/2));width:min(330px,calc(100vw - 24px));display:flex;align-items:flex-start;gap:2px;padding:12px 4px 12px 12px;
   border-radius:var(--r-m);background:var(--ov-sheen),var(--ov-bg-hi);-webkit-backdrop-filter:var(--ov-bf);backdrop-filter:var(--ov-bf);box-shadow:var(--ov-shadow);
@@ -330,18 +337,18 @@
    ========================================================= */
 .toast{position:fixed;z-index:130;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:14px;width:max-content;max-width:calc(100vw - 24px);min-height:52px;padding:4px 4px 4px 20px;
   border-radius:var(--pill);font-size:15px;font-weight:560;line-height:1.3;color:var(--ink);
-  background:radial-gradient(120% 160% at 50% 0%,rgba(160,145,255,.16),rgba(160,145,255,0) 62%),linear-gradient(180deg,rgba(38,40,59,.92),rgba(21,22,35,.95));
+  background:radial-gradient(120% 160% at 50% 0%,rgba(160,145,255,.2),rgba(160,145,255,0) 62%),linear-gradient(180deg,rgba(48,50,74,.9),rgba(28,29,46,.94));
   -webkit-backdrop-filter:var(--ov-bf);backdrop-filter:var(--ov-bf);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 .5px rgba(0,0,0,.9),0 22px 50px -18px rgba(0,0,0,.95),0 0 60px -26px rgba(124,108,255,.65);
   opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(-50%,16px,0) scale(.92);transition:transform .22s var(--ease),opacity .2s,visibility 0s .22s}
 .toast.show{opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(-50%,0,0);transition:transform .5s var(--spring),opacity .2s}
-.toast span{min-width:0;padding:10px 0}
+.toast span{position:relative;z-index:1;min-width:0;padding:10px 0}
 .toast span:last-child{padding-right:16px}
-.toast a{flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:var(--pill);font-size:14px;font-weight:620;color:#0A0B12;background:#F3F4F8;
+.toast a{position:relative;z-index:5;flex:none;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:var(--pill);font-size:14px;font-weight:620;color:#0A0B12;background:#F3F4F8;
   box-shadow:0 0 0 1px rgba(255,255,255,.6),0 8px 22px -10px rgba(160,145,255,.65);transition:background .2s,transform .25s var(--spring)}
 .toast a:hover{background:#fff}
 .toast a:active{transform:scale(.96)}
-.lite .toast{background:linear-gradient(180deg,#25273A,#16172A)}
+.lite .toast{background:radial-gradient(120% 160% at 50% 0%,rgba(160,145,255,.2),rgba(160,145,255,0) 62%),linear-gradient(180deg,#2C2E45,#1B1C2D)}
 /* Produktseite (Handy): über der klebenden Kaufleiste .pd-bar */
 @media (max-width:767px){.has-buybar .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 
@@ -374,21 +381,16 @@
 .verified .ico{width:14px;height:14px}
 .who .when{flex-basis:100%}
 .rv-note{max-width:46em;margin:22px auto 0}
-.rv-note .ico{color:var(--mint)}
+.rv-note .ico{margin-right:5px;color:var(--mint)}
 .tp-box{margin-top:20px;min-height:52px;padding:10px 14px;border-radius:var(--r-m);background:var(--glass-hi);box-shadow:var(--rim),var(--lift)}
 /* Bewertungsformular auf der Bestellseite (Markup aus 50-live) */
 .rform .starpick{display:flex;gap:6px;margin-top:14px}
 .rform .starpick button{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.05);box-shadow:var(--rim);
   transition:transform .25s var(--spring),color .15s,background .2s,box-shadow .2s}
 .rform .starpick button .ico{width:24px;height:24px}
-.rform .starpick button.on{color:var(--amber);background:rgba(255,181,71,.12);box-shadow:inset 0 0 0 1px rgba(255,181,71,.38),0 8px 22px -12px rgba(255,181,71,.6)}
+.rform .starpick button.on{color:var(--amber);background:rgba(255,181,71,.1);box-shadow:inset 0 0 0 1px rgba(255,181,71,.3)}
 .rform .starpick button:active{transform:scale(.9)}
 @media (hover:hover){
   .rform .starpick:has(button:nth-child(1):hover) button:nth-child(-n+1),.rform .starpick:has(button:nth-child(2):hover) button:nth-child(-n+2),.rform .starpick:has(button:nth-child(3):hover) button:nth-child(-n+3),
   .rform .starpick:has(button:nth-child(4):hover) button:nth-child(-n+4),.rform .starpick:has(button:nth-child(5):hover) button:nth-child(-n+5){color:#FFC978;background:rgba(255,181,71,.1)}
 }
-
-/* ---------- Sichtbarer Fokus: eigene Schatten der Flächen dürfen den Fokusring nicht verdecken ---------- */
-:is(.menu,.sheet,.qpanel,.pal,.chat,.nudge,.cookie,.toast,.rform) :is(a,button,summary):focus-visible{box-shadow:var(--focus)}
-:is(.menu,.sheet,.pal,.chat,.nudge) .x:focus-visible{border-radius:50%}
-.rform .starpick button:focus-visible{box-shadow:var(--focus)}

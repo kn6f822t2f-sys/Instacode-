@@ -106,7 +106,7 @@ textarea.inp{min-height:96px;padding:14px 16px;resize:vertical}
 .phone{display:flex;align-items:center;gap:10px;padding:0 6px 0 16px}
 .phone>span{font-weight:600;color:var(--ink-2)}
 .phone input{flex:1;min-width:0;min-height:50px;border:0;background:none;font-size:16px}
-.phone input:focus{outline:none}
+.phone input:focus,.phone input:focus-visible{outline:none;box-shadow:none}
 .sel{display:flex;align-items:center;gap:12px;padding:0 16px;font-size:16px;font-weight:550;text-align:left}
 .sel>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sel>.ico{color:var(--ink-3)}
@@ -119,7 +119,10 @@ select.sel option{background:#151826;color:var(--ink)}
 .switch[aria-checked="true"]{background:var(--brand-grad);box-shadow:0 0 18px -4px rgba(111,92,255,.7)}
 .switch[aria-checked="true"]::after{transform:translateX(20px)}
 .chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14px;line-height:1.45;color:var(--ink-2);cursor:pointer}
-.chk input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--iris)}
+.chk input{appearance:none;-webkit-appearance:none;position:relative;width:20px;height:20px;margin:1px 0 0;flex:none;border-radius:6px;background:var(--field);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.22);cursor:pointer;transition:background .2s,box-shadow .2s}
+.chk input::after{content:"";position:absolute;left:6.5px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .25s var(--spring)}
+.chk input:checked{background:var(--brand-grad);box-shadow:0 0 0 1px rgba(175,164,255,.5),0 4px 14px -4px rgba(111,92,255,.8)}
+.chk input:checked::after{transform:rotate(45deg) scale(1)}
 .qty{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:var(--pill);background:rgba(255,255,255,.05);box-shadow:var(--rim)}
 .qty button{width:40px;height:40px;border-radius:50%;font-size:20px;font-weight:500;line-height:1;transition:background .2s,transform .2s var(--spring)}
 @media (hover:hover){.qty button:hover{background:rgba(255,255,255,.08)}}
@@ -197,6 +200,8 @@ select.sel option{background:#151826;color:var(--ink)}
 .gc.key .art{justify-content:flex-start;align-items:flex-end;padding:7cqi 8cqi 9cqi}
 .gc.key .art-logo{align-items:flex-end;justify-content:flex-start}
 .gc.key .gc-logo{max-width:70cqi;max-height:30cqi}
+/* Spieletitel auf Key-Karten */
+.gc .kt{position:relative;display:block;max-width:100%;font-weight:780;line-height:1;letter-spacing:-.03em;text-transform:uppercase;text-wrap:balance;white-space:normal;text-shadow:0 2px 14px rgba(0,0,0,.45)}
 .gc.cover{aspect-ratio:3/4;border-radius:7%/5.3%}
 .gc.cover .art{padding:9cqi 9cqi 12cqi}
 .gc.ink{--b:linear-gradient(135deg,#171A28,#22263A 55%,#2E3350);--f:#fff}

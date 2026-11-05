@@ -53,6 +53,8 @@
   --field:rgba(255,255,255,.045);
   --field-hi:rgba(255,255,255,.075);
   --focus:0 0 0 2px var(--bg),0 0 0 4px #A190FF;
+  /* Lichtkante schwebender Glasflächen (Kopfzeile, Overlays): oben links und unten rechts hell */
+  --edge:linear-gradient(115deg,rgba(255,255,255,.4),rgba(255,255,255,.06) 28%,rgba(255,255,255,0) 50%,rgba(160,145,255,.22) 74%,rgba(255,255,255,.32));
   /* Lichtring: ein Glanzpunkt läuft um den Rand (mit --ang animierbar) */
   --ring:conic-gradient(from var(--ang),rgba(255,255,255,.06) 0deg,rgba(255,255,255,.06) 200deg,rgba(175,164,255,.85) 262deg,#fff 290deg,rgba(98,198,255,.8) 318deg,rgba(255,255,255,.06) 360deg);
   /* Flüssigmetall: dunkles Titan */
@@ -86,7 +88,9 @@ p a,.fine a,.lead a,.prose a{text-decoration:underline;text-underline-offset:3px
 img,svg{display:block}
 img{max-width:100%}
 .ico{width:20px;height:20px;flex:none}
-:focus-visible{outline:none;box-shadow:var(--focus);border-radius:12px}
+/* Fokusring als Umriss: bleibt sichtbar, auch wenn ein Bauteil eigene Schatten hat */
+:focus-visible{outline:2px solid #A190FF;outline-offset:2px}
+.qa>button:focus-visible{outline-offset:-3px;border-radius:var(--r-m)}
 #app:focus{outline:none}
 [hidden]{display:none!important}
 .sumrow,.amt,.tile-sub,.gc-amt,.pm-amt,.qty span,.otp,.price,.tot{font-variant-numeric:tabular-nums}

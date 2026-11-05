@@ -25,7 +25,7 @@
 .hdr.scrolled{background:linear-gradient(180deg,rgba(22,24,36,.78),rgba(12,13,20,.7))}
 /* Lichtkante: oben links und unten rechts hell, dazwischen fast unsichtbar */
 .hdr::before{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;padding:1px;pointer-events:none;
-  background:linear-gradient(115deg,rgba(255,255,255,.4),rgba(255,255,255,.06) 28%,rgba(255,255,255,0) 50%,rgba(160,145,255,.22) 74%,rgba(255,255,255,.32));
+  background:var(--edge);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .hdr>*{position:relative;z-index:1}
 @media (min-width:900px){.hdr{height:62px;margin-top:12px;padding:0 9px 0 18px}}
