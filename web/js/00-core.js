@@ -36,8 +36,18 @@ var PLAYG='<svg viewBox="0 0 24 24" style="width:.26em;height:.26em" aria-hidden
 const BOOT=(()=>{try{return JSON.parse(document.getElementById("boot").textContent||"{}")}catch(e){return {}}})();
 const PLAT={steam:"Steam",pc:"PC",ea:"EA app",bnet:"Battle.net",ubi:"Ubisoft Connect",rockstar:"Rockstar Launcher",ps5:"PS5",xbox:"Xbox",xpc:"Xbox & PC",switch:"Switch",switch2:"Switch 2"};
 const PLATG={steam:"pc",pc:"pc",ea:"pc",bnet:"pc",ubi:"pc",rockstar:"pc",ps5:"ps",xbox:"xbox",xpc:"xbox",switch:"nin",switch2:"nin"};
+/* Echte Markenzeichen (Simple Icons, /logo/<slug>.svg) als Maske – sie übernehmen die Schriftfarbe der Karte */
+const SIA={"adidas":1.56,"airbnb":0.93,"aldinord":0.95,"apple":0.82,"audible":1.58,"bitdefender":0.87,"deutschetelekom":0.85,"discord":1.3,"ea":1.97,"edeka":0.83,"epicgames":0.87,"fortnite":0.43,"googleplay":0.9,"ikea":2.36,"kaspersky":4.51,"leagueoflegends":0.94,"mastercard":1.58,"netflix":0.57,"nike":2.67,"nordvpn":1.25,"otto":2.75,"paramountplus":1.24,"penny":4.5,"playstation":1.26,"pubg":1.34,"rtl":4.82,"saturn":1.69,"twitch":0.86,"uber":2.77,"ubereats":1.3,"ubisoft":0.96,"valorant":1.21,"visa":2.87,"zalando":0.96};
+const siI=s=>{const a=SIA[s]||1;return `<i class="si${a>2?" w":""}" style="--si:url(/logo/${s}.svg);--a:${a}" aria-hidden="true"></i>`};
+function siArt(p,m){
+  if(p.sio)return `<span class="si-lock only">${siI(p.si)}</span>`;
+  const t=p.sit||m.t||p.name,k=t.length>=8?.66:t.length>=6?.74:.84,fs=v=>Math.min(v,.3).toFixed(3),st=`font-weight:${m.w};letter-spacing:${m.ls}`;
+  if(m.two&&!p.sit)return `<span class="si-lock" style="font-size:${fs(m.s*k*.82/100)}em">${siI(p.si)}<span class="wm2"><b style="${st}">${esc(t)}</b><small>${esc(m.two)}</small></span></span>`;
+  return `<span class="si-lock" style="font-size:${fs(m.s*k/100)}em;${st}">${siI(p.si)}<span class="wm">${esc(t)}</span></span>`;
+}
 function artOf(p){
   const m=p.mark||{t:p.name,s:30,w:800,ls:"-.02em"};
+  if(p.si&&p.type!=="key")return siArt(p,m);
   if(p.type==="key"){const t=m.t||p.name,n=t.length,fs=n<=10?.3:n<=16?.24:n<=24?.19:.16;return `<span class="kt" style="font-size:${fs}em">${esc(t)}</span>`}
   if(m.g==="gem")return GEM;
   const g={diam:DIAM,ring:RING,playg:PLAYG}[m.g]||"";

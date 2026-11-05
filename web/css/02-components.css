@@ -146,6 +146,16 @@ select.sel{appearance:none;-webkit-appearance:none;padding-right:40px;background
 .gc .art{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;gap:.08em;font-size:50cqi;line-height:1}
 .gc .art svg{flex:none}
 .gc .art-logo{padding:0}
+/* Echte Markenzeichen: Symbol + Schriftzug als Lockup, oder nur das Zeichen (Wortmarken wie IKEA, VISA) */
+.si{display:inline-block;flex:none;background:currentColor;-webkit-mask:var(--si) center/contain no-repeat;mask:var(--si) center/contain no-repeat}
+.gc .si-lock{display:inline-flex;align-items:center;gap:.34em;max-width:84cqi;white-space:nowrap;filter:drop-shadow(0 1px 2px rgba(0,0,0,.14))}
+.gc .si-lock .si{height:1.25em;width:calc(1.25em*var(--a,1))}
+.gc .si-lock .si.w{height:.86em;width:calc(.86em*var(--a,1))}
+.gc .si-lock .wm{font-size:1em;line-height:1}
+.gc .si-lock .wm2{display:flex;flex-direction:column;align-items:flex-start;line-height:.95}
+.gc .si-lock .wm2 small{font-size:.43em;font-weight:700;letter-spacing:.08em;margin-top:.18em;opacity:.92}
+.gc .si-lock.only .si{height:min(28cqi,calc(54cqi / var(--a,1)));width:min(54cqi,calc(28cqi * var(--a,1)))}
+.gc-plat .si{height:1.05em;width:calc(1.05em*var(--a,1));max-width:2.1em;margin:-.1em .38em 0 -.1em;vertical-align:middle}
 .gc .gc-logo{max-width:58cqi;max-height:24cqi;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18))}
 .wm{display:inline-block;line-height:1;white-space:nowrap}
 .wm sup{position:relative;top:-.12em;margin-left:.01em;font-size:.62em;vertical-align:top}

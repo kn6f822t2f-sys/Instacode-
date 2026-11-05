@@ -67,7 +67,8 @@
    "w": 700,
    "ls": "-.02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "vodafone"
  },
  "telekom": {
   "id": "telekom",
@@ -90,7 +91,8 @@
    "w": 800,
    "ls": "-.02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "deutschetelekom"
  },
  "o2": {
   "id": "o2",
@@ -112,7 +114,9 @@
    "w": 800,
    "ls": "-.04em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "o2",
+  "sio": 1
  },
  "congstar": {
   "id": "congstar",
@@ -156,7 +160,9 @@
    "w": 800,
    "ls": ".02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "aldinord",
+  "sit": "TALK"
  },
  "blau": {
   "id": "blau",
@@ -222,7 +228,9 @@
    "w": 800,
    "ls": "-.02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "lidl",
+  "sit": "Connect"
  },
  "nettokom": {
   "id": "nettokom",
@@ -309,7 +317,9 @@
    "w": 800,
    "ls": "-.02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "edeka",
+  "sit": "smart"
  },
  "pennymobil": {
   "id": "pennymobil",
@@ -330,7 +340,9 @@
    "w": 800,
    "ls": "-.02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "penny",
+  "sit": "mobil"
  },
  "turkcell": {
   "id": "turkcell",
@@ -382,7 +394,9 @@
    "apple music"
   ],
   "hot": 1,
-  "region": "DE"
+  "region": "DE",
+  "si": "apple",
+  "sio": 1
  },
  "gplay": {
   "id": "gplay",
@@ -410,7 +424,8 @@
    "android",
    "play store"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "googleplay"
  },
  "microsoft": {
   "id": "microsoft",
@@ -465,7 +480,8 @@
    "pc"
   ],
   "hot": 1,
-  "region": "DE"
+  "region": "DE",
+  "si": "steam"
  },
  "psn": {
   "id": "psn",
@@ -494,7 +510,8 @@
    "sony"
   ],
   "hot": 1,
-  "region": "DE"
+  "region": "DE",
+  "si": "playstation"
  },
  "xbox": {
   "id": "xbox",
@@ -573,7 +590,8 @@
    "warcraft",
    "overwatch"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "battledotnet"
  },
  "ea": {
   "id": "ea",
@@ -598,7 +616,9 @@
    "electronic arts",
    "ea app"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "ea",
+  "sio": 1
  },
  "epic": {
   "id": "epic",
@@ -623,7 +643,9 @@
    "epic games store",
    "fortnite"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "epicgames",
+  "sio": 1
  },
  "razer": {
   "id": "razer",
@@ -648,7 +670,8 @@
   "tags": [
    "razer"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "razer"
  },
  "fortnite": {
   "id": "fortnite",
@@ -682,7 +705,8 @@
    "epic"
   ],
   "hot": 1,
-  "region": "DE"
+  "region": "DE",
+  "si": "fortnite"
  },
  "roblox": {
   "id": "roblox",
@@ -706,7 +730,8 @@
   "tags": [
    "robux"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "roblox"
  },
  "valorant": {
   "id": "valorant",
@@ -734,7 +759,8 @@
    "vp",
    "valorant points"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "valorant"
  },
  "lol": {
   "id": "lol",
@@ -763,7 +789,8 @@
    "rp",
    "riot points"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "leagueoflegends"
  },
  "apex": {
   "id": "apex",
@@ -796,7 +823,8 @@
    "ea",
    "apex coins"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "ea"
  },
  "fcpoints": {
   "id": "fcpoints",
@@ -829,7 +857,8 @@
    "ultimate team",
    "fc 26"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "ea"
  },
  "codpoints": {
   "id": "codpoints",
@@ -895,7 +924,8 @@
    "uc",
    "pubg"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "pubg"
  },
  "freefire": {
   "id": "freefire",
@@ -1056,7 +1086,8 @@
    "rainbow six siege",
    "ubisoft"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "ubisoft"
  },
  "rocketleague": {
   "id": "rocketleague",
@@ -3110,7 +3141,8 @@
    "psn",
    "ps5"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "playstation"
  },
  "psplus-extra": {
   "id": "psplus-extra",
@@ -3140,7 +3172,8 @@
    "psn",
    "ps5"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "playstation"
  },
  "psplus-premium": {
   "id": "psplus-premium",
@@ -3168,7 +3201,8 @@
    "psn",
    "ps5"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "playstation"
  },
  "nso": {
   "id": "nso",
@@ -3250,7 +3284,9 @@
   "tags": [
    "ea"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "ea",
+  "sit": "PLAY"
  },
  "nitro": {
   "id": "nitro",
@@ -3277,7 +3313,8 @@
   "tags": [
    "discord"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "discord"
  },
  "netflix": {
   "id": "netflix",
@@ -3299,7 +3336,8 @@
    "ls": ".03em"
   },
   "hot": 1,
-  "region": "DE"
+  "region": "DE",
+  "si": "netflix"
  },
  "spotify": {
   "id": "spotify",
@@ -3324,7 +3362,8 @@
    "musik",
    "premium"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "spotify"
  },
  "disney": {
   "id": "disney",
@@ -3370,7 +3409,9 @@
    "fußball",
    "sport"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "dazn",
+  "sio": 1
  },
  "twitch": {
   "id": "twitch",
@@ -3395,7 +3436,8 @@
    "subs",
    "bits"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "twitch"
  },
  "crunchyroll": {
   "id": "crunchyroll",
@@ -3418,7 +3460,8 @@
   "tags": [
    "anime"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "crunchyroll"
  },
  "paramount": {
   "id": "paramount",
@@ -3438,7 +3481,8 @@
    "w": 800,
    "ls": "-.02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "paramountplus"
  },
  "wowtv": {
   "id": "wowtv",
@@ -3482,7 +3526,9 @@
    "w": 800,
    "ls": "-.02em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "rtl",
+  "sit": "+"
  },
  "deezer": {
   "id": "deezer",
@@ -3505,7 +3551,8 @@
   "tags": [
    "musik"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "deezer"
  },
  "audible": {
   "id": "audible",
@@ -3530,7 +3577,8 @@
    "hörbuch",
    "amazon"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "audible"
  },
  "m365p": {
   "id": "m365p",
@@ -3615,7 +3663,9 @@
   "tags": [
    "antivirus"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "kaspersky",
+  "sio": 1
  },
  "norton": {
   "id": "norton",
@@ -3640,7 +3690,8 @@
   "tags": [
    "antivirus"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "norton"
  },
  "bitdefender": {
   "id": "bitdefender",
@@ -3665,7 +3716,8 @@
   "tags": [
    "antivirus"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "bitdefender"
  },
  "nordvpn": {
   "id": "nordvpn",
@@ -3692,7 +3744,8 @@
   "tags": [
    "vpn"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "nordvpn"
  },
  "amazon": {
   "id": "amazon",
@@ -3741,7 +3794,8 @@
   "tags": [
    "mode"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "zalando"
  },
  "ikea": {
   "id": "ikea",
@@ -3766,7 +3820,9 @@
   "tags": [
    "möbel"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "ikea",
+  "sio": 1
  },
  "lieferando": {
   "id": "lieferando",
@@ -3840,7 +3896,8 @@
   "tags": [
    "elektronik"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "mediamarkt"
  },
  "saturn": {
   "id": "saturn",
@@ -3864,7 +3921,8 @@
   "tags": [
    "elektronik"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "saturn"
  },
  "hm": {
   "id": "hm",
@@ -3933,7 +3991,9 @@
    "w": 800,
    "ls": ".04em"
   },
-  "region": "DE"
+  "region": "DE",
+  "si": "otto",
+  "sio": 1
  },
  "uber": {
   "id": "uber",
@@ -3958,7 +4018,9 @@
    "fahrt",
    "taxi"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "uber",
+  "sio": 1
  },
  "ubereats": {
   "id": "ubereats",
@@ -3982,7 +4044,9 @@
   "tags": [
    "essen"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "ubereats",
+  "sio": 1
  },
  "airbnb": {
   "id": "airbnb",
@@ -4007,7 +4071,8 @@
    "reisen",
    "urlaub"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "airbnb"
  },
  "nike": {
   "id": "nike",
@@ -4032,7 +4097,9 @@
    "sport",
    "schuhe"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "nike",
+  "sio": 1
  },
  "adidas": {
   "id": "adidas",
@@ -4057,7 +4124,8 @@
    "sport",
    "schuhe"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "adidas"
  },
  "decathlon": {
   "id": "decathlon",
@@ -4129,7 +4197,8 @@
   "tags": [
    "drogerie"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "rossmann"
  },
  "paysafe": {
   "id": "paysafe",
@@ -4204,7 +4273,9 @@
    "kreditkarte",
    "prepaid"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "visa",
+  "sio": 1
  },
  "mastercard": {
   "id": "mastercard",
@@ -4230,7 +4301,8 @@
    "kreditkarte",
    "prepaid"
   ],
-  "region": "DE"
+  "region": "DE",
+  "si": "mastercard"
  },
  "cashtocode": {
   "id": "cashtocode",
