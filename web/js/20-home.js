@@ -43,7 +43,7 @@ ${marquee()}
   <div class="tiles bento" id="popGrid">${POP.map(byId).filter(Boolean).map(tile).join("")}</div>
 </section>
 <section class="sec hm-cats">${head("Kategorien","Alles, was sich digital verschenken und aufladen lässt.",`<a class="more" href="/kategorien">Alle Kategorien${ic("i-chev")}</a>`)}
-  <div class="crows" data-crows>${cats.map((k,i)=>{const l=VIS().filter(b=>b.cat===k.id),n=BRANDS.filter(b=>b.cat===k.id).length;return `<a class="crow rv" href="/kategorie/${k.id}" style="--c:${CCOL[k.id]};--d:${(i%6)*50}ms"><span class="crow-n">${esc(k.name)}</span><span class="crow-c">${n} ${k.id==="keys"?"Spiele":"Produkte"}</span><span class="crow-a">${ic("i-chev")}</span><span class="crow-fan" aria-hidden="true">${l.slice(0,3).map(b=>gc(b,{tilt:false,badge:false,plat:false})).join("")}</span></a>`}).join("")}</div>
+  <div class="crows" data-crows>${cats.map((k,i)=>{const l=VIS().filter(b=>b.cat===k.id),n=BRANDS.filter(b=>b.cat===k.id).length;return `<a class="crow rv" href="/kategorie/${k.id}" style="--c:${CCOL[k.id]};--d:${(i%6)*50}ms"><span class="crow-n">${esc(k.name)}</span><span class="crow-c">${n} ${k.id==="keys"?"Spiele":"Produkte"}</span><span class="crow-a">${ic("i-arrow")}</span><span class="crow-fan" aria-hidden="true">${l.slice(0,3).map(b=>gc(b,{tilt:false,badge:false,plat:false})).join("")}</span></a>`}).join("")}</div>
 </section>
 ${keys.length?`<section class="sec hm-keys"><div class="band-dark">
   ${head("Spiele-Keys",`${keys.length} Spiele für PC, PlayStation, Xbox und Nintendo`,`<a class="more" href="/kategorie/keys">Alle${ic("i-chev")}</a>${railNav("keyRail")}`)}
