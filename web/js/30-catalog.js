@@ -11,7 +11,7 @@ ${phead({c:"#7048E8",icon:"i-grid-f",title:"Kategorien",text:`${BRANDS.length} P
 <section class="sec cat-sec"><div class="catgrid">${cs.map(catCard).join("")}</div></section>
 <section class="sec" aria-labelledby="azH"><div class="sec-head"><h2 class="h2" id="azH">Alle Produkte von A bis Z</h2></div>
   <nav class="az-nav" aria-label="Nach Anfangsbuchstabe springen">${groups.map(g=>`<a href="#${azId(g.k)}" aria-label="Buchstabe ${g.k==="#"?"Ziffern":g.k}">${g.k}</a>`).join("")}</nav>
-  <div class="az">${groups.map(g=>`<div class="az-g" id="${azId(g.k)}"><h3 class="az-k">${g.k}</h3><ul>${g.l.map(b=>`<li><a href="/marke/${b.id}">${mini(b)}<span class="az-t"><b>${esc(b.name)}</b><small>${sub(b)}</small></span>${ic("i-chev")}</a></li>`).join("")}</ul></div>`).join("")}</div>
+  <div class="az">${groups.map(g=>`<div class="az-g spot" id="${azId(g.k)}"><h3 class="az-k">${g.k}</h3><ul>${g.l.map(b=>`<li><a href="/marke/${b.id}">${mini(b)}<span class="az-t"><b>${esc(b.name)}</b><small>${sub(b)}</small></span>${ic("i-chev")}</a></li>`).join("")}</ul></div>`).join("")}</div>
 </section>`};
 }
 function category(id,qs){
@@ -123,7 +123,7 @@ function brandPage(id){
     <div class="pinfo"><div><span class="si-ic">${ic("i-pin")}</span><div><small>Gültig in</small><b>${region}</b></div></div><div><span class="si-ic">${ic("i-mail")}</span><div><small>Lieferung</small><b>Sofort per E&#8209;Mail</b></div></div>${K?`<div><span class="si-ic">${ic("i-monitor")}</span><div><small>Aktivierung</small><b>${esc(STORE[b.plat]||PLAT[b.plat])}</b></div></div><div><span class="si-ic">${ic("i-key")}</span><div><small>Typ</small><b>Digitaler Key</b></div></div>`:""}</div>
     ${b.amts.length>1||!K?`<span class="lbl" id="pAmtL">${card?"Betrag":"Option"}</span><div class="${card?"amounts":"opts"}" id="pAmts" role="group" aria-labelledby="pAmtL" data-off>${b.amts.map(a=>`<button class="amt" data-a="pAmt" data-v="${a}" aria-pressed="${a===P.a}"${soldOut(id,a)?" disabled":""}>${card&&!b.labels?money(a):esc(optLabel(b,a))}${amtSub(a)}</button>`).join("")}</div>`:""}${avail.length?"":`<p class="err pd-sold">Derzeit ausverkauft. Schau bald wieder vorbei.</p>`}
     <div class="pd-qty"><span class="lbl" id="pQL">Menge</span><div class="qty" role="group" aria-labelledby="pQL"><button data-a="pQty" data-v="-1" aria-label="Weniger">−</button><span id="pQ" aria-live="polite">1</span><button data-a="pQty" data-v="1" aria-label="Mehr">+</button></div></div>
-    ${K?"":`<div class="giftbox">
+    ${K?"":`<div class="giftbox spot">
       <div class="gb-h"><span class="gb-ic" aria-hidden="true">${ic("i-gift")}</span><div class="gb-t"><b id="gbL">Als Geschenk senden</b><small>Per E-Mail mit persönlicher Karte</small></div><button class="switch" role="switch" aria-checked="false" data-a="pGift" aria-labelledby="gbL"></button></div>
       <div class="gb-f" id="giftF" hidden>
         <label class="lbl" for="gTo">E-Mail der beschenkten Person</label><input class="inp" id="gTo" type="email" autocomplete="off" placeholder="name@beispiel.de">
@@ -133,7 +133,7 @@ function brandPage(id){
         <div class="err" id="gErr" role="alert"></div>
       </div>
     </div>`}
-    <div class="pd-sum"><div class="pd-tot"><span>Gesamt</span><b id="pTot">${money(total())}</b></div><p class="pd-save" id="pSave"${saving()?"":" hidden"}>Du sparst ${money(saving())} gegenüber dem Nennwert</p><p class="pd-fee">${taxHint()}</p></div>
+    <div class="pd-sum spot"><div class="pd-tot"><span>Gesamt</span><b id="pTot">${money(total())}</b></div><p class="pd-save" id="pSave"${saving()?"":" hidden"}>Du sparst ${money(saving())} gegenüber dem Nennwert</p><p class="pd-fee">${taxHint()}</p></div>
     <div class="pd-buy" data-off><button class="btn btn-primary btn-lg" data-a="pBuy"${dis}>Jetzt kaufen</button><button class="btn btn-outline btn-lg" data-a="pAdd"${dis}>In den Warenkorb</button></div>
     ${xpayBox("pX","Express-Checkout")}
     ${payLogos(b)}

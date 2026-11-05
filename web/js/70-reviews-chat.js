@@ -33,10 +33,11 @@ function renderFooter(){
    <div><h5>Rechtliches</h5><ul><li><a href="https://mein.online-impressum.de/instacode/" target="_blank" rel="noopener">Impressum</a></li><li><a href="/agb">AGB</a></li><li><a href="/widerruf">Widerrufsbelehrung</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><button class="lnk" data-a="cookieOpen">Cookie-Einstellungen</button></li></ul></div>
    <div><h5>Kontakt</h5><ul><li><a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></li><li><a href="/hilfe">Hilfe und Kontakt</a></li></ul></div>
   </div>
+  <div class="ft-giant" aria-hidden="true">instacode</div>
   <div class="ft-bottom"><span>© ${new Date().getFullYear()} instacode.store</span><span class="ft-stripe">Zahlungsabwicklung durch <img src="/img/mark/logos/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></div>
   </div>`;
 }
-function applyTheme(){document.documentElement.setAttribute("data-theme",S.theme==="dark"?"dark":"light")}
+function applyTheme(){document.documentElement.setAttribute("data-theme","dark")}
 function confetti(){if(reduce)return;const box=$("#confetti"),cols=["#5B4BF0","#2E6BFF","#9D8BFF","#FFFFFF","#FFC857","#12B76A"];for(let i=0;i<50;i++){const p=document.createElement("i");p.style.cssText=`left:${Math.random()*100}%;background:${cols[i%6]};--dx:${(Math.random()-.5)*180}px;--r:${Math.random()*720-360}deg;animation-duration:${1.7+Math.random()*1.4}s;animation-delay:${Math.random()*.3}s;width:${6+Math.random()*6}px;height:${8+Math.random()*8}px`;box.appendChild(p)}setTimeout(()=>{box.innerHTML=""},3800)}
 
 /* ---------- chat ---------- */

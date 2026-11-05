@@ -14,18 +14,18 @@ function topup(_,qs){
 <div class="tu">
   <div class="tu-head"><h1 class="h1 page-h1">Handy aufladen</h1><p class="lead">Guthaben für ${ops.length} Anbieter. Nummer eingeben, Betrag wählen, bezahlen – das Guthaben wird direkt nach der Zahlung gebucht.</p></div>
   <div class="tu-steps">
-    <section class="tu-step" aria-labelledby="tuS1"><h2 class="tu-sh" id="tuS1"><span class="tu-n" aria-hidden="true">1</span>Land und Nummer</h2>
+    <section class="tu-step spot" aria-labelledby="tuS1"><h2 class="tu-sh" id="tuS1"><span class="tu-n" aria-hidden="true">1</span>Land und Nummer</h2>
       <button class="sel" data-a="country" aria-label="Land: ${esc(c.n)}. Ändern">${flag(c.c,24)}<span>${esc(c.n)}</span>${ic("i-down")}</button>
       <label class="lbl" for="tNum">Handynummer</label>
       <div class="phone"><span>${c.dial}</span><input id="tNum" type="tel" inputmode="tel" placeholder="151 2345678" value="${esc(T.n)}" autocomplete="tel-national" aria-describedby="tErr"></div>
       <div class="err" id="tErr" role="alert"></div>
       ${saved.length?`<span class="lbl tu-sl">Gespeicherte Nummern</span><div class="tu-saved">${saved.map(x=>`<button class="chip" data-a="tSaved" data-v="${esc(x.n)}|${esc(x.op)}">${ic("i-user")}${esc(telFmt(x.n))}</button>`).join("")}</div>`:""}
     </section>
-    <section class="tu-step" aria-labelledby="tuS2"><h2 class="tu-sh" id="tuS2"><span class="tu-n" aria-hidden="true">2</span>Anbieter</h2>
+    <section class="tu-step spot" aria-labelledby="tuS2"><h2 class="tu-sh" id="tuS2"><span class="tu-n" aria-hidden="true">2</span>Anbieter</h2>
       <p class="tu-det" id="tDet"></p>
       <div class="tu-ops" id="tOps" role="group" aria-labelledby="tuS2">${ops.map(x=>`<button class="chip" data-a="tOp" data-v="${x.id}" aria-pressed="false"><i class="tu-dot" style="background:${x.bg}" aria-hidden="true"></i>${esc(x.name)}</button>`).join("")}</div>
     </section>
-    <section class="tu-step" aria-labelledby="tuS3"><h2 class="tu-sh" id="tuS3"><span class="tu-n" aria-hidden="true">3</span>Betrag</h2>
+    <section class="tu-step spot" aria-labelledby="tuS3"><h2 class="tu-sh" id="tuS3"><span class="tu-n" aria-hidden="true">3</span>Betrag</h2>
       <div class="amounts" id="tAmts" role="group" aria-labelledby="tuS3" data-off></div>
     </section>
   </div>
@@ -33,7 +33,7 @@ function topup(_,qs){
     <div class="tu-prev" id="tuPrev">
       <div class="phone-mock" id="pMock" aria-hidden="true"><span class="lm" aria-hidden="true"></span><div class="pm-screen"><div class="pm-card" id="pmCard"><span class="gc ghost"></span></div><div class="pm-op"><i id="pmOpC"></i><span id="pmOp">Anbieter wählen</span></div><div class="pm-num" id="pmNum">${c.dial} …</div><div class="pm-amt" id="pmAmt"><small>Aufladung</small><span>–</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div></div>
     </div>
-    <div class="tu-sum">
+    <div class="tu-sum spot">
       <h2 class="h3">Zusammenfassung</h2>
       <dl class="tu-rows"><div><dt>Nummer</dt><dd id="sNum">–</dd></div><div><dt>Anbieter</dt><dd id="sOp">–</dd></div><div><dt>Guthaben</dt><dd id="sAmt">–</dd></div></dl>
       <div class="tu-tot"><span>Gesamt</span><b id="sTot" aria-live="polite">–</b></div>

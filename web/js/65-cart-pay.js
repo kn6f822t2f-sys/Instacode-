@@ -44,7 +44,7 @@ A.qb=(id,a0)=>{
 let stripeP=null;
 const loadStripe=()=>stripeP||(stripeP=new Promise((ok,no)=>{if(window.Stripe)return ok(window.Stripe(CFG.pk));const s=document.createElement("script");s.src="https://js.stripe.com/v3/";s.async=true;s.onload=()=>window.Stripe?ok(window.Stripe(CFG.pk)):no(new Error("Stripe nicht verfügbar"));s.onerror=()=>{stripeP=null;no(new Error("Stripe.js konnte nicht geladen werden"))};document.head.appendChild(s)}));
 /* Das Design ist nur hell; Stripe-Felder und Widgets folgen dem */
-const isDark=()=>false;
+const isDark=()=>true;
 function xpayMount(box,getItems,o={}){
   if(!box||!CFG.express||!evMail()){if(box)box.hidden=true;if(o.onHide)o.onHide();return null}
   const btns=$(".xpay-btns",box),err=$(".xpay-err",box);

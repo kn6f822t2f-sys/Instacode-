@@ -12,15 +12,7 @@ document.addEventListener("keydown",e=>{
   if(e.key!=="Escape")return;
   if($("#pal").classList.contains("open"))palClose();else if($("#drawer").classList.contains("open"))A.cartClose();else if($("#scrim").classList.contains("open"))closeSheet();else if($("#menu").classList.contains("open"))closeMenu();else if(chat.open)chatClose()});
 const hdr=$("#hdr");let tk=false;
-document.addEventListener("pointerdown",e=>{if(reduce)return;const b=e.target.closest(".btn");if(!b)return;const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2.2,s=document.createElement("span");s.className="rip";s.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-r.left-d/2}px;top:${e.clientY-r.top-d/2}px`;b.appendChild(s);setTimeout(()=>s.remove(),650)},{passive:true});
-const LITE=document.documentElement.classList.contains("lite");let BGC=null,BGF=null,svT=null,sv=0,ly=0;
-addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{const y=scrollY,h=document.documentElement.scrollHeight-innerHeight,pr=h>0?Math.min(1,y/h).toFixed(4):"0";
-  hdr.classList.toggle("scrolled",y>8);
-  if(!reduce&&!LITE){parUpdate();BGC=BGC&&BGC.isConnected?BGC:document.getElementById("bgcards");BGF=BGF||document.querySelector(".bgfx");
-    if(BGF)BGF.style.setProperty("--sp",pr);
-    if(BGC){BGC.style.setProperty("--sp",pr);BGC.style.setProperty("--sy",Math.round(y));const v=y-(ly||y);ly=y;sv=Math.max(-40,Math.min(40,sv*.6+v*.4));BGC.style.setProperty("--sv",sv.toFixed(2));
-      clearTimeout(svT);svT=setTimeout(function decay(){sv*=.75;BGC.style.setProperty("--sv",sv.toFixed(2));if(Math.abs(sv)>.05)svT=setTimeout(decay,40)},80)}}
-  tk=false})},{passive:true});
+addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{hdr.classList.toggle("scrolled",scrollY>8);if(!reduce)parUpdate();tk=false})},{passive:true});
 addEventListener("resize",()=>requestAnimationFrame(parUpdate),{passive:true});
 
 /* ---------- Vertrauensleiste: auf kleinen Bildschirmen nacheinander ---------- */

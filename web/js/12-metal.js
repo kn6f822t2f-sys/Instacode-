@@ -15,12 +15,12 @@ void main(){
   float b=p.y*2.1+p.x*.85+w*1.9+w2*.8+m.x*.55-m.y*.35+t*.04;
   float s=.5+.5*sin(b*7.2);
   s=pow(s,1.45);
-  vec3 c=mix(vec3(.13,.14,.19),vec3(.58,.61,.71),smoothstep(0.,.5,s));
-  c=mix(c,vec3(.97,.98,1.),smoothstep(.5,.93,s));
+  vec3 c=mix(vec3(.055,.06,.085),vec3(.34,.36,.45),smoothstep(0.,.52,s));
+  c=mix(c,vec3(.9,.91,.97),smoothstep(.56,.95,s));
   float sp=smoothstep(.975,1.,.5+.5*sin(b*14.6+1.3));
-  c+=sp*.28;
-  c+=vec3(.06,.025,.11)*(1.-s)*smoothstep(.25,.85,w2);
-  c+=vec3(.02,.05,.09)*s*smoothstep(.3,.9,w);
+  c+=sp*.24;
+  c+=vec3(.09,.045,.18)*(1.-s)*smoothstep(.25,.85,w2);
+  c+=vec3(.02,.06,.12)*s*smoothstep(.3,.9,w);
   gl_FragColor=vec4(c,1.);}`;
   const items=new Set(),lite=document.documentElement.classList.contains("lite");
   const still=matchMedia("(prefers-reduced-motion: reduce)").matches;

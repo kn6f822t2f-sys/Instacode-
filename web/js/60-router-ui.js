@@ -8,15 +8,8 @@ const litAt=(t,e)=>{const r=t.getBoundingClientRect();t.style.setProperty("--mx"
 let litE=null,litRaf=0;
 document.addEventListener("pointermove",e=>{litE=e;if(litRaf)return;litRaf=requestAnimationFrame(()=>{litRaf=0;const t=litE.target.closest&&litE.target.closest(LIT);if(t)litAt(t,litE)})},{passive:true});
 document.addEventListener("pointerdown",e=>{const t=e.target.closest&&e.target.closest(LIT);if(t)litAt(t,e)},{passive:true});
-/* Kartenwand im Hintergrund: nur mit Maus (auf .lite ausgeblendet), wird nach dem Laden gebaut und bewegt sich nur beim Scrollen (--sy setzt 90-start) */
-function bgWall(){const el=document.getElementById("bgcards");if(!el||el.dataset.done)return;
-  if(document.documentElement.classList.contains("lite")){el.dataset.done=1;return}
-  const pref=new Set(POP.concat(FEAT)),l=IMGB().sort((a,b)=>pref.has(b.id)-pref.has(a.id));if(l.length<6)return;el.dataset.done=1;
-  const build=()=>{const rows=Math.min(8,Math.ceil(innerHeight*1.25/165)+1),per=6;let k=0;
-    el.innerHTML=Array.from({length:rows},()=>{const h=Array.from({length:per},()=>`<img src="${esc(l[(k++)%l.length].img)}" alt="" loading="lazy" decoding="async">`).join("");return `<div class="bgw">${h}${h}${h}</div>`}).join("")};
-  "requestIdleCallback" in window?requestIdleCallback(build,{timeout:2500}):setTimeout(build,1500)}
 try{history.scrollRestoration="manual"}catch(e){}var SSR_T=/^\/(marke\/|kategorie\/|kategorien|aufladen|angebote|hilfe|agb|datenschutz|widerruf|$)/.test(location.pathname)?document.title:null,SSR_P=location.pathname.replace(/\/index\.html$/,"/")||"/";const HOME_T="Gutscheine & Guthaben online kaufen – sofort per E-Mail | instacode";
-function route(keep){bgWall();
+function route(keep){
   if(/^#\//.test(location.hash)){try{history.replaceState(null,"",location.hash.slice(1))}catch(e){}}const pth=location.pathname.replace(/\/index\.html$/,"/");
   const h=(pth||"/")+location.search,qi=h.indexOf("?"),path=(qi>-1?h.slice(0,qi):h)||"/",qs=new URLSearchParams(qi>-1?h.slice(qi+1):"");
   cur={path,qs};

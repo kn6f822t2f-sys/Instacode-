@@ -1,10 +1,10 @@
 /* ---------- home ---------- */
-/* Aufbau: Bestseller + iPhone (Signature: Chrom-Rahmen, Apple-Pay-Ablauf) · Marken · Vertrauen · Am beliebtesten · Kategorien ·
-   Spiele-Keys · Handy aufladen · Angebote · Kategorie-Leisten · Zuletzt angesehen · Ablauf mit Video · Bewertungen · Ratgeber · Fragen */
+/* Aufbau: Bestseller + iPhone (Signature: Titan-Rahmen, Apple-Pay-Ablauf) · Marken · Vertrauen · Am beliebtesten · Kategorien ·
+   Spiele-Keys · Handy aufladen · Angebote · Zuletzt angesehen · Ablauf mit Video · Bewertungen · Ratgeber · Fragen · Abschluss */
 const shortName=b=>b.name.replace(/ (Gift Card|Geschenkkarte)$/,"").replace("Xbox Game Pass Ultimate","Game Pass");
 function home(){
   const recent=S.recent.map(byId).filter(Boolean).filter(isRep).slice(0,10), c=ctry();
-  const reps=cat=>VIS().filter(b=>b.cat===cat), keys=VIS().filter(isKey), deals=DEALS(), best=pick(BEST0,18).slice(0,18).map(byId).filter(Boolean);
+  const keys=VIS().filter(isKey), deals=DEALS(), best=pick(BEST0,18).slice(0,18).map(byId).filter(Boolean);
   const off=deals.length?Math.round(Math.max.apply(null,deals.map(b=>b.disc))*100):0, nTop=BRANDS.filter(b=>b.cat==="topup").length;
   const head=(title,sub,right)=>`<div class="sec-head"><div><h2 class="h2">${title}</h2>${sub?`<p>${sub}</p>`:""}</div>${right?`<div class="sh-r">${right}</div>`:""}</div>`;
   return {tab:"home",title:"Digitale Codes sofort per E-Mail",html:`<div class="home">
@@ -23,10 +23,10 @@ function home(){
 </section>
 ${marquee()}
 <section class="sec hm-trust"><ul>
-  <li><span class="si-ic">${ic("i-zap")}</span><b>In Sekunden geliefert</b><small>Meist erscheint der Code direkt nach der Zahlung auf dem Bildschirm und kommt per E-Mail.</small></li>
-  <li><span class="si-ic">${ic("i-shield")}</span><b>Offizielle Codes</b><small>Bezogen über autorisierte Distributoren. Auf jeder Produktseite steht, wo der Code gilt.</small></li>
-  <li><span class="si-ic">${ic("i-lock")}</span><b>Sicher bezahlt</b><small>Zahlungsabwicklung über Stripe mit 3&#8209;D Secure. Kartendaten sehen wir nie.</small></li>
-  <li><span class="si-ic">${ic("i-mail")}</span><b>Persönlicher Support</b><small>Fragen zu Bestellung oder Einlösung beantworten wir per E-Mail: <a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></small></li>
+  <li class="spot rv"><span class="si-ic">${ic("i-zap")}</span><b>In Sekunden geliefert</b><small>Meist erscheint der Code direkt nach der Zahlung auf dem Bildschirm und kommt per E-Mail.</small></li>
+  <li class="spot rv" style="--d:70ms"><span class="si-ic">${ic("i-shield")}</span><b>Offizielle Codes</b><small>Bezogen über autorisierte Distributoren. Auf jeder Produktseite steht, wo der Code gilt.</small></li>
+  <li class="spot rv" style="--d:140ms"><span class="si-ic">${ic("i-lock")}</span><b>Sicher bezahlt</b><small>Zahlungsabwicklung über Stripe mit 3&#8209;D Secure. Kartendaten sehen wir nie.</small></li>
+  <li class="spot rv" style="--d:210ms"><span class="si-ic">${ic("i-mail")}</span><b>Persönlicher Support</b><small>Fragen zu Bestellung oder Einlösung beantworten wir per E-Mail: <a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></small></li>
 </ul></section>
 <section class="sec">${secHead("Am beliebtesten")}
   <div class="chips" role="group" aria-label="Nach Kategorie filtern"><button class="chip" aria-pressed="true" data-a="pop" data-v="all">Alle</button>${CATS.filter(c=>c.id!=="topup"&&VIS().some(b=>b.cat===c.id)).map(c=>`<button class="chip" aria-pressed="false" data-a="pop" data-v="${c.id}">${ic(c.icon)}${esc(c.short)}</button>`).join("")}</div>
@@ -54,7 +54,6 @@ ${keys.length?`<section class="sec hm-keys"><div class="band-dark">
   </div>
 </div></section>
 ${deals.length?`<section class="sec">${head("Jetzt reduziert",`Bis zu ${off} % Rabatt auf ausgewählte Gutscheine.`,`<a class="more" href="/angebote">Alle${ic("i-chev")}</a>${railNav("dealRail")}`)}${rail("dealRail",deals)}</section>`:""}
-${["gaming","shopping","entertainment","currency","apps"].map(c=>{const l=reps(c);return l.length>1?`<section class="sec">${secHead(esc(catById(c).name),["/kategorie/"+c,"Alle"],railNav("r_"+c))}${rail("r_"+c,l.slice(0,12))}</section>`:""}).join("")}
 ${recent.length?`<section class="sec">${secHead("Zuletzt angesehen","",railNav("recentRail"))}${rail("recentRail",recent)}</section>`:""}
 <section class="sec hm-flow"><div class="vflow">
   <div class="vf-copy">
@@ -73,6 +72,12 @@ ${recent.length?`<section class="sec">${secHead("Zuletzt angesehen","",railNav("
 <section class="sec" id="revSec" hidden></section>
 ${seoBlock()}
 <section class="sec hm-faq">${secHead("Häufige Fragen",["/hilfe","Alle Fragen"])}${faqList(PALL.slice(0,5))}</section>
+<section class="sec hm-cta"><div class="cta-box ring rv" data-off>
+  <div class="cta-cards" aria-hidden="true">${best.slice(0,3).map(b=>`<span>${gc(b,{tilt:false,badge:false})}</span>`).join("")}</div>
+  <h2 class="h2">Finde deinen Gutschein</h2>
+  <p>${BRANDS.length.toLocaleString("de-DE")} Produkte, sicher bezahlt mit ${payNames()}. Der Code kommt meist in Sekunden per E-Mail.</p>
+  <div class="cta-btns"><a class="btn btn-primary btn-lg" href="/kategorien">Sortiment ansehen</a><a class="btn btn-soft btn-lg" href="/aufladen">Handy aufladen</a></div>
+</div></section>
 </div>`,
   after(){
     const n=$("#twNum");n&&n.addEventListener("keydown",e=>{if(e.key==="Enter")A.twGo()});
