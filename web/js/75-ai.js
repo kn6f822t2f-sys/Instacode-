@@ -156,7 +156,7 @@ function miaCardHTML(c){
     <div class="mia-ci"><a class="mia-cn" href="/marke/${b.id}">${esc(b.name)}</a><span class="mia-cs">${sub}</span><span class="mia-cpr"><b class="mia-cp">${a?money(price(b,a)):"Derzeit ausverkauft"}</b><a class="mia-lnk" href="/marke/${b.id}" aria-label="${esc(b.name)} ansehen">Ansehen</a></span></div>
     ${b.amts.length>1&&b.cat!=="topup"?`<div class="mia-amts" role="group" aria-label="${card?"Betrag":"Option"} für ${esc(b.name)}">${b.amts.slice(0,6).map(x=>`<button type="button" class="mia-amt" data-a="miaAmt" data-v="${x}" aria-pressed="${x===a}"${soldOut(b.id,x)?" disabled":""}>${esc(miaAmtT(b,x))}</button>`).join("")}</div>`:""}
     <div class="mia-cb">${b.cat==="topup"?`<button type="button" class="btn btn-primary btn-sm" data-a="miaGo" data-v="/aufladen?op=${b.id}">Aufladen</button>`
-      :`<button type="button" class="btn btn-primary btn-sm" data-a="miaBuy" data-v="${b.id}"${a?"":" disabled"}>Sofort kaufen</button><button type="button" class="btn btn-soft btn-sm" data-a="miaAdd" data-v="${b.id}"${a?"":" disabled"}>In den Warenkorb</button>`}</div>
+      :`<button type="button" class="btn btn-primary btn-ink btn-sm" data-a="miaBuy" data-v="${b.id}"${a?"":" disabled"}>Sofort kaufen</button><button type="button" class="btn btn-soft btn-sm" data-a="miaAdd" data-v="${b.id}"${a?"":" disabled"}>In den Warenkorb</button>`}</div>
   </div>`;
 }
 const MIA_ACT={qb:"Schnellkauf öffnen",open:"Produkt ansehen",checkout:"Zur Kasse",topup:"Handy aufladen",abo:"Abo ansehen"};

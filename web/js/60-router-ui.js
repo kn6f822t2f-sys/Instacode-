@@ -130,7 +130,7 @@ function renderMenu(){
    ${row("button",`data-a="country"`,flag(c.c,22),"Land",esc(c.n))}
   </div></section>
   <div class="m-acc">${u?`<a class="mi m-user" href="/konto"><span class="avatar">${esc(initials(u.name))}</span><span class="mi-t">${esc(u.name)}<small>Bestellungen, Codes und Einstellungen</small></span>${ic("i-chev","mi-c")}</a>`
-    :`<a class="btn btn-primary btn-block btn-lg" href="/login">Anmelden</a><a class="btn btn-soft btn-block" href="/login?m=reg">Konto erstellen</a><p class="m-note">Mit Konto findest du deine Codes jederzeit wieder.</p>`}</div>`;
+    :`<a class="btn btn-primary btn-ink btn-block btn-lg" href="/login">Anmelden</a><a class="btn btn-soft btn-block" href="/login?m=reg">Konto erstellen</a><p class="m-note">Mit Konto findest du deine Codes jederzeit wieder.</p>`}</div>`;
 }
 A.menu=(v,el)=>{menuFrom=el||document.activeElement;const m=$("#menu"),o=originAt(m,menuFrom,true);if(o){m.style.setProperty("--mox",o[0]);m.style.setProperty("--moy",o[1])}renderMenu();$("#menuBody").scrollTop=0;$("#menu").classList.add("open");menuScrim.classList.add("open");document.body.classList.add("lock");$("#menu .x").focus({preventScroll:true})};
 function closeMenu(silent){const m=$("#menu");if(!m.classList.contains("open"))return;m.classList.remove("open");menuScrim.classList.remove("open");unlock();if(silent!==true&&menuFrom&&document.contains(menuFrom))menuFrom.focus({preventScroll:true})}

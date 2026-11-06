@@ -218,7 +218,7 @@ function brandPage(id){
     </div>`}
     <div class="pd-pay">
       <div class="pd-sum"><div class="pd-tot"><span>Gesamt</span><b id="pTot">${money(total())}</b></div><p class="pd-save" id="pSave"${saving()?"":" hidden"}>Du sparst ${money(saving())} gegenüber dem Nennwert</p><p class="pd-fee">${taxHint()}</p></div>
-      <div class="pd-buy" data-off><button class="btn btn-primary btn-lg" data-a="pBuy"${dis}>Jetzt kaufen</button><button class="btn btn-outline btn-lg" data-a="pAdd"${dis}>In den Warenkorb</button></div>
+      <div class="pd-buy" data-off><button class="btn btn-primary btn-ink btn-lg" data-a="pBuy"${dis}>Jetzt kaufen</button><button class="btn btn-outline btn-lg" data-a="pAdd"${dis}>In den Warenkorb</button></div>
       ${xpayBox("pX","Express-Checkout")}
       ${payLogos(b)}
       ${trustBadges(b)}
@@ -233,7 +233,7 @@ function brandPage(id){
   </div>
 </div>
 ${similar.length?`<section class="sec pd-more">${secHead("Mehr aus "+esc(c.name),["/kategorie/"+c.id,"Alle"],railNav("simRail"))}${rail("simRail",similar,{cover:K})}</section>`:""}
-<div class="pd-bar" id="pdBar"><div class="pd-bar-in"><span class="pd-bar-t"><b id="bbTot">${money(total())}</b><small id="bbSub">${esc(barSub())}</small></span><button class="btn btn-primary" data-a="pBuy"${dis}>Jetzt kaufen</button></div></div>
+<div class="pd-bar" id="pdBar"><div class="pd-bar-in"><span class="pd-bar-t"><b id="bbTot">${money(total())}</b><small id="bbSub">${esc(barSub())}</small></span><button class="btn btn-primary btn-ink" data-a="pBuy"${dis}>Jetzt kaufen</button></div></div>
 `,
   after(){if(b.rl)API("/product/"+encodeURIComponent(b.id)).then(j=>{const o=document.getElementById("redeemOl");if(o&&j.redeem){const st=String(j.redeem).replace(/<[^>]+>/g," ").split(/(?<=[.!])\s+|\n+|\r+/).map(x=>x.trim()).filter(x=>x.length>2).slice(0,8);if(st.length)o.innerHTML=st.map(x=>`<li>${esc(x)}</li>`).join("")}}).catch(()=>{});
     const stg=$("#pdStage"),bar=$("#pdBar"),buy=$(".pd-buy");

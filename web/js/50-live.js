@@ -37,7 +37,7 @@ function apiLogin(_,qs){
    <label class="lbl" for="aMail">E-Mail</label><input class="inp" id="aMail" type="email" autocomplete="email" inputmode="email" placeholder="name@beispiel.de" value="${esc(S.pendingEmail||"")}">
    <label class="lbl" for="aPw">Passwort</label><div class="au-pw"><input id="aPw" type="password" autocomplete="${reg?"new-password":"current-password"}" placeholder="${reg?"Mindestens 8 Zeichen":"Dein Passwort"}"><button type="button" class="au-eye" data-a="pwToggle" aria-label="Passwort anzeigen" aria-pressed="false">${ic("i-eye")}</button></div>
    <div class="err" id="aErr" role="alert"></div>
-   <button type="submit" class="btn btn-primary btn-lg btn-block" data-a="emailAuth" data-v="${reg?"reg":"login"}|${esc(r)}" data-off>${reg?"Konto erstellen":"Anmelden"}</button>
+   <button type="submit" class="btn btn-primary btn-ink btn-lg btn-block" data-a="emailAuth" data-v="${reg?"reg":"login"}|${esc(r)}" data-off>${reg?"Konto erstellen":"Anmelden"}</button>
    </form>
    ${a.code?`<div class="au-or">oder</div><button class="btn btn-soft btn-block" data-a="codeLogin" data-v="${esc(r)}">${ic("i-mail")}Ohne Passwort: Code per E-Mail</button>`:""}
    ${reg?"":`<button class="btn btn-ghost btn-block au-forgot" data-a="forgot">Passwort vergessen?</button>`}
@@ -83,7 +83,7 @@ function apiVerify(_,qs){
   return {title:"E-Mail bestätigen",html:authCard("E-Mail bestätigen",`Wir haben einen 6-stelligen Code an <b>${esc(e)}</b> geschickt. Schau auch im Spam-Ordner nach.`,`
    <label class="lbl au-otp-l" for="otp">Bestätigungscode</label><div class="au-otpw"><span class="au-cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><input class="inp otp au-otp" id="otp" inputmode="numeric" maxlength="40" autocomplete="one-time-code" placeholder="000000" aria-describedby="otpErr"></div>
    <div class="err" id="otpErr" role="alert"></div>
-   <button class="btn btn-primary btn-lg btn-block" data-a="otpGo" data-v="${esc(r)}" data-off>Bestätigen</button>
+   <button class="btn btn-primary btn-ink btn-lg btn-block" data-a="otpGo" data-v="${esc(r)}" data-off>Bestätigen</button>
    <button class="btn btn-ghost btn-block au-forgot" data-a="otpResend" id="otpRe">Code erneut senden</button>
    <p class="au-alt">Falsche Adresse? <a href="/login?m=reg">Neu registrieren</a></p>`),
    after(){const o=$("#otp");o.addEventListener("input",()=>{o.value=o.value.replace(/\D/g,"").slice(0,6);o.classList.remove("bad");if(o.value.length===6)A.otpGo(r,$("[data-a=otpGo]"))});setTimeout(()=>o.focus(),100);auWait($("#otpRe"));otpPaint(o)}};
@@ -98,11 +98,11 @@ const auWait=el=>{if(!el)return;const t=()=>{if(!el.isConnected)return;const w=3
 A.otpResend=async(_,el)=>{if(Date.now()-lastResend<30000)return;lastResend=Date.now();auWait(el);try{await API("/auth/resend",{method:"POST",body:{email:S.pendingEmail}});toast("Neuer Code ist unterwegs")}catch(e){toast(e.message)}};
 function apiReset(_,qs){
   const t=qs.get("t")||"";
-  if(!t)return {title:"Neues Passwort",html:authCard("Link unvollständig","Diesem Link fehlt der Sicherheitsschlüssel. Fordere auf der Anmeldeseite unter „Passwort vergessen?“ einen neuen Link an.",`<a class="btn btn-primary btn-lg btn-block au-go" href="/login">Zur Anmeldung</a>`)};
+  if(!t)return {title:"Neues Passwort",html:authCard("Link unvollständig","Diesem Link fehlt der Sicherheitsschlüssel. Fordere auf der Anmeldeseite unter „Passwort vergessen?“ einen neuen Link an.",`<a class="btn btn-primary btn-ink btn-lg btn-block au-go" href="/login">Zur Anmeldung</a>`)};
   return {title:"Neues Passwort",html:authCard("Neues Passwort","Lege ein neues Passwort für dein Konto fest.",`<form class="au-form" novalidate>
    <label class="lbl" for="np1">Neues Passwort</label><div class="au-pw"><input id="np1" type="password" autocomplete="new-password" placeholder="Mindestens 8 Zeichen"><button type="button" class="au-eye" data-a="pwToggle" aria-label="Passwort anzeigen" aria-pressed="false">${ic("i-eye")}</button></div>
    <label class="lbl" for="np2">Passwort wiederholen</label><input class="inp" id="np2" type="password" autocomplete="new-password">
-   <div class="err" id="npErr" role="alert"></div><button type="submit" class="btn btn-primary btn-lg btn-block" data-a="npGo" data-v="${esc(t)}" data-off>Passwort speichern</button></form>`)};
+   <div class="err" id="npErr" role="alert"></div><button type="submit" class="btn btn-primary btn-ink btn-lg btn-block" data-a="npGo" data-v="${esc(t)}" data-off>Passwort speichern</button></form>`)};
 }
 A.npGo=async(t,el)=>{const a=$("#np1").value,b=$("#np2").value,e=$("#npErr");e.textContent="";if(a.length<8){e.textContent="Das Passwort braucht mindestens 8 Zeichen.";return}if(a!==b){e.textContent="Die Passwörter stimmen nicht überein.";return}busy(el,true);try{await API("/auth/reset",{method:"POST",body:{token:t,password:a}});setUser(null);toast("Passwort gespeichert. Bitte melde dich an.");go("/login")}catch(x){e.textContent=x.message;busy(el,false)}};
 

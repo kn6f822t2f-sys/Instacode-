@@ -32,47 +32,60 @@
 .lg-lens.on{opacity:1}
 
 /* ---------- Knöpfe ----------
-   Schlank und ruhig: 40–46 px hoch, mittlere Schriftstärke, Glas statt Kasten.
-   Hauptknopf: dunkles, leicht durchscheinendes Glas; Nebenknopf: klares Glas mit Haarlinie.
-   Effekte: feiner Glanz beim Überfahren, Licht folgt dem Zeiger, leichtes Einsinken beim Drücken. */
-.btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 18px;border-radius:var(--pill);
-  font-size:14.5px;font-weight:500;letter-spacing:-.005em;white-space:nowrap;color:var(--ink);overflow:hidden;
-  transition:transform .3s var(--spring),box-shadow .3s var(--ease),background .3s var(--ease),color .2s,filter .2s}
-.btn .ico{width:16px;height:16px;transition:translate .35s var(--spring)}
-.btn-lg{min-height:46px;padding:0 22px;font-size:15px}
-.btn-sm{min-height:34px;padding:0 13px;font-size:13.5px}
+   Schlank und ruhig: 38 px hoch (groß 44, klein 32), 14 px in mittlerer Stärke, Pille statt Kasten.
+   Hauptknopf: klares Glas mit dunkler Schrift und Haarlinie. Beim Überfahren hellt das Glas auf,
+   ein Perlmutt-Lichtpunkt läuft um den Rand und ein Glanz zieht durch.
+   Kauf- und Absendeknöpfe (.btn-ink: Kaufen, Bezahlen, Aufladen, Abo, Anmelden): dunkles Rauchglas, genauso schlank.
+   Nebenknopf: nur Haarlinie auf fast unsichtbarem Grund. */
+.btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:0 16px;border-radius:var(--pill);
+  font-size:14px;font-weight:500;letter-spacing:-.006em;line-height:1.2;white-space:nowrap;color:var(--ink);overflow:hidden;
+  transition:transform .3s var(--spring),box-shadow .3s var(--ease),background-color .3s var(--ease),color .2s,filter .2s}
+.btn .ico{width:15px;height:15px;transition:translate .35s var(--spring)}
+.btn-lg{min-height:44px;padding:0 20px;font-size:14.5px}
+.btn-sm{min-height:32px;padding:0 12px;font-size:13px}
 .btn-block{width:100%}
 .btn:active{transform:scale(.98)}
 .btn[disabled]{opacity:.4;pointer-events:none}
 /* Pfeil am Ende rückt beim Überfahren ein Stück nach */
 @media (hover:hover){.btn:hover .ico:last-child:not(:first-child){translate:3px 0}}
-.btn-primary{color:#fff;background:radial-gradient(140px circle at var(--mx,50%) var(--my,-30%),rgba(255,255,255,.16),rgba(255,255,255,0) 70%),linear-gradient(180deg,rgba(38,41,48,.92),rgba(14,16,20,.94));
-  -webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 .5px rgba(255,255,255,.08),0 1px 2px rgba(14,16,20,.18),0 6px 16px -10px rgba(14,16,20,.55)}
-.btn-primary::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:40%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);opacity:0;transition:left .9s var(--ease),opacity .3s}
-@media (hover:hover){
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 .5px rgba(255,255,255,.12),0 2px 4px rgba(14,16,20,.16),0 12px 24px -12px rgba(14,16,20,.55)}
-  .btn-primary:hover::after{left:130%;opacity:1}
-}
-.btn-primary:active{transform:translateY(0) scale(.98);filter:brightness(1.12)}
-.btn-primary .spin{border-color:rgba(255,255,255,.25);border-top-color:#fff}
-/* Großer Hauptknopf: beim Überfahren läuft ein feiner Perlmutt-Glanzpunkt um den Rand */
-.btn-primary.btn-lg::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;padding:1px;pointer-events:none;background:var(--ring);opacity:0;transition:opacity .4s;
+/* Hauptknopf: klares Glas, ein weicher Lichtfleck folgt dem Zeiger */
+.btn-primary{color:var(--ink);
+  background:radial-gradient(110px circle at var(--mx,50%) var(--my,-30%),rgba(255,255,255,.95),rgba(255,255,255,0) 70%),linear-gradient(180deg,rgba(255,255,255,.74),rgba(255,255,255,.44));
+  -webkit-backdrop-filter:blur(14px) saturate(1.7);backdrop-filter:blur(14px) saturate(1.7);
+  box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(14,16,20,.15),0 1px 1px rgba(14,16,20,.04),0 6px 16px -11px rgba(14,16,20,.3)}
+/* Perlmutt-Lichtpunkt läuft beim Überfahren auf der Haarlinie um */
+.btn-primary::before,.btn-ink::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;padding:1px;pointer-events:none;background:var(--ring);opacity:0;transition:opacity .4s;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 4s linear infinite paused}
-@media (hover:hover){.btn-primary.btn-lg:hover::before{opacity:.9;animation-play-state:running}}
+/* Glanz zieht beim Überfahren einmal durch */
+.btn-primary::after,.btn-ink::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:40%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.95),transparent);transform:skewX(-18deg);opacity:0;transition:left .9s var(--ease),opacity .3s}
+@media (hover:hover){
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(14,16,20,.2),0 2px 3px rgba(14,16,20,.05),0 12px 24px -14px rgba(14,16,20,.38)}
+  .btn-primary:hover::before,.btn-ink:hover::before{opacity:1;animation-play-state:running}
+  .btn-primary:hover::after,.btn-ink:hover::after{left:130%;opacity:1}
+}
+.btn-primary:active{transform:translateY(0) scale(.98)}
+.btn-primary .spin{border-color:rgba(14,16,20,.16);border-top-color:var(--ink)}
 @keyframes metalSpin{to{--ang:360deg}}
-/* Nebenknopf: klares Glas mit Haarlinie, ohne Kasten-Wirkung */
-.btn-soft,.btn-outline{color:var(--ink);background:rgba(255,255,255,.42);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.12),inset 0 1px 0 rgba(255,255,255,.7)}
-@media (hover:hover){.btn-soft:hover,.btn-outline:hover{transform:translateY(-1px);background:rgba(255,255,255,.78);box-shadow:inset 0 0 0 1px rgba(14,16,20,.2),inset 0 1px 0 #fff,0 8px 18px -12px rgba(14,16,20,.3)}}
-.btn-soft:active,.btn-outline:active{transform:scale(.98);background:rgba(255,255,255,.6)}
-.btn-ghost{min-height:36px;padding:0 6px;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(14,16,20,.3);transition:text-decoration-color .2s}
+/* Kauf- und Absendeknopf: dunkles Rauchglas */
+.btn-primary.btn-ink,.btn-ink{color:#fff;
+  background:radial-gradient(120px circle at var(--mx,50%) var(--my,-30%),rgba(255,255,255,.14),rgba(255,255,255,0) 70%),linear-gradient(180deg,rgba(44,47,54,.9),rgba(15,17,21,.93));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15),inset 0 0 0 .5px rgba(255,255,255,.08),0 1px 2px rgba(14,16,20,.16),0 6px 16px -10px rgba(14,16,20,.5)}
+.btn-ink::after{background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent)}
+@media (hover:hover){.btn-primary.btn-ink:hover,.btn-ink:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 .5px rgba(255,255,255,.12),0 2px 4px rgba(14,16,20,.16),0 12px 24px -12px rgba(14,16,20,.55)}}
+.btn-ink:active{filter:brightness(1.12)}
+.btn-primary.btn-ink .spin,.btn-ink .spin{border-color:rgba(255,255,255,.25);border-top-color:#fff}
+/* Nebenknopf: Haarlinie auf fast unsichtbarem Glas */
+.btn-soft,.btn-outline{color:var(--ink);background:rgba(255,255,255,.3);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.11)}
+@media (hover:hover){.btn-soft:hover,.btn-outline:hover{transform:translateY(-1px);background:rgba(255,255,255,.72);box-shadow:inset 0 0 0 1px rgba(14,16,20,.18),inset 0 1px 0 #fff,0 8px 18px -12px rgba(14,16,20,.26)}}
+.btn-soft:active,.btn-outline:active{transform:scale(.98);background:rgba(255,255,255,.55)}
+.btn-ghost{min-height:34px;padding:0 4px;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(14,16,20,.3);transition:text-decoration-color .2s}
 @media (hover:hover){.btn-ghost:hover{text-decoration-color:currentColor}}
 /* Lichtpunkt beim Antippen */
 .rip{position:absolute;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(157,133,255,.3),rgba(95,201,245,.1) 45%,rgba(255,255,255,0) 66%);transform:scale(0);animation:rip .65s var(--ease) forwards}
 @keyframes rip{to{transform:scale(1);opacity:0}}
 .shine::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);transform:skewX(-14deg);animation:btnshine 6s ease-in-out infinite}
 @keyframes btnshine{0%,64%{left:-60%}100%{left:130%}}
-.icon-btn{position:relative;width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:50%;color:var(--ink);
+.icon-btn{position:relative;width:38px;height:38px;flex:none;display:grid;place-items:center;border-radius:50%;color:var(--ink);
   background:rgba(14,16,20,.04);box-shadow:inset 0 0 0 1px rgba(14,16,20,.06);transition:transform .25s var(--spring),background .2s}
 @media (hover:hover){.icon-btn:hover{background:rgba(14,16,20,.08)}}
 .icon-btn:active{transform:scale(.92)}
@@ -85,19 +98,19 @@
 .more:hover .ico{transform:translateX(3px)}
 
 /* ---------- Auswahl-Chips ---------- */
-.chips{display:flex;gap:8px;overflow-x:auto;margin:0 calc(var(--gut)*-1) 6px;padding:4px var(--gut) 10px;scrollbar-width:none}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 calc(var(--gut)*-1) 10px;padding:4px var(--gut) 10px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 14px;border-radius:var(--pill);font-size:13.5px;font-weight:500;white-space:nowrap;color:var(--ink-2);
-  background:rgba(255,255,255,.42);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.1);transition:transform .2s var(--spring),background .25s,color .2s,box-shadow .25s}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border-radius:var(--pill);font-size:13.5px;font-weight:450;white-space:nowrap;color:var(--ink-2);
+  background:rgba(255,255,255,.32);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.1);transition:transform .2s var(--spring),background .25s,color .2s,box-shadow .25s}
 .chip .ico{width:16px;height:16px}
 @media (hover:hover){.chip:hover{color:var(--ink);background:rgba(255,255,255,.8);box-shadow:inset 0 0 0 1px rgba(14,16,20,.18)}}
 .chip:active{transform:scale(.96)}
-.chip[aria-pressed="true"],.chip[aria-current="page"]{color:#fff;background:linear-gradient(180deg,rgba(38,41,48,.92),rgba(14,16,20,.94));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 12px -8px rgba(14,16,20,.5)}
+.chip[aria-pressed="true"],.chip[aria-current="page"]{color:#fff;font-weight:500;background:linear-gradient(180deg,rgba(44,47,54,.9),rgba(15,17,21,.93));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 12px -8px rgba(14,16,20,.5)}
 
 /* ---------- Beträge ---------- */
 .amounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.amt{position:relative;isolation:isolate;min-height:50px;padding:6px 8px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;
-  font-size:15px;font-weight:550;color:var(--ink);background:rgba(255,255,255,.5);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.1);
+.amt{position:relative;isolation:isolate;min-height:48px;padding:6px 8px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;
+  font-size:15px;font-weight:500;color:var(--ink);background:rgba(255,255,255,.4);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.1);
   transition:transform .2s var(--spring),box-shadow .25s,background .25s,color .2s}
 .amt small{font-size:12px;font-weight:550;color:var(--mint)}
 @media (hover:hover){.amt:hover{background:rgba(255,255,255,.85);box-shadow:inset 0 0 0 1px rgba(14,16,20,.18)}}
@@ -161,8 +174,9 @@ select.sel option{background:#fff;color:var(--ink)}
 
 /* ---------- Abschnitte ---------- */
 .sec{padding:var(--sec) var(--gut) 0}
-.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px}
-.sec-head p{margin:8px 0 0;max-width:36em;color:var(--ink-2);text-wrap:pretty}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:30px}
+@media (min-width:900px){.sec-head{margin-bottom:40px}}
+.sec-head p{margin:10px 0 0;max-width:36em;color:var(--ink-3);text-wrap:pretty}
 .crumb{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:18px var(--gut) 0;font-size:13.5px;color:var(--ink-3)}
 .crumb a{transition:color .2s}
 .crumb a:hover{color:var(--ink)}
@@ -198,6 +212,17 @@ select.sel option{background:#fff;color:var(--ink)}
 .gc .si-lock.only .si{height:min(28cqi,calc(54cqi / var(--a,1)));width:min(54cqi,calc(28cqi * var(--a,1)))}
 .gc-plat .si{height:1.05em;width:calc(1.05em*var(--a,1));max-width:2.1em;margin:-.1em .38em 0 -.1em;vertical-align:middle}
 .gc .gc-logo{max-width:58cqi;max-height:24cqi;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+/* Offizielle Markenlogos (public/brand, brandlogos.json): mittig, unverzerrt, Größe setzt gc() je Seitenverhältnis */
+.gc .gc-logo.fit{max-width:none;max-height:none;flex:none;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.12))}
+/* Helle Karte mit farbigem Originallogo: weißer Grund, feiner Hauch der Markenfarbe, Haarlinie */
+.gc.lt{color:var(--ink);
+  background:radial-gradient(120% 130% at 100% 100%,color-mix(in srgb,var(--g,#7D72FF) 14%,transparent),transparent 56%),radial-gradient(80% 90% at 0% 0%,color-mix(in srgb,var(--g,#7D72FF) 5%,transparent),transparent 62%),linear-gradient(165deg,#fff 30%,#F4F5F7);
+  box-shadow:inset 0 0 0 1px rgba(14,16,20,.09),0 1px 2px rgba(14,16,20,.1),0 14px 28px -18px color-mix(in srgb,var(--g,#7D72FF) 38%,transparent),0 28px 50px -32px rgba(14,16,20,.3)}
+.gc.lt::before{background:linear-gradient(160deg,rgba(255,255,255,.8) 0%,rgba(255,255,255,0) 42%)}
+.gc.lt .gc-logo.fit{filter:none}
+.gc.lt .holo{opacity:.12}
+.gc.lt .rim{background:linear-gradient(140deg,#fff,rgba(255,255,255,0) 45%,rgba(14,16,20,.03) 70%,rgba(14,16,20,.08))}
+.mini-gc .gc.lt{box-shadow:inset 0 0 0 1px rgba(14,16,20,.1),0 5px 12px -6px rgba(14,16,20,.28)}
 .wm{display:inline-block;line-height:1;white-space:nowrap}
 .wm sup{position:relative;top:-.12em;margin-left:.01em;font-size:.62em;vertical-align:top}
 .wm2{display:flex;flex-direction:column;align-items:center;line-height:1}
@@ -231,6 +256,7 @@ select.sel option{background:#fff;color:var(--ink)}
 @media (hover:hover) and (pointer:fine){
   .gc.tilt:hover{--go:1;transition:transform .12s linear,translate .5s var(--spring),box-shadow .4s;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),0 2px 3px rgba(14,16,20,.2),0 20px 36px -16px color-mix(in srgb,var(--g,#7D72FF) 65%,transparent),0 40px 64px -30px color-mix(in srgb,var(--g,#7D72FF) 55%,rgba(14,16,20,.6))}
   .gc.tilt:hover::after{transform:translateX(480%) skewX(-16deg);transition:transform .9s var(--ease)}
+  .gc.lt.tilt:hover{box-shadow:inset 0 0 0 1px rgba(14,16,20,.12),0 2px 3px rgba(14,16,20,.12),0 20px 36px -18px color-mix(in srgb,var(--g,#7D72FF) 48%,transparent),0 40px 64px -32px rgba(14,16,20,.36)}
 }
 /* Antippen auf dem Handy: Karte neigt sich zum Finger (setzt .press per Skript) */
 .gc.press{--go:.9;transition:transform .18s var(--ease)}
@@ -250,9 +276,9 @@ select.sel option{background:#fff;color:var(--ink)}
 .mini-gc .gc{width:100%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),0 5px 12px -6px rgba(14,16,20,.35)}
 
 /* ---------- Kacheln: Karte + Name + Preis ---------- */
-.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
-@media (min-width:640px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
-@media (min-width:980px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}
+@media (min-width:640px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+@media (min-width:980px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}}
 .tiles.covers{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (min-width:768px){.tiles.covers{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (min-width:1100px){.tiles.covers{grid-template-columns:repeat(5,minmax(0,1fr))}}
@@ -266,8 +292,8 @@ select.sel option{background:#fff;color:var(--ink)}
 .tile .gc{width:100%}
 @media (hover:hover) and (pointer:fine){.tile:hover .gc{translate:0 -5px}}
 .tile-meta{display:block;padding:13px 2px 0}
-.tile-name{display:block;font-size:15px;font-weight:560;line-height:1.25;letter-spacing:-.012em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s}
-.tile-sub{display:block;margin-top:3px;font-size:13.5px;font-weight:450;color:var(--ink-3)}
+.tile-name{display:block;font-size:15px;font-weight:520;line-height:1.25;letter-spacing:-.012em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s}
+.tile-sub{display:block;margin-top:4px;font-size:13.5px;font-weight:400;color:var(--ink-3)}
 /* Schnellkauf-Knopf oben rechts auf der Karte: dort liegt weder Titel noch Badge */
 .qadd{position:absolute;z-index:8;right:8px;top:8px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;
   background:rgba(14,16,20,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),inset 0 1px 0 rgba(255,255,255,.25),0 6px 16px -6px rgba(14,16,20,.5);
@@ -280,7 +306,7 @@ select.sel option{background:#fff;color:var(--ink)}
 
 /* ---------- Wischleisten ---------- */
 .rail{position:relative}
-.rail-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:-24px calc(var(--gut)*-1) -26px;padding:30px var(--gut) 40px;scroll-padding:0 var(--gut);scrollbar-width:none;overscroll-behavior-x:contain}
+.rail-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin:-24px calc(var(--gut)*-1) -26px;padding:30px var(--gut) 40px;scroll-padding:0 var(--gut);scrollbar-width:none;overscroll-behavior-x:contain}
 .rail-track::-webkit-scrollbar{display:none}
 .rail-track .tile{flex:0 0 min(46vw,236px);scroll-snap-align:start}
 .rail-nav{display:none;gap:8px}
@@ -454,3 +480,8 @@ select.sel option{background:#fff;color:var(--ink)}
 .bw i{display:block;height:26px;width:min(calc(26px * var(--a)),96px);aspect-ratio:var(--a);max-height:30px;background:currentColor;-webkit-mask:var(--si) center/contain no-repeat;mask:var(--si) center/contain no-repeat}
 .bw span{font-size:12.5px;font-weight:560;color:var(--ink-3);text-align:center;line-height:1.25}
 @media (hover:hover){.bw:hover{translate:0 -3px;box-shadow:var(--rim-hi),var(--lift)}.bw:hover span{color:var(--ink)}}
+/* Offizielle Markenlogos in Band und Wand (brandMark): farbiges Original als Bild, einfarbige Fassung als Maske in Markenfarbe; Maße kommen je Seitenverhältnis aus dem Skript */
+.bm{display:block;flex:none;max-width:none;max-height:none;aspect-ratio:auto}
+img.bm{object-fit:contain;background:none;-webkit-mask:none;mask:none}
+i.bm{background:currentColor;-webkit-mask:var(--si) center/contain no-repeat;mask:var(--si) center/contain no-repeat}
+.tb-l.bm{opacity:1}

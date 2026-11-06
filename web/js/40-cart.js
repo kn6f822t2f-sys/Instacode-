@@ -61,7 +61,7 @@ function cartPage(_,qs){
      <div id="payEl" class="payel"><div class="payel-load"><span class="payel-sk" aria-hidden="true"><i></i><i></i><i></i></span><span>Zahlungsfeld wird geladen …</span></div></div>
      <div class="pb-due"><span>Gesamt <small>inkl. MwSt.</small></span><b id="payDue">${money(grandTotal())}</b></div>
      <div class="err" id="payErr" role="alert"></div>
-     <button class="btn btn-primary btn-lg btn-block" id="payBtn" data-a="payNow" data-off>${ic("i-lock")}<span>Zahlungspflichtig bestellen</span></button>
+     <button class="btn btn-primary btn-ink btn-lg btn-block" id="payBtn" data-a="payNow" data-off>${ic("i-lock")}<span>Zahlungspflichtig bestellen</span></button>
     </div>
     <p class="pb-fine">${ic("i-shield")}<span>Bezahlt wird sicher über Stripe. Deine Kartendaten landen nie bei uns.${CFG.payments&&!CFG.devpay?` <button class="more" data-a="payRedirect">Lieber auf der Stripe-Seite bezahlen</button>`:""}</span></p>
    </div>

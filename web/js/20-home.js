@@ -81,7 +81,7 @@ ${trustBand({n:16})}
       <label class="lbl" for="twNum">Handynummer</label>
       <div class="phone"><span>${c.dial}</span><input id="twNum" inputmode="tel" placeholder="151 2345678" autocomplete="tel-national"></div>
       <div class="err" id="twErr" role="alert"></div>
-      <button class="btn btn-primary btn-block" data-a="twGo">Weiter zum Aufladen</button>
+      <button class="btn btn-primary btn-ink" data-a="twGo">Weiter zum Aufladen</button>
     </div></div>
   <div class="tu-visual" aria-hidden="true">
     <div class="tu-waves"><i></i><i></i><i></i></div>

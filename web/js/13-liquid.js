@@ -26,9 +26,9 @@ void main(){
   float y=R.y+.18*m.y;
   /* Umgebung: Himmel hell, Horizont scharf, Boden dunkel – klassischer Chrom-Look */
   vec3 sky=mix(vec3(.62,.65,.71),vec3(.99,.99,1.),smoothstep(.0,.7,y));
-  vec3 gr=mix(vec3(.07,.08,.1),vec3(.42,.44,.5),smoothstep(-.95,-.05,y));
+  vec3 gr=mix(vec3(.2,.21,.25),vec3(.62,.64,.7),smoothstep(-.95,-.05,y));
   vec3 env=y>0.?sky:gr;
-  env=mix(env,vec3(.06,.06,.07),smoothstep(.035,0.,abs(y-.01))*.85);
+  env=mix(env,vec3(.17,.18,.21),smoothstep(.035,0.,abs(y-.01))*.75);
   /* zwei Softboxen als Glanzlichter, eine folgt dem Zeiger */
   env+=1.1*smoothstep(.9,.985,dot(R,normalize(vec3(.45+m.x*.5,.55,.7))));
   env+=.55*smoothstep(.93,.99,dot(R,normalize(vec3(-.6,.25,.75))));
@@ -38,7 +38,7 @@ void main(){
   env=mix(env,env*(.65+.55*pr),.35*fr+.06);
   env*=.92+.08*z;
   /* Rand etwas dunkler, damit sich das Chrom vom hellen Grund abhebt */
-  env*=mix(1.,.72,smoothstep(.35,1.,fr));
+  env*=mix(1.,.8,smoothstep(.35,1.,fr));
   gl_FragColor=vec4(env*al,al);
 }`;
   const lite=()=>document.documentElement.classList.contains("lite");

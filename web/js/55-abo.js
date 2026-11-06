@@ -97,7 +97,7 @@ function aboCheckout(p){
    <h3 class="h3">E-Mail für dein Abo</h3>${evBox()}
    <label class="chk ab-ok" id="aboOkL"><input type="checkbox" id="aboOk"><span>Ich akzeptiere die <a href="/agb">AGB</a> mit den Abo-Bedingungen und habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen. Ich stimme zu, dass ihr vor Ablauf der Widerrufsfrist mit der Lieferung beginnt, und weiß, dass mein <a href="/widerruf">Widerrufsrecht</a> mit der ersten Lieferung erlischt.</span></label>
    <div class="err" id="aboErr" role="alert"></div>
-   <button class="btn btn-primary btn-lg btn-block" id="aboBtn" data-a="aboGo">${ic("i-lock")}<span>Zahlungspflichtig abonnieren</span></button>
+   <button class="btn btn-primary btn-ink btn-lg btn-block" id="aboBtn" data-a="aboGo">${ic("i-lock")}<span>Zahlungspflichtig abonnieren</span></button>
    <p class="fine">Weiter zur sicheren Zahlung bei Stripe: Karte, Apple Pay, Google Pay oder Link. Klarna ist für Abos nicht verfügbar. Kündigen kannst du jederzeit unter <a href="/kuendigen">Verträge hier kündigen</a>.</p>
   </div></div></section>`;
 }
@@ -206,7 +206,7 @@ function cancelPage(_,qs){
    </fieldset>
    <section class="kd-sum" aria-labelledby="kdSumH"><h2 class="h3" id="kdSumH">Deine Kündigung</h2><dl class="ab-dl" id="kdSum"></dl></section>
    <div class="err" id="kdErr" role="alert"></div>
-   <button type="submit" class="btn btn-primary btn-lg btn-block" data-a="kdGo">Jetzt kündigen</button>
+   <button type="submit" class="btn btn-primary btn-ink btn-lg btn-block" data-a="kdGo">Jetzt kündigen</button>
    <p class="fine">Mit „Jetzt kündigen“ gibst du deine Kündigung ab. Du siehst die Bestätigung sofort mit Datum und Uhrzeit und bekommst sie per E-Mail.</p>
   </form>
   <aside class="kd-side">

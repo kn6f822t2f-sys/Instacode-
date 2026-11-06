@@ -2,11 +2,11 @@
 
 Shop für digitale Gutscheine, Spiele-Keys, Abos und Handy-Aufladungen (Deutschland, Du-Form, überwiegend iPhone-Nutzer).
 Hauptaufgabe jeder Seite: Marke finden → Betrag wählen → bezahlen → Code sofort bekommen.
-Stil: **hell, offen, vertrauenswürdig**. Porzellan-Grund mit weichem Studiolicht, weißes Glas mit Haarlinie, Chrom als Akzent (Metall-Ring, Kanten), Hauptknöpfe aus Schwarzchrom. Viel Bewegung, aber ruhig und schnell.
+Stil: **hell, offen, vertrauenswürdig**. Porzellan-Grund mit weichem Studiolicht, weißes Glas mit Haarlinie, Chrom als Akzent (Metall-Ring, Kanten), schlanke Glas-Knöpfe. Viel Luft, klare Ordnung, leichte Schrift. Viel Bewegung, aber ruhig und schnell.
 
 ## Leitidee
 1. **Hell und klar.** Grund `--bg #F3F4F6`, Flächen weiß (`#fff` bzw. `--glass`) mit Haarlinie (`--rim`) und weichem Schatten (`--lift`). Keine weißen Halbtransparenzen als Fläche (unsichtbar auf Hell) – Flächen sind weiß, Linien/Mulden dunkel-transparent (`rgba(14,16,20,.04–.14)`).
-2. **Schwarzchrom für Handlungen.** `.btn-primary` = `--sel` (dunkler Chromverlauf) mit weißer Schrift. Gewählte Zustände (Chip, Betrag, Haken, Schalter, Reiter-Knopf) = `background:var(--sel);color:var(--sel-ink)`. Nebenknopf `.btn-soft` = weiß mit Linie.
+2. **Glas für Handlungen, Rauchglas für Kauf.** `.btn-primary` = klares Glas mit dunkler Schrift und Haarlinie. Kauf- und Absendeknöpfe (Kaufen, Bezahlen, Aufladen, Abo abschließen, Anmelden) bekommen zusätzlich `.btn-ink` = dunkles Rauchglas mit weißer Schrift – pro Ansicht höchstens einer davon im Blick. Gewählte Zustände (Chip, Betrag, Haken, Schalter, Reiter-Knopf) = dunkles Rauchglas. Nebenknopf `.btn-soft`/`.btn-outline` = nur Haarlinie auf fast unsichtbarem Glas.
 3. **Vertrauen sichtbar.** Echte Zahlungszeichen (`payLogos()`, `/pay/*.svg`), echte Markenzeichen in Markenfarbe (`brandWall()`, `brandInk(b)`), Laufband `trustBand()`, Abzeichen `trustBadges(b)`. Nur wahre Aussagen: keine erfundenen Bewertungen, Zahlen, Siegel, keine „Partner“-Behauptungen (Marken heißen „im Sortiment“).
 4. **Karten schweben.** Gutscheinkarten (`.gc`, farbig) und offizielle Spielebilder wirken auf Hell besonders; weicher farbiger Schatten (`--g`).
 5. **Bewegung macht es wertig, aber schnell.** Einblenden (`.rv`), Seitenwechsel per View Transitions, Lichtpunkt unter dem Zeiger (`.card .spot …`), federnde Rückmeldung. Nur transform/opacity, `data-off` für Dauerschleifen, `.lite` sparsam, `prefers-reduced-motion` respektieren.
@@ -24,7 +24,7 @@ Stil: **hell, offen, vertrauenswürdig**. Porzellan-Grund mit weichem Studiolich
 Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines Bereichs scopen** (z. B. `.pd .amt{…}`), nie die Grundregel ändern. Klassen-Präfixe vorher suchen (`grep`), damit sie nicht mit anderen Bereichen kollidieren. `.card` belegt mit Maus `::before`/`::after`.
 
 ## Knöpfe, iPhone, Seitenwechsel, Bilder
-- **Knöpfe:** Hauptknopf Schwarzchrom mit weißer Schrift, beim Überfahren leichtes Anheben, feiner Glanz, Licht folgt dem Zeiger; großer Hauptknopf zeigt den Perlmutt-Lichtring nur beim Überfahren. Nebenknopf weiß mit Haarlinie, Linie wird beim Überfahren kräftiger. Drücken: leicht einsinken (scale .975).
+- **Knöpfe:** schlanke Pillen – 38 px (`.btn-lg` 44 px, `.btn-sm` 32 px), 14 px Schrift in Stärke 500, keine Kästen, keine fetten Schriftzüge. Beim Überfahren: leichtes Anheben, ein Glanz zieht einmal durch, ein Perlmutt-Lichtpunkt läuft um die Haarlinie, Licht folgt dem Zeiger. Drücken: leicht einsinken (scale .98). Volle Breite (`.btn-block`) nur in schmalen Formularen und Kaufboxen.
 - **iPhone:** `iphone(inhalt,{w,cls,id})` (js/10-components.js, CSS in 02-components.css) – Maße wie iPhone 16 Pro, Titanrahmen, Tasten, Dynamic Island, Statusleiste. Größe per CSS über `--w`. Für Videos: `.iph-stage[data-mouse] > .iph-float[data-off] > .iph-tilt > iphone(...)`. Videos im Format 402 × 828 pt aufnehmen (`/home/claude/devshim/vid/rec6.js kauf|aufladen`), als 540 × 1112 kodieren.
 - **Seitenwechsel:** View Transitions im Router (`route()` in 60-router-ui.js): Inhalt blendet über, Kopfzeile bleibt stehen, eine angetippte Karte fliegt in die Produktseite (`view-transition-name: ic-card`). Ohne API/bei reduzierter Bewegung direkt.
 - **Produktbilder:** Spiele-Keys zeigen offizielle Shop-Bilder (Steam, Nintendo, PlayStation, Minecraft). Nur die Adressen liegen in `covers.json` (erzeugt mit `node tools/covers.js`), der Server lädt die Bilder beim ersten Aufruf (`/img/cover/<id>/p|l`) und speichert sie im Datenordner. Gutscheinkarten: Originalbilder kommen automatisch, sobald Reloadly verbunden ist.
@@ -41,7 +41,7 @@ Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines B
 - `prefers-reduced-motion` wird global respektiert.
 
 ## Barrierefreiheit
-Echte `<button>`/`<a href>`; sichtbarer Fokus (`:focus-visible`, Lavendel); Touch-Ziele ≥ 44 px; Text ≥ 4.5:1 (`--ink-3` ist die dunkelste erlaubte Textfarbe); `aria-label` an Icon-Knöpfen; dekorative Bühnen `aria-hidden`.
+Echte `<button>`/`<a href>`; sichtbarer Fokus (`:focus-visible`, Lavendel); Touch-Ziele ≥ 32 px (WCAG 2.2 verlangt 24 px), Hauptaktionen 44 px; Text ≥ 4.5:1 (`--ink-3` ist die dunkelste erlaubte Textfarbe); `aria-label` an Icon-Knöpfen; dekorative Bühnen `aria-hidden`.
 
 ## Inhalt & Sprache
 Deutsch, Du-Form, Satzanfang groß, kurze klare Verben („Jetzt kaufen“, „In den Warenkorb“). Fehlermeldungen sagen, was passiert ist und was zu tun ist.

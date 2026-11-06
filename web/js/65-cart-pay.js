@@ -8,7 +8,7 @@ function drawerHTML(){
   ${n?`<div class="dr-b"><div class="dr-lines" id="drLines">${S.cart.map(lineHTML).join("")}</div>${recoHTML("dr")}</div>
   <div class="dr-f"><div class="dr-tot"><span>Gesamt</span><b id="drTot">${money(grandTotal())}</b></div><p class="dr-tax">${drTax()}</p>
    ${xpBox("drX",{compact:true})}
-   <a class="btn btn-primary btn-lg btn-block" href="/kasse">${ic("i-lock")}Zur Kasse</a><a class="btn btn-ghost btn-block" href="/warenkorb">Warenkorb ansehen</a></div>`
+   <a class="btn btn-primary btn-ink btn-lg btn-block" href="/kasse">${ic("i-lock")}Zur Kasse</a><a class="btn btn-ghost btn-block" href="/warenkorb">Warenkorb ansehen</a></div>`
   :`<div class="dr-b dr-empty"><div class="ck-fan sm" aria-hidden="true">${POP.map(byId).filter(Boolean).slice(0,3).map((b,i)=>`<span class="ck-fc" style="--i:${i}"><i>${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`).join("")}</div><p>Dein Warenkorb ist leer.</p><button class="btn btn-primary" data-a="browse">Jetzt stöbern</button></div>`}`;
 }
 /* Offener Seiten-Warenkorb: nur Zeilen, Summe und Empfehlungen neu – Zustimmung und Wallet-Knöpfe bleiben stehen */
@@ -208,7 +208,7 @@ function xsim(name,q,mail){return new Promise(res=>{
   el.innerHTML=`<div class="xsim-c"><span class="xsim-tag">Vorschau · simuliertes Wallet</span><h2 id="xsimH">${esc(name)}</h2>
    <ul class="xsim-l">${q.lines.map(l=>`<li><span>${esc(l.label)}</span><b>${eurc(l.amount)}</b></li>`).join("")}<li class="t"><span>instantcodes</span><b>${eurc(q.total)}</b></li></ul>
    <label class="lbl" for="xsimMail">E-Mail (gibt die Wallet frei)</label><input class="inp" id="xsimMail" type="email" autocomplete="email" value="${esc(mail)}" placeholder="name@beispiel.de"><div class="err" id="xsimErr" role="alert"></div>
-   <button class="btn btn-primary btn-lg btn-block" id="xsimPay">Bezahlen bestätigen</button>
+   <button class="btn btn-primary btn-ink btn-lg btn-block" id="xsimPay">Bezahlen bestätigen</button>
    <div class="xsim-2"><button class="btn btn-soft" id="xsimNo">Abbrechen</button><button class="btn btn-ghost" id="xsimRisk">Mit erhöhtem Risiko</button></div></div>`;
   document.body.appendChild(el);requestAnimationFrame(()=>el.classList.add("open"));
   const inp=$("#xsimMail",el);setTimeout(()=>(inp.value?$("#xsimPay",el):inp).focus(),60);

@@ -1,0 +1,225 @@
+{
+ "airbnb": {
+  "src": "/brand/airbnb.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.184,
+  "tint": true
+ },
+ "apple": {
+  "src": "/brand/apple.svg",
+  "card": "light",
+  "scale": 0.9,
+  "ar": 0.814
+ },
+ "codpoints": {
+  "src": "/brand/call-of-duty.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.791,
+  "tint": true
+ },
+ "ea": {
+  "src": "/brand/electronic-arts.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 6.808
+ },
+ "edekasmart": {
+  "src": "/brand/edeka-smart.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 1.068
+ },
+ "epic": {
+  "src": "/brand/epic-games.svg",
+  "card": "light",
+  "scale": 0.9,
+  "ar": 0.862
+ },
+ "fcpoints": {
+  "src": "/brand/ea-sports-fc.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 2.015
+ },
+ "fortnite": {
+  "src": "/brand/fortnite.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.585,
+  "tint": true
+ },
+ "gplay": {
+  "src": "/brand/google-play.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 5.071
+ },
+ "hm": {
+  "src": "/brand/h-and-m.svg",
+  "card": "brand",
+  "scale": 0.8,
+  "ar": 1.515,
+  "tint": true
+ },
+ "lidlconnect": {
+  "src": "/brand/lidl.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1
+ },
+ "lieferando": {
+  "src": "/brand/lieferando.svg",
+  "card": "brand",
+  "scale": 0.85,
+  "ar": 0.971,
+  "tint": true
+ },
+ "lol": {
+  "src": "/brand/league-of-legends.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.615
+ },
+ "lyca": {
+  "src": "/brand/lycamobile.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 2.558
+ },
+ "mastercard": {
+  "src": "/brand/mastercard.svg",
+  "card": "light",
+  "scale": 0.9,
+  "ar": 1.289
+ },
+ "microsoft": {
+  "src": "/brand/microsoft.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.682
+ },
+ "minecoins": {
+  "src": "/brand/minecraft.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 5.842
+ },
+ "mlbb": {
+  "src": "/brand/mobile-legends.svg",
+  "card": "brand",
+  "scale": 0.9,
+  "ar": 0.981
+ },
+ "netflix": {
+  "src": "/brand/netflix.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.722
+ },
+ "nettokom": {
+  "src": "/brand/nettokom.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.026
+ },
+ "nintendo": {
+  "src": "/brand/nintendo.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3
+ },
+ "nitro": {
+  "src": "/brand/discord.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 5.164
+ },
+ "o2": {
+  "src": "/brand/o2.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1.039,
+  "tint": true
+ },
+ "overwatch": {
+  "src": "/brand/overwatch.svg",
+  "card": "light",
+  "scale": 0.9,
+  "ar": 1
+ },
+ "paysafe": {
+  "src": "/brand/paysafecard.svg",
+  "card": "brand",
+  "scale": 0.9,
+  "ar": 1.508,
+  "tint": true
+ },
+ "pennymobil": {
+  "src": "/brand/penny-mobil.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 1.189
+ },
+ "psn": {
+  "src": "/brand/playstation.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 5.517,
+  "tint": true
+ },
+ "roblox": {
+  "src": "/brand/roblox.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 5.418,
+  "tint": true
+ },
+ "spotify": {
+  "src": "/brand/spotify.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 3.213
+ },
+ "steam": {
+  "src": "/brand/steam.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.316,
+  "tint": true
+ },
+ "telekom": {
+  "src": "/brand/telekom.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 0.838,
+  "tint": true
+ },
+ "valorant": {
+  "src": "/brand/valorant.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1.511
+ },
+ "visa": {
+  "src": "/brand/visa.svg",
+  "card": "brand",
+  "scale": 0.9,
+  "ar": 3.096,
+  "tint": true
+ },
+ "vodafone": {
+  "src": "/brand/vodafone.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.034
+ },
+ "xbox": {
+  "src": "/brand/xbox.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.425,
+  "tint": true
+ }
+}

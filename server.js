@@ -205,6 +205,10 @@ const prodRows = () => prodCache || (prodCache = Object.fromEntries(db.prepare("
 const isActive = id => !!CATALOG[id] && (prodRows()[id] ? !!prodRows()[id].active : true);
 const RL_HIDE_PLAIN = () => E.SHOW_PLAIN !== "1" && Object.values(CATALOG).some(b => b.rl);
 let shopCache = null;
+/* Offizielle Markenlogos (public/brand/*.svg, Zuordnung in brandlogos.json) – nur ohne Admin-Upload.
+   lc = Kartenmodus („brand“ Markenfarbe + helles Logo, „light“ weiße Karte + farbiges Original), lsc = Skalierung, lar = Seitenverhältnis, ltn = einfarbiges Logo (auf hellem Grund in Markenfarbe einfärbbar) */
+const BRANDLOGOS = (() => { try { return require("./brandlogos.json"); } catch (e) { return {}; } })();
+const brandLogo = x => { const L = BRANDLOGOS[x.id]; if (!L || !L.src) return x; x.logo = L.src; x.lc = L.card === "light" ? "light" : "brand"; if (L.scale && L.scale !== 1) x.lsc = L.scale; if (L.ar) x.lar = L.ar; if (L.tint) x.ltn = 1; return x; };
 function shopCatalog() {
   const rows = prodRows(), n = Object.keys(CATALOG).length;
   if (shopCache && shopCache.rows === rows && shopCache.n === n) return shopCache.out;
@@ -217,6 +221,7 @@ function shopCatalog() {
     if (!x.rl && !x.grp && x.cat !== "topup") x.grp = "g:" + grpKey(x.name);
     if (r.img) x.img = `/img/p/${b.id}.${r.img}?v=${r.img_v}`;
     if (r.logo) x.logo = `/img/p/${b.id}.logo.${r.logo}?v=${r.logo_v}`;
+    else brandLogo(x);
     if (COVERS[b.id] && !x.img) x.cov = 1;
     out.push(x);
   }
@@ -1511,7 +1516,7 @@ app.post("/api/admin/reviews/:id", admin, (req, res) => {
 /* ---------- Abos (abo.js): Pläne, Stripe-Abos, monatliche Lieferungen mit Freigabe, Kündigung nach § 312k BGB ---------- */
 /* Kartendaten eines Produkts für die Abo-Seite (auch für Produkte, die im Shop gerade nicht sichtbar sind) */
 const cardOf = id => { const b = CATALOG[id]; if (!b) return null; const r = prodRows()[id] || {}; const { redeem, brand, px, ...x } = b;
-  if (r.img) x.img = `/img/p/${id}.${r.img}?v=${r.img_v}`; if (r.logo) x.logo = `/img/p/${id}.logo.${r.logo}?v=${r.logo_v}`; return x; };
+  if (r.img) x.img = `/img/p/${id}.${r.img}?v=${r.img_v}`; if (r.logo) x.logo = `/img/p/${id}.logo.${r.logo}?v=${r.logo_v}`; else brandLogo(x); return x; };
 ABO = require("./abo")({ app, db, stripe, stripeCall, STRIPE_V, mail, CATALOG, E, BASE, ADMINS, TESTMODE, TEST_GEN, clock, now, rnd, enc, dec, norm, emailOk, bad, wrap, need, admin, rateLimit,
   verifiedEmail, EV_MSG, isAdmin, safe, takeCodes, codeHash, supply, Stockout, RL_USE: () => RL_USE, rlHas, freeCount, optLabel, fc, isCodeBrand, cardOf, kvGet, kvSet });
 /* Mia, KI-Shopberaterin (ai.js): Chat mit Claude und Werkzeugen, Fallback ohne Schlüssel, Status im Admin */

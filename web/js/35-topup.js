@@ -46,7 +46,7 @@ function topup(_,qs){
       <div class="tu-tot"><span>Gesamt</span><b id="sTot" aria-live="polite">–</b></div>
       <p class="tu-fee">${taxHint()}</p>
       <label class="chk"><input type="checkbox" id="tSave"${S.user?" checked":""}><span>Nummer für später speichern</span></label>
-      <div class="tu-buy" data-off><button class="btn btn-primary btn-lg btn-block" data-a="tBuy">Zur Kasse</button><button class="btn btn-outline btn-block" data-a="tAdd">In den Warenkorb</button></div>
+      <div class="tu-buy" data-off><button class="btn btn-primary btn-ink btn-lg btn-block" data-a="tBuy">Zur Kasse</button><button class="btn btn-outline btn-block" data-a="tAdd">In den Warenkorb</button></div>
       <div class="trust"><span>${ic("i-zap")}Gutschrift nach der Zahlung</span><span>${ic("i-lock")}Sichere Zahlung über Stripe</span></div>
       ${payLogos({cat:"topup"})}
     </div>
