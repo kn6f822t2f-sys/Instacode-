@@ -312,21 +312,32 @@ document.addEventListener("click",async e=>{
   if(b){if(!confirm("Jetzt bei Reloadly einkaufen und an den Kunden ausliefern? Das kostet Reloadly-Guthaben."))return;b.disabled=true;try{await API(`/admin/orders/${encodeURIComponent(b.dataset.rlbuy)}/deliver`,{method:"POST",body:{reloadly:true}});toast("Über Reloadly ausgeliefert");load(true)}catch(x){alert(x.message);b.disabled=false}return}
 });
 
-/* ---------- Bewertungen ---------- */
-let R=null;
+/* ---------- Bewertungen ----------
+   Alle Bewertungen stammen aus gelieferten Bestellungen (eine pro Bestellung). Sie sind sofort sichtbar;
+   ausblenden nur bei Regelverstößen (Beleidigungen, persönliche Daten, Werbung), nicht wegen schlechter Sterne. */
+let R=null,RTP=null,RF="all";
 async function loadReviews(){
-  try{R=(await API("/admin/reviews")).reviews;renderReviews()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}
+  try{const j=await API("/admin/reviews");R=j.reviews;RTP=j.trustpilot;renderReviews()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}
 }
 function renderReviews(){
   const vis=R.filter(r=>!r.hidden),avg=vis.length?vis.reduce((s,r)=>s+r.rating,0)/vis.length:0;
+  /* je Produkt (aus der Bestellung): Anzahl und Schnitt der sichtbaren Bewertungen */
+  const by={};vis.forEach(r=>(r.ids||[]).forEach(id=>{const x=by[id]=by[id]||{n:0,s:0};x.n++;x.s+=r.rating}));
+  const prods=Object.entries(by).sort((a,b)=>b[1].n-a[1].n);
+  const list=R.filter(r=>RF==="all"||(RF==="hidden"?r.hidden:!r.hidden)).filter(r=>!RF.startsWith("p:")||(r.ids||[]).includes(RF.slice(2)));
+  const f=(v,t)=>`<button class="${RF===v?"on":""}" data-rf="${esc(v)}">${t}</button>`;
   $("#m").innerHTML=tabsHTML()+`<div class="card"><b>Bewertungen aus echten Bestellungen</b>
-   <p class="muted" style="margin:6px 0 0">Nur Kunden mit gelieferter Bestellung können bewerten, eine Bewertung pro Bestellung. Im Shop erscheinen sie ab 3 sichtbaren Bewertungen. Verstecke nur Beiträge, die gegen Regeln verstoßen (Beleidigungen, persönliche Daten, Spam), nicht einfach schlechte Bewertungen.</p>
-   <p style="margin:10px 0 0"><b>${vis.length}</b> sichtbar${vis.length?` · Durchschnitt <b>${avg.toFixed(1).replace(".",",")}</b> <span class="stars">★</span>`:""}${R.length-vis.length?` · ${R.length-vis.length} versteckt`:""}</p></div>`+
-   (R.length?R.map(r=>`<div class="card rv${r.hidden?" hid":""}"><div class="row"><div><span class="stars">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</span> <b>${esc(r.name)}</b>${r.hidden?`<span class="st" style="color:#6B7280;background:#6B72801a">versteckt</span>`:""}
+   <p class="muted" style="margin:6px 0 0">Nur Kunden mit gelieferter Bestellung können bewerten, eine Bewertung pro Bestellung. Neue Bewertungen sind sofort sichtbar. Auf der Startseite erscheinen sie ab 3 sichtbaren Bewertungen, auf der Produktseite ab der ersten (immer mit Anzahl). Verstecke nur Beiträge, die gegen Regeln verstoßen (Beleidigungen, persönliche Daten, Spam), nicht einfach schlechte Bewertungen.</p>
+   <p style="margin:10px 0 0"><b>${vis.length}</b> sichtbar${vis.length?` · Durchschnitt <b>${avg.toFixed(1).replace(".",",")}</b> <span class="stars">★</span>`:""}${R.length-vis.length?` · ${R.length-vis.length} versteckt`:""}</p>
+   ${prods.length?`<p style="margin:10px 0 0">${prods.map(([id,x])=>`<span class="chip">${esc(id)} <i>${(x.s/x.n).toFixed(1).replace(".",",")} ★</i> · ${x.n}</span>`).join("")}</p>`:""}
+   <p class="muted" style="margin:10px 0 0">Trustpilot: ${RTP?`Link „Bewerte uns auf Trustpilot“ aktiv (<a href="${esc(RTP.url)}" target="_blank" rel="noopener">${esc(RTP.url)}</a>)${RTP.widget?", Widget mit Sternen eingerichtet (lädt nach Cookie-Einwilligung)":", Widget nicht eingerichtet (TRUSTPILOT_BUSINESS_ID und TRUSTPILOT_TEMPLATE_ID fehlen)"}`:"ausgeschaltet (TRUSTPILOT_URL=aus)"}.</p>
+   <div class="tabs" style="margin-top:12px">${f("all","Alle")}${f("visible","Sichtbar")}${f("hidden","Versteckt")}${prods.slice(0,8).map(([id])=>f("p:"+id,esc(id))).join("")}</div></div>`+
+   (list.length?list.map(r=>`<div class="card rv${r.hidden?" hid":""}"><div class="row"><div><span class="stars">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</span> <b>${esc(r.name)}</b>${r.hidden?`<span class="st" style="color:#6B7280;background:#6B72801a">versteckt</span>`:""}
      <div class="muted">${new Date(r.created_at).toLocaleString("de-DE")} · ${esc(r.email)} · ${esc(r.order_id)}${r.brands.length?" · "+esc(r.brands.join(", ")):""}</div></div>
      <button class="btn ${r.hidden?"g":"r"} sm" data-rhide="${r.id}" data-h="${r.hidden?0:1}">${r.hidden?"Wieder anzeigen":"Verstecken"}</button></div>
-     ${r.text?`<p style="margin:10px 0 0">${esc(r.text)}</p>`:""}</div>`).join(""):`<div class="empty">Noch keine Bewertungen. Nach jeder Lieferung bekommt der Kunde in der E-Mail einen Link zum Bewerten.</div>`);
+     ${r.text?`<p style="margin:10px 0 0">${esc(r.text)}</p>`:""}</div>`).join(""):`<div class="empty">${R.length?"Keine Bewertungen in dieser Auswahl.":"Noch keine Bewertungen. Nach jeder Lieferung bekommt der Kunde in der E-Mail einen Link zum Bewerten; im Konto steht bei gelieferten Bestellungen „Bewerten“."}</div>`);
 }
+document.addEventListener("click",e=>{const b=e.target.closest("[data-rf]");if(!b||!R)return;RF=b.dataset.rf;renderReviews()});
 
 document.addEventListener("change",async e=>{
   if(e.target.id==="pc"){PC=e.target.value;drawProducts();return}
