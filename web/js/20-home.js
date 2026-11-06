@@ -8,9 +8,9 @@ const shortName=b=>b.name.replace(/ (Gift Card|Geschenkkarte)$/,"").replace("Xbo
 const fcard=(b,o)=>`<span class="fc" style="--x:${o[0]}%;--y:${o[1]}%;--w:${o[2]}px;--d:${o[3]};--r:${o[4]}deg;--t:${o[5]}s"><i class="fc-b">${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`;
 const cloud=(list,slots)=>list.slice(0,slots.length).map((b,i)=>fcard(b,slots[i])).join("");
 /* Kurzvideo im iPhone: lädt erst, wenn es sichtbar wird (15-effects.js), Standbild bis dahin */
-const hvid=n=>`<video class="vf-vid" poster="/vid/${n}.jpg?v=6" muted loop playsinline preload="none"><source src="/vid/${n}.mp4?v=6" type="video/mp4"><source src="/vid/${n}.webm?v=6" type="video/webm"></video>`;
+const hvid=n=>`<video class="vf-vid" poster="/vid/${n}.jpg?v=7" muted loop playsinline preload="none"><source src="/vid/${n}.mp4?v=7" type="video/mp4"><source src="/vid/${n}.webm?v=7" type="video/webm"></video>`;
 /* Video, das mit dem Scrollen läuft (16-motion.js, [data-scrub]) */
-const svid=n=>`<video class="scrub-vid" poster="/vid/${n}.jpg?v=6" muted playsinline preload="none" data-src="/vid/${n}-scrub.mp4?v=6"></video>`;
+const svid=n=>`<video class="scrub-vid" poster="/vid/${n}.jpg?v=7" muted playsinline preload="none" data-src="/vid/${n}-scrub.mp4?v=7"></video>`;
 const uniqLogos=n=>{const seen=new Set();return VIS().filter(b=>b.si&&!seen.has(b.si)&&seen.add(b.si)).slice(0,n)};
 function home(){
   const recent=S.recent.map(byId).filter(Boolean).filter(isRep).slice(0,10), c=ctry();

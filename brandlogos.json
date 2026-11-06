@@ -6,17 +6,48 @@
   "ar": 3.184,
   "tint": true
  },
+ "amazon": {
+  "src": "/brand/amazon.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 2.986
+ },
  "apple": {
   "src": "/brand/apple.svg",
   "card": "light",
   "scale": 0.9,
   "ar": 0.814
  },
+ "ayyildiz": {
+  "src": "/brand/ay-yildiz.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 3.012
+ },
  "codpoints": {
   "src": "/brand/call-of-duty.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 5.733
+ },
+ "congstar": {
+  "src": "/brand/congstar.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.401
+ },
+ "decathlon": {
+  "src": "/brand/decathlon.svg",
   "card": "brand",
   "scale": 1,
-  "ar": 2.791,
+  "ar": 1.186,
+  "tint": true
+ },
+ "disney": {
+  "src": "/brand/disney-plus.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1.831,
   "tint": true
  },
  "ea": {
@@ -56,6 +87,13 @@
   "scale": 1,
   "ar": 5.071
  },
+ "gpu": {
+  "src": "/brand/xbox.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.425,
+  "tint": true
+ },
  "hm": {
   "src": "/brand/h-and-m.svg",
   "card": "brand",
@@ -87,6 +125,18 @@
   "card": "light",
   "scale": 1,
   "ar": 2.558
+ },
+ "m365f": {
+  "src": "/brand/microsoft-365.svg",
+  "card": "light",
+  "scale": 0.8,
+  "ar": 0.91
+ },
+ "m365p": {
+  "src": "/brand/microsoft-365.svg",
+  "card": "light",
+  "scale": 0.8,
+  "ar": 0.91
  },
  "mastercard": {
   "src": "/brand/mastercard.svg",
@@ -121,7 +171,7 @@
  "nettokom": {
   "src": "/brand/nettokom.svg",
   "card": "brand",
-  "scale": 1,
+  "scale": 1.25,
   "ar": 2.026
  },
  "nintendo": {
@@ -136,12 +186,30 @@
   "scale": 1,
   "ar": 5.164
  },
+ "nso": {
+  "src": "/brand/nintendo-switch.svg",
+  "card": "light",
+  "scale": 0.8,
+  "ar": 1
+ },
+ "nsoplus": {
+  "src": "/brand/nintendo-switch.svg",
+  "card": "light",
+  "scale": 0.8,
+  "ar": 1
+ },
  "o2": {
   "src": "/brand/o2.svg",
   "card": "brand",
   "scale": 1,
   "ar": 1.039,
   "tint": true
+ },
+ "ortel": {
+  "src": "/brand/ortel-mobile.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.067
  },
  "overwatch": {
   "src": "/brand/overwatch.svg",
@@ -154,6 +222,13 @@
   "card": "brand",
   "scale": 0.9,
   "ar": 1.508,
+  "tint": true
+ },
+ "pcgp": {
+  "src": "/brand/xbox.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.425,
   "tint": true
  },
  "pennymobil": {
