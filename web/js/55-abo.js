@@ -32,10 +32,14 @@ function aboPage(_,qs){
     .catch(e=>{const r=$("#abRoot");if(r)r.innerHTML=`<section class="sec">${empty("Abo-Seite gerade nicht erreichbar",esc(e.message),["/","Zur Startseite"])}</section>`})}};
 }
 const aboKey=p=>JSON.stringify(p.items.map(i=>[i.brand,i.a,i.every]));
+/* Dienste-Orbit: die Karten der Dienste kreisen auf zwei Bahnen um den Abo-Kern (innen 4, außen bis 5).
+   Die Bahn dreht sich, jede Karte dreht sich gegenläufig mit und bleibt aufrecht – nur transform, pausiert außerhalb des Bildes. */
+const aboOrbit=list=>{const ring=(l,cls)=>l.length?`<span class="ab-ring ${cls}"><span class="ab-rot">${l.map((b,i)=>`<span class="ab-arm" style="--a:${Math.round(360/l.length*i+(cls==="r2"?18:0))}deg;--k:${i}"><span class="ab-sat">${gc(b,{tilt:false,badge:false,plat:false})}</span></span>`).join("")}</span></span>`:"";
+  return `<div class="ab-orb" data-off aria-hidden="true"><span class="ab-glow"></span>${ring(list.slice(4),"r2")}${ring(list.slice(0,4),"r1")}<span class="ab-core"><span class="ab-core-in">${LOGO(40)}<b>Abo</b><small>${list.length} Dienste</small></span></span></div>`};
 function aboBody(){
   const P=ABOD,sel=P.find(p=>p.id===S.aboPlan)||P[0],same=P.every(p=>aboKey(p)===aboKey(sel));
   const pref=["netflix","disney","spotify","gpu","psplus-essential"],ids=sel.items.map(i=>i.brand);
-  const fan=pref.filter(x=>ids.includes(x)).concat(ids.filter(x=>!pref.includes(x))).slice(0,5).map(aboBrand).filter(Boolean);
+  const fan=pref.filter(x=>ids.includes(x)).concat(ids.filter(x=>!pref.includes(x))).filter((x,i,a)=>a.indexOf(x)===i).slice(0,9).map(aboBrand).filter(Boolean);
   return `<section class="sec ab-hero">
   <div class="ab-hero-copy">
    <h1 class="h1 rv">Jeden Monat neue Codes</h1>
@@ -43,7 +47,7 @@ function aboBody(){
    <div class="ab-hero-a rv" style="--d:140ms"><a class="btn btn-primary btn-lg" href="#plaene">Pläne vergleichen</a><a class="btn btn-soft btn-lg" href="#inhalt">Das steckt drin</a></div>
    <ul class="ab-pts rv" style="--d:200ms"><li>${ic("i-check")}Codes im Wert von im Schnitt ${eurc(sel.avgValue)} pro Monat</li><li>${ic("i-check")}Kündigung online, ohne Anmeldung</li><li>${ic("i-check")}Keine Servicegebühr</li></ul>
   </div>
-  <div class="ab-fan" data-off aria-hidden="true">${fan.map((b,i)=>{const o=i-(fan.length-1)/2;return `<span class="ab-fc" style="--i:${o};--a:${Math.abs(o)};--k:${i};z-index:${10-Math.round(Math.abs(o)*2)}">${gc(b,{tilt:false,badge:false,plat:false})}</span>`}).join("")}</div>
+  ${aboOrbit(fan)}
  </section>
  <section class="sec ab-sec" id="plaene">${secHead("Wähle deinen Plan")}
   <div class="ab-plans">${P.map(aboPlanCard).join("")}</div>

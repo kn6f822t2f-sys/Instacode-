@@ -58,7 +58,11 @@ async function loadPayMethods() {
 /* Eingebettetes Zahlungsfeld im Warenkorb (Payment Element): Karte (inkl. Apple/Google Pay über die Express-Buttons) plus aktive Zusatzarten */
 const INLINE_PM = ["card", "link", "paypal", "amazon_pay", "eps", "bancontact"];
 const inlineTypes = () => INLINE_PM.filter(m => m === "card" || PAY_METHODS.includes(m));
-const TP = E.TRUSTPILOT_BUSINESS_ID ? { bu: E.TRUSTPILOT_BUSINESS_ID, tpl: E.TRUSTPILOT_TEMPLATE_ID || "", url: E.TRUSTPILOT_URL || "https://de.trustpilot.com/review/instacode.store" } : null;
+/* Trustpilot: der Link „Bewerte uns auf Trustpilot“ steht immer bereit (TRUSTPILOT_URL=aus schaltet ihn ab).
+   Das Widget mit Sternen (TrustBox) gibt es nur mit TRUSTPILOT_BUSINESS_ID und TRUSTPILOT_TEMPLATE_ID, geladen erst nach Einwilligung. */
+const TP_URL = /^(0|aus|off|nein)$/i.test(E.TRUSTPILOT_URL || "") ? "" : (E.TRUSTPILOT_URL || "https://de.trustpilot.com/review/instantcodes.de");
+const TP = TP_URL ? { url: TP_URL, write: /\/review\//.test(TP_URL) ? TP_URL.replace("/review/", "/evaluate/") : TP_URL,
+  widget: !!(E.TRUSTPILOT_BUSINESS_ID && E.TRUSTPILOT_TEMPLATE_ID), bu: E.TRUSTPILOT_BUSINESS_ID || "", tpl: E.TRUSTPILOT_TEMPLATE_ID || "" } : null;
 if (PROD && (!E.SESSION_SECRET || !E.CODES_KEY)) { console.error("SESSION_SECRET und CODES_KEY müssen gesetzt sein."); process.exit(1); }
 
 /* Automatische Auslieferung
@@ -121,6 +125,7 @@ if (!prodCols.includes("logo_v")) db.exec("ALTER TABLE products ADD COLUMN logo_
 if (!db.prepare("PRAGMA table_info(rl_map)").all().some(c => c.name === "manual")) db.exec("ALTER TABLE rl_map ADD COLUMN manual INTEGER DEFAULT 0");
 if (!prodCols.includes("img_src")) db.exec("ALTER TABLE products ADD COLUMN img_src TEXT");
 if (!orderCols.includes("consent_at")) db.exec("ALTER TABLE orders ADD COLUMN consent_at INTEGER");
+if (!orderCols.includes("pay_fp")) db.exec("ALTER TABLE orders ADD COLUMN pay_fp TEXT"); // Fingerabdruck des Zahlungsmittels (Tageslimit pro Karte/Wallet)
 
 /* ---------- Hilfsfunktionen ---------- */
 const now = () => Date.now();
@@ -324,11 +329,40 @@ async function holdReason(o) {
   if (day + o.total > AUTO_DAY) return `Tageslimit von ${(AUTO_DAY / 100).toLocaleString("de-DE")} € für diesen Kunden erreicht`;
   if (!o.payment_intent) return "Keine Zahlungsreferenz";
   try {
-    const pi = await stripe.paymentIntents.retrieve(o.payment_intent, { expand: ["latest_charge"] });
-    const risk = pi.latest_charge && pi.latest_charge.outcome && pi.latest_charge.outcome.risk_level;
+    const pi = await stripe.paymentIntents.retrieve(o.payment_intent, { expand: ["latest_charge", "payment_method"] });
+    const ch = pi.latest_charge && typeof pi.latest_charge === "object" ? pi.latest_charge : null;
+    const risk = ch && ch.outcome && ch.outcome.risk_level;
     if (risk !== "normal") return `Stripe-Risiko: ${risk || "unbekannt"}`;
+    const pm = payInfo(pi, ch);
+    /* Tageslimit zusätzlich pro Zahlungsmittel (Karte/Wallet): wer die E-Mail wechselt, umgeht es so nicht */
+    if (pm.fp) {
+      db.prepare("UPDATE orders SET pay_fp=? WHERE id=?").run(pm.fp, o.id);
+      const dayFp = db.prepare("SELECT COALESCE(SUM(total),0) s FROM orders WHERE (email=? OR pay_fp=?) AND delivered_by='auto' AND delivered_at>?").get(o.email, pm.fp, now() - 864e5).s;
+      if (dayFp + o.total > AUTO_DAY) return `Tageslimit von ${(AUTO_DAY / 100).toLocaleString("de-DE")} € für dieses Zahlungsmittel erreicht`;
+    }
+    /* Expresszahlung ohne bestätigte E-Mail: nur ausliefern, wenn wirklich mit einer Wallet bezahlt wurde
+       und die Wallet genau die E-Mail übermittelt hat, an die die Codes gehen */
+    if (o.channel === "wallet") {
+      if (!WALLET_PM.includes(pm.wallet)) return "Expresszahlung ohne Wallet (E-Mail nicht bestätigt)";
+      if (!pm.email) return "Wallet hat keine E-Mail übermittelt";
+      if (pm.email !== norm(o.email)) return "E-Mail aus der Wallet weicht von der Bestellung ab";
+    }
   } catch (err) { console.error("Risikoprüfung:", err.message); return "Risikoprüfung bei Stripe nicht möglich"; }
   return null;
+}
+/* Wallets, deren E-Mail wir bei der Expresszahlung übernehmen (Apple Pay, Google Pay, Link, PayPal, Amazon Pay) */
+const WALLET_PM = ["apple_pay", "google_pay", "link", "paypal", "amazon_pay"];
+/* Zahlungsmittel aus PaymentIntent/Charge: Wallet-Art, von der Wallet übermittelte E-Mail, Fingerabdruck */
+function payInfo(pi, ch) {
+  const pm = pi.payment_method && typeof pi.payment_method === "object" ? pi.payment_method : {};
+  const pd = (ch && ch.payment_method_details) || {}, card = pm.card || pd.card || null;
+  const type = pm.type || pd.type || null;
+  const wallet = (card && card.wallet && card.wallet.type) || (["link", "paypal", "amazon_pay"].includes(type) ? type : null);
+  const email = norm((pm.billing_details && pm.billing_details.email) || (ch && ch.billing_details && ch.billing_details.email)
+    || (pm.link && pm.link.email) || (pd.link && pd.link.email) || (pm.paypal && pm.paypal.payer_email) || (pd.paypal && pd.paypal.payer_email) || "") || null;
+  const fp = (card && card.fingerprint) || (pm.paypal && pm.paypal.payer_id ? "pp:" + pm.paypal.payer_id : null) || (pd.paypal && pd.paypal.payer_id ? "pp:" + pd.paypal.payer_id : null)
+    || (type === "link" && email ? "link:" + email : null);
+  return { type, wallet, email, fp };
 }
 
 /* Fehlende Codes und Aufladungen bei Reloadly einkaufen. Gekaufte Codes landen im Lager und werden danach von deliverOrder vergeben. */
@@ -457,11 +491,29 @@ app.get("/api/product/:id", (req, res) => {
 app.get("/api/stock", (req, res) => res.set("Cache-Control", "no-store").json({ soldout: soldoutMap() }));
 
 /* ---------- Bewertungen (nur nach echter, gelieferter Bestellung) ---------- */
+/* GET /api/reviews            – alle sichtbaren: Anzahl, Schnitt, Verteilung, je Produkt (by), die neuesten 24
+   GET /api/reviews?brand=a,b   – nur Bewertungen zu Bestellungen mit diesen Produkten (Produktseite, Varianten einer Marke)
+   Die Produkte einer Bewertung kommen aus der Bestellung (items.brand), nicht aus Eingaben der Kundin. */
+const REV_COLS = "r.name, r.rating, r.text, r.brands, r.created_at, (SELECT group_concat(DISTINCT i.brand) FROM items i WHERE i.order_id=r.order_id) ids";
+const revOut = r => ({ name: r.name, rating: r.rating, text: r.text, brands: JSON.parse(r.brands || "[]"), ids: String(r.ids || "").split(",").filter(Boolean), date: r.created_at });
+const revDist = rows => [1, 2, 3, 4, 5].map(s => rows.filter(r => r.rating === s).length);
 app.get("/api/reviews", (req, res) => {
-  const agg = db.prepare("SELECT COUNT(*) n, AVG(rating) avg FROM reviews WHERE hidden=0").get();
-  const items = db.prepare("SELECT name, rating, text, brands, created_at FROM reviews WHERE hidden=0 ORDER BY created_at DESC LIMIT 24").all()
-    .map(r => ({ name: r.name, rating: r.rating, text: r.text, brands: JSON.parse(r.brands || "[]"), date: r.created_at }));
-  res.set("Cache-Control", "public, max-age=60").json({ count: agg.n, avg: agg.n ? Math.round(agg.avg * 10) / 10 : null, items });
+  const want = [...new Set(String(req.query.brand || "").split(",").map(s => s.trim()).filter(s => /^[\w-]{1,60}$/.test(s)))].slice(0, 40);
+  res.set("Cache-Control", "public, max-age=60");
+  if (want.length) {
+    const rows = db.prepare(`SELECT ${REV_COLS} FROM reviews r WHERE r.hidden=0 AND EXISTS (SELECT 1 FROM items i WHERE i.order_id=r.order_id AND i.brand IN (${want.map(() => "?").join(",")})) ORDER BY r.created_at DESC LIMIT 500`).all(...want);
+    const n = rows.length, avg = n ? Math.round(rows.reduce((s, r) => s + r.rating, 0) / n * 10) / 10 : null;
+    /* Zitate: neueste mit Text zuerst */
+    const items = rows.filter(r => r.text).concat(rows.filter(r => !r.text)).slice(0, 12).map(revOut);
+    return res.json({ brand: want, count: n, avg, dist: revDist(rows), items });
+  }
+  const all = db.prepare("SELECT rating FROM reviews WHERE hidden=0").all();
+  const n = all.length, avg = n ? Math.round(all.reduce((s, r) => s + r.rating, 0) / n * 10) / 10 : null;
+  const by = {};
+  for (const r of db.prepare("SELECT brand, COUNT(*) n, AVG(rating) avg FROM (SELECT DISTINCT r.id, r.rating, i.brand FROM reviews r JOIN items i ON i.order_id=r.order_id WHERE r.hidden=0) GROUP BY brand").all())
+    by[r.brand] = { n: r.n, avg: Math.round(r.avg * 10) / 10 };
+  const items = db.prepare(`SELECT ${REV_COLS} FROM reviews r WHERE r.hidden=0 ORDER BY r.created_at DESC LIMIT 24`).all().map(revOut);
+  res.json({ count: n, avg, dist: revDist(all), by, items });
 });
 app.post("/api/reviews", rateLimit({ windowMs: 60 * 60e3, limit: 20 }), (req, res) => {
   const b = req.body || {}, o = db.prepare("SELECT * FROM orders WHERE id=?").get(String(b.order || ""));
@@ -822,17 +874,26 @@ app.post("/api/quote", (req, res) => {
 
 /* Expresszahlung (Apple Pay, Google Pay, PayPal, Link …): Bestellung + PaymentIntent anlegen */
 const expressLim = rateLimit({ windowMs: 15 * 60e3, limit: 60, standardHeaders: true, legacyHeaders: false, message: { error: "Zu viele Versuche. Bitte warte ein paar Minuten." } });
-app.post("/api/express/intent", expressLim, wrap(async (req, res) => {
+/* Expresszahlung ohne bestätigte E-Mail (E-Mail aus der Wallet): strenger begrenzt */
+const walletLim = rateLimit({ windowMs: 15 * 60e3, limit: 12, standardHeaders: true, legacyHeaders: false, skip: req => !!verifiedEmail(req), message: { error: "Zu viele Versuche. Bitte warte ein paar Minuten." } });
+app.post("/api/express/intent", expressLim, walletLim, wrap(async (req, res) => {
   if (!stripe) return bad(res, "Zahlungen sind noch nicht eingerichtet.", 503);
-  const e = verifiedEmail(req);
-  if (!e) return bad(res, EV_MSG, 403);
+  /* Bestätigte E-Mail (Code oder Konto) hat Vorrang. Ohne sie gilt die E-Mail, die die Wallet (Apple Pay, Google Pay, Link …)
+     übermittelt: Die Bestellung bekommt den Kanal „wallet“ und wird nur ausgeliefert, wenn Stripe nach der Zahlung
+     eine Wallet-Zahlung mit genau dieser E-Mail meldet (holdReason). Alle übrigen Prüfungen und Limits gelten unverändert. */
+  let e = verifiedEmail(req), channel = "express";
+  if (!e) {
+    const we = norm(req.body.email);
+    if (req.body.wallet !== true || !emailOk(we)) return bad(res, EV_MSG, 403);
+    e = we; channel = "wallet";
+  }
   if (req.body.consent !== true) return bad(res, CONSENT_MSG);
   let P; try { P = prepareOrder({ items: req.body.items }); } catch (err) { if (err instanceof Bad) return bad(res, err.message); throw err; }
   if (req.body.expect != null && Number(req.body.expect) !== P.total) return bad(res, "Der Preis hat sich gerade geändert. Bitte versuch es noch einmal.", 409);
-  const { id, key } = createOrder(req, e, P, "express");
+  const { id, key } = createOrder(req, e, P, channel);
   const pi = await stripeCall((p, o) => stripe.paymentIntents.create(p, o), {
     amount: P.total, currency: "eur", automatic_payment_methods: { enabled: true },
-    metadata: { order_id: id }, description: `instantcodes Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
+    metadata: { order_id: id, email_src: channel === "wallet" ? "wallet" : "verified" }, description: `instantcodes Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
   }, { excluded_payment_method_types: EXCLUDED_PM }, { idempotencyKey: "pi-" + id });
   db.prepare("UPDATE orders SET payment_intent=? WHERE id=?").run(pi.id, id);
   res.json({ client_secret: pi.client_secret, id, key, total: P.total });
@@ -1427,8 +1488,9 @@ app.get("/img/p/:file", (req, res) => {
 
 /* ---------- Admin: Bewertungen ---------- */
 app.get("/api/admin/reviews", admin, (req, res) => {
-  res.json({ reviews: db.prepare("SELECT id, order_id, email, name, rating, text, brands, hidden, created_at FROM reviews ORDER BY created_at DESC LIMIT 300").all()
-    .map(r => ({ ...r, brands: JSON.parse(r.brands || "[]"), hidden: !!r.hidden })) });
+  res.json({ reviews: db.prepare("SELECT r.id, r.order_id, r.email, r.name, r.rating, r.text, r.brands, r.hidden, r.created_at, (SELECT group_concat(DISTINCT i.brand) FROM items i WHERE i.order_id=r.order_id) ids FROM reviews r ORDER BY r.created_at DESC LIMIT 300").all()
+    .map(r => ({ ...r, brands: JSON.parse(r.brands || "[]"), ids: String(r.ids || "").split(",").filter(Boolean), hidden: !!r.hidden })),
+    trustpilot: TP ? { url: TP.url, widget: TP.widget } : null });
 });
 app.post("/api/admin/reviews/:id", admin, (req, res) => {
   db.prepare("UPDATE reviews SET hidden=? WHERE id=?").run(req.body.hidden ? 1 : 0, Number(req.params.id));

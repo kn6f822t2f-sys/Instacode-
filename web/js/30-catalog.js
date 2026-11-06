@@ -1,10 +1,14 @@
 /* ---------- Katalog: Kategorien, Kategorie, Angebote, Suche, Produkt, 404 ----------
-   Formensprache „Chrome & Glas“ (Bereich 50, Stil in css/50-catalog.css):
-   kFan   Fächer schwebender Gutscheinkarten auf Glasplatten (Köpfe, Leer-Zustände, 404)
-   kHead  Seitenkopf mit Chrom-Überschrift, kurzer Beschreibung, Glas-Chips und Kartenfächer
-   kbar   Filter- und Sortierleiste als klebende Glas-Pille unter der Kopfzeile
+   Formensprache „Chrome & Glas – hell“ (Bereich 50, Stil in css/50-catalog.css):
+   kFan   Fächer schwebender Gutscheinkarten auf weißen Glasplatten mit Lichtschwenk (Köpfe, Leer-Zustände, 404)
+   kHead  Seitenkopf mit Chrom-Überschrift, kurzer Beschreibung, Chips, Markenzeichen und eigener Bildwelt
+   kWall  Cover-Wand aus offiziellen Spielebildern (Spiele-Keys), wandert beim Scrollen
+   kOrbit Kategorie-Zeichen, die um den Fächer schweben (/kategorien)
+   kSig   Funkwellen (Aufladen, 404)
+   kbar   Filter- und Sortierleiste als klebende weiße Glas-Pille unter der Kopfzeile
    kb     Kategorie-Kachel im Bento-Raster (eigene Klassen, nicht .bc der Startseite)
-   kVoid  Leer-Zustand mit Kartenfächer und klarem Weg zurück */
+   kVoid  Leer-Zustand mit Kartenfächer und klarem Weg zurück
+   kBadge leises Abzeichen auf Produktkacheln („Offizieller Code“) */
 /* Anfangsbuchstabe für das A–Z-Verzeichnis (Umlaute zählen zum Grundbuchstaben, Ziffern unter #) */
 const azKey=n=>{const ch=String(n||"").normalize("NFD").replace(/[̀-ͯ]/g,"").charAt(0).toUpperCase();return /[A-Z]/.test(ch)?ch:"#"};
 const azId=k=>"az-"+(k==="#"?"0":k.toLowerCase());
@@ -16,17 +20,34 @@ const imgFirst=l=>l.filter(b=>b&&b.img).concat(l.filter(b=>b&&!b.img));
    Zeiger (--mx/--my aus [data-mouse]) und Scrollen (--sy aus [data-par]) verschieben die Ebenen unterschiedlich stark. */
 const kFan=(list,o={})=>{const n=list.length,l=fanOrder(list);
   return `<div class="kf${o.cls?" "+o.cls:""}" data-off${o.par===false?"":" data-par"} aria-hidden="true"><span class="kf-halo"></span><span class="kf-ring"></span><span class="kf-floor"></span>${l.map((b,i)=>{const off=i-(n-1)/2,a=Math.abs(off);
-    return `<span class="kf-c${a>=2?" kf-e":""}" style="--i:${i};--o:${off};--a:${a};--z:${10-Math.ceil(a)}"><i class="kf-p">${b==="pearl"?'<span class="gc kf-pearl"></span>':b?gc(b,{tilt:false,badge:false,plat:false}):'<span class="gc ghost"></span>'}</i></span>`}).join("")}</div>`};
-/* Seitenkopf: links Chrom-Überschrift, Text und Glas-Chips, rechts (Handy: oben) der Kartenfächer */
-const kHead=o=>`<div class="kh${o.cls?" "+o.cls:""}" data-mouse style="--c:${o.c||"#8F9BFF"}">
-  <div class="kh-art">${kFan(imgFirst(o.cards).slice(0,5))}</div>
+    return `<span class="kf-c${a>=2?" kf-e":""}" style="--i:${i};--o:${off};--a:${a};--z:${10-Math.ceil(a)}"><i class="kf-p">${b==="pearl"?'<span class="gc kf-pearl"></span>':b?gc(b,{tilt:false,badge:!!o.badge,plat:false}):'<span class="gc ghost"></span>'}</i></span>`}).join("")}</div>`};
+/* Funkwellen: Ringe wachsen aus der Mitte (Farbe über --wc) */
+const kSig=(cls="")=>`<span class="ksig${cls?" "+cls:""}" data-off aria-hidden="true"><i></i><i></i><i></i><i></i></span>`;
+/* Cover-Wand: offizielle Spielebilder in vier Spalten, schräg im Raum; die Spalten wandern beim Scrollen gegeneinander (--sy) */
+const kWall=list=>{const l=list.filter(b=>b&&b.cov).slice(0,12),V=[150,-110,190,-90],O=[-30,-150,-70,-200];
+  return `<div class="kw" data-par data-off aria-hidden="true"><div class="kw-in">${[0,1,2,3].map(k=>`<div class="kw-col" style="--k:${k};--v:${V[k]};--o0:${O[k]}">${l.filter((_,i)=>i%4===k).map(b=>gc(b,{tilt:false,badge:false,plat:false,cover:true})).join("")}</div>`).join("")}</div></div>`};
+/* Kategorie-Zeichen schweben um den Fächer (/kategorien) */
+const kOrbit=cs=>`<div class="ko" data-off aria-hidden="true">${cs.slice(0,8).map((c,i)=>`<span class="ko-i" style="--c:${CCOL[c.id]};--k:${i}"><span>${ic(c.icon)}</span></span>`).join("")}</div>`;
+/* Je Markenzeichen nur eine Marke (PlayStation Plus, EA … kommen sonst mehrfach) */
+const uniqSi=l=>{const s=new Set();return l.filter(b=>b&&b.si&&!s.has(b.si)&&s.add(b.si))};
+/* Seitenkopf: links Chrom-Überschrift, Text, Chips und echte Markenzeichen, rechts (Handy: oben) die Bildwelt der Seite
+   (Kartenfächer, o.art ersetzt ihn, o.art2 kommt dazu) */
+const kHead=o=>`<div class="kh${o.cls?" "+o.cls:""}" data-mouse style="--c:${o.c||"#7D5CF0"}">
+  <div class="kh-art">${o.art||kFan(imgFirst(o.cards).slice(0,5),{badge:o.badge})}${o.art2||""}</div>
   <div class="kh-copy">
     <h1 class="h1 kh-t rv">${o.title}</h1>
     <p class="kh-l rv" style="--d:80ms">${o.text}</p>
     ${o.meta&&o.meta.length?`<ul class="kh-m rv" style="--d:150ms">${o.meta.map(m=>`<li>${ic(m[0])}<span>${m[1]}</span></li>`).join("")}</ul>`:""}
-    ${o.extra?`<div class="kh-x rv" style="--d:220ms">${o.extra}</div>`:""}
+    ${o.extra?`<div class="kh-x rv" style="--d:200ms">${o.extra}</div>`:""}
+    ${o.logos&&o.logos.length>=3?`<div class="kh-lg rv" style="--d:240ms"><small>Marken im Sortiment</small>${brandWall(o.logos,{cls:"kh-bw",n:8})}</div>`:""}
   </div>
 </div>`;
+/* Leises Abzeichen auf Produktkacheln im Katalog (nur wahre Aussagen) */
+const kaTxt=b=>b.cat==="topup"?"Direkt aufs Handy":"Offizieller Code";
+const kBadge=root=>{if(!root)return;$$(".tile:not([data-ka])",root).forEach(t=>{t.dataset.ka=1;const m=$("a.tile-meta",t),id=m&&(m.getAttribute("href")||"").split("/marke/")[1],b=id&&byId(id);
+  if(b)m.insertAdjacentHTML("beforeend",`<span class="ka-ok">${ic(b.cat==="topup"?"i-zap":"i-shield")}${kaTxt(b)}</span>`)})};
+/* „Mehr anzeigen“ lädt weitere Kacheln nach: auch diese bekommen das Abzeichen */
+{const more=A.moreTiles;A.moreTiles=v=>{more(v);const g=document.getElementById(v);if(g&&g.closest(".kat,.srch"))kBadge(g)}}
 /* Leer-Zustand: leere Glaskarten mit einer Perlmutt-Karte in der Mitte, darunter ein klarer Weg weiter */
 const kVoid=(title,text,btns)=>`<div class="kvoid rv">${kFan(["pearl",null,null],{cls:"kf-void",par:false})}<h2 class="kvoid-t">${title}</h2><p>${text}</p>${btns&&btns.length?`<div class="kvoid-b">${btns.map((b,i)=>`<a class="btn ${i?"btn-soft":"btn-primary"}" href="${b[0]}">${esc(b[1])}</a>`).join("")}</div>`:""}</div>`;
 /* Bento-Raster: Breiten je Kachel. Desktop 12 Spalten in Reihen zu drei (5·4·3 / 3·4·5), Rest in Paaren;
@@ -38,6 +59,7 @@ const kbSpans=n=>{const d=[];let r=0;
 const kbCard=(c,i,sp)=>{const l=VIS().filter(b=>b.cat===c.id),n=BRANDS.filter(b=>b.cat===c.id).length,unit=c.id==="keys"?"Spiele":c.id==="topup"?"Anbieter":"Produkte";
   return `<a class="kb spot rv" href="/kategorie/${c.id}" style="--c:${CCOL[c.id]};--d:${(i%6)*60}ms${sp?`;--sp:${sp[0]};--spm:${sp[1]}`:""}"${sp&&sp[0]>=5?' data-big':""}>
   <span class="kb-l" aria-hidden="true"></span>
+  <span class="kb-ic" aria-hidden="true">${ic(c.icon)}</span>
   <span class="kb-t"><b>${esc(c.name)}</b><small>${n} ${unit}</small></span>
   <span class="kb-d">${esc(c.desc)}</span>
   <span class="kb-go" aria-hidden="true">${ic("i-arrow")}</span>
@@ -49,10 +71,14 @@ function cats(){
   az.forEach(b=>{const k=azKey(b.name);let g=groups.find(x=>x.k===k);if(!g)groups.push(g={k,l:[]});g.l.push(b)});
   const sub=b=>esc(catById(b.cat).name)+(isKey(b)?" · "+variants(b).map(v=>PLAT[v.plat]).join(", "):"");
   const cards=["netflix","steam","psn","fortnite","amazon","spotify","apple"].map(byId).filter(Boolean);
+  /* Markenwand: bekannte Marken zuerst, Mobilfunk am Ende */
+  const bw=uniqSi(SKY0.map(byId).concat(VIS().filter(b=>b.cat!=="topup"),VIS()));
   return {tab:"cats",title:"Kategorien",html:`${crumb([["Kategorien"]])}
-${kHead({c:"#7048E8",title:"Kategorien",text:"Vom Spiele-Key bis zum Handy-Guthaben. Codes kommen nach der Zahlung per E&#8209;Mail, Handy-Guthaben geht direkt auf die Nummer.",
-  meta:[["i-grid-f",`${cs.length} Kategorien`],["i-box",`${BRANDS.length} Produkte`],["i-mail","Code per E&#8209;Mail"]],cards:cards.length>=3?cards:IMGB().slice(0,5)})}
+${kHead({cls:"kh-cats",c:"#7D5CF0",title:"Kategorien",text:"Vom Spiele-Key bis zum Handy-Guthaben. Codes kommen nach der Zahlung per E&#8209;Mail, Handy-Guthaben geht direkt auf die Nummer.",
+  meta:[["i-grid-f",`${cs.length} Kategorien`],["i-box",`${BRANDS.length} Produkte`],["i-mail","Code per E&#8209;Mail"]],cards:cards.length>=3?cards:IMGB().slice(0,5),art2:kOrbit(cs)})}
+${trustBand()}
 <section class="sec kb-sec" aria-label="Alle Kategorien"><div class="kb-grid">${cs.map((c,i)=>kbCard(c,i,sp[i])).join("")}</div></section>
+${bw.length>=6?`<section class="sec kbw-sec" aria-labelledby="bwH"><div class="sec-head"><div><h2 class="h2" id="bwH">Marken im Sortiment</h2><p>Echte Markenzeichen, ein Tipp führt direkt zum Produkt.</p></div></div>${brandWall(bw,{n:24})}</section>`:""}
 <section class="sec az-sec" aria-labelledby="azH"><div class="sec-head"><div><h2 class="h2" id="azH">Alle Produkte von A bis Z</h2><p>${VIS().length} Marken und Spiele, alphabetisch sortiert.</p></div></div>
   <nav class="az-nav" aria-label="Nach Anfangsbuchstabe springen"><div class="az-nav-in">${groups.map(g=>`<a href="#${azId(g.k)}" aria-label="Buchstabe ${g.k==="#"?"Ziffern":g.k}">${g.k}</a>`).join("")}</div></nav>
   <div class="az">${groups.map(g=>`<div class="az-g spot" id="${azId(g.k)}"><h3 class="az-k">${g.k}</h3><ul>${g.l.map(b=>`<li><a href="/marke/${b.id}">${mini(b)}<span class="az-t"><b>${esc(b.name)}</b><small>${sub(b)}</small></span>${ic("i-chev")}</a></li>`).join("")}</ul></div>`).join("")}</div>
@@ -74,8 +100,10 @@ function category(id,qs){
     :TU?"Prepaid-Guthaben für deine Nummer: Nummer eingeben, Betrag wählen, das Guthaben wird direkt nach der Zahlung gebucht."
     :`${esc(c.desc)}. Nach der Zahlung kommt dein Code per E&#8209;Mail.`;
   const others=CATSV().filter(x=>x.id!==id);
+  /* Eigene Bildwelt: Spiele-Keys als Cover-Wand, Aufladen mit Funkwellen, sonst Kartenfächer im Farbhauch der Kategorie mit echten Markenzeichen */
   return {tab:"cats",title:c.name,html:`${crumb([["Kategorien","/kategorien"],[c.name]])}
-${kHead({c:CCOL[id],title:esc(c.name),text,meta,cards:fan,extra:TU?`<a class="btn btn-primary btn-lg" href="/aufladen">Nummer eingeben</a>`:""})}
+${kHead({cls:K?"kh-keys":TU?"kh-tu":"kh-cat kh-"+id,c:CCOL[id],title:esc(c.name),text,meta,cards:fan,art:K&&fan.some(b=>b.cov)?kWall(fan):"",art2:TU?kSig():"",logos:K?null:uniqSi(fan),extra:TU?`<a class="btn btn-primary btn-lg" href="/aufladen">Nummer eingeben</a>`:""})}
+${trustBand()}
 <section class="sec kat" aria-label="${esc(c.name)}">
   <div class="kbar${K?" has-f":""}">
     <p class="kbar-n">${n}</p>
@@ -86,15 +114,17 @@ ${kHead({c:CCOL[id],title:esc(c.name),text,meta,cards:fan,extra:TU?`<a class="bt
   ${l.length?tilesPaged(l,{cover:K}):kVoid("Nichts gefunden","Für diese Auswahl gibt es gerade keine Produkte. Probier eine andere Plattform oder schau dir alle an.",[[`/kategorie/${id}`,"Alle anzeigen"],["/kategorien","Andere Kategorien"]])}
 </section>
 ${others.length?`<section class="sec kat-more">${secHead("Andere Kategorien",["/kategorien","Alle"],railNav("catRail"))}<div class="rail"><div class="rail-track kb-rail" id="catRail">${others.map((x,i)=>kbCard(x,i)).join("")}</div></div></section>`:""}`,
-  after(){const s=$("[data-sort]");s&&s.addEventListener("change",()=>go(`/kategorie/${id}?s=${s.value}${pf!=="all"?"&p="+pf:""}`))}};
+  after(){const s=$("[data-sort]");s&&s.addEventListener("change",()=>go(`/kategorie/${id}?s=${s.value}${pf!=="all"?"&p="+pf:""}`));kBadge($(".kat"))}};
 }
 function deals(){
   const l=DEALS(), pop=POP.map(byId).filter(Boolean), off=l.length?Math.round(Math.max.apply(null,l.map(b=>b.disc))*100):0;
   return {tab:"home",title:"Angebote",html:`${crumb([["Angebote"]])}
-${kHead({c:"#E11D48",title:"Angebote",text:l.length?`${l.length} ${l.length===1?"Gutschein ist":"Gutscheine sind"} gerade günstiger als der Nennwert. Der Preis gilt, solange er hier steht.`:"Hier stehen Gutscheine, die gerade günstiger sind als ihr Nennwert.",
+${kHead({cls:"kh-deals",c:"#D9364C",badge:true,title:"Angebote",text:l.length?`${l.length} ${l.length===1?"Gutschein ist":"Gutscheine sind"} gerade günstiger als der Nennwert. Der Preis gilt, solange er hier steht.`:"Hier stehen Gutscheine, die gerade günstiger sind als ihr Nennwert.",
   meta:l.length?[["i-tag",`Bis zu ${off} % unter Nennwert`],["i-mail","Code per E&#8209;Mail"]]:[["i-mail","Code per E&#8209;Mail"]],cards:l.length?l:pop})}
+${trustBand()}
 <section class="sec kat">${l.length?tilesPaged(l):kVoid("Gerade keine Angebote","Sobald ein Gutschein günstiger ist als sein Nennwert, steht er hier. Bis dahin findest du alles in den Kategorien.",[["/kategorien","Kategorien ansehen"],["/","Zur Startseite"]])}</section>
-${!l.length&&pop.length?`<section class="sec">${secHead("Beliebt",["/kategorien","Alle"],railNav("popRail"))}${rail("popRail",pop)}</section>`:""}`};
+${!l.length&&pop.length?`<section class="sec kat">${secHead("Beliebt",["/kategorien","Alle"],railNav("popRail"))}${rail("popRail",pop)}</section>`:""}`,
+  after(){kBadge($(".view"))}};
 }
 
 /* ---------- Produktseite ---------- */
@@ -126,6 +156,8 @@ const stickRO="ResizeObserver" in window?new ResizeObserver(es=>es.forEach(e=>e.
 let stuck=[];
 const stick=(...els)=>{if(!stickRO)return;stuck.forEach(x=>stickRO.unobserve(x));stuck=els.filter(Boolean);stuck.forEach(x=>stickRO.observe(x))};
 let pdIO=null;
+/* Farbwelt der Produktbühne: die kräftigste Farbe aus Kartenverlauf und Schrift (graue Marken bekommen Lavendel) */
+const vivid=b=>{let best="#7D5CF0",bs=.15;((String(b.bg||"")+" "+String(b.fg||"")).match(/#[0-9a-fA-F]{6}/g)||[]).forEach(h=>{const c=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255),s=Math.max(...c)-Math.min(...c);if(s>bs){bs=s;best=h}});return best};
 /* Produktseite: links die Bühne (Karte auf einer Glasplatte über einem Chrom-Sockel, Studiolicht, Perlmutt-Reflexe),
    rechts die Kaufsäule aus Glas (Desktop klebend), darunter ruhige Info-Kacheln und Reiter */
 function brandPage(id){
@@ -142,24 +174,29 @@ function brandPage(id){
   const dis=avail.length?"":" disabled", region=REGION[b.region]||esc(regDE(b.region)||b.regionName||"Deutschland");
   const amtSub=a=>soldOut(id,a)?"<small>ausverkauft</small>":!card||Math.abs(price(b,a)-a)>.004?`<small>${money(price(b,a))}</small>`:"";
   const short=b.name.replace(/ (Gift Card|Geschenkkarte)$/,""), barSub=()=>short+(card||!P.a?"":" · "+tagRaw())+(P.q>1?` · ${P.q} Stück`:"")+(P.gift?" · als Geschenk":"");
-  const tiles=[["i-pin","Gültig in",region],["i-mail","Lieferung","Sofort per E&#8209;Mail"]].concat(K?[["i-monitor","Aktivierung",esc(STORE[b.plat]||PLAT[b.plat])],["i-key","Typ","Digitaler Key"]]:[["i-card-f","Format",b.type==="sub"?"Code mit fester Laufzeit":"Digitaler Code"]]);
+  const tiles=[["i-pin","Gültig in",region],["i-mail","Lieferung","Meist sofort per E&#8209;Mail"]].concat(K?[["i-monitor","Aktivierung",esc(STORE[b.plat]||PLAT[b.plat])],["i-key","Typ","Digitaler Key"]]:[["i-card-f","Format",b.type==="sub"?"Code mit fester Laufzeit":"Digitaler Code"]]);
   return {tab:"cats",title:b.name+(K?` (${PLAT[b.plat]})`:""),buybar:true,html:`${crumb([[c.name,"/kategorie/"+c.id],[b.name]])}
-<div class="pd${K?" pd-key":""}" style="--gd:${DESIGNS[0][1]}">
+<div class="pd${K?" pd-key":""}" style="--gd:${DESIGNS[0][1]};--pg:${vivid(b)}">
   <div class="pd-media">
     <div class="pd-stage" id="pdStage" data-mouse data-off>
-      <span class="pd-sky" aria-hidden="true"></span><span class="pd-soft" aria-hidden="true"></span><span class="pd-beam" aria-hidden="true"></span><span class="pd-shine" aria-hidden="true"></span>
-      <span class="pd-plinth" aria-hidden="true"><i class="pd-top"></i><i class="pd-spot"></i><i class="pd-shade"></i></span>
+      <span class="pd-sky" aria-hidden="true"></span>
+      <span class="pd-amb" aria-hidden="true">${K&&b.cov?`<img src="/img/cover/${esc(b.id)}/l" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}</span>
+      <span class="pd-beam" aria-hidden="true"></span><span class="pd-floor" aria-hidden="true"></span><span class="pd-shine" aria-hidden="true"></span>
       <div class="pd-obj">
         ${K?"":`<span class="ge-back" aria-hidden="true"></span>`}
+        <span class="pd-shade" aria-hidden="true"></span>
+        <span class="pd-refl" aria-hidden="true"><span class="pd-float"><span class="pd-glass">${gc(b,{tilt:false,badge:false,plat:false,cover:K})}</span></span></span>
         <div class="pd-card"><div class="pd-float"><div class="pd-glass">${gc(b,{cls:"flash",cover:K,amt:K?null:tagTxt(),amtId:"pAmtTag"})}</div></div></div>
         ${K?"":`<div class="ge-front" id="gEnv" aria-hidden="true"><b id="gHead">Ein Geschenk für dich</b><span id="gSub">${S.user?"Von "+esc(S.user.name):"Mit persönlicher Nachricht"}</span></div>`}
       </div>
+      <span class="pd-sweep" aria-hidden="true"></span>
     </div>
   </div>
   <div class="pd-side">
     <a class="pd-tag" href="/kategorie/${c.id}" style="--c:${CCOL[c.id]}">${ic(c.icon)}${esc(c.name)}</a>
     <h1 class="h1">${esc(b.name)}</h1>
     <p class="pd-sub">${K?esc(PLAT[b.plat])+" · Digitaler Key":"Digitaler Code"} · Gültig in ${region}</p>
+    <div class="pd-rev" id="pdRev" data-brand="${esc(b.id)}"></div>
     <div class="pact lg-group" role="group" aria-label="Aktionen">
       <button data-a="share" data-v="${id}">${ic("i-share")}<span>Teilen</span></button>
       <button data-a="fav" data-v="${id}" aria-pressed="${fav}" class="pact-fav">${ic(fav?"i-heart-f":"i-heart")}<span>${fav?"Gemerkt":"Merken"}</span></button>
@@ -184,6 +221,7 @@ function brandPage(id){
       <div class="pd-buy" data-off><button class="btn btn-primary btn-lg" data-a="pBuy"${dis}>Jetzt kaufen</button><button class="btn btn-outline btn-lg" data-a="pAdd"${dis}>In den Warenkorb</button></div>
       ${xpayBox("pX","Express-Checkout")}
       ${payLogos(b)}
+      ${trustBadges(b)}
     </div>
   </div>
   <div class="pd-info">
@@ -199,7 +237,7 @@ ${similar.length?`<section class="sec pd-more">${secHead("Mehr aus "+esc(c.name)
 `,
   after(){if(b.rl)API("/product/"+encodeURIComponent(b.id)).then(j=>{const o=document.getElementById("redeemOl");if(o&&j.redeem){const st=String(j.redeem).replace(/<[^>]+>/g," ").split(/(?<=[.!])\s+|\n+|\r+/).map(x=>x.trim()).filter(x=>x.length>2).slice(0,8);if(st.length)o.innerHTML=st.map(x=>`<li>${esc(x)}</li>`).join("")}}).catch(()=>{});
     const stg=$("#pdStage"),bar=$("#pdBar"),buy=$(".pd-buy");
-    stick($(".pd-side"));
+    stick($(".pd-side"));kBadge($(".pd-more"));
     stg.addEventListener("pointerleave",()=>{stg.style.removeProperty("--mx");stg.style.removeProperty("--my")});
     const side=$(".pd-side");side.addEventListener("focusin",e=>{if(e.target.matches("input,textarea"))bar.classList.add("typing")});side.addEventListener("focusout",()=>bar.classList.remove("typing"));
     /* Kaufleiste (Handy): erscheint, wenn weder die Karte noch die Kaufknöpfe zu sehen sind – und verschwindet vor „Mehr aus …“ und der Fußzeile, damit sie nichts überdeckt */
@@ -246,12 +284,17 @@ function searchBrands(q){
     for(const w of words){const x=n.startsWith(w)?4:n.includes(w)?3:(pl.includes(w)||tg.includes(w))?2:cn.includes(w)?1:0;if(!x)return 0;s+=x}return s+(isRep(b)?.1:0)};
   return dedupeGrp(BRANDS.map(b=>[b,score(b)]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]).map(x=>x[0]));
 }
+/* Schwebende Markenzeichen im Suchkopf (echte Zeichen aus /logo, je Zeichen eine Marke) */
+const SKY0=["steam","psn","netflix","spotify","apple","gplay","fortnite","roblox","zalando","valorant","dazn","twitch"];
+const skyList=()=>uniqSi(SKY0.map(byId).concat(VIS())).slice(0,10);
 function searchPage(_,qs){
   const q=qs.get("q")||"", f=CATS.some(c=>c.id===qs.get("c"))?qs.get("c"):"all";
   return {tab:"cats",title:q?`Suche: ${q}`:"Suche",html:`${crumb([["Suche"]])}
 <section class="sec srch">
-  <div class="srch-h">
+  <div class="srch-h" data-mouse>
+    <div class="sk" data-off aria-hidden="true">${skyList().map((b,i)=>`<span class="sk-m" data-si="${esc(b.si)}" style="--k:${i};color:${brandInk(b)}"><i style="--si:url(/logo/${esc(b.si)}.svg);--a:${SIA[b.si]||1}"></i></span>`).join("")}</div>
     <h1 class="h1 srch-t">Suche</h1>
+    <p class="srch-l">${VIS().length} Marken und Spiele. Tipp einen Namen ein, die Treffer erscheinen sofort.</p>
     <form class="srch-f" role="search" action="/suche"><div class="field srch-in">${ic("i-search")}<input id="sq" name="q" type="search" value="${esc(q)}" placeholder="Marke, Spiel oder Gutschein" aria-label="Suchbegriff" autocomplete="off" enterkeyhint="search"></div></form>
   </div>
   <div class="kbar srch-bar"><div class="kbar-f" role="group" aria-label="Kategorie"><button class="chip" aria-pressed="${f==="all"}" data-a="sf" data-v="all">Alle</button>${CATSV().map(c=>`<button class="chip" aria-pressed="${f===c.id}" data-a="sf" data-v="${c.id}">${ic(c.icon)}${esc(c.short)}</button>`).join("")}</div></div>
@@ -264,18 +307,21 @@ function searchPage(_,qs){
     const draw=()=>{const v=inp.value.trim(),l=(v?searchBrands(v):VIS()).filter(b=>F==="all"||b.cat===F);
       $("#scount").textContent=l.length?`${l.length} ${l.length===1?"Ergebnis":"Ergebnisse"}${v?` für „${v}“`:""}`:"";
       $("#sres").innerHTML=l.length?tilesPaged(l):kVoid("Nichts gefunden",v?`Für „${esc(v)}“ gibt es in dieser Auswahl keine Treffer. Versuch einen Marken- oder Spielnamen.`:"In dieser Kategorie gibt es gerade keine Produkte.",[["/kategorien","Kategorien ansehen"],["/","Zur Startseite"]]);
-      $$("#sres .rv").forEach(x=>x.classList.add("in"));moreIO&&$$("#sres [data-more]").forEach(e=>moreIO.observe(e))};
+      $$("#sres .rv").forEach(x=>x.classList.add("in"));moreIO&&$$("#sres [data-more]").forEach(e=>moreIO.observe(e));kBadge($("#sres"));
+      /* Passende Markenzeichen im Kopf leuchten auf */
+      const hit=new Set(v?l.slice(0,24).map(b=>b.si).filter(Boolean):[]),sk=$(".sk");
+      if(sk){sk.classList.toggle("q",hit.size>0);$$(".sk-m",sk).forEach(m=>m.classList.toggle("hit",hit.has(m.dataset.si)))}};
     A.sf=(v,el)=>{F=v;$$("[data-a=sf]").forEach(c=>c.setAttribute("aria-pressed",c===el));url();draw()};
     let t;inp.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(()=>{url();draw()},140)});
     $(".srch-f").addEventListener("submit",e=>{e.preventDefault();clearTimeout(t);url();draw();inp.blur()});
     draw();if(!q)setTimeout(()=>inp.focus({preventScroll:true}),80);
   }};
 }
-/* 404: „4 ◯ 4“ – die Null ist der Ring aus flüssigem Chrom, dahinter ein Fächer leerer Glaskarten; darunter klare Wege zurück */
+/* 404: „4 ◯ 4“ – die Null ist der Ring aus flüssigem Chrom, von ihm laufen Wellen weg, dahinter ein Fächer leerer Glaskarten; darunter klare Wege zurück */
 function notFound(){
   const cs=CATSV().filter(c=>c.id!=="topup").slice(0,5);
   return {title:"Nicht gefunden",html:`<section class="nf" data-mouse>
-  <div class="nf-stage" aria-hidden="true">${kFan(["pearl",null,null,null,null],{cls:"kf-nf",par:false})}<div class="nf-num"><span>4</span><span class="nf-o"><span class="lq" data-off></span></span><span>4</span></div></div>
+  <div class="nf-stage" aria-hidden="true">${kFan(["pearl",null,null,null,null],{cls:"kf-nf",par:false})}<div class="nf-num"><span>4</span><span class="nf-o">${kSig()}<span class="lq" data-off></span></span><span>4</span></div></div>
   <h1 class="h1 nf-t">Seite nicht gefunden</h1>
   <p class="lead nf-l">Diese Seite gibt es nicht oder nicht mehr. Über die Suche oder die Kategorien findest du schnell, was du brauchst.</p>
   <div class="nf-b"><a class="btn btn-primary btn-lg" href="/">Zur Startseite</a><button class="btn btn-soft btn-lg" data-a="palOpen">${ic("i-search")}Suchen</button></div>

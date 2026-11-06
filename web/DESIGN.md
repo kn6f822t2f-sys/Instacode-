@@ -1,36 +1,30 @@
-# instantcodes – Design „Chrome & Glas“
+# instantcodes – Design „Chrome & Glas – hell“
 
 Shop für digitale Gutscheine, Spiele-Keys, Abos und Handy-Aufladungen (Deutschland, Du-Form, überwiegend iPhone-Nutzer).
 Hauptaufgabe jeder Seite: Marke finden → Betrag wählen → bezahlen → Code sofort bekommen.
-Stil: Graphit wie in einem Fotostudio, Milchglas mit Chromkante, Perlmutt-Reflexe, Knöpfe aus flüssigem Chrom, ein Ring aus flüssigem Metall (WebGL) als Herzstück.
+Stil: **hell, offen, vertrauenswürdig**. Porzellan-Grund mit weichem Studiolicht, weißes Glas mit Haarlinie, Chrom als Akzent (Metall-Ring, Kanten), Hauptknöpfe aus Schwarzchrom. Viel Bewegung, aber ruhig und schnell.
 
 ## Leitidee
-1. **Graphit, Studiolicht.** Grund `--bg #0E0F12` (nicht Schwarz). Darüber eine große weiche Lichtquelle oben rechts, Perlmutt-Schimmer (Rosa, Lavendel, Mint) an den Rändern und feines Korn (`.bgfx`).
-2. **Chrom ist der Hauptakzent.** Hauptknopf, gewählter Betrag, aktiver Chip, Schalter und Haken sind hell gespiegeltes Chrom (`--chrome-fill`) mit dunkler Schrift `#0D0E11`. Überschriften `.h1 .h2` tragen den Chrom-Textverlauf (`--chrome-text`). Perlmutt (`--pearl`, `.pearl-t`) nur für kleine Akzente (Neu-Marke, Lichtring `--ring`, Hover-Glanz).
-3. **Glas mit Chromkante.** Flächen sind Milchglas (`--glass`, `--rim`): helle Kante oben, feine Linie rundum. `.chrome-rim` setzt eine Verlaufskante aus Chrom (belegt `::before`).
-4. **Karten schweben wie Glasobjekte.** Gutscheinkarten (`.gc`) neigen sich zum Zeiger; auf der Startseite liegen sie auf Glasplatten (`.fc`, Tiefe `--d`, Zeiger- und Scroll-Parallax) vor und hinter dem Metall-Ring.
-5. **Bewegung macht es wertig.** Einblenden mit Unschärfe (`.rv`), Wort-für-Wort-Aufhellen (`[data-words]`), Hochzählen (`[data-count]`), Glanz, der über Chrom läuft, federnde Rückmeldung, Lichtpunkt unter dem Zeiger (`.card .catcard .qa .spot .step`). Bewegungs-Code: `js/15-effects.js`, `js/16-motion.js`.
+1. **Hell und klar.** Grund `--bg #F3F4F6`, Flächen weiß (`#fff` bzw. `--glass`) mit Haarlinie (`--rim`) und weichem Schatten (`--lift`). Keine weißen Halbtransparenzen als Fläche (unsichtbar auf Hell) – Flächen sind weiß, Linien/Mulden dunkel-transparent (`rgba(14,16,20,.04–.14)`).
+2. **Schwarzchrom für Handlungen.** `.btn-primary` = `--sel` (dunkler Chromverlauf) mit weißer Schrift. Gewählte Zustände (Chip, Betrag, Haken, Schalter, Reiter-Knopf) = `background:var(--sel);color:var(--sel-ink)`. Nebenknopf `.btn-soft` = weiß mit Linie.
+3. **Vertrauen sichtbar.** Echte Zahlungszeichen (`payLogos()`, `/pay/*.svg`), echte Markenzeichen in Markenfarbe (`brandWall()`, `brandInk(b)`), Laufband `trustBand()`, Abzeichen `trustBadges(b)`. Nur wahre Aussagen: keine erfundenen Bewertungen, Zahlen, Siegel, keine „Partner“-Behauptungen (Marken heißen „im Sortiment“).
+4. **Karten schweben.** Gutscheinkarten (`.gc`, farbig) und offizielle Spielebilder wirken auf Hell besonders; weicher farbiger Schatten (`--g`).
+5. **Bewegung macht es wertig, aber schnell.** Einblenden (`.rv`), Seitenwechsel per View Transitions, Lichtpunkt unter dem Zeiger (`.card .spot …`), federnde Rückmeldung. Nur transform/opacity, `data-off` für Dauerschleifen, `.lite` sparsam, `prefers-reduced-motion` respektieren.
 6. **Klarheit vor Deko.** Keine Labels über Überschriften, keine Großbuchstaben-Eyebrows, keine Emoji, keine Pfeile „→“ in Knopftexten.
 
 ## Tokens (in `css/01-base.css`)
-- Grund: `--bg #0E0F12`, `--bg-2 #141519`, `--bg-3 #1B1D22` (feste Flächen, Sheets/Menüs).
-- Text: `--ink #F2F3F5`, `--ink-2 #AAAEB8` (Zweittext), `--ink-3 #8D919C` (Hinweise, mind. 13 px). Auf Chrom und weißen Flächen dunkle Schrift `#0D0E11`.
-- Chrom & Perlmutt: `--chrome-text` (Überschriften), `--chrome-fill` (Knöpfe, aktive Zustände, Icons auf Chrom), `--chrome-edge` / `--edge` (Kanten), `--pearl` (Perlmutt-Verlauf), `--ring` (umlaufender Perlmutt-Lichtring), `--chrome`/`--chrome-flat`.
-- Akzente (sparsam, eher als Licht als als Fläche): `--pink --lav --mint --sky --iris --iris-2`; Zustände `--mint` (Erfolg), `--rose` (Fehler), `--amber` (Hinweis). `--brand-grad` = Perlmutt, `--text-grad` = Chrom.
-- Glas: `--glass` (Standard), `--glass-hi`, `--glass-lo`, `--glass-solid` (deckend, für Overlays auf `.lite`), `--rim` / `--rim-hi` (Kante), `--lift` / `--lift-2` (Schatten), `--glow`, `--well` + `--field`/`--field-hi` (Eingaben), `--focus`, `--blur`/`--blur-s`.
-- Linien: `--line`, `--line-2`. Trennung per `box-shadow:0 -1px 0 var(--line)`, nie `border:1px solid`.
-- Form: `--r-xs 10`, `--r-s 14`, `--r-m 18`, `--r-l 24`, `--r-xl 32`, `--pill`. Raum: `--gut` (Seitenrand, Inhalt max. 1240 px), `--sec` (Abschnittsabstand 72–128 px).
-- Bewegung: `--ease`, `--ease-out`, `--spring`. Schrift: `--font` (Geist), `--mono`.
-- Typo: `.h1` (36–62 px, 600), `.h2` (27–40 px, 590), beide in ruhigem Silber; `.h3 .page-h1 .lead .fine .muted .code .pearl-t`.
-
-**Glas-Rezept für neue Flächen:** `background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02)); box-shadow:var(--rim),var(--lift); border-radius:var(--r-l);` (oder kurz `var(--glass)`). Weichzeichner (`backdrop-filter`) nur auf Flächen, die über Inhalt schweben. Auf `.lite` deckend mit `--glass-solid`/`--bg-2`. **Aktiver Zustand:** Chrom (`background:var(--chrome-fill);color:#0D0E11`), wie `.chip[aria-pressed=true]`.
+- Grund `--bg #F3F4F6`, `--bg-2 #fff`, `--bg-3 #E9EBEF`. Text `--ink #0E1014`, `--ink-2 #474D59`, `--ink-3 #656B78` (dunkelste erlaubte Hinweisfarbe ist ink-3).
+- Auswahl/Handlung: `--sel` (Schwarzchrom), `--sel-ink #fff`. Silber: `--chrome-fill` (nur für helle Metallflächen mit dunkler Schrift). Überschriften `--chrome-text` (dunkler Stahl).
+- Akzente (auf Hell kontraststark): `--lav #7D5CF0`, `--iris #6A4FE0`, `--mint/--ok #0E9F6E` (Erfolg), `--rose #D9364C` (Fehler), `--amber #B86E00`, `--sky #2F7FD9`, `--pink #E7438F`. `--pearl` (Perlmutt-Verlauf), `--brand-grad`.
+- Glas: `--glass` (weiß), `--glass-lo`, `--glass-solid`, `--rim`/`--rim-hi` (Haarlinie), `--lift`/`--lift-2`, `--well` + `--field` (Eingaben weiß mit Linie), `--focus` (Lavendel), `--blur`/`--blur-s`. Linien `--line`, `--line-2`.
+- Form/Raum/Bewegung/Schrift wie bisher: `--r-*`, `--pill`, `--gut`, `--sec`, `--ease`, `--ease-out`, `--spring`, `--font`, `--mono`.
 
 ## Fertige Bauteile (nicht neu erfinden, nicht global überschreiben)
-`.card .si-ic .cc-ic .lg-group/.lg-lens .btn(.btn-primary .btn-soft .btn-outline .btn-ghost .btn-lg .btn-sm .btn-block) .icon-btn .badge .more .chips/.chip .amounts/.amt .lbl .inp .field .phone .sel .err .flag .switch .chk .qty .otp .row .express .trust .tabs .sec .sec-head .crumb .gc (+ Varianten) .mini .mini-gc .tiles/.tile/.tile-media/.tile-meta/.qadd .rail/.rail-track/.rail-nav .catgrid/.catcard/.fan .stage/.fs/.float .phead/.phead-stage .faq/.qa .empty/.ghostfan .paylogos/.pmk/.pmk-kl/.kl-cap .spin .rv .bump .tick .shake .rip .shine .ring .spot .chrome-rim .lm .metal .lq`, Kopfzeile `.hdr …`, Fußzeile `.ftr .ft-*`, `.testbar .trustbar .bgfx`.
+`.card .si-ic .cc-ic .lg-group/.lg-lens .btn(.btn-primary .btn-soft .btn-outline .btn-ghost .btn-lg .btn-sm .btn-block) .icon-btn .badge .more .chips/.chip .amounts/.amt .lbl .inp .field .phone .sel .err .flag .switch .chk .qty .otp .row .express .trust .tabs .sec .sec-head .crumb .gc (+ Varianten) .mini .mini-gc .tiles/.tile/.tile-media/.tile-meta/.qadd .rail/.rail-track/.rail-nav .catgrid/.catcard/.fan .stage/.fs/.float .phead/.phead-stage .faq/.qa .empty/.ghostfan .paylogos/.pmk/.pmk-kl/.kl-cap .spin .rv .bump .tick .shake .rip .shine .ring .spot .chrome-rim .lm .metal .lq .iph .tband .tbadges .bwall`, Kopfzeile `.hdr …`, Fußzeile `.ftr .ft-*`, `.testbar .trustbar .bgfx`.
 Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines Bereichs scopen** (z. B. `.pd .amt{…}`), nie die Grundregel ändern. Klassen-Präfixe vorher suchen (`grep`), damit sie nicht mit anderen Bereichen kollidieren. `.card` belegt mit Maus `::before`/`::after`.
 
 ## Knöpfe, iPhone, Seitenwechsel, Bilder
-- **Knöpfe:** Hauptknopf gebürstetes Silber (ruhig), beim Überfahren leichtes Anheben, feiner Glanz, Licht folgt dem Zeiger; großer Hauptknopf zeigt den Perlmutt-Lichtring nur beim Überfahren. Nebenknopf Glas, Kante wird beim Überfahren heller. Drücken: leicht einsinken (scale .975).
+- **Knöpfe:** Hauptknopf Schwarzchrom mit weißer Schrift, beim Überfahren leichtes Anheben, feiner Glanz, Licht folgt dem Zeiger; großer Hauptknopf zeigt den Perlmutt-Lichtring nur beim Überfahren. Nebenknopf weiß mit Haarlinie, Linie wird beim Überfahren kräftiger. Drücken: leicht einsinken (scale .975).
 - **iPhone:** `iphone(inhalt,{w,cls,id})` (js/10-components.js, CSS in 02-components.css) – Maße wie iPhone 16 Pro, Titanrahmen, Tasten, Dynamic Island, Statusleiste. Größe per CSS über `--w`. Für Videos: `.iph-stage[data-mouse] > .iph-float[data-off] > .iph-tilt > iphone(...)`. Videos im Format 402 × 828 pt aufnehmen (`/home/claude/devshim/vid/rec6.js kauf|aufladen`), als 540 × 1112 kodieren.
 - **Seitenwechsel:** View Transitions im Router (`route()` in 60-router-ui.js): Inhalt blendet über, Kopfzeile bleibt stehen, eine angetippte Karte fliegt in die Produktseite (`view-transition-name: ic-card`). Ohne API/bei reduzierter Bewegung direkt.
 - **Produktbilder:** Spiele-Keys zeigen offizielle Shop-Bilder (Steam, Nintendo, PlayStation, Minecraft). Nur die Adressen liegen in `covers.json` (erzeugt mit `node tools/covers.js`), der Server lädt die Bilder beim ersten Aufruf (`/img/cover/<id>/p|l`) und speichert sie im Datenordner. Gutscheinkarten: Originalbilder kommen automatisch, sobald Reloadly verbunden ist.

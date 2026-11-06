@@ -1,70 +1,71 @@
 /* =========================================================
-   instantcodes · Design „Chrome & Glas“
-   - Graphit statt Schwarz, darüber Licht wie in einem Fotostudio: eine große weiche
-     Lichtquelle oben rechts, Perlmutt-Reflexe (Rosa, Lavendel, Mint) am Rand.
-   - Flächen sind Milchglas mit Chromkante: helle Kante oben, feine Linie rundum,
-     Lichtpunkt unter dem Zeiger.
-   - Knöpfe aus flüssigem Chrom (hell, gespiegelt), Nebenknöpfe aus Glas.
-   - Flüssigmetall (WebGL) ist das Herzstück der Startseite; Gutscheinkarten schweben
-     wie Glasobjekte und werfen Licht.
-   - Bewegung: Einblenden mit Unschärfe, Glanz, der über Chrom läuft, federnde Rückmeldung.
-     Daueranimationen pausieren außerhalb des Bildschirms (.off) und entfallen bei
-     reduzierter Bewegung.
+   instantcodes · Design „Chrome & Glas – hell“
+   - Porzellan statt Graphit: heller, kühler Grund mit weichem Studiolicht von oben,
+     feine Perlmutt-Reflexe (Rosa, Lavendel, Mint) an den Rändern.
+   - Flächen sind weißes Glas mit Haarlinie und weichem Schatten; schwebende Teile
+     (Kopfzeile, Overlays) mit Weichzeichner.
+   - Hauptknöpfe aus Schwarzchrom mit weißer Schrift, Nebenknöpfe aus weißem Glas,
+     Auswahl dunkel (--sel). Chrom als Akzent: Kanten, Ring, Metallflächen.
+   - Bewegung: Einblenden mit Unschärfe, Glanz, der über Chrom läuft, federnde Rückmeldung,
+     Seitenwechsel per View Transitions. Daueranimationen pausieren außerhalb des Bildschirms
+     (.off) und entfallen bei reduzierter Bewegung.
    Regeln für Erweiterungen: web/DESIGN.md
    ========================================================= */
 @font-face{font-family:"Geist";src:url(/fonts/geist.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Geist Mono";src:url(/fonts/geist-mono.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
 @property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
 :root{
-  color-scheme:dark;
-  /* Grund: Graphit */
-  --bg:#0E0F12;
-  --bg-2:#141519;
-  --bg-3:#1B1D22;
+  color-scheme:light;
+  /* Grund: Porzellan */
+  --bg:#F3F4F6;
+  --bg-2:#FFFFFF;
+  --bg-3:#E9EBEF;
   --frost:var(--bg);
   /* Text */
-  --ink:#F2F3F5;
-  --ink-2:#AAAEB8;
-  --ink-3:#8D919C;
-  /* Chrom und Perlmutt */
-  /* Überschriften: ruhiges Silber von oben nach unten, ohne harte Bänder */
-  --chrome-text:linear-gradient(180deg,#FFFFFF 0%,#F3F4F6 46%,#C4C8D0 100%);
-  --chrome-fill:linear-gradient(180deg,#FFFFFF 0%,#E9EBEE 26%,#B5BAC3 50%,#F4F5F7 68%,#CDD1D7 100%);
-  --chrome-edge:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.1) 34%,rgba(255,255,255,.04) 62%,rgba(255,255,255,.28));
-  --pearl:linear-gradient(115deg,#FFE0F0 0%,#E4E9FF 34%,#D3FBF2 66%,#F6E7FF 100%);
-  --pink:#FFD6EC;--lav:#DCCBFF;--mint:#9FF0D2;--sky:#C9E6FF;
-  --iris:#C9B8FF;
-  --iris-2:#DCCFFF;
-  --volt:#9DB8FF;
-  --cyan:#A9E8FF;
-  --rose:#FF7A86;
-  --amber:#FFCB7A;
-  --line:rgba(255,255,255,.085);
-  --line-2:rgba(255,255,255,.15);
-  --tint:rgba(220,203,255,.1);
-  --brand-grad:linear-gradient(135deg,#FFE0F0,#DCCBFF 45%,#A9E8FF);
+  --ink:#0E1014;
+  --ink-2:#474D59;
+  --ink-3:#656B78;
+  /* Stahl und Chrom: Überschriften dunkler Stahl, Flächen helles Silber, Auswahl Schwarzchrom */
+  --chrome-text:linear-gradient(180deg,#0E1014 0%,#2A2F38 55%,#4B525E 100%);
+  --chrome-fill:linear-gradient(180deg,#FFFFFF 0%,#F1F2F5 40%,#D9DCE2 100%);
+  --chrome-edge:linear-gradient(160deg,#FFFFFF,rgba(255,255,255,.6) 30%,rgba(14,16,20,.08) 60%,rgba(255,255,255,.9));
+  --sel:linear-gradient(180deg,#3B3F48 0%,#1A1C21 52%,#0D0E11 100%);
+  --sel-ink:#FFFFFF;
+  --pearl:linear-gradient(115deg,#FFD7EB 0%,#DCE3FF 34%,#C8F5EA 66%,#F0DDFF 100%);
+  --pink:#E7438F;--lav:#7D5CF0;--mint:#0E9F6E;--sky:#2F7FD9;
+  --iris:#6A4FE0;
+  --iris-2:#5A3FD0;
+  --volt:#3D63E0;
+  --cyan:#0E8FB3;
+  --rose:#D9364C;
+  --amber:#B86E00;
+  --ok:#0E9F6E;
+  --line:rgba(14,16,20,.08);
+  --line-2:rgba(14,16,20,.14);
+  --tint:rgba(125,92,240,.08);
+  --brand-grad:linear-gradient(135deg,#FF9CCB,#9D85FF 45%,#5FC9F5);
   --text-grad:var(--chrome-text);
-  /* Milchglas */
-  --glass:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.028));
-  --glass-hi:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));
-  --glass-lo:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.018));
-  --glass-solid:linear-gradient(180deg,#1E2025,#15161A);
-  --blur:blur(24px) saturate(1.5);
-  --blur-s:blur(14px) saturate(1.4);
-  /* Chromkante innen: oben hell, rundum fein, unten ein Hauch Reflex */
-  --rim:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.04),inset 0 0 0 1px rgba(255,255,255,.075);
-  --rim-hi:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(255,255,255,.07),inset 0 0 0 1px rgba(255,255,255,.12);
-  --lift:0 1px 1px rgba(0,0,0,.35),0 24px 50px -28px rgba(0,0,0,.9);
-  --lift-2:0 2px 2px rgba(0,0,0,.4),0 40px 80px -36px rgba(0,0,0,.95),0 0 80px -40px rgba(220,203,255,.28);
-  --glow:0 0 0 1px rgba(255,255,255,.4),0 14px 44px -14px rgba(220,203,255,.55);
-  --well:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 2px 6px rgba(0,0,0,.35);
-  --field:rgba(255,255,255,.045);
-  --field-hi:rgba(255,255,255,.075);
-  --focus:0 0 0 2px var(--bg),0 0 0 4px #DCCBFF;
+  /* Weißes Glas */
+  --glass:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.82));
+  --glass-hi:#FFFFFF;
+  --glass-lo:rgba(255,255,255,.66);
+  --glass-solid:#FFFFFF;
+  --blur:blur(22px) saturate(1.6);
+  --blur-s:blur(12px) saturate(1.5);
+  /* Haarlinie rundum, oben ein heller Glanz */
+  --rim:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(14,16,20,.075);
+  --rim-hi:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(14,16,20,.13);
+  --lift:0 1px 2px rgba(14,16,20,.05),0 14px 34px -20px rgba(14,16,20,.26);
+  --lift-2:0 2px 4px rgba(14,16,20,.05),0 28px 60px -30px rgba(14,16,20,.34),0 0 70px -40px rgba(125,92,240,.22);
+  --glow:0 0 0 1px rgba(14,16,20,.08),0 14px 40px -14px rgba(125,92,240,.35);
+  --well:inset 0 0 0 1px rgba(14,16,20,.1),inset 0 1px 2px rgba(14,16,20,.06);
+  --field:#FFFFFF;
+  --field-hi:#FFFFFF;
+  --focus:0 0 0 2px var(--bg),0 0 0 4px #7D5CF0;
   /* Lichtkante schwebender Glasflächen (Kopfzeile, Overlays) */
-  --edge:linear-gradient(120deg,rgba(255,255,255,.7),rgba(255,255,255,.12) 24%,rgba(255,255,255,.02) 50%,rgba(220,203,255,.3) 76%,rgba(255,255,255,.45));
+  --edge:linear-gradient(120deg,rgba(255,255,255,1),rgba(255,255,255,.4) 30%,rgba(14,16,20,.06) 55%,rgba(255,255,255,.9));
   /* Lichtring: ein Perlmutt-Glanzpunkt läuft um den Rand (mit --ang animierbar) */
-  --ring:conic-gradient(from var(--ang),rgba(255,255,255,.1) 0deg,rgba(255,255,255,.1) 190deg,#FFE0F0 240deg,#fff 275deg,#D3FBF2 305deg,#E4E9FF 330deg,rgba(255,255,255,.1) 360deg);
+  --ring:conic-gradient(from var(--ang),rgba(14,16,20,.08) 0deg,rgba(14,16,20,.08) 190deg,#FF9CCB 240deg,#9D85FF 275deg,#5FC9F5 305deg,#C8F5EA 330deg,rgba(14,16,20,.08) 360deg);
   /* Flüssigmetall */
   --chrome:conic-gradient(from var(--ang),#f7f8fa 0deg,#9aa0ab 40deg,#3a3d45 85deg,#d6d9df 125deg,#fff 150deg,#7d838f 200deg,#2c2f36 246deg,#bfc3cb 292deg,#f7f8fa 332deg,#9aa0ab 360deg);
   --chrome-flat:linear-gradient(135deg,#eceef1 0%,#8f949e 24%,#3a3d45 45%,#cfd2d8 62%,#5d626c 80%,#f1f2f4 100%);
@@ -78,17 +79,17 @@
   --font:"Geist",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --mono:"Geist Mono",ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
   /* Namen aus älteren Vorlagen, die im Markup stehen */
-  --text:var(--ink);--muted:var(--ink-3);--danger:var(--rose);--success:var(--mint);--surface-2:rgba(255,255,255,.06);
+  --text:var(--ink);--muted:var(--ink-3);--danger:var(--rose);--success:var(--mint);--surface-2:rgba(14,16,20,.04);
   --foil:var(--pearl);
   padding-top:env(safe-area-inset-top,0px);
 }
 /* ---------- Grundlagen ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-padding-top:100px;-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip;scrollbar-color:#33363D var(--bg)}
+html{scroll-padding-top:100px;-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip;scrollbar-color:#C4C8D0 var(--bg)}
 body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:var(--font);font-size:16px;line-height:1.55;letter-spacing:-.008em;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip;padding-bottom:env(safe-area-inset-bottom,0px)}
 body.lock{overflow:hidden}
-::selection{background:rgba(220,203,255,.42);color:#fff}
+::selection{background:rgba(125,92,240,.22);color:var(--ink)}
 button{font:inherit;letter-spacing:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
 input,select,textarea{font:inherit;color:inherit}
 a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
@@ -97,36 +98,36 @@ img,svg{display:block}
 img{max-width:100%}
 .ico{width:20px;height:20px;flex:none}
 /* Fokusring als Umriss: bleibt sichtbar, auch wenn ein Bauteil eigene Schatten hat */
-:focus-visible{outline:2px solid #DCCBFF;outline-offset:2px}
+:focus-visible{outline:2px solid #7D5CF0;outline-offset:2px}
 .qa>button:focus-visible{outline-offset:-3px;border-radius:var(--r-m)}
 #app:focus{outline:none}
 [hidden]{display:none!important}
 .sumrow,.amt,.tile-sub,.gc-amt,.pm-amt,.qty span,.otp,.price,.tot{font-variant-numeric:tabular-nums}
-.skip{position:absolute;left:-999px;top:8px;z-index:300;background:var(--bg-3);color:var(--ink);padding:10px 16px;border-radius:12px;font-weight:600;box-shadow:var(--rim-hi)}
+.skip{position:absolute;left:-999px;top:8px;z-index:300;background:#fff;color:var(--ink);padding:10px 16px;border-radius:12px;font-weight:600;box-shadow:var(--rim-hi)}
 .skip:focus{left:8px}
 .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .muted{color:var(--ink-3)}
 @media (max-width:767px){.d-only{display:none!important}}
 @media (min-width:768px){.m-only{display:none!important}}
 
-/* ---------- Umgebung: Studiolicht, Perlmutt-Reflexe, feines Korn ---------- */
-.bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#1A1C21 0%,var(--bg) 60%)}
+/* ---------- Umgebung: helles Studiolicht, Perlmutt-Reflexe, feines Korn ---------- */
+.bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:radial-gradient(120% 70% at 50% -10%,#FFFFFF 0%,#F6F7F9 45%,var(--bg) 75%)}
 .bgfx i{position:absolute;display:block;border-radius:50%;will-change:transform;animation:drift 52s ease-in-out infinite alternate}
-/* große weiche Lichtquelle oben rechts */
-.bgfx i:nth-child(1){right:-18vmax;top:-34vmax;width:78vmax;height:78vmax;background:radial-gradient(closest-side,rgba(255,255,255,.11),rgba(255,255,255,.03) 55%,rgba(255,255,255,0))}
+/* weiche Lichtquelle oben rechts */
+.bgfx i:nth-child(1){right:-18vmax;top:-34vmax;width:78vmax;height:78vmax;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,.4) 55%,rgba(255,255,255,0))}
 /* Perlmutt links (Lavendel/Rosa) */
-.bgfx i:nth-child(2){left:-26vmax;top:10vh;width:64vmax;height:64vmax;background:radial-gradient(closest-side,rgba(232,206,255,.10),rgba(255,214,236,.03) 58%,rgba(255,214,236,0));animation-duration:64s;animation-delay:-22s}
+.bgfx i:nth-child(2){left:-26vmax;top:10vh;width:64vmax;height:64vmax;background:radial-gradient(closest-side,rgba(196,176,255,.22),rgba(255,190,225,.08) 58%,rgba(255,190,225,0));animation-duration:64s;animation-delay:-22s}
 /* Perlmutt unten (Mint/Himmel) */
-.bgfx i:nth-child(3){left:20vmax;bottom:-58vmax;width:86vmax;height:86vmax;background:radial-gradient(closest-side,rgba(170,240,222,.07),rgba(169,232,255,.02) 60%,rgba(169,232,255,0));animation-duration:74s;animation-delay:-38s}
+.bgfx i:nth-child(3){left:20vmax;bottom:-58vmax;width:86vmax;height:86vmax;background:radial-gradient(closest-side,rgba(150,230,210,.2),rgba(150,205,255,.07) 60%,rgba(150,205,255,0));animation-duration:74s;animation-delay:-38s}
 @keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(5vmax,4vmax,0) scale(1.06)}100%{transform:translate3d(-4vmax,7vmax,0) scale(.96)}}
 /* Lichtstreifen wie von einem Softbox-Fenster */
-.bgfx b{position:absolute;right:8vw;top:-20vh;width:38vw;height:120vh;rotate:-24deg;opacity:.5;
-  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.035) 40%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.035) 60%,rgba(255,255,255,0))}
+.bgfx b{position:absolute;right:8vw;top:-20vh;width:38vw;height:120vh;rotate:-24deg;opacity:.6;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55) 40%,rgba(255,255,255,.75) 50%,rgba(255,255,255,.55) 60%,rgba(255,255,255,0))}
 /* Korn gegen Farbstufen */
-.bgfx u{position:absolute;inset:0;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.bgfx u{position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .lite .bgfx i{animation:none;will-change:auto}
 
-/* ---------- Typografie: elegant, mittelgroß, Chrom auf den Überschriften ---------- */
+/* ---------- Typografie: elegant, mittelgroß, dunkler Stahl auf den Überschriften ---------- */
 .h1{margin:0;font-size:clamp(36px,4.5vw,62px);line-height:1.03;font-weight:600;letter-spacing:-.042em;text-wrap:balance}
 .h2{margin:0;font-size:clamp(27px,2.8vw,40px);line-height:1.1;font-weight:590;letter-spacing:-.034em;text-wrap:balance}
 .h3{margin:0;font-size:17.5px;line-height:1.3;font-weight:600;letter-spacing:-.018em}
@@ -168,11 +169,11 @@ img{max-width:100%}
 @keyframes tick{40%{transform:scale(1.1)}}
 .shake{animation:shake .4s var(--ease)}
 @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-.spin{width:40px;height:40px;margin:0 auto 16px;border-radius:50%;border:3px solid rgba(255,255,255,.1);border-top-color:#DCCBFF;animation:spin .8s linear infinite}
+.spin{width:40px;height:40px;margin:0 auto 16px;border-radius:50%;border:3px solid rgba(14,16,20,.1);border-top-color:#7D5CF0;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* Perlmutt-Lichtring um ein Element (sparsam: ein Element pro Ansicht) */
 .ring{position:relative;isolation:isolate}
-.ring::before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;pointer-events:none;background:var(--ring);
+.ring::before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1.5px;pointer-events:none;background:var(--ring);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 6s linear infinite}
 .off .ring::before,.ring.off::before{animation-play-state:paused}
 /* Chromkante als echter Verlauf rundum (für hervorgehobene Glasflächen; belegt ::before) */

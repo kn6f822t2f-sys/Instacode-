@@ -1,8 +1,8 @@
-/* ---------- Warenkorb und Kasse (Chrome & Glas) ----------
-   Aufbau: Kopf mit Fortschritt (Warenkorb › E-Mail › Bezahlen als feine Chrom-Linie) ·
-   links die Artikel als Glaszeilen, Aktionscode, darunter die Schritte E-Mail und Bezahlen ·
-   rechts die Übersicht als Glas-Säule (Desktop: mitlaufend) mit der Summe groß in Chrom.
-   Auf dem Handy: Artikel › Aktionscode › Übersicht › E-Mail › Bezahlen. */
+/* ---------- Warenkorb und Kasse („Chrome & Glas – hell“) ----------
+   Aufbau: Kopf mit Fortschritt (Warenkorb › E-Mail › Bezahlen) ·
+   links die Artikel als weiße Zeilen, „Passt dazu“ mit 1-Tipp-Hinzufügen, Aktionscode, darunter E-Mail und Bezahlen mit Karte ·
+   rechts die Übersicht (Desktop mitlaufend) mit der Summe groß und „Schnell bezahlen“ (Apple Pay, Google Pay, Link).
+   Auf dem Handy: Artikel › Passt dazu › Aktionscode › Übersicht + Schnell bezahlen › E-Mail › Bezahlen. */
 const lineHref=b=>b.cat==="topup"?`/aufladen?op=${b.id}`:`/marke/${b.id}`;
 const lineHTML=i=>{const b=byId(i.id),h=lineHref(b),sub=[optLabel(b,i.a),i.phone,i.gift&&"Geschenk an "+i.gift.to].filter(Boolean).map(esc).join(" · ");
   return `<div class="line" data-k="${esc(i.k)}"><a class="line-card" href="${h}" tabindex="-1" aria-hidden="true">${mini(b)}</a>
@@ -10,7 +10,7 @@ const lineHTML=i=>{const b=byId(i.id),h=lineHref(b),sub=[optLabel(b,i.a),i.phone
   <b class="line-sum">${money(lineTotal(i))}</b>
   <div class="line-ctl"><div class="qty" role="group" aria-label="Menge"><button data-a="cq" data-v="${i.k}|-1" aria-label="Weniger"${i.q<=1?" disabled":""}>−</button><span>${i.q}</span><button data-a="cq" data-v="${i.k}|1" aria-label="Mehr"${i.q>=10?" disabled":""}>+</button></div>
   <button class="line-rm" data-a="crm" data-v="${i.k}" aria-label="${esc(b.name)} entfernen">${ic("i-trash")}</button></div></div>`};
-/* Fortschritt: Warenkorb › E-Mail › Bezahlen. --p füllt die Chrom-Linie bis zum aktuellen Schritt */
+/* Fortschritt: Warenkorb › E-Mail › Bezahlen. --p füllt die Linie bis zum aktuellen Schritt */
 const ckProg=st=>{const s=(n,t)=>{const c=n<st?"done":n===st?"now":"";return `<li class="${c}"${n===st?' aria-current="step"':""}><span class="ck-pd" aria-hidden="true">${n<st?ic("i-check"):""}</span><span class="ck-pl">${t}</span></li>`};
   return `<ol class="ck-prog" style="--p:${st>=3?1:.5}" aria-label="Fortschritt der Bestellung">${s(1,"Warenkorb")}${s(2,"E-Mail")}${s(3,"Bezahlen")}</ol>`};
 const ckStepH=(n,st,t)=>`<h2 class="ck-step-h"><span class="ck-n${n<st?" done":n===st?" now":""}" aria-hidden="true">${n<st?ic("i-check"):n}</span><span>${t}</span></h2>`;
@@ -26,37 +26,40 @@ function ckEmpty(){
   <p class="ck-empty-p">Entdecke Gutscheine, Spielguthaben und Handy-Guthaben. Nach der Zahlung kommt dein Code meist in Sekunden per E-Mail.</p>
   <div class="ck-empty-a"><button class="btn btn-primary btn-lg" data-a="browse">Jetzt stöbern</button><a class="btn btn-soft btn-lg" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></div>
   <nav class="ck-empty-c" aria-label="Kategorien">${cats.map(c=>`<a class="chip" href="/kategorie/${c.id}">${esc(c.name)}</a>`).join("")}<a class="chip" href="/angebote">Angebote</a></nav>
+  ${trustBadges()}
   ${last?`<a class="ck-last" href="/bestellung/${esc(last)}?k=${encodeURIComponent(S.keys[last])}">${ic("i-receipt")}Letzte Bestellung ansehen</a>`:""}
  </section>
  ${recent.length?`<section class="sec">${secHead("Zuletzt angesehen","",railNav("cartRecent"))}${rail("cartRecent",recent)}</section>`:""}
  <section class="sec">${secHead("Beliebt","",railNav("cartRail"))}${rail("cartRail",pop)}</section></div>`;
 }
+let ckTot=0;
 function cartPage(_,qs){
   if(qs&&qs.get&&qs.get("abgebrochen"))setTimeout(()=>toast("Zahlung abgebrochen – es wurde nichts abgebucht. Dein Warenkorb ist noch da."),350);
   if(!S.cart.length)return {title:"Warenkorb",html:ckEmpty()};
-  const t=cur.path==="/kasse"?"Kasse":"Warenkorb",m=evMail(),x=CFG.express&&m,st=m?3:2;
+  const t=cur.path==="/kasse"?"Kasse":"Warenkorb",m=evMail(),x=CFG.express&&CFG.payments,st=m?3:2;ckTot=grandTotal();
   return {title:t,html:`<div class="ck sec" data-step="${st}">
- <header class="ck-head"><div class="ck-head-t"><h1 class="ck-title">${t}</h1><p class="ck-sub"><span id="cartN">${cartCount()}</span> Artikel. Deine Codes kommen per E-Mail.</p></div>${ckProg(st)}</header>
+ <header class="ck-head"><div class="ck-head-t"><h1 class="ck-title">${t}</h1><p class="ck-sub"><span id="cartN">${cartCount()}</span> Artikel · Deine Codes kommen per E-Mail und auf die Bestellseite.</p></div>${ckProg(st)}</header>
  <div class="ck-grid">
   <section class="ck-items" aria-labelledby="ckItH"><h2 class="sr" id="ckItH">Artikel im Warenkorb</h2>
    <div class="ck-lines" id="cartLines">${S.cart.map(lineHTML).join("")}</div>
+   ${recoHTML("ck")}
    <div class="ck-promo" id="promoBox" data-on="${!!S.promo}">${promoHTML()}</div>
   </section>
-  <aside class="ck-side" aria-labelledby="ckSumH"><div class="ck-col chrome-rim" id="ckSum">
+  <aside class="ck-side" aria-labelledby="ckSumH"><div class="ck-col" id="ckSum">
    <h2 class="ck-col-h" id="ckSumH">Übersicht</h2>
    <div class="pb-sum" id="sumBox">${paySum()}</div>
+   ${x?`<div class="ck-x"><div class="ck-x-h"><span class="ck-x-i" aria-hidden="true">${ic("i-zap")}</span><div><b>Schnell bezahlen</b><small>${esc(walletNames())} – ohne Kartendaten eintippen</small></div></div>${xpBox("cX",{fallback:true})}</div>`:""}
    <ul class="ck-assure"><li>${ic("i-zap")}<span>Code meist in Sekunden per E-Mail und auf der Bestellseite</span></li><li>${ic("i-lock")}<span>Sichere Zahlung über Stripe</span></li><li>${ic("i-mail")}<span>Persönlicher Support per E-Mail</span></li></ul>
    ${payLogos()}
   </div></aside>
   <section class="ck-pay" id="payBox" aria-label="E-Mail und Bezahlen">
    <div class="ck-step" id="ckMail">${ckStepH(2,st,"E-Mail für deine Codes")}${evBox()}</div>
-   <div class="ck-step" id="ckPay">${ckStepH(3,st,"Bezahlen")}
+   <div class="ck-step" id="ckPay">${ckStepH(3,st,x?"Mit Karte oder anderer Zahlungsart":"Bezahlen")}
     <label class="chk pb-ok" id="payOkL"><input type="checkbox" id="payOk"><span>Ich akzeptiere die <a href="/agb">AGB</a> und habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen. Ich stimme der sofortigen Lieferung zu und weiß, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt.</span></label>
-    ${x?`${xpayBox("cX","",{noConsent:true})}<div class="xpay-or pay-or" id="payOr">oder</div>`:""}
-    <div class="pb-more" id="payMoreW"${x?"":" hidden"}><button type="button" class="paymore" data-a="payMore" aria-controls="payElW" aria-expanded="false"><span class="si-ic">${ic("i-card-f")}</span><span class="pm-t"><b>Andere Zahlungsart</b><small>${klarnaCart()?"Karte, Klarna und mehr":"Karte, Link und mehr"}</small></span>${ic("i-down")}</button></div>
-    <div class="pb-el" id="payElW"${x?" hidden":""}>
-     <div id="payEl" class="payel"><div class="payel-load"><span class="spin"></span>Zahlungsfeld wird geladen …</div></div>
-     <div class="pb-due"><span>Gesamt</span><b id="payDue">${money(grandTotal())}</b></div>
+    <div class="pb-more" id="payMoreW" hidden><button type="button" class="paymore" data-a="payMore" aria-controls="payElW" aria-expanded="true"><span class="si-ic">${ic("i-card-f")}</span><span class="pm-t"><b>Andere Zahlungsart</b><small>${klarnaCart()?"Karte, Klarna und mehr":"Karte, Link und mehr"}</small></span>${ic("i-down")}</button></div>
+    <div class="pb-el" id="payElW">
+     <div id="payEl" class="payel"><div class="payel-load"><span class="payel-sk" aria-hidden="true"><i></i><i></i><i></i></span><span>Zahlungsfeld wird geladen …</span></div></div>
+     <div class="pb-due"><span>Gesamt <small>inkl. MwSt.</small></span><b id="payDue">${money(grandTotal())}</b></div>
      <div class="err" id="payErr" role="alert"></div>
      <button class="btn btn-primary btn-lg btn-block" id="payBtn" data-a="payNow" data-off>${ic("i-lock")}<span>Zahlungspflichtig bestellen</span></button>
     </div>
@@ -65,15 +68,58 @@ function cartPage(_,qs){
   </section>
  </div></div>`,after:payAfter};
 }
+/* ---------- „Passt dazu“: Ergänzungen mit 1-Tipp-Hinzufügen ----------
+   Auswahl: gleiche Kategorie wie im Warenkorb, beliebte und zuletzt angesehene Produkte, günstige Beträge als Ergänzung.
+   Varianten derselben Marke und Produkte im Warenkorb entfallen; Handy-Aufladungen brauchen eine Nummer und entfallen ebenfalls. */
+const recoAmt=b=>{const av=b.amts.filter(a=>!soldOut(b.id,a));return av.length?av.reduce((m,a)=>price(b,a)<price(b,m)?a:m,av[0]):0};
+function recoList(n){
+  const inCart=new Set(S.cart.map(i=>i.id)),grps=new Set(S.cart.map(i=>{const b=byId(i.id);return b&&b.grp}).filter(Boolean)),cats={};
+  S.cart.forEach(i=>{const b=byId(i.id);if(b)cats[b.cat]=1});
+  const pop=new Set(POP.concat(typeof BEST0!=="undefined"?BEST0.slice(0,12):[])),rec=new Set((S.recent||[]).slice(0,8));
+  return VIS().filter(b=>b.cat!=="topup"&&!inCart.has(b.id)&&!(b.grp&&grps.has(b.grp))&&!allSold(b)).map(b=>{const a=recoAmt(b),p=price(b,a);let s=0;
+    if(cats[b.cat])s+=3;if(pop.has(b.id))s+=2;if(rec.has(b.id))s+=1.5;if(p<=15)s+=1.2;else if(p<=30)s+=.6;if(b.img||b.cov)s+=.3;return {b,a,s,p}})
+    .filter(x=>x.a).sort((x,y)=>y.s-x.s||x.p-y.p).slice(0,n);
+}
+/* Die Leiste wird nur beim Aufbau der Ansicht berechnet; beim Hinzufügen bleibt sie stehen und die Kachel zeigt einen Haken (recoSync) */
+function recoHTML(ctx){
+  if(!S.cart.length)return "";
+  const dr=ctx==="dr",l=recoList(dr?6:8);
+  if(!l.length)return "";
+  const id=dr?"drReco":"ckReco",inCart=new Set(S.cart.map(i=>i.id+"|"+i.a));
+  return `<section class="rc-box${dr?" rc-dr":""}" aria-labelledby="${id}H"><div class="rc-h"><h2 id="${id}H">Passt dazu</h2>${dr?"":`<div class="rc-nav">${railNav(id)}</div>`}</div>
+  <div class="rc-track" id="${id}">${l.map(({b,a,p},i)=>{const on=inCart.has(b.id+"|"+a),lab=b.type==="card"?money(a):optLabel(b,a);
+    return `<div class="rc" style="--i:${i}"><a class="rc-card" href="/marke/${b.id}" tabindex="-1" aria-hidden="true">${gc(b,{tilt:false,badge:false,plat:false})}</a>
+    <a class="rc-name" href="/marke/${b.id}">${esc(shortNm(b))}</a><span class="rc-sub">${esc(lab)}${Math.abs(p-a)>.004||b.type!=="card"?` · ${money(p)}`:""}</span>
+    <button class="rc-add${on?" on":""}" data-a="rcAdd" data-v="${b.id}|${a}"${on?' aria-disabled="true"':""} aria-label="${esc(shortNm(b))} ${esc(lab)} für ${money(p)} in den Warenkorb">${on?ic("i-check"):ic("i-plus")}<span>${on?"Im Warenkorb":"Hinzufügen"}</span></button></div>`}).join("")}</div></section>`;
+}
+/* Knöpfe der Empfehlungen an den Warenkorb angleichen (ohne die Leiste neu aufzubauen) */
+function recoSync(root){const have=new Set(S.cart.map(i=>i.id+"|"+i.a));$$(".rc-add",root||document).forEach(b=>{const on=have.has(b.dataset.v);if(on===b.classList.contains("on"))return;
+  b.classList.toggle("on",on);on?b.setAttribute("aria-disabled","true"):b.removeAttribute("aria-disabled");b.innerHTML=`${ic(on?"i-check":"i-plus")}<span>${on?"Im Warenkorb":"Hinzufügen"}</span>`})}
+const rcNav=root=>$$(".rc-track",root).forEach(t=>{const btn=$$(`[data-a=railGo][data-v^="${t.id}|"]`,root);if(btn.length<2)return;
+  const upd=()=>{const max=t.scrollWidth-t.clientWidth-4;btn[0].disabled=t.scrollLeft<4;btn[1].disabled=t.scrollLeft>max};t.addEventListener("scroll",upd,{passive:true});upd()});
+/* 1 Tipp: Karte fliegt aus der Leiste in den Warenkorb, die neue Zeile gleitet ein, die Summe zählt mit */
+A.rcAdd=(v,el)=>{
+  if(!el||el.getAttribute("aria-disabled")==="true")return;
+  const [id,a]=v.split("|"),b=byId(id);if(!b)return;
+  const tile=el.closest(".rc"),src=tile&&$(".gc",tile),inDr=!!el.closest("#drawer");
+  addCart({id,a:+a,q:1,type:"code"},true);
+  const it=S.cart.find(x=>x.id===id&&x.a===+a&&!x.gift);
+  cartChanged();el.focus({preventScroll:true});
+  const ln=it&&$(`${inDr?"#drLines":"#cartLines"} .line[data-k="${it.k}"]`);
+  const dst=ln?($(".line-card .gc",ln)||$(".line-card",ln)):$("#hcart");
+  if(ln&&!reduce)ln.classList.add("ln-new");
+  toast(`${b.name} hinzugefügt`);
+  flyTo(src,dst,{fade:!ln}).then(()=>{if(ln){ln.classList.remove("ln-new");if(!reduce){ln.classList.add("ln-land");setTimeout(()=>ln.classList.remove("ln-land"),700)}}});
+};
 /* Aktionscode: einklappbar, aktiver Code mit Entfernen */
 const promoHTML=()=>S.promo?`<div class="ck-promo-on">${ic("i-tag")}<span><b>WILLKOMMEN10</b><small>10 % Rabatt ist aktiv</small></span><button class="btn btn-ghost" data-a="promoRm">Entfernen</button></div>`
   :`<details class="ck-promo-d"><summary>${ic("i-tag")}<span>Aktionscode einlösen</span>${ic("i-down")}</summary><div class="ck-promo-f"><input class="inp" id="promo" placeholder="z. B. WILLKOMMEN10" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Aktionscode" aria-describedby="promoErr"><button class="btn btn-soft" data-a="promo">Einlösen</button></div><div class="err" id="promoErr" role="alert"></div></details>`;
-/* E-Mail-Bestätigung vor der Zahlung (Pflicht). Der Code wird in sechs Feldern angezeigt;
+/* E-Mail-Bestätigung vor der Kartenzahlung (Pflicht). Der Code wird in sechs Feldern angezeigt;
    darüber liegt unsichtbar ein echtes Eingabefeld (Einfügen, Autofill „one-time-code“, Screenreader). */
 const evMail=()=>(S.user&&S.user.verified!==false&&S.user.email)||CFG.ev||null;
 function evBox(){
   const m=evMail();
-  if(m)return `<div class="ck-evok" id="evBox"><span class="ck-evok-i">${ic("i-mail")}</span><div><small>Codes gehen an</small><b>${esc(m)}</b></div>${S.user?"":`<button class="btn btn-ghost" data-a="evChange">Ändern</button>`}</div>`;
+  if(m)return `<div class="ck-evok" id="evBox"><span class="ck-evok-i">${ic("i-check")}</span><div><small>Codes gehen an</small><b>${esc(m)}</b></div>${S.user?"":`<button class="btn btn-ghost" data-a="evChange">Ändern</button>`}</div>`;
   return `<div class="ck-ev" id="evBox"><p class="ck-ev-t">Wir schicken dir einen 6-stelligen Code. An diese Adresse kommen auch deine Codes. Gelegentlich empfehlen wir dir dort ähnliche Produkte – dem kannst du jederzeit widersprechen.</p>
    <div class="ck-ev-row"><input class="inp" id="payMail" type="email" autocomplete="email" inputmode="email" aria-label="E-Mail für deine Codes" placeholder="deine@email.de" value="${esc(S.lastEmail||"")}"><button class="btn btn-soft" data-a="evSend" id="evSendB">Code senden</button></div>
    <div class="ck-ev-code" id="evCodeW" hidden><label class="ck-ev-l" for="evCode">Code aus der E-Mail</label>
@@ -106,36 +152,40 @@ document.addEventListener("input",e=>{if(e.target.id==="evCode"){e.target.value=
 ["focusin","focusout"].forEach(t=>document.addEventListener(t,e=>{if(e.target&&e.target.id==="evCode")setTimeout(()=>otpSync(e.target))}));
 document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target&&e.target.id==="promo"){e.preventDefault();A.promo()}});
 const paySum=()=>`<div class="sumrow"><span>Zwischensumme</span><span>${money(subTotal())}</span></div>${S.promo?`<div class="sumrow ok"><span>Rabatt (10 %)</span><span>−${money(promoAmt())}</span></div>`:""}${feeAmt()?`<div class="sumrow"><span>Servicegebühr <small>pro Bestellung</small></span><span>${money(feeAmt())}</span></div>`:""}<div class="sumrow tot"><span>Gesamt</span><span>${money(grandTotal())}</span></div>${vatRow()}`;
-/* Warenkorb ohne Neuladen aktualisieren, damit eingegebene Kartendaten erhalten bleiben */
+/* Warenkorb ohne Neuladen aktualisieren, damit eingegebene Kartendaten erhalten bleiben; Summe zählt vom alten zum neuen Betrag */
 function payRefresh(){
   if(!S.cart.length)return route(true);
   const set=(sel,h)=>{const e=$(sel);if(e)e.innerHTML=h};
+  const old=ckTot;ckTot=grandTotal();
   set("#cartLines",S.cart.map(lineHTML).join(""));set("#sumBox",paySum());
   const pb=$("#promoBox");if(pb&&pb.dataset.on!==String(!!S.promo)){pb.innerHTML=promoHTML();pb.dataset.on=String(!!S.promo)}
-  const n=$("#cartN");if(n)n.textContent=cartCount();const d=$("#payDue");if(d)d.textContent=money(grandTotal());
-  /* Summe glänzt kurz auf, damit die Änderung sichtbar wird */
-  const tot=$("#sumBox .sumrow.tot");if(tot&&!reduce){tot.classList.remove("ck-tick");void tot.offsetWidth;tot.classList.add("ck-tick")}
+  const n=$("#cartN");if(n)n.textContent=cartCount();
+  const tv=$("#sumBox .sumrow.tot>span:last-child");countUp(tv,old,ckTot);countUp($("#payDue"),old,ckTot);
+  /* Summe federt kurz, damit die Änderung sichtbar wird */
+  const tot=$("#sumBox .sumrow.tot");if(tot&&!reduce&&Math.abs(old-ckTot)>.004){tot.classList.remove("ck-tick");void tot.offsetWidth;tot.classList.add("ck-tick")}
+  recoSync($(".ck"));
   if(PAY&&PAY.elements)try{PAY.elements.update({amount:Math.round(grandTotal()*100)})}catch(e){}
   if(PAY&&PAY.x)PAY.x.refresh();
 }
 /* Eingebettetes Stripe-Zahlungsfeld (Payment Element) – in der Vorschau ein Test-Kartenfeld */
 let PAY=null;
-/* Stripe-Erscheinungsbild „Chrome & Glas“ – eine Quelle für Zahlungsfeld und Expresszahlung (o ersetzt einzelne Variablen, z. B. den Radius).
-   Felder sind dunkle Mulden, der gewählte Reiter ist hell wie Chrom. Geist kann Stripe nicht laden; dann greift die Systemschrift. */
-const APPEAR=(o={})=>({theme:"night",variables:Object.assign({colorPrimary:"#DCCBFF",colorBackground:"#17181C",colorText:"#F2F3F5",colorTextSecondary:"#AAAEB8",colorTextPlaceholder:"#7E7E86",colorDanger:"#FF7A86",colorSuccess:"#9FF0D2",colorWarning:"#FFCB7A",colorIcon:"#AAAEB8",
-    borderRadius:"15px",spacingUnit:"4px",fontFamily:"Geist,-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif",fontSizeBase:"16px",fontWeightNormal:"450",fontWeightMedium:"550",focusOutline:"none",focusBoxShadow:"0 0 0 4px rgba(220,203,255,.18)"},o),
-  rules:{".Input":{border:"none",backgroundColor:"#16171B",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1),inset 0 2px 6px rgba(0,0,0,.35)",padding:"14px 16px"},".Input:hover":{boxShadow:"inset 0 0 0 1px rgba(255,255,255,.16),inset 0 2px 6px rgba(0,0,0,.35)"},
-    ".Input:focus":{backgroundColor:"#1B1D22",boxShadow:"inset 0 0 0 1.5px #C9AAFF,0 0 0 4px rgba(201,170,255,.16)"},".Input--invalid":{boxShadow:"inset 0 0 0 1.5px #FF7A86,0 0 0 4px rgba(255,122,134,.15)"},
-    ".Tab":{border:"none",backgroundColor:"#1B1D22",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1)"},".Tab:hover":{color:"#F2F3F5",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.18)"},
-    ".Tab--selected":{backgroundColor:"#ECEEF1",color:"#0D0E11",boxShadow:"inset 0 1px 0 #FFFFFF,0 0 0 1px rgba(255,255,255,.5)"},".TabLabel--selected":{color:"#0D0E11"},".TabIcon--selected":{fill:"#0D0E11"},
-    ".AccordionItem":{border:"none",backgroundColor:"#1B1D22",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1)"},".Block":{backgroundColor:"#1B1D22",boxShadow:"inset 0 0 0 1px rgba(255,255,255,.1)"},".Label":{fontWeight:"550",color:"#AAAEB8"},".Error":{color:"#FF7A86"}}});
+/* Stripe-Erscheinungsbild „hell“ – eine Quelle für Zahlungsfeld und Expresszahlung (o ersetzt einzelne Variablen, z. B. den Radius).
+   Felder weiß mit Haarlinie, Fokus Lavendel, gewählter Reiter Schwarzchrom wie --sel. Geist kann Stripe nicht laden; dann greift die Systemschrift. */
+const APPEAR=(o={})=>({theme:"stripe",variables:Object.assign({colorPrimary:"#0E1014",colorBackground:"#FFFFFF",colorText:"#0E1014",colorTextSecondary:"#474D59",colorTextPlaceholder:"#8A909B",colorDanger:"#D9364C",colorSuccess:"#0E9F6E",colorWarning:"#B86E00",colorIcon:"#656B78",
+    borderRadius:"15px",spacingUnit:"4px",fontFamily:"Geist,-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif",fontSizeBase:"16px",fontWeightNormal:"450",fontWeightMedium:"560",focusOutline:"none",focusBoxShadow:"0 0 0 4px rgba(125,92,240,.14)"},o),
+  rules:{".Input":{border:"none",backgroundColor:"#FFFFFF",boxShadow:"inset 0 0 0 1px rgba(14,16,20,.12), inset 0 1px 2px rgba(14,16,20,.05)",padding:"14px 16px"},".Input:hover":{boxShadow:"inset 0 0 0 1px rgba(14,16,20,.22), inset 0 1px 2px rgba(14,16,20,.05)"},
+    ".Input:focus":{boxShadow:"inset 0 0 0 1.5px #7D5CF0, 0 0 0 4px rgba(125,92,240,.14)"},".Input--invalid":{boxShadow:"inset 0 0 0 1.5px #D9364C, 0 0 0 4px rgba(217,54,76,.12)"},
+    ".Tab":{border:"none",backgroundColor:"#FFFFFF",boxShadow:"inset 0 0 0 1px rgba(14,16,20,.12), 0 1px 2px rgba(14,16,20,.04)"},".Tab:hover":{color:"#0E1014",boxShadow:"inset 0 0 0 1px rgba(14,16,20,.24), 0 4px 12px -6px rgba(14,16,20,.2)"},
+    ".Tab--selected":{backgroundColor:"#1A1C21",color:"#FFFFFF",boxShadow:"0 0 0 1px #0E1014, 0 10px 22px -12px rgba(14,16,20,.55)"},".TabLabel--selected":{color:"#FFFFFF"},".TabIcon--selected":{fill:"#FFFFFF"},
+    ".AccordionItem":{border:"none",backgroundColor:"#FFFFFF",boxShadow:"inset 0 0 0 1px rgba(14,16,20,.1)"},".Block":{backgroundColor:"#F6F7F9",boxShadow:"inset 0 0 0 1px rgba(14,16,20,.08)"},".Label":{fontWeight:"550",color:"#474D59"},".Error":{color:"#D9364C"}}});
 async function payAfter(){
-  PAY={};
-  if(CFG.express)PAY.x=xpayMount($("#cX"),cartItems,{ctx:"cart",okEl:$("#payOk"),onHide:()=>{const o=$("#payOr");if(o)o.hidden=true;if(evMail())A.payMore()}});
+  PAY={};ckTot=grandTotal();
+  if(CFG.express)PAY.x=xpayMount($("#cX"),cartItems,{ctx:"cart",fallback:true,doneIn:$(".ck-x")});
   const ok=$("#payOk");ok&&ok.addEventListener("change",()=>{if(ok.checked){const e=$("#payErr");if(e)e.textContent="";$("#payOkL").classList.remove("shake")}});
   PAY.mount=()=>{if(PAY.mounted)return;PAY.mounted=1;payMount()};
   if(!$("#payElW")||!$("#payElW").hidden)PAY.mount();
-  /* Von „Zur Kasse“ kommend: auf dem Handy direkt zur Übersicht, darunter E-Mail und Bezahlen */
+  rcNav($(".ck"));
+  /* Von „Zur Kasse“ kommend: auf dem Handy direkt zur Übersicht, darunter Schnell bezahlen, E-Mail und Bezahlen */
   if(cur.path==="/kasse"&&scrollY<10&&innerWidth<980)setTimeout(()=>{const b=$("#ckSum");if(b&&b.getBoundingClientRect().top>innerHeight*.5)b.scrollIntoView({block:"start",behavior:reduce?"auto":"smooth"})},140);
 }
 A.payMore=()=>{const w=$("#payElW"),m=$("#payMoreW");if(!w)return;w.hidden=false;if(m)m.hidden=true;w.classList.add("open");PAY&&PAY.mount&&PAY.mount();setTimeout(()=>w.scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"}),60)};
@@ -149,6 +199,7 @@ async function payMount(){
     const stripe=await loadStripe();if(!box.isConnected)return;
     const elements=stripe.elements({mode:"payment",amount:Math.round(grandTotal()*100),currency:"eur",paymentMethodTypes:(CFG.inline||["card"]).concat(klarnaCart()?["klarna"]:[]),locale:"de",appearance:APPEAR()});
     const pe=elements.create("payment",{layout:{type:"tabs",defaultCollapsed:false},wallets:{applePay:"never",googlePay:"never"},fields:{billingDetails:{email:"never"}},terms:{card:"never"}});
+    pe.on("ready",()=>box.classList.add("ready"));
     box.innerHTML="";pe.mount(box);Object.assign(PAY,{stripe,elements,pe});
   }catch(x){box.innerHTML=`<p>Das Zahlungsfeld konnte nicht geladen werden. Du kannst auf der sicheren Stripe-Seite bezahlen.</p>`;PAY.fail=true}
 }
@@ -184,10 +235,10 @@ A.payNow=async(_,el)=>{
 const cartItems=()=>S.cart.map(i=>({id:i.id,a:i.a,q:i.q,phone:i.phone,gift:i.gift}));
 /* Nach dem Neuzeichnen den Fokus auf denselben Knopf zurücksetzen (Tastatur, Screenreader) */
 const cartChanged=()=>{const f=document.activeElement,fa=f&&f.dataset&&f.dataset.a,fv=f&&f.dataset&&f.dataset.v,inDr=!!(f&&f.closest&&f.closest("#drawer"));
-  save();updBadges();if($("#drawer").classList.contains("open"))A.cartOpen();if(/^\/(warenkorb|kasse)$/.test(cur.path)){if($("#payBox"))payRefresh();else route(true)}
+  save();updBadges();drUpdate();if(/^\/(warenkorb|kasse)$/.test(cur.path)){if($("#payBox"))payRefresh();else route(true)}
   if(fa==="cq"){const n=$(`${inDr?"#drawer":"#cartLines"} [data-a="cq"][data-v="${fv}"]`);if(n&&!n.disabled)n.focus({preventScroll:true});else{const q=n&&n.parentNode.querySelector("button:not([disabled])");q&&q.focus({preventScroll:true})}}};
 A.cq=v=>{const p=v.split("|"),i=S.cart.find(x=>x.k===p[0]);if(!i)return;i.q=Math.max(1,Math.min(10,i.q+ +p[1]));cartChanged()};
-/* Entfernen: die Glaszeile gleitet kurz weg, dann wird neu gezeichnet; der Fokus landet auf der nächsten Zeile */
+/* Entfernen: die Zeile gleitet kurz weg, dann wird neu gezeichnet; der Fokus landet auf der nächsten Zeile */
 A.crm=(k,el)=>{const ln=el&&el.closest(".line");if(ln&&ln.classList.contains("out"))return;
   const idx=S.cart.findIndex(x=>x.k===k),box=ln&&ln.closest("#cartLines,#drawer");
   const done=()=>{S.cart=S.cart.filter(x=>x.k!==k);cartChanged();toast("Artikel entfernt");

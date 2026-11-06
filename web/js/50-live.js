@@ -23,7 +23,7 @@ function boot(){
 }
 /* Anmelde-Karte: Glas mit Chromkante vor einem Kartenfächer (öffnet sich einmal, folgt mit der Maus dem Zeiger) */
 const AU_FAN=["spotify","psn","netflix","apple","steam"];
-const authCard=(title,text,inner)=>`<section class="au" data-mouse><div class="au-wrap"><div class="au-fan" aria-hidden="true">${AU_FAN.map((id,i)=>`<span class="au-fc">${gc(pk(id,i+3),{tilt:false,badge:false,plat:false})}</span>`).join("")}</div><div class="au-card rv">${LOGO(48)}<h1 class="au-h">${title}</h1>${text?`<p class="au-p">${text}</p>`:""}${inner}</div></div></section>`;
+const authCard=(title,text,inner)=>`<section class="au" data-mouse><div class="au-wrap"><div class="au-fan" data-off aria-hidden="true">${AU_FAN.map((id,i)=>`<span class="au-fc">${gc(pk(id,i+3),{tilt:false,badge:false,plat:false})}</span>`).join("")}</div><div class="au-card rv">${LOGO(48)}<h1 class="au-h">${title}</h1>${text?`<p class="au-p">${text}</p>`:""}${inner}</div></div></section>`;
 
 /* Login + Registrierung */
 function apiLogin(_,qs){
@@ -158,7 +158,7 @@ function orderView(o){
   /* Status-Bühne: Chrom-Ring läuft, solange wir arbeiten (Puls, leere Karte mit Lichtstreifen);
      bei Lieferung steht er still, die Karten werden einmal ausgeteilt, die Medaille trägt den Haken */
   const vis=`<div class="od-vis ${done?"is-done":end?"is-end":"is-wait"}" data-off aria-hidden="true"><span class="od-glow"></span><span class="od-ring"></span>${wait?`<span class="od-pulse"></span><span class="od-blank"><span class="gc"><span class="art">${LOGO(30)}<span class="lines"><i></i><i></i></span></span><i class="gc-glare"></i></span></span>`
-    :done?`<span class="od-deal n${dealtB.length}">${dealtB.map(card).join("")}</span><span class="od-medal">${ic("i-check")}</span>`:`<span class="od-x">${ic("i-x")}</span>`}</div>`;
+    :done?`<span class="od-deal n${dealtB.length}">${dealtB.map(card).join("")}</span><span class="od-burst"><i></i><i></i></span><span class="od-medal">${ic("i-check")}</span>`:`<span class="od-x">${ic("i-x")}</span>`}</div>`;
   const payNow=["awaiting_payment","payment_pending"].includes(o.status);
   const steps=[["Bestellung aufgegeben",d(o.created_at),1],["Zahlung bestätigt",payNow?"wird bestätigt":d(o.paid_at),paid?1:payNow?2:0],["Codes werden vorbereitet",o.status==="processing"?"läuft gerade":"",o.status==="processing"?2:done?1:0],["Geliefert",d(o.delivered_at),done?1:0]];
   const tl=wait?`<ol class="tl" aria-label="Verlauf">${steps.map(s=>`<li class="tl-s${s[2]===2?" now":s[2]?" done":""}"${s[2]===2?' aria-current="step"':""}><span class="tl-d">${s[2]===1?ic("i-check"):""}</span><div><b>${s[0]}</b>${s[1]?`<small>${s[1]}</small>`:""}</div></li>`).join("")}</ol>`:"";
@@ -169,7 +169,7 @@ function orderView(o){
       :wait?(i.type==="topup"?`Das Guthaben wird auf ${esc(i.phone)} gebucht, sobald die Bestellung fertig ist.`:i.gift_to?`Der Code geht an ${esc(i.gift_to)}, sobald er fertig ist.`:"Dein Code erscheint hier, sobald er fertig ist."):"";
     return `<article class="card od-item"><div class="od-ih">${mini(b)}<div><b>${esc(i.name)}</b><small>${b.amts?esc(optLabel(b,i.face/100)):eurc(i.face)} × ${i.qty}${i.phone?" · "+esc(i.phone):""}${i.gift_to?" · Geschenk an "+esc(i.gift_to):""}</small></div></div>
   ${note?`<p class="od-note${done?" ok":""}">${done?ic("i-check"):`<span class="od-dot" aria-hidden="true"></span>`}<span>${note}</span></p>`:""}
-  ${coded?i.codes.map((c,j)=>{const k="oc"+(++cn);return `<div class="od-code" style="--g:${glowOf(b)}"><div class="od-code-t"><span class="od-code-l" id="${k}l">${many?`Code ${j+1} von ${i.codes.length}`:"Dein Code"}</span>${LOGO(24)}</div><code class="od-code-v" id="${k}" data-code="${esc(c)}" aria-labelledby="${k}l ${k}">${esc(mask(c))}</code><div class="od-code-a"><button class="btn btn-soft" data-a="codeShow" data-v="${esc(c)}" aria-controls="${k}" aria-pressed="false">${ic("i-eye")}<span>Zeigen</span></button><button class="btn btn-primary" data-a="codeCopy" data-v="${esc(c)}">${ic("i-copy")}<span>Code kopieren</span></button></div><i class="od-code-gl" aria-hidden="true"></i></div>`}).join("")
+  ${coded?i.codes.map((c,j)=>{const k="oc"+(++cn);return `<div class="od-code" style="--g:${glowOf(b)};--j:${cn-1}"><div class="od-code-t"><span class="od-code-l" id="${k}l">${many?`Code ${j+1} von ${i.codes.length}`:"Dein Code"}</span>${LOGO(24)}</div><code class="od-code-v" id="${k}" data-code="${esc(c)}" aria-labelledby="${k}l ${k}">${esc(mask(c))}</code><div class="od-code-a"><button class="btn btn-soft" data-a="codeShow" data-v="${esc(c)}" aria-controls="${k}" aria-pressed="false">${ic("i-eye")}<span>Zeigen</span></button><button class="btn btn-primary" data-a="codeCopy" data-v="${esc(c)}">${ic("i-copy")}<span>Code kopieren</span></button></div><i class="od-code-gl" aria-hidden="true"></i></div>`}).join("")
     +`<details class="od-how" data-b="${esc(i.brand)}"${how++?"":" open"}><summary><span>So löst du den Code ein</span>${ic("i-down")}</summary><ol>${redeemSteps(b).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></details>`:""}</article>`}).join("");
   /* Beleg: Daten, Positionen, Summe; drucken oder Rechnung anfordern */
   const sumRows=`<div class="sumrow"><span>Zwischensumme</span><span>${eurc(o.subtotal)}</span></div>${o.discount?`<div class="sumrow ok"><span>Rabatt</span><span>−${eurc(o.discount)}</span></div>`:""}${o.fee?`<div class="sumrow"><span>Servicegebühr</span><span>${eurc(o.fee)}</span></div>`:""}<div class="sumrow tot"><span>Gesamt</span><span>${eurc(o.total)}</span></div>${o.vat?`<div class="sumrow vatrow"><span>darin ${String(VATR()||19).replace(".",",")} % MwSt.</span><span>${eurc(o.vat)}</span></div>`:""}`;
@@ -203,12 +203,15 @@ const odClip=async t=>{try{await navigator.clipboard.writeText(t);return true}ca
 A.codeCopy=async(c,el)=>{const ok=await odClip(c);if(!ok){toast("Kopieren nicht möglich. Tippe auf „Zeigen“ und markiere den Code.");return}toast("Code kopiert");
   const cd=el&&el.closest(".od-code");if(cd){cd.classList.remove("swept");void cd.offsetWidth;cd.classList.add("swept")}/* kurzer Glanz über die Chrom-Karte */
   if(el&&el.lastElementChild){clearTimeout(el._t);el.classList.add("done");el.lastElementChild.textContent="Kopiert";el._t=setTimeout(()=>{el.classList.remove("done");el.lastElementChild.textContent="Code kopieren"},2200)}};
-/* Bewertung nach der Lieferung (erscheint als verifizierter Kauf) */
-const reviewBox=o=>o.status!=="delivered"?"":o.reviewed?`<div class="card rform rform-done rv"><b>Danke für deine Bewertung!</b><p>Sie erscheint im Shop als verifizierter Kauf.</p></div>`
-  :`<div class="card rform rv" id="rForm"><h2 class="od-h2">Wie zufrieden bist du?</h2><p>Deine Bewertung erscheint im Shop als verifizierter Kauf.</p><div class="starpick" role="group" aria-label="Sterne vergeben">${[1,2,3,4,5].map(i=>`<button data-a="rStar" data-v="${i}" aria-pressed="false" aria-label="${i} ${i>1?"Sterne":"Stern"}">${ic("i-star")}</button>`).join("")}</div><label class="lbl" for="rText">Deine Erfahrung (optional)</label><textarea class="inp" id="rText" maxlength="600" placeholder="Was hat dir gefallen?"></textarea><label class="lbl" for="rName">Name (wird abgekürzt angezeigt)</label><input class="inp" id="rName" maxlength="40" autocomplete="name" placeholder="z. B. Lena Hoffmann" value="${esc(S.user?S.user.name:"")}"><div class="err" id="rErr" role="alert"></div><button class="btn btn-primary btn-block" data-a="rSend" data-v="${esc(o.id)}">Bewertung senden</button></div>`;
+/* Bewertung nach der Lieferung (erscheint als verifizierter Kauf). Der Trustpilot-Link steht allen offen – unabhängig von den Sternen. */
+const RLBL=["","Schlecht","Geht so","In Ordnung","Gut","Sehr gut"];
+const reviewBox=o=>{if(o.status!=="delivered")return "";
+  if(o.reviewed)return `<div class="card rform rform-done rv"><span class="rf-medal" aria-hidden="true">${ic("i-check")}</span><div><b>Danke für deine Bewertung!</b><p>Sie erscheint im Shop als verifizierter Kauf.</p>${tpLink({cls:"rf-tp",text:"Auch auf Trustpilot bewerten"})}</div></div>`;
+  rStars=0;
+  return `<div class="card rform rv" id="rForm"><h2 class="od-h2">Wie zufrieden bist du?</h2><p>Deine Bewertung erscheint im Shop als verifizierter Kauf.</p><div class="starpick" role="group" aria-label="Sterne vergeben">${[1,2,3,4,5].map(i=>`<button type="button" data-a="rStar" data-v="${i}" aria-pressed="false" aria-label="${i} ${i>1?"Sterne":"Stern"}: ${RLBL[i]}" style="--k:${i-1}">${ic("i-star")}</button>`).join("")}<span class="rf-lbl" id="rLbl" aria-live="polite"></span></div><label class="lbl" for="rText">Deine Erfahrung (optional)</label><textarea class="inp" id="rText" maxlength="600" placeholder="Was hat dir gefallen? Was können wir besser machen?"></textarea><label class="lbl" for="rName">Name (wird abgekürzt angezeigt)</label><input class="inp" id="rName" maxlength="40" autocomplete="name" placeholder="z. B. Lena Hoffmann" value="${esc(S.user?S.user.name:"")}"><div class="err" id="rErr" role="alert"></div><button class="btn btn-primary btn-block" data-a="rSend" data-v="${esc(o.id)}">Bewertung senden</button>${tpLink()?`<div class="rf-alt"><span>Lieber öffentlich?</span>${tpLink()}</div>`:""}</div>`};
 let rStars=0;
-A.rStar=v=>{rStars=+v;$$(".starpick button").forEach(b=>{b.classList.toggle("on",+b.dataset.v<=rStars);b.setAttribute("aria-pressed",String(+b.dataset.v===rStars))});const e=$("#rErr");if(e)e.textContent=""};
-A.rSend=async(id,el)=>{if(!rStars){$("#rErr").textContent="Bitte wähle 1 bis 5 Sterne.";return}busy(el,true);try{await API("/reviews",{method:"POST",body:{order:id,k:(S.keys&&S.keys[id])||"",rating:rStars,text:$("#rText").value,name:$("#rName").value}});REV=null;const f=$("#rForm");if(f)f.outerHTML=reviewBox({status:"delivered",reviewed:true}).replace(" rv","");toast("Danke für deine Bewertung!")}catch(x){$("#rErr").textContent=x.message;busy(el,false)}};
+A.rStar=v=>{rStars=+v;$$(".starpick button").forEach(b=>{b.classList.toggle("on",+b.dataset.v<=rStars);b.setAttribute("aria-pressed",String(+b.dataset.v===rStars))});const l=$("#rLbl");if(l)l.textContent=RLBL[rStars]||"";const e=$("#rErr");if(e)e.textContent=""};
+A.rSend=async(id,el)=>{if(!rStars){$("#rErr").textContent="Bitte wähle 1 bis 5 Sterne.";return}busy(el,true);try{await API("/reviews",{method:"POST",body:{order:id,k:(S.keys&&S.keys[id])||"",rating:rStars,text:$("#rText").value,name:$("#rName").value}});REV=null;Object.keys(REVB).forEach(k=>delete REVB[k]);const f=$("#rForm");if(f)f.outerHTML=reviewBox({status:"delivered",reviewed:true}).replace(" rv","");toast("Danke für deine Bewertung!")}catch(x){$("#rErr").textContent=x.message;busy(el,false)}};
 A.reorderLive=id=>{const o=ordCache[id];if(!o)return;let n=0;o.items.forEach(i=>{const b=byId(i.brand);if(b&&b.amts.includes(i.face/100)){addCart({id:i.brand,a:i.face/100,q:i.qty,type:i.type,phone:i.phone||undefined},true);n++}});toast(n?"Wieder im Warenkorb":"Diese Artikel gibt es nicht mehr",n?["/warenkorb","Ansehen"]:null)};
 
 /* Konto */
@@ -234,7 +237,8 @@ function apiAccount(tab){
     if(tab==="abos")return aboAccount();
     if(tab!=="bestellungen")return;
     API("/orders").then(j=>{const el=$("#accBody");if(!el)return;j.orders.forEach(o=>ordCache[o.id]=o);el.classList.remove("acc-wait");
-      el.innerHTML=j.orders.length?`<div class="acc-list">${j.orders.map(o=>{const n=o.items.reduce((s,i)=>s+(i.qty||1),0);return `<a class="card acc-ord" href="/bestellung/${o.id}"><span class="acc-fan" aria-hidden="true">${o.items.slice(0,3).map(i=>mini(brandOr(i.brand))).join("")}</span><span class="acc-om"><b>${new Date(o.created_at).toLocaleDateString("de-DE",{dateStyle:"medium"})}</b><small>${n} Artikel · ${esc(o.id)}</small>${stBadge(o.status)}</span><b class="acc-or">${eurc(o.total)}</b>${ic("i-chev")}</a>`}).join("")}</div>`
+      el.innerHTML=j.orders.length?`<div class="acc-list">${j.orders.map(o=>{const n=o.items.reduce((s,i)=>s+(i.qty||1),0);const rate=o.status==="delivered"&&o.reviewed===false;/* Gelieferte, noch nicht bewertete Bestellung: „Bewerten“ führt zum Formular auf der Bestellseite */
+        return `<div class="acc-row${rate?" can-rate":""}"><a class="card acc-ord" href="/bestellung/${o.id}"><span class="acc-fan" aria-hidden="true">${o.items.slice(0,3).map(i=>mini(brandOr(i.brand))).join("")}</span><span class="acc-om"><b>${new Date(o.created_at).toLocaleDateString("de-DE",{dateStyle:"medium"})}</b><small>${n} Artikel · ${esc(o.id)}</small>${stBadge(o.status)}</span><b class="acc-or">${eurc(o.total)}</b>${ic("i-chev")}</a>${rate?`<div class="acc-rate"><span>Wie zufrieden warst du?</span><a class="btn btn-soft btn-sm" href="/bestellung/${o.id}?bewerten=1">${ic("i-star")}Bewerten<span class="sr"> (Bestellung ${esc(o.id)})</span></a></div>`:""}</div>`}).join("")}</div>`
         :`<div class="card acc-none">${empty("Noch keine Bestellungen","Deine Bestellungen und Codes erscheinen hier.",["/","Jetzt stöbern"])}</div>`;
     }).catch(e=>{const el=$("#accBody");if(el){el.classList.remove("acc-wait");el.innerHTML=`<p class="err">${esc(e.message)}</p>`}});
   }};
@@ -316,15 +320,24 @@ const LEGAL={
 <li><b>Bezug von Codes und Aufladungen:</b> Reloadly Inc., USA. Für Handy-Aufladungen übermitteln wir die Rufnummer und den Betrag, für Codes nur Produkt und Menge, keine Kundendaten. Grundlage: Art. 6 Abs. 1 lit. b DSGVO und EU-Standardvertragsklauseln.</li>
 <li><b>Domain und E-Mail-Postfach:</b> STRATO GmbH, Deutschland.</li>
 ${CFG.google?`<li><b>Anmeldung mit Google:</b> Google Ireland Ltd. Nur wenn du diese Anmeldung wählst, erhalten wir Name und E-Mail von Google.</li>`:""}
-${CFG.trustpilot?`<li><b>Trustpilot:</b> Trustpilot A/S, Dänemark. Das Bewertungs-Widget lädt nur nach deiner Einwilligung im Cookie-Banner.</li>`:""}
+${CFG.trustpilot&&CFG.trustpilot.widget?`<li><b>Trustpilot:</b> Trustpilot A/S, Dänemark. Das Bewertungs-Widget lädt nur nach deiner Einwilligung im Cookie-Banner.</li>`:""}
 </ul>
-<h2>4. Cookies und lokaler Speicher</h2>
+<h2>4. Chat mit der KI-Beraterin (Anthropic)</h2>
+<p>Im Shop kannst du dich im Chat von einer digitalen Beraterin unterstützen lassen. Ihre Antworten erzeugt ein KI-Modell der Anthropic PBC, USA. Dafür übermitteln wir Daten an Anthropic, und zwar nur, wenn du den Chat nutzt, also eine Nachricht schickst oder einen Vorschlag der Beraterin annimmst. Ohne Nutzung des Chats geht nichts an Anthropic.</p>
+<ul>
+<li><b>Welche Daten:</b> deine Chat-Nachrichten und die Shop-Daten, die für die Beratung nötig sind: zuletzt angesehene Produkte, der Inhalt deines Warenkorbs und die gewählten Beträge. Zahlungsdaten übermitteln wir nicht. Bitte gib im Chat keine Codes, Passwörter oder Zahlungsdaten ein.</li>
+<li><b>Zweck und Rechtsgrundlage:</b> Beantwortung deiner Fragen und Hilfe bei der Auswahl, also Durchführung vorvertraglicher Maßnahmen und Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO), sowie unser berechtigtes Interesse an einer schnellen und hilfreichen Beratung (Art. 6 Abs. 1 lit. f DSGVO).</li>
+<li><b>Übermittlung in die USA:</b> Anthropic verarbeitet die Daten in den USA. Grundlage ist der Angemessenheitsbeschluss der EU-Kommission zum EU-U.S. Data Privacy Framework, soweit Anthropic danach zertifiziert ist, im Übrigen EU-Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).</li>
+<li><b>Widerspruch:</b> Du kannst den Shop vollständig ohne Chat nutzen. Einer Verarbeitung auf Grundlage berechtigter Interessen kannst du jederzeit widersprechen (siehe Abschnitt 7).</li>
+</ul>
+${/* VOM INHABER ZU PRÜFEN: Zertifizierung von Anthropic unter dem EU-U.S. Data Privacy Framework (dataprivacyframework.gov) bzw. abgeschlossene Standardvertragsklauseln (Anthropic Data Processing Addendum) bestätigen und den Abschnitt danach anpassen. Der Hinweis erscheint nur im Testmodus. */""}${CFG.testmode?`<p class="lgl-check">Nur in der Vorschau sichtbar – vom Inhaber zu prüfen: Ist Anthropic unter dem EU-U.S. Data Privacy Framework zertifiziert, und sind die Standardvertragsklauseln (Data Processing Addendum) abgeschlossen? Abschnitt danach anpassen.</p>`:""}
+<h2>5. Cookies und lokaler Speicher</h2>
 <p>Wir verwenden nur technisch notwendige Cookies und lokalen Speicher für Anmeldung, Warenkorb, Spracheinstellungen und die sichere Zahlung (§ 25 Abs. 2 TDDDG). Es gibt kein Tracking und keine Werbung. Die Stripe-Zahlungsfelder setzen eigene, für die Betrugsprävention notwendige Cookies.</p>
-<h2>5. Speicherdauer</h2>
+<h2>6. Speicherdauer</h2>
 <p>Bestell- und Rechnungsdaten bewahren wir wegen gesetzlicher Aufbewahrungspflichten bis zu 10 Jahre auf (§ 147 AO, § 257 HGB). Kontodaten löschen wir, wenn du dein Konto löschst, soweit keine Aufbewahrungspflicht besteht.</p>
-<h2>6. Deine Rechte</h2>
+<h2>7. Deine Rechte</h2>
 <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 15–21 DSGVO). Eine Einwilligung kannst du jederzeit widerrufen. Schreib uns dazu an <a href="mailto:${SUP()}">${SUP()}</a>. Du kannst dich außerdem bei einer Datenschutz-Aufsichtsbehörde beschweren.</p>
-<h2>7. Sicherheit</h2>
+<h2>8. Sicherheit</h2>
 <p>Alle Verbindungen sind per TLS verschlüsselt. Gekaufte Codes speichern wir verschlüsselt. Passwörter werden nur als sicherer Hash gespeichert.</p>`]
 };
 /* Lesbare Langform: Inhaltsverzeichnis als Glas-Leiste (Handy: klebend oben, Desktop: links) mit Lesefortschritt, Textspalte mit höchstens 68 Zeichen */
@@ -332,7 +345,7 @@ const LGL_DOCS=[["agb","AGB"],["widerruf","Widerruf"],["datenschutz","Datenschut
 let lglSpy=null;
 function legalPage(id){const x=LEGAL[id],toc=[];let n=0;
   const body=x[1]().replace(/<h2>([\s\S]*?)<\/h2>/g,(m,t)=>{const a=`${id}-${++n}`;toc.push([a,t.replace(/<[^>]+>/g,"")]);return `<h2 id="${a}">${t}</h2>`});
-  return {title:x[0],html:`${crumb([[x[0]]])}<div class="lgl sec"><header class="lgl-head"><h1 class="lgl-h">${x[0]}</h1><p class="lgl-meta">Stand: ${LEGAL_STAND}</p>
+  return {title:x[0],html:`${crumb([[x[0]]])}<div class="lgl sec"><header class="lgl-head"><div class="lgl-art" aria-hidden="true"><i></i><i></i><i><b>§</b></i></div><h1 class="lgl-h">${x[0]}</h1><p class="lgl-meta">Stand: ${LEGAL_STAND}</p>
   <nav class="lgl-docs" aria-label="Rechtstexte">${LGL_DOCS.map(([k,t])=>`<a href="/${k}"${k===id?' aria-current="page"':""}>${t}</a>`).join("")}<a href="${IMP}" target="_blank" rel="noopener">Impressum${ic("i-arrow")}<span class="sr"> (öffnet ein neues Fenster)</span></a></nav></header>
   <div class="lgl-grid"><nav class="lgl-toc" aria-label="Inhalt"><b>Inhalt</b><ul>${toc.map(([a,t],i)=>`<li><a href="#${a}"><span class="lgl-n" aria-hidden="true">${i+1}</span><span>${esc(t.replace(/^\s*\d+\.\s*/,""))}</span></a></li>`).join("")}</ul><i class="lgl-prog" aria-hidden="true"></i></nav><article class="lgl-doc prose">${body}</article></div></div>`,
   /* Sprung im Inhaltsverzeichnis ohne Navigation (sonst baut popstate die Seite neu auf und springt nach oben) */

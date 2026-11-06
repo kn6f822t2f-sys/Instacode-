@@ -1,6 +1,7 @@
 /* ---------- Handy aufladen ----------
-   Drei Schritte als Glasflächen mit Chrom-Marken (erledigte Schritte zeigen einen Haken), Anbieter-Erkennung als Glas-Chip,
-   Beträge als Chrom-Pillen; rechts eine Telefon-Vorschau mit Chromrahmen auf einem Sockel und die Zusammenfassung. */
+   Drei Schritte als weiße Flächen mit Chrom-Marken (erledigte Schritte zeigen einen grünen Haken), Anbieter-Erkennung als helle Pille,
+   Beträge als Pillen; rechts das iPhone (iphone()-Rahmen, dunkles Display) auf einem hellen Sockel, umgeben von Funkwellen
+   in der Farbe des Anbieters, darunter die Zusammenfassung. */
 /* Nummer lesbar gruppieren: Vorwahl (3 Ziffern) und Rest */
 const telFmt=n=>n.length>3?n.slice(0,3)+" "+n.slice(3):n;
 function topup(_,qs){
@@ -35,7 +36,8 @@ function topup(_,qs){
   <aside class="tu-aside" aria-label="Zusammenfassung">
     <div class="tu-prev" id="tuPrev">
       <span class="tu-halo" aria-hidden="true"></span>
-      ${iphone(`<div class="pm-screen"><div class="pm-card" id="pmCard"><span class="gc ghost"></span></div><div class="pm-op"><i id="pmOpC"></i><span id="pmOp">Anbieter wählen</span></div><div class="pm-num" id="pmNum">${c.dial} …</div><div class="pm-amt" id="pmAmt"><small>Aufladung</small><span>–</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div>`,{cls:"phone-mock",id:"pMock"})}
+      ${kSig()}
+      ${iphone(`<div class="pm-screen"><div class="pm-card" id="pmCard"><span class="gc ghost"></span></div><div class="pm-op"><i id="pmOpC"></i><span id="pmOp">Anbieter wählen</span></div><div class="pm-num" id="pmNum">${c.dial} …</div><div class="pm-amt" id="pmAmt"><small>Aufladung</small><span>–</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div>`,{cls:"phone-mock",id:"pMock",style:"--sb:#131521;--sbi:#fff"})}
       <span class="tu-base" aria-hidden="true"></span>
     </div>
     <div class="tu-sum">

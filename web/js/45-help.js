@@ -18,6 +18,7 @@ A.hClear=()=>{const f=$("#fq");if(!f)return;f.value="";hClearBtn();hPress("all")
 function help(){
   return {title:"Hilfe",html:`${crumb([["Hilfe"]])}
 <section class="hp-hero">
+ <div class="hp-bub" data-off aria-hidden="true"><span class="hb hb-q"><i>${ic("i-help")}</i>Wie löse ich meinen Code ein?</span><span class="hb hb-a">Im Store „Code einlösen“ wählen.</span><span class="hb hb-t"><i></i><i></i><i></i></span></div>
  <h1 class="h1 hp-h rv">Wie können wir helfen?</h1>
  <p class="lead hp-lead rv" style="--d:80ms">Antworten auf häufige Fragen, die digitale Assistentin Mia und unser Support per E-Mail.</p>
  <div class="hp-search rv" style="--d:160ms">${ic("i-search")}<input id="fq" type="search" placeholder="Frage suchen, z. B. einlösen" aria-label="Fragen durchsuchen" aria-controls="faqBox" autocomplete="off" enterkeyhint="search"><button type="button" class="hp-x" id="fqX" data-a="hClear" aria-label="Suche leeren" hidden>${ic("i-x")}</button></div>
