@@ -46,9 +46,9 @@
   --brand-grad:linear-gradient(135deg,#FF9CCB,#9D85FF 45%,#5FC9F5);
   --text-grad:var(--chrome-text);
   /* Weißes Glas */
-  --glass:linear-gradient(180deg,rgba(255,255,255,.96),rgba(255,255,255,.82));
+  --glass:linear-gradient(180deg,rgba(255,255,255,.84),rgba(255,255,255,.64));
   --glass-hi:#FFFFFF;
-  --glass-lo:rgba(255,255,255,.66);
+  --glass-lo:rgba(255,255,255,.52);
   --glass-solid:#FFFFFF;
   --blur:blur(22px) saturate(1.6);
   --blur-s:blur(12px) saturate(1.5);
@@ -86,7 +86,7 @@
 /* ---------- Grundlagen ---------- */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:100px;-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip;scrollbar-color:#C4C8D0 var(--bg)}
-body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:var(--font);font-size:16px;line-height:1.6;letter-spacing:-.006em;
+body{margin:0;min-height:100vh;color:var(--ink);background:transparent;font-family:var(--font);font-size:16px;line-height:1.6;letter-spacing:-.006em;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip;padding-bottom:env(safe-area-inset-bottom,0px)}
 body.lock{overflow:hidden}
 ::selection{background:rgba(125,92,240,.22);color:var(--ink)}
@@ -110,7 +110,8 @@ img{max-width:100%}
 @media (max-width:767px){.d-only{display:none!important}}
 @media (min-width:768px){.m-only{display:none!important}}
 
-/* ---------- Umgebung: helles Studiolicht, Perlmutt-Reflexe, feines Korn ---------- */
+/* ---------- Umgebung: helles Studiolicht, Perlmutt-Reflexe, feines Korn ----------
+   Liegt mit z-index:-2 hinter dem Inhalt; deshalb hat body keinen eigenen Hintergrund (sonst würde er die Ebene verdecken), die Grundfarbe trägt html. */
 .bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:radial-gradient(120% 70% at 50% -10%,#FFFFFF 0%,#F6F7F9 45%,var(--bg) 75%)}
 .bgfx i{position:absolute;display:block;border-radius:50%;will-change:transform;animation:drift 52s ease-in-out infinite alternate}
 /* weiche Lichtquelle oben rechts */
@@ -126,13 +127,31 @@ img{max-width:100%}
 /* Korn gegen Farbstufen */
 .bgfx u{position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .lite .bgfx i{animation:none;will-change:auto}
+/* Bewegung beim Scrollen (quer über alle Seiten): --sy (px) setzt 90-start.js nur an .bgfx.
+   Farbschleier wandern mit eigener Geschwindigkeit, drei unscharfe Chrom-Ringe steigen auf und drehen sich,
+   ein Perlmutt-Lichtband zieht schräg durchs Bild. mod() lässt Ringe und Band endlos wiederkehren. */
+.bgfx{--sy:0}
+.bgfx i:nth-child(1){translate:0 calc(var(--sy) * -.04px)}
+.bgfx i:nth-child(2){translate:0 calc(var(--sy) * -.11px)}
+.bgfx i:nth-child(3){translate:0 calc(var(--sy) * -.07px)}
+.bgr{position:absolute;top:0;display:block;width:var(--s);aspect-ratio:1;background:url(/bg-ring.webp) center/contain no-repeat;opacity:var(--o);will-change:transform;
+  transform:translate3d(0,calc(var(--y0) - mod(var(--sy) * var(--v) * 1px + var(--off), 170vh)),0) rotate(calc(var(--r0) + var(--sy) * var(--rv) * 1deg))}
+.bgr.r1{--s:min(48vmax,640px);--o:.27;--v:.16;--off:50vh;--y0:115vh;--r0:-18deg;--rv:.018;left:-16vmax}
+.bgr.r2{--s:min(30vmax,420px);--o:.24;--v:.3;--off:125vh;--y0:115vh;--r0:24deg;--rv:-.03;right:-9vmax}
+.bgr.r3{--s:min(20vmax,280px);--o:.2;--v:.46;--off:20vh;--y0:115vh;--r0:64deg;--rv:.05;left:46vw}
+.bgfx em{position:absolute;left:-30vw;top:0;display:block;width:160vw;height:46vh;opacity:.75;will-change:transform;
+  background:linear-gradient(90deg,rgba(255,156,203,0) 8%,rgba(255,156,203,.13) 32%,rgba(157,133,255,.15) 50%,rgba(95,201,245,.13) 68%,rgba(95,201,245,0) 92%);
+  -webkit-mask:linear-gradient(180deg,transparent,#000 45%,#000 55%,transparent);mask:linear-gradient(180deg,transparent,#000 45%,#000 55%,transparent);
+  transform:translate3d(0,calc(110vh - mod(var(--sy) * .22px + 40vh, 160vh)),0) rotate(-11deg)}
+.lite .bgr.r3,.lite .bgfx em{display:none}
+@media (max-width:767px){.bgr.r1{--o:.22}.bgr.r2{--o:.18}.bgr.r3{display:none}}
 
 /* ---------- Typografie: elegant, mittelgroß, dunkler Stahl auf den Überschriften ---------- */
-.h1{margin:0;font-size:clamp(34px,4.2vw,58px);line-height:1.06;font-weight:500;letter-spacing:-.036em;text-wrap:balance}
-.h2{margin:0;font-size:clamp(26px,2.6vw,36px);line-height:1.14;font-weight:480;letter-spacing:-.028em;text-wrap:balance}
+.h1{margin:0;font-size:clamp(34px,4.2vw,58px);line-height:1.06;font-weight:470;letter-spacing:-.03em;text-wrap:balance}
+.h2{margin:0;font-size:clamp(26px,2.6vw,36px);line-height:1.15;font-weight:460;letter-spacing:-.022em;text-wrap:balance}
 .h3{margin:0;font-size:17px;line-height:1.35;font-weight:530;letter-spacing:-.012em}
-/* Chromverlauf auf großen Überschriften (Symbole behalten ihre Farbe) */
-.h1,.h2{color:var(--ink);background:var(--chrome-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-bottom:.06em}
+/* Überschriften in klarer, dunkler Tinte – kein Verlauf, damit die Schrift ruhig und scharf bleibt */
+.h1,.h2{color:var(--ink)}
 .page-h1{font-size:clamp(32px,3.8vw,52px)}
 .lead{margin:18px 0 0;max-width:34em;font-size:clamp(16px,1.25vw,18px);line-height:1.65;color:var(--ink-2);text-wrap:pretty}
 .gt,.gtw{color:inherit}
@@ -147,6 +166,17 @@ img{max-width:100%}
 .js .rv{opacity:0;translate:0 18px;filter:blur(6px);transition:opacity .8s var(--ease-out) var(--d,0ms),translate .9s var(--ease-out) var(--d,0ms),filter .8s var(--ease-out) var(--d,0ms)}
 .js .rv.in{opacity:1;translate:none;filter:none}
 .lite.js .rv{filter:none}
+/* Große Flächen gleiten beim Scrollen herein und wieder hinaus – an den Scroll gekoppelt, wo der Browser
+   scroll-gesteuerte Animationen kann (sonst bleibt das einmalige Einblenden von .rv) */
+@keyframes scrIn{from{opacity:.001;transform:translateY(54px) scale(.96)}}
+@keyframes scrHead{from{opacity:.001;transform:translateY(28px)}}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .js .payband.rv,.js .abo-tz.rv,.js .tusec.rv,.js .cta-box.rv,.js .bc.rv{opacity:1;translate:none;filter:none;transition:none}
+    .payband,.abo-tz,.tusec,.cta-box,.bento-cats .bc{animation:scrIn linear both;animation-timeline:view();animation-range:entry 0% entry 85%}
+    .view .sec-head{animation:scrHead linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+  }
+}
 /* Seitenwechsel: neue Ansicht blendet weich ein (ohne View Transitions) */
 .view:not(.k){animation:viewIn .55s var(--ease-out) backwards}
 @keyframes viewIn{from{opacity:0;translate:0 12px}}

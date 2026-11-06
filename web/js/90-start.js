@@ -11,15 +11,23 @@ document.addEventListener("keydown",e=>{
   if(e.key==="/"&&!typing){e.preventDefault();A.palOpen();return}
   if(e.key!=="Escape")return;
   if($("#pal").classList.contains("open"))palClose();else if($("#drawer").classList.contains("open"))A.cartClose();else if($("#scrim").classList.contains("open"))closeSheet();else if($("#menu").classList.contains("open"))closeMenu();else if(chat.open)chatClose()});
-const hdr=$("#hdr");let tk=false;
-addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{hdr.classList.toggle("scrolled",scrollY>8);if(!reduce)parUpdate();tk=false})},{passive:true});
+const hdr=$("#hdr"),bgfx=$("#bgfx");let tk=false;
+/* Kopfzeile: Lesefortschritt (--sp) und Hintergrund-Ebene (--sy, Parallax beim Scrollen) – nur an diesen zwei Elementen gesetzt, damit nicht die ganze Seite neu berechnet wird */
+const scrollFx=()=>{const y=scrollY,max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+  hdr.style.setProperty("--sp",Math.min(1,y/max).toFixed(4));if(bgfx&&!reduce)bgfx.style.setProperty("--sy",Math.round(y))};
+addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{hdr.classList.toggle("scrolled",scrollY>8);scrollFx();if(!reduce)parUpdate();tk=false})},{passive:true});
+/* Lichtkante der Kopfzeile folgt dem Zeiger */
+hdr.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const r=hdr.getBoundingClientRect();hdr.style.setProperty("--hx",Math.round(e.clientX-r.left)+"px")},{passive:true});
+hdr.addEventListener("pointerleave",()=>hdr.style.removeProperty("--hx"));
+/* Logo in der Kopfzeile: lebendiger Chrom-Ring */
+LIQUID.mount(hdr);
 addEventListener("resize",()=>requestAnimationFrame(parUpdate),{passive:true});
 
 /* ---------- Vertrauensleiste: auf kleinen Bildschirmen nacheinander ---------- */
 (()=>{const li=$$("#trustbar li");let i=0;if(reduce||li.length<2)return;setInterval(()=>{if(innerWidth>=900||document.hidden)return;const a=li[i];i=(i+1)%li.length;a.classList.remove("on");a.classList.add("out");li[i].classList.remove("out");li[i].classList.add("on");setTimeout(()=>a.classList.remove("out"),600)},3600)})();
 
 /* ---------- start ---------- */
-applyTheme();updBadges();renderAcc();renderFooter();boot();
+applyTheme();updBadges();renderAcc();renderFooter();boot();scrollFx();
 
 if(!S.cookie)setTimeout(cookieShow,1600);
 setTimeout(nudgeShow,12000);

@@ -88,10 +88,10 @@
   "ar": 5.071
  },
  "gpu": {
-  "src": "/brand/xbox.svg",
+  "src": "/brand/game-pass.svg",
   "card": "brand",
   "scale": 1,
-  "ar": 3.425,
+  "ar": 1.39,
   "tint": true
  },
  "hm": {

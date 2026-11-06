@@ -143,7 +143,7 @@ html:not(.lite) .fc{filter:blur(max(0px,calc((.95 - var(--d)) * 2.5px)))}
 /* ---------- Kategorien als Bento ---------- */
 .bento-cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .bc{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;min-height:184px;padding:18px;border-radius:var(--r-l);
-  background:#fff;box-shadow:var(--rim),0 1px 2px rgba(14,16,20,.04);transition:box-shadow .35s,translate .45s var(--spring)}
+  background:rgba(255,255,255,.64);box-shadow:var(--rim),0 1px 2px rgba(14,16,20,.04);transition:box-shadow .35s,translate .45s var(--spring)}
 .bc::before{content:"";position:absolute;right:-20%;bottom:-40%;z-index:-1;width:90%;aspect-ratio:1;border-radius:50%;pointer-events:none;
   background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 30%,transparent),transparent);opacity:.8;transition:opacity .4s,scale .6s var(--ease-out)}
 .bc:first-child,.bc:nth-child(6){grid-column:span 2}
@@ -178,7 +178,7 @@ html:not(.lite) .fc{filter:blur(max(0px,calc((.95 - var(--d)) * 2.5px)))}
 @media (min-width:1100px){.bc{min-height:280px;padding:28px}}
 
 /* ---------- Bezahlen: echte Zahlungszeichen ---------- */
-.payband{position:relative;display:grid;gap:22px;padding:28px 22px;border-radius:var(--r-xl);background:#fff;box-shadow:var(--rim),var(--lift)}
+.payband{position:relative;display:grid;gap:22px;padding:28px 22px;border-radius:var(--r-xl);background:rgba(255,255,255,.62);box-shadow:var(--rim),var(--lift)}
 .payband-copy p{margin:12px 0 0;max-width:34em;color:var(--ink-2);text-wrap:pretty}
 .payband-logos .paylogos{margin:0;gap:10px}
 .payband-logos .pmk{width:76px;height:48px;border-radius:10px}
@@ -228,7 +228,7 @@ html:not(.lite) .fc{filter:blur(max(0px,calc((.95 - var(--d)) * 2.5px)))}
 
 /* ---------- Handy aufladen: iPhone mit Video, Funkwellen ---------- */
 .tusec{position:relative;overflow:hidden;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr);padding:26px 20px 28px;border-radius:var(--r-xl);
-  background:#fff;box-shadow:var(--rim),var(--lift)}
+  background:rgba(255,255,255,.62);box-shadow:var(--rim),var(--lift)}
 .tusec::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(70% 70% at 100% 0%,rgba(95,201,245,.14),rgba(95,201,245,0) 66%),radial-gradient(60% 60% at 0% 100%,rgba(255,156,203,.1),rgba(255,156,203,0) 70%)}
 .tu-copy p{margin:12px 0 0;max-width:30em;color:var(--ink-2)}
 .tu-form{max-width:440px;margin-top:10px}
@@ -264,7 +264,7 @@ html:not(.lite) .fc{filter:blur(max(0px,calc((.95 - var(--d)) * 2.5px)))}
 .say .w{display:inline;opacity:clamp(.18,calc(var(--p,0) * (var(--n) + 3) - var(--i)),1);transition:opacity .25s linear}
 .why{display:grid;gap:12px;margin:48px 0 0;padding:0;list-style:none}
 .why li{display:grid;grid-template-columns:42px minmax(0,1fr);column-gap:14px;align-items:start;align-content:start;padding:22px;border-radius:var(--r-l);
-  background:#fff;box-shadow:var(--rim),0 1px 2px rgba(14,16,20,.04);transition:box-shadow .3s,translate .45s var(--spring)}
+  background:rgba(255,255,255,.62);box-shadow:var(--rim),0 1px 2px rgba(14,16,20,.04);transition:box-shadow .3s,translate .45s var(--spring)}
 @media (hover:hover){.why .spot:hover{translate:0 -4px;box-shadow:var(--rim-hi),var(--lift)}}
 .why .si-ic{grid-row:span 2;color:#fff;background:var(--sel);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 18px -10px rgba(14,16,20,.5)}
 .why b{font-size:16px;font-weight:560;line-height:1.3;letter-spacing:-.02em}
