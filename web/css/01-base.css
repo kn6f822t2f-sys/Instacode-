@@ -117,9 +117,12 @@ img{max-width:100%}
 /* weiche Lichtquelle oben rechts */
 .bgfx i:nth-child(1){right:-18vmax;top:-34vmax;width:78vmax;height:78vmax;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,.4) 55%,rgba(255,255,255,0))}
 /* Perlmutt links (Lavendel/Rosa) */
-.bgfx i:nth-child(2){left:-26vmax;top:10vh;width:64vmax;height:64vmax;background:radial-gradient(closest-side,rgba(196,176,255,.22),rgba(255,190,225,.08) 58%,rgba(255,190,225,0));animation-duration:64s;animation-delay:-22s}
+.bgfx i:nth-child(2){left:-24vmax;top:6vh;width:66vmax;height:66vmax;background:radial-gradient(closest-side,rgba(167,139,250,.42),rgba(244,114,182,.16) 58%,rgba(244,114,182,0));animation-duration:64s;animation-delay:-22s}
 /* Perlmutt unten (Mint/Himmel) */
-.bgfx i:nth-child(3){left:20vmax;bottom:-58vmax;width:86vmax;height:86vmax;background:radial-gradient(closest-side,rgba(150,230,210,.2),rgba(150,205,255,.07) 60%,rgba(150,205,255,0));animation-duration:74s;animation-delay:-38s}
+.bgfx i:nth-child(3){left:18vmax;bottom:-54vmax;width:88vmax;height:88vmax;background:radial-gradient(closest-side,rgba(52,211,153,.32),rgba(56,189,248,.14) 60%,rgba(56,189,248,0));animation-duration:74s;animation-delay:-38s}
+/* Pfirsich oben links und Himmelblau rechts: mehr Farbe im Glas */
+.bgfx i:nth-child(4){left:-10vmax;top:-30vmax;width:56vmax;height:56vmax;background:radial-gradient(closest-side,rgba(251,146,60,.26),rgba(251,191,36,.1) 58%,rgba(251,191,36,0));animation-duration:58s;animation-delay:-12s}
+.bgfx i:nth-child(5){right:-22vmax;top:46vh;width:62vmax;height:62vmax;background:radial-gradient(closest-side,rgba(56,189,248,.3),rgba(129,140,248,.12) 60%,rgba(129,140,248,0));animation-duration:68s;animation-delay:-30s}
 @keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(5vmax,4vmax,0) scale(1.06)}100%{transform:translate3d(-4vmax,7vmax,0) scale(.96)}}
 /* Lichtstreifen wie von einem Softbox-Fenster */
 .bgfx b{position:absolute;right:8vw;top:-20vh;width:38vw;height:120vh;rotate:-24deg;opacity:.6;
@@ -134,6 +137,21 @@ img{max-width:100%}
 .bgfx i:nth-child(1){translate:0 calc(var(--sy) * -.04px)}
 .bgfx i:nth-child(2){translate:0 calc(var(--sy) * -.11px)}
 .bgfx i:nth-child(3){translate:0 calc(var(--sy) * -.07px)}
+.bgfx i:nth-child(4){translate:0 calc(var(--sy) * -.15px)}
+.bgfx i:nth-child(5){translate:0 calc(var(--sy) * -.09px)}
+/* Schwebende Gutscheinkarten im Hintergrund: farbiges Glas, steigen beim Scrollen auf und drehen sich */
+.bgc{position:absolute;top:0;display:block;width:var(--w);aspect-ratio:1.586;border-radius:calc(var(--w) * .085);opacity:var(--o);will-change:transform;
+  background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%),var(--g);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 30px 50px -28px rgba(14,16,20,.45);
+  transform:translate3d(0,calc(var(--y0) - mod(var(--sy) * var(--v) * 1px + var(--off), 180vh)),0) rotate(calc(var(--r0) + var(--sy) * var(--rv) * 1deg))}
+.bgc.c1{--w:150px;--o:.55;--v:.36;--off:30vh;--y0:120vh;--r0:-14deg;--rv:.02;left:6vw;--g:linear-gradient(135deg,#8B5CF6,#C4B5FD)}
+.bgc.c2{--w:120px;--o:.5;--v:.52;--off:95vh;--y0:120vh;--r0:18deg;--rv:-.03;right:9vw;--g:linear-gradient(135deg,#F97316,#FDBA74)}
+.bgc.c3{--w:170px;--o:.45;--v:.28;--off:150vh;--y0:120vh;--r0:8deg;--rv:.025;left:62vw;--g:linear-gradient(135deg,#10B981,#6EE7B7)}
+.bgc.c4{--w:110px;--o:.5;--v:.6;--off:60vh;--y0:120vh;--r0:-26deg;--rv:.04;left:34vw;--g:linear-gradient(135deg,#2563EB,#93C5FD)}
+.bgc.c5{--w:140px;--o:.45;--v:.42;--off:125vh;--y0:120vh;--r0:30deg;--rv:-.02;left:-2vw;--g:linear-gradient(135deg,#EC4899,#F9A8D4)}
+.bgc.c6{--w:130px;--o:.5;--v:.48;--off:10vh;--y0:120vh;--r0:-6deg;--rv:.03;right:-1vw;--g:linear-gradient(135deg,#111827,#4B5563)}
+.lite .bgc.c4,.lite .bgc.c5,.lite .bgc.c6{display:none}
+@media (max-width:767px){.bgc{--w:84px!important}.bgc.c5,.bgc.c6{display:none}}
+@media (prefers-reduced-motion:reduce){.bgc{display:none}}
 .bgr{position:absolute;top:0;display:block;width:var(--s);aspect-ratio:1;background:url(/bg-ring.webp) center/contain no-repeat;opacity:var(--o);will-change:transform;
   transform:translate3d(0,calc(var(--y0) - mod(var(--sy) * var(--v) * 1px + var(--off), 170vh)),0) rotate(calc(var(--r0) + var(--sy) * var(--rv) * 1deg))}
 .bgr.r1{--s:min(48vmax,640px);--o:.27;--v:.16;--off:50vh;--y0:115vh;--r0:-18deg;--rv:.018;left:-16vmax}

@@ -125,6 +125,7 @@
 .wg-anim .wg-steps .wg-sn{animation:wgPop .5s var(--spring) var(--d,0ms) backwards}
 .wg-anim .wg-steps li::before{animation:wgLine .6s var(--ease-out) calc(var(--d,0ms) + 220ms) backwards}
 .wg-rd-a{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.wg-rd-a .btn{max-width:100%;white-space:normal;text-align:center;line-height:1.3;padding-top:8px;padding-bottom:8px}
 .wg-rd-n{margin:14px 0 0;font-size:13px;line-height:1.5;color:var(--ink-3)}
 .wg-rd-n a{color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(14,16,20,.3)}
 @media (min-width:560px){.wg-rd-g{grid-template-columns:repeat(4,minmax(0,1fr))}}
