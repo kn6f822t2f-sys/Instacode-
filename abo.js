@@ -460,7 +460,7 @@ CREATE TABLE IF NOT EXISTS sub_events(id TEXT PRIMARY KEY, type TEXT, at INTEGER
       cancel_url: `${BASE}/abo?abgebrochen=1`
     });
     const newer = {
-      branding_settings: { display_name: "instantcodes", button_color: "#1700D2", background_color: "#FFFFFF", border_style: "rounded", font_family: "inter",
+      branding_settings: { display_name: "instantcodes", button_color: "#16171B", background_color: "#FFFFFF", border_style: "rounded", font_family: "inter",
         icon: { type: "url", url: `${BASE}/icon-512.png` }, logo: { type: "url", url: `${BASE}/brand/checkout-logo.png` } }
     };
     let s;

@@ -183,7 +183,6 @@ html:not(.lite) .au-card{-webkit-backdrop-filter:blur(28px) saturate(1.6);backdr
 .acc-h{margin:0;font-size:clamp(28px,4vw,50px);line-height:1.04;font-weight:560;letter-spacing:-.045em;overflow-wrap:anywhere;padding-bottom:.06em;
   color:var(--ink);background:var(--chrome-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .acc-p{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-2);text-wrap:pretty}
-.acc-mail{display:block;font-weight:550;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 /* Mitgliedskarte (nur ab Tablet) */
 .acc-card{display:none}
 .acc .acc-card{--g:#9AA0AB;

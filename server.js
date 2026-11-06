@@ -802,7 +802,7 @@ app.post("/api/checkout", wrap(async (req, res) => {
     cancel_url: `${BASE}/warenkorb?abgebrochen=1`
   }, {
     excluded_payment_method_types: klarnaOk(P.lines) ? [] : EXCLUDED_PM,
-    branding_settings: { display_name: "instantcodes", button_color: "#1700D2", background_color: "#FFFFFF", border_style: "rounded", font_family: "inter",
+    branding_settings: { display_name: "instantcodes", button_color: "#16171B", background_color: "#FFFFFF", border_style: "rounded", font_family: "inter",
       icon: { type: "url", url: `${BASE}/icon-512.png` }, logo: { type: "url", url: `${BASE}/brand/checkout-logo.png` } }
   }, { idempotencyKey: "cs-" + id });
   db.prepare("UPDATE orders SET stripe_session=? WHERE id=?").run(s.id, id);
