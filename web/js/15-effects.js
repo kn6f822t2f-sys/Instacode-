@@ -74,8 +74,8 @@ A.giftNow=()=>{const sw=$(".giftbox .switch");if(sw&&sw.getAttribute("aria-check
   /* Glanzlicht folgt Maus/Finger auf allen Glasflächen */
   let raf=0,last=null;document.addEventListener("pointermove",e=>{last=e;if(raf)return;raf=requestAnimationFrame(()=>{raf=0;const t=last.target.closest&&last.target.closest(".btn,.chip,.amt,.icon-btn,.qa-btn,.card,.catcard,.hb,.sh-opt,.pact button,.hdr,.qnav button");if(!t)return;const r=t.getBoundingClientRect();t.style.setProperty("--lx",((last.clientX-r.left)/r.width*100).toFixed(1)+"%");t.style.setProperty("--ly",((last.clientY-r.top)/r.height*100).toFixed(1)+"%")})},{passive:true});
 })();
-/* Ablauf-Video: spielt nur, solange es sichtbar ist */
-(function(){if(!("IntersectionObserver" in window))return;const io=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.preload==="none")v.preload="auto";const pr=v.play();pr&&pr.catch(()=>{})}else v.pause()}),{threshold:.25});
+/* Ablauf-Video: spielt nur, solange es sichtbar ist – bei reduzierter Bewegung bleibt das Standbild */
+(function(){if(!("IntersectionObserver" in window)||reduce)return;const io=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.preload==="none")v.preload="auto";const pr=v.play();pr&&pr.catch(()=>{})}else v.pause()}),{threshold:.25});
   const scan=()=>document.querySelectorAll("video.vf-vid:not([data-io])").forEach(v=>{v.dataset.io=1;io.observe(v)});new MutationObserver(scan).observe(document.getElementById("app")||document.body,{childList:true,subtree:true});scan()})();
 const keyList=pg=>pg==="all"?VIS().filter(isKey):dedupeGrp(BRANDS.filter(b=>isKey(b)&&PLATG[b.plat]===pg));
 A.keyPlat=(v,el)=>{$$("[data-a=keyPlat]").forEach(c=>c.setAttribute("aria-pressed",c===el));const t=$("#keyRail");t.innerHTML=keyList(v).map((b,i)=>tile(b,i,{cover:true})).join("");t.scrollLeft=0;$$(".rv",t).forEach(x=>x.classList.add("in"));rails(t.closest(".sec"))};

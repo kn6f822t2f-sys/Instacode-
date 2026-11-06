@@ -327,6 +327,15 @@ html:not(.lite) .payband,html:not(.lite) .tusec,html:not(.lite) .abo-tz,html:not
 @keyframes cwMove{to{transform:translate3d(-50%,0,0)}}
 .cw-c{flex:none;display:block;width:var(--cw,188px);border-radius:12px;transition:translate .45s var(--spring),scale .45s var(--spring)}
 .cw-c .gc{width:100%;box-shadow:0 18px 34px -18px rgba(14,16,20,.5),0 0 0 .5px rgba(14,16,20,.08)}
+/* Holo-Glanz zieht in Abständen über jede Karte (versetzt) */
+.cw-c{position:relative}
+.cw-sh{position:absolute;inset:0;border-radius:6.5%/10.3%;pointer-events:none;overflow:hidden}
+.cw-sh::before{content:"";position:absolute;top:-10%;bottom:-10%;left:0;width:38%;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.34) 45%,rgba(222,210,255,.26) 55%,rgba(255,255,255,0));
+  transform:translateX(-160%) skewX(-18deg);animation:cwShine 7s var(--ease) infinite;animation-delay:calc(var(--i,0) * -.83s)}
+@keyframes cwShine{0%,72%{transform:translateX(-160%) skewX(-18deg)}100%{transform:translateX(330%) skewX(-18deg)}}
+.cwall.off .cw-sh::before{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.cw-sh{display:none}}
 @media (hover:hover){.cw-row:hover .cw-track{animation-play-state:paused}.cw-c:hover{translate:0 -8px;scale:1.06}}
 .cw-c:focus-visible{outline-offset:4px}
 .cwall.off .cw-track{animation-play-state:paused}

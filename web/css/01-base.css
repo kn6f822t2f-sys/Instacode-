@@ -150,7 +150,7 @@ img{max-width:100%}
 .bgc.c5{--w:140px;--o:.45;--v:.42;--off:125vh;--y0:120vh;--r0:30deg;--rv:-.02;left:-2vw;--g:linear-gradient(135deg,#EC4899,#F9A8D4)}
 .bgc.c6{--w:130px;--o:.5;--v:.48;--off:10vh;--y0:120vh;--r0:-6deg;--rv:.03;right:-1vw;--g:linear-gradient(135deg,#111827,#4B5563)}
 .lite .bgc.c4,.lite .bgc.c5,.lite .bgc.c6{display:none}
-@media (max-width:767px){.bgc{--w:84px!important}.bgc.c5,.bgc.c6{display:none}}
+@media (max-width:767px){.bgc{--w:84px!important;opacity:calc(var(--o) * .6)}.bgc.c5,.bgc.c6{display:none}}
 @media (prefers-reduced-motion:reduce){.bgc{display:none}}
 .bgr{position:absolute;top:0;display:block;width:var(--s);aspect-ratio:1;background:url(/bg-ring.webp) center/contain no-repeat;opacity:var(--o);will-change:transform;
   transform:translate3d(0,calc(var(--y0) - mod(var(--sy) * var(--v) * 1px + var(--off), 170vh)),0) rotate(calc(var(--r0) + var(--sy) * var(--rv) * 1deg))}

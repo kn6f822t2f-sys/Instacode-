@@ -17,9 +17,9 @@ const uniqLogos=n=>{const seen=new Set();return VIS().filter(b=>b.si&&!seen.has(
 const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=="topup"&&(b.logo||b.si)&&!seen.has(b.name)&&seen.add(b.name));
   if(list.length<12)return"";
   const rows=[0,1,2].map(r=>list.filter((b,i)=>i%3===r).slice(0,14));
-  const card=(b,dup)=>`<a class="cw-c" href="/marke/${b.id}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}</a>`;
+  const card=(b,dup,i)=>`<a class="cw-c" href="/marke/${b.id}" style="--i:${i}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}<i class="cw-sh" aria-hidden="true"></i></a>`;
   return `<section class="cwall" data-off aria-label="Marken im Sortiment"><div class="sec cw-head"><div class="sec-head"><div><h2 class="h2">Alle Marken. Ein Shop.</h2><p>Gutscheine, Prepaid-Karten und Guthaben – offizielle Codes, meist in Sekunden per E-Mail.</p></div><div class="sh-r"><a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a></div></div></div>
-<div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map(b=>card(b)).join("")}${r.map(b=>card(b,1)).join("")}</div></div>`).join("")}</div></div></section>`};
+<div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map((b,j)=>card(b,0,j+i*3)).join("")}${r.map((b,j)=>card(b,1,j+i*3)).join("")}</div></div>`).join("")}</div></div></section>`};
 function home(){
   const recent=S.recent.map(byId).filter(Boolean).filter(isRep).slice(0,10), c=ctry();
   const keys=VIS().filter(isKey), deals=DEALS(), best=pick(BEST0,14).map(byId).filter(Boolean);
