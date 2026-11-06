@@ -19,8 +19,8 @@ addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{h
 /* Lichtkante der Kopfzeile folgt dem Zeiger */
 hdr.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const r=hdr.getBoundingClientRect();hdr.style.setProperty("--hx",Math.round(e.clientX-r.left)+"px")},{passive:true});
 hdr.addEventListener("pointerleave",()=>hdr.style.removeProperty("--hx"));
-/* Logo in der Kopfzeile: lebendiger Chrom-Ring */
-LIQUID.mount(hdr);
+/* Logo in der Kopfzeile: lebendiger Chrom-Ring (auf Touch-Geräten das Standbild – spart einen WebGL-Kontext) */
+if(!document.documentElement.classList.contains("lite"))LIQUID.mount(hdr);
 addEventListener("resize",()=>requestAnimationFrame(parUpdate),{passive:true});
 
 /* ---------- Vertrauensleiste: auf kleinen Bildschirmen nacheinander ---------- */

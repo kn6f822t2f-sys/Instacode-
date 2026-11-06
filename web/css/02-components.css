@@ -188,9 +188,10 @@ select.sel option{background:#fff;color:var(--ink)}
    ========================================================= */
 .gc{position:relative;display:block;aspect-ratio:1.586;border-radius:6.5%/10.3%;overflow:hidden;isolation:isolate;container-type:inline-size;
   background:var(--b,#161618);color:var(--f,#fff);
-  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.18),0 1px 2px rgba(14,16,20,.18),0 14px 28px -16px color-mix(in srgb,var(--g,#7D72FF) 55%,transparent),0 28px 50px -30px color-mix(in srgb,var(--g,#7D72FF) 45%,rgba(14,16,20,.55));
   transition:transform .5s var(--spring),translate .5s var(--spring),box-shadow .4s}
+/* Nur Karten, die sich neigen (.tilt), bekommen eine eigene 3D-Ebene – alle anderen bleiben flach (spart Grafikspeicher) */
+.gc.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)}
 /* Touch-Geräte: ruhende Karten ohne eigene 3D-Ebene, nur beim Antippen wird geneigt (spart Grafikspeicher auf dem iPhone) */
 .lite .gc:not(.press){transform:none}
 /* Obenlicht wie auf glänzendem Kunststoff */
@@ -485,3 +486,12 @@ select.sel option{background:#fff;color:var(--ink)}
 img.bm{object-fit:contain;background:none;-webkit-mask:none;mask:none}
 i.bm{background:currentColor;-webkit-mask:var(--si) center/contain no-repeat;mask:var(--si) center/contain no-repeat}
 .tb-l.bm{opacity:1}
+
+/* Touch-Geräte (.lite): keine Hintergrund-Unschärfe und keine Mischmodi auf vielen kleinen Elementen –
+   jedes davon braucht auf dem iPhone eigenen Grafikspeicher, bei langen Seiten bricht Safari sonst ab */
+.lite .btn,.lite .chip,.lite .amt,.lite .qadd,.lite .gc-amt,.lite .hro-search,.lite .tiles .tile,.lite .paymore,.lite .icon-btn,.lite .tbadges li{-webkit-backdrop-filter:none;backdrop-filter:none}
+.lite .qadd{background:rgba(14,16,20,.74)}
+.lite .gc-amt{background:rgba(8,8,10,.58)}
+.lite .gc-glare{display:none}
+/* Touch-Geräte: Lichtkante und Lichtstreifen der Karten entfallen (rein dekorativ, je Karte eine eigene Ebene) */
+.lite .gc .rim,.lite .gc::after{display:none}

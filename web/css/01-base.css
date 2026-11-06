@@ -161,7 +161,9 @@ img{max-width:100%}
   background:linear-gradient(90deg,rgba(255,156,203,0) 8%,rgba(255,156,203,.13) 32%,rgba(157,133,255,.15) 50%,rgba(95,201,245,.13) 68%,rgba(95,201,245,0) 92%);
   -webkit-mask:linear-gradient(180deg,transparent,#000 45%,#000 55%,transparent);mask:linear-gradient(180deg,transparent,#000 45%,#000 55%,transparent);
   transform:translate3d(0,calc(110vh - mod(var(--sy) * .22px + 40vh, 160vh)),0) rotate(-11deg)}
-.lite .bgr.r3,.lite .bgfx em{display:none}
+/* Touch-Geräte (.lite): nur zwei ruhende Farbschleier und ein Ring – große bewegte Ebenen kosten auf dem iPhone zu viel Grafikspeicher */
+.lite .bgfx i:nth-child(n+4),.lite .bgc,.lite .bgr.r2,.lite .bgr.r3,.lite .bgfx em,.lite .bgfx b{display:none}
+.lite .bgr{will-change:auto}
 @media (max-width:767px){.bgr.r1{--o:.22}.bgr.r2{--o:.18}.bgr.r3{display:none}}
 
 /* ---------- Typografie: elegant, mittelgroß, dunkler Stahl auf den Überschriften ---------- */
@@ -189,7 +191,7 @@ img{max-width:100%}
 @keyframes scrIn{from{opacity:.001;transform:translateY(54px) scale(.96)}}
 @keyframes scrHead{from{opacity:.001;transform:translateY(28px)}}
 @supports (animation-timeline:view()){
-  @media (prefers-reduced-motion:no-preference){
+  @media (prefers-reduced-motion:no-preference) and (hover:hover) and (min-width:721px){
     .js .payband.rv,.js .abo-tz.rv,.js .tusec.rv,.js .cta-box.rv,.js .bc.rv{opacity:1;translate:none;filter:none;transition:none}
     .payband,.abo-tz,.tusec,.cta-box,.bento-cats .bc{animation:scrIn linear both;animation-timeline:view();animation-range:entry 0% entry 85%}
     .view .sec-head{animation:scrHead linear both;animation-timeline:view();animation-range:entry 0% entry 70%}

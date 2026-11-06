@@ -19,10 +19,12 @@ const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=
   /* Kategorien im Wechsel (Gaming, Shopping, Prepaid, Streaming …), damit jede Reihe bunt gemischt ist */
   const by={};list.forEach(b=>(by[b.cat]=by[b.cat]||[]).push(b));const cs=Object.keys(by),mix=[];
   for(let i=0;mix.length<list.length;i++)cs.forEach(c=>{if(by[c][i])mix.push(by[c][i])});
-  const rows=[0,1,2].map(r=>mix.filter((b,i)=>i%3===r).slice(0,16));
-  const card=(b,dup,i)=>`<a class="cw-c" href="/marke/${b.id}" style="--i:${i}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}<i class="cw-sh" aria-hidden="true"></i></a>`;
+  /* Touch-Geräte: zwei Reihen mit je 9 Karten (Grafikspeicher), sonst drei mit je 16 */
+  const lite=document.documentElement.classList.contains("lite"),nr=lite?2:3,per=lite?9:16;
+  const rows=Array.from({length:nr},(_,r)=>mix.filter((b,i)=>i%nr===r).slice(0,per));
+  const card=(b,dup)=>`<a class="cw-c" href="/marke/${b.id}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}</a>`;
   return `<section class="cwall" data-off aria-label="Marken im Sortiment"><div class="sec cw-head"><div class="sec-head"><div><h2 class="h2">Alle Marken. Ein Shop.</h2><p>Gutscheine, Prepaid-Karten und Guthaben – offizielle Codes, meist in Sekunden per E-Mail.</p></div><div class="sh-r"><a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a></div></div></div>
-<div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map((b,j)=>card(b,0,j+i*3)).join("")}${r.map((b,j)=>card(b,1,j+i*3)).join("")}</div></div>`).join("")}</div></div></section>`};
+<div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map(b=>card(b)).join("")}${r.map(b=>card(b,1)).join("")}</div></div>`).join("")}</div></div></section>`};
 function home(){
   const recent=S.recent.map(byId).filter(Boolean).filter(isRep).slice(0,10), c=ctry();
   const keys=VIS().filter(isKey), deals=DEALS(), best=pick(BEST0,14).map(byId).filter(Boolean);
