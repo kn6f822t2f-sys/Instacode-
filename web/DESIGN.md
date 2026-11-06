@@ -42,6 +42,13 @@ Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines B
 - Kategorien zeigen echte Markenzeichen statt Symbol-Kacheln: `kLogos(cat)` aus js/18-logos.js (runde Glasplaketten, nur kompakte Zeichen).
 - Zahlungszeichen kommen ausschließlich aus `payLogos()` (liest `CFG.methods`/`CFG.klarna`): oben in der Leiste (`payTop`), im Band über der Fußzeile (`payBand`), in Fußzeile, Kaufbox und Warenkorb. Klarna mit Einschränkung („nur für …“) nur dort, wo der Hinweis direkt daneben steht. Nichts zeigen, was die Kasse nicht anbietet.
 
+## Fein & schlicht (css/96-fine.css, kommt nach 95-glass.css)
+- Schrift leichter: Überschriften 370–390, Kacheltitel 460, Buttons 460. Symbole mit 1,4–1,5 px Strich (Regeln direkt auf den `<symbol>`-Elementen).
+- Linien 0,5 px statt 1 px, Schatten flach und kurz; Chips 30 px, Buttons 36/42 px, Kopfzeile 48/52 px, Pfeil-Knöpfe 30 px.
+- Zahlungszeichen: Original-Zeichen unverändert auf weißer Plakette mit Haarlinie, ohne Schlagschatten; überall gleiche Höhe.
+- Klarna-Werbung für späteres Bezahlen immer mit `KL_WARN` („Achtung! Kreditaufnahme kostet Geld.“) direkt darunter, gleich groß.
+- Hintergrund ruhiger: Farbflächen 70 %, Ringe 0,12/0,09.
+
 ## Leistung (Pflicht)
 - Animiert werden nur `transform`/`translate`/`scale`/`rotate` und `opacity`. Keine Daueranimation von `box-shadow`, `filter`, `background-position` großer Flächen.
 - Elemente mit Daueranimation bekommen `data-off` → `.off` außerhalb des Bildschirms → `animation-play-state:paused`.

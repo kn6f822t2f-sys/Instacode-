@@ -83,3 +83,5 @@ html:not(.lite) .pb-in{-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop
 .tb-pay .tb-rv img{height:14px;width:auto;padding:0;background:none;box-shadow:none}
 .tb-pay img.tb-kl{background:#FFB3C7;box-shadow:0 0 0 1px rgba(14,16,20,.06)}
 .tb-pm .pmk-tx{min-width:0}
+/* Zeichen mit Namen (Revolut Pay, Krypto) nie auf feste Breite zwingen */
+.paylogos .pmk.pmk-tx{width:auto}

@@ -59,7 +59,7 @@ const pmKeys=()=>{let m;try{m=CFG.methods}catch(e){m=BOOT.config&&BOOT.config.me
 const cryptoOk=()=>{let i;try{i=CFG.inline}catch(e){i=BOOT.config&&BOOT.config.inline}return !!(i&&i.includes("crypto"))};
 const PAYS=()=>pmKeys().filter(k=>k!=="crypto"||cryptoOk()).flatMap(k=>k==="card"?CARDS:PM[k]?[PM[k].concat(k)]:[]);
 const payLogo=k=>{let l;try{l=CFG.paylogos}catch(e){l=BOOT.config&&BOOT.config.paylogos}return l&&l[k]};
-const payNames=()=>{const m=pmKeys(),n=m.filter(k=>k!=="card"&&PM[k]).map(k=>PM[k][0]).slice(0,3);if(m.includes("card"))n.push("Karte");try{if(CFG.klarna&&CFG.klarna.length){const sc=klarnaScope();n.push(`Klarna (Rechnung, Raten${sc?"; "+sc:""})`)}}catch(e){}return n.length>1?n.slice(0,-1).join(", ")+" oder "+n[n.length-1]:n[0]||"Karte"};
+const payNames=()=>{const m=pmKeys(),n=m.filter(k=>k!=="card"&&PM[k]).map(k=>PM[k][0]).slice(0,3);if(m.includes("card"))n.push("Karte");try{if(CFG.klarna&&CFG.klarna.length){const sc=klarnaScope();n.push(`Klarna${sc?" ("+sc+")":""}`)}}catch(e){}return n.length>1?n.slice(0,-1).join(", ")+" oder "+n[n.length-1]:n[0]||"Karte"};
 /* Express-Zahlungsarten in fester Reihenfolge (Klarna kommt aus CFG.klarna, Revolut Pay als eigener Knopf nach den Stripe-Knöpfen) */
 const XORD=["apple_pay","google_pay","paypal","revolut_pay","klarna","amazon_pay","link"];
 const WALLETS=()=>pmKeys().filter(k=>XORD.includes(k)&&k!=="klarna").sort((a,b)=>XORD.indexOf(a)-XORD.indexOf(b));
@@ -74,7 +74,9 @@ const mark=(k,name)=>MARK[k]?`<span class="pmk" data-k="${k}"><img src="${markSr
 const klarnaScope=()=>{let k;try{k=CFG.klarna}catch(e){k=BOOT.config&&BOOT.config.klarna}if(!k||!k.length)return "";
   const all=[...new Set(BRANDS.map(b=>b.cat))];if(all.length&&all.every(c=>k.includes(c)))return "";
   const n=k.map(id=>(CATS.find(c=>c.id===id)||{}).name).filter(Boolean);return n.length?"nur für "+(n.length>1?n.slice(0,-1).join(", ")+" und "+n[n.length-1]:n[0]):""};
-const klarnaBadge=(o={})=>{const sc=o.scope===false?"":klarnaScope();return `<span class="pmk pmk-kl" data-k="klarna"><img src="${payLogo("klarna")||"/pay/klarna.svg"}" alt="Klarna" loading="lazy" onerror="this.outerHTML='<b>Klarna.</b>'"></span><span class="kl-cap">Rechnung · Raten · Sofort${sc?` · ${esc(sc)}`:""}</span>`};
+/* Verbraucherkredit-Richtlinie (ab 20.11.2026): Werbung für späteres Bezahlen braucht direkt daneben und gleich auffällig diesen Hinweis */
+const KL_WARN="Achtung! Kreditaufnahme kostet Geld.";
+const klarnaBadge=(o={})=>{const sc=o.scope===false?"":klarnaScope();return `<span class="pmk pmk-kl" data-k="klarna"><img src="${payLogo("klarna")||"/pay/klarna.svg"}" alt="Klarna" loading="lazy" onerror="this.outerHTML='<b>Klarna.</b>'"></span><span class="kl-cap">Rechnung · Raten · Sofort${sc?` · ${esc(sc)}`:""}<span class="kl-warn">${KL_WARN}</span></span>`};
 /* Zeichen plus Name (Revolut Pay, Krypto) */
 const icBadge=(k,mk,name)=>`<span class="pmk pmk-tx" data-k="${k}"><img src="${markSrc(mk)}" alt="" loading="lazy" onerror="this.remove()"><b>${esc(name)}</b></span>`;
 const rvBadge=()=>icBadge("revolut_pay","revolut","Revolut Pay");

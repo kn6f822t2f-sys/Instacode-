@@ -238,7 +238,7 @@ function shopCatalog() {
     if (r.logo) x.logo = `/img/p/${b.id}.logo.${r.logo}?v=${r.logo_v}`;
     else brandLogo(x);
     const ru = redeemLink(b); if (ru) x.ru = { url: ru.url, label: ru.label };
-    if (COVERS[b.id] && !x.img) x.cov = 1;
+    if (COVERS[b.id] && !x.img) { x.cov = 1; if (COVERS[b.id].h) x.covh = 1; if (COVERS[b.id].g) x.covg = 1; }
     out.push(x);
   }
   shopCache = { rows, n, out };
@@ -1538,7 +1538,7 @@ const COVER_HOSTS = /^https:\/\/(shared\.akamai\.steamstatic\.com|shared\.cloudf
 const coverKey = u => crypto.createHash("sha1").update(u).digest("hex").slice(0, 24);
 app.get("/img/cover/:id/:v", wrap(async (req, res) => {
   const c = COVERS[String(req.params.id)], v = String(req.params.v).replace(/\.jpg$/, "");
-  const src = c && (v === "p" || v === "l") ? c[v] : null;
+  const src = c && /^[plhg]$/.test(v) ? c[v] : null; /* p Hochformat, l Querformat, h Hintergrundbild, g offizielles Spiel-Logo */
   if (!src || !COVER_HOSTS.test(src)) return res.status(404).end();
   const key = coverKey(src), file = path.join(COVER_DIR, key);
   if (!fs.existsSync(file)) {

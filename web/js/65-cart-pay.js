@@ -173,7 +173,7 @@ function xpayMount(box,getItems,o={}){
   const items=()=>getItems().filter(i=>i&&i.a);
   /* Klarna aktiv und alle Artikel freigegeben, aber E-Mail noch nicht bestätigt: kurzer Hinweis, wo es Klarna gibt */
   const klHint=()=>{const h=$(".xpay-kl",box);if(!h)return;const on=!!CFG.klarna&&!evMail()&&st!=="none"&&items().length>0&&items().every(i=>{const b=byId(i.id);return b&&CFG.klarna.includes(b.cat)});
-    h.hidden=!on;if(on)$("span",h).textContent=o.ctx==="cart"&&/^\/(kasse|warenkorb)$/.test(cur.path)?"Klarna (Rechnung, Raten) erscheint hier, sobald deine E-Mail bestätigt ist.":"Klarna (Rechnung, Raten) gibt es nach der E-Mail-Bestätigung in der Kasse."};
+    h.hidden=!on;if(on)$("span",h).textContent=o.ctx==="cart"&&/^\/(kasse|warenkorb)$/.test(cur.path)?"Klarna (Rechnung, Raten) erscheint hier, sobald deine E-Mail bestätigt ist. "+KL_WARN:"Klarna (Rechnung, Raten) gibt es nach der E-Mail-Bestätigung in der Kasse. "+KL_WARN};
   const vis=()=>{box.hidden=(st==="none"&&!o.fallback)||!items().length;box.classList.toggle("wait",!ready());klHint()};
   /* Preis ohne Geschenkdaten abfragen, solange die Empfänger-Adresse fehlt (der Betrag hängt nicht davon ab) */
   const getQuote=async()=>{const it=items().map(i=>ready()||!i.gift?i:Object.assign({},i,{gift:undefined}));if(!it.length)return null;const my=++seq;const q=await API("/quote",{method:"POST",body:{items:it}});return my===seq?q:quote};

@@ -195,10 +195,11 @@ function brandPage(id){
   return {tab:"cats",title:b.name+(K?` (${PLAT[b.plat]})`:""),buybar:true,html:`${crumb([[c.name,"/kategorie/"+c.id],[b.name]])}
 <div class="pd${K?" pd-key":""}" style="--gd:${DESIGNS[0][1]};--pg:${vivid(b)}">
   <div class="pd-media">
-    <div class="pd-stage" id="pdStage" data-mouse data-off>
-      <span class="pd-sky" aria-hidden="true"></span>
+    <div class="pd-stage${K&&b.covh?" has-hero":""}${K&&b.covg?" has-logo":""}" id="pdStage" data-mouse data-off>
+      <span class="pd-sky" aria-hidden="true"></span>${K&&b.covh?`<span class="pd-hero" aria-hidden="true"><img src="/img/cover/${esc(b.id)}/h" alt="" decoding="async" onerror="this.parentNode.remove();document.getElementById('pdStage').classList.remove('has-hero')"></span>`:""}
       <span class="pd-amb" aria-hidden="true">${K&&b.cov?`<img src="/img/cover/${esc(b.id)}/l" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}</span>
       <span class="pd-beam" aria-hidden="true"></span><span class="pd-floor" aria-hidden="true"></span><span class="pd-shine" aria-hidden="true"></span>
+      ${K&&b.covg?`<img class="pd-glogo" src="/img/cover/${esc(b.id)}/g" alt="" decoding="async" onerror="this.remove();document.getElementById('pdStage').classList.remove('has-logo')">`:""}
       <div class="pd-obj">
         ${K?"":`<span class="ge-back" aria-hidden="true"></span>`}
         <span class="pd-shade" aria-hidden="true"></span>
