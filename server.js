@@ -1344,6 +1344,17 @@ app.get("/img/cover/:id/:v", wrap(async (req, res) => {
   res.setHeader("Content-Type", type); res.setHeader("Cache-Control", "public, max-age=2592000, immutable"); res.setHeader("Content-Length", fs.statSync(file).size);
   fs.createReadStream(file).on("error", () => res.end()).pipe(res);
 }));
+/* Apple Pay: Stripes Domain-Verknüpfungsdatei (für alle Stripe-Konten gleich), einmal geladen und zwischengespeichert */
+const APPLE_FILE = path.join(DATA, "apple-developer-merchantid-domain-association");
+app.get("/.well-known/apple-developer-merchantid-domain-association", wrap(async (req, res) => {
+  if (!fs.existsSync(APPLE_FILE)) {
+    try { const r = await fetch("https://stripe.com/files/apple-pay/apple-developer-merchantid-domain-association", { signal: AbortSignal.timeout(10000) });
+      const t = r.ok ? await r.text() : ""; if (t.length < 100) return res.status(404).end(); fs.writeFileSync(APPLE_FILE, t);
+    } catch (e) { return res.status(404).end(); }
+  }
+  res.setHeader("Content-Type", "text/plain; charset=utf-8"); res.setHeader("Cache-Control", "public, max-age=86400");
+  fs.createReadStream(APPLE_FILE).pipe(res);
+}));
 app.post("/api/admin/testmail", admin, wrap(async (req, res) => {
   if (!E.RESEND_API_KEY) return bad(res, "RESEND_API_KEY fehlt.");
   try { await mail.test(req.user.email); res.json({ ok: true, to: req.user.email }); } catch (e) { bad(res, "Versand fehlgeschlagen: " + e.message); }

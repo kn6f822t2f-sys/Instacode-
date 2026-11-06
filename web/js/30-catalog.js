@@ -240,10 +240,10 @@ ${similar.length?`<section class="sec pd-more">${secHead("Mehr aus "+esc(c.name)
     stick($(".pd-side"));kBadge($(".pd-more"));
     stg.addEventListener("pointerleave",()=>{stg.style.removeProperty("--mx");stg.style.removeProperty("--my")});
     const side=$(".pd-side");side.addEventListener("focusin",e=>{if(e.target.matches("input,textarea"))bar.classList.add("typing")});side.addEventListener("focusout",()=>bar.classList.remove("typing"));
-    /* Kaufleiste (Handy): erscheint, wenn weder die Karte noch die Kaufknöpfe zu sehen sind – und verschwindet vor „Mehr aus …“ und der Fußzeile, damit sie nichts überdeckt */
+    /* Kaufleiste (Handy): erscheint, wenn weder die Karte noch die Kaufknöpfe zu sehen sind, und verschwindet vor der Fußzeile */
     pdIO&&pdIO.disconnect();pdIO=null;
     if("IntersectionObserver" in window){const more=$(".pd-more"),ft=$("#ftr"),v=new Map([[stg,true],[buy,false]]);if(more)v.set(more,false);if(ft)v.set(ft,false);
-      pdIO=new IntersectionObserver(es=>{es.forEach(e=>v.set(e.target,e.isIntersecting));bar.classList.toggle("show",!v.get(stg)&&!v.get(buy)&&!v.get(more)&&!v.get(ft))});[...v.keys()].forEach(el=>el&&pdIO.observe(el))}
+      pdIO=new IntersectionObserver(es=>{es.forEach(e=>v.set(e.target,e.isIntersecting));bar.classList.toggle("show",!v.get(stg)&&!v.get(buy)&&!v.get(ft))});[...v.keys()].forEach(el=>el&&pdIO.observe(el))}
     const giftOk=()=>!P.gift||/^\S+@\S+\.\S+$/.test(($("#gTo")||{}).value||"");
     const X=xpayMount($("#pX"),()=>[Object.assign({id,a:P.a,q:P.q},P.gift?{gift:{to:$("#gTo").value.trim(),name:$("#gName").value.trim(),msg:$("#gMsg").value.trim(),design:P.design}}:{})],{ctx:"product",ready:giftOk});
     const upd=()=>{$("#pTot").textContent=money(total());$("#bbTot").textContent=money(total());$("#bbSub").textContent=barSub();$("#pQ").textContent=P.q;

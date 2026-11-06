@@ -20,14 +20,14 @@ function help(){
 <section class="hp-hero">
  <div class="hp-bub" data-off aria-hidden="true"><span class="hb hb-q"><i>${ic("i-help")}</i>Wie löse ich meinen Code ein?</span><span class="hb hb-a">Im Store „Code einlösen“ wählen.</span><span class="hb hb-t"><i></i><i></i><i></i></span></div>
  <h1 class="h1 hp-h rv">Wie können wir helfen?</h1>
- <p class="lead hp-lead rv" style="--d:80ms">Antworten auf häufige Fragen, die digitale Assistentin Mia und unser Support per E-Mail.</p>
+ <p class="lead hp-lead rv" style="--d:80ms">Antworten auf häufige Fragen, die KI-Beraterin Mia und unser Support per E-Mail.</p>
  <div class="hp-search rv" style="--d:160ms">${ic("i-search")}<input id="fq" type="search" placeholder="Frage suchen, z. B. einlösen" aria-label="Fragen durchsuchen" aria-controls="faqBox" autocomplete="off" enterkeyhint="search"><button type="button" class="hp-x" id="fqX" data-a="hClear" aria-label="Suche leeren" hidden>${ic("i-x")}</button></div>
 </section>
 <section class="sec hp-tsec" aria-labelledby="hpTh"><h2 class="sr" id="hpTh">Themen</h2><div class="hp-topics" role="group" aria-label="Fragen nach Thema filtern">${HTOP.map((t,i)=>`<button class="hp-t rv" style="--d:${i*50}ms" data-a="hTopic" data-v="${t[0]}" aria-pressed="${!i}" aria-controls="faqBox"><span class="hp-t-ic">${ic(t[2])}</span><b>${esc(t[1])}</b><small>${nFr(hTopicList(t[0]).length)}</small></button>`).join("")}</div></section>
 <section class="sec hp-faq"><div class="hp-fh"><h2 class="h2">Häufige Fragen</h2><p class="hp-n" id="hpN">${nFr(PALL.length)}</p></div><div id="faqBox" aria-live="polite">${helpFaq(PALL,0)}</div></section>
 <section class="sec hp-more"><div class="hp-contact rv"><div><h2 class="h3">Noch etwas offen?</h2><p>Mia antwortet sofort. Für alles Persönliche schreib uns mit deiner Bestellnummer, dann können wir am schnellsten helfen.</p></div>
  <div class="hq">
-  <button class="hq-i" data-a="chatOpen"><span class="si-ic">${ic("i-chat")}</span><span><b>Mia fragen</b><small>Digitale Assistentin, antwortet sofort</small></span>${ic("i-chev")}</button>
+  <button class="hq-i" data-a="chatOpen"><span class="si-ic">${ic("i-chat")}</span><span><b>Mia fragen</b><small>KI-Beraterin, antwortet sofort</small></span>${ic("i-chev")}</button>
   <a class="hq-i" href="mailto:${esc(CFG.support)}"><span class="si-ic">${ic("i-mail")}</span><span><b>E-Mail schreiben</b><small>${esc(CFG.support)}</small></span>${ic("i-chev")}</a>
   <a class="hq-i" href="/konto/bestellungen"><span class="si-ic">${ic("i-receipt")}</span><span><b>Meine Bestellungen</b><small>Codes und Status ansehen</small></span>${ic("i-chev")}</a>
  </div></div>

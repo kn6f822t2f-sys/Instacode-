@@ -71,7 +71,7 @@ function renderFooter(){
    ${payLogos()}</div>
   <div class="ft-cols">
    <div><h5>Sortiment</h5><ul>${cats.slice(0,7).map(c=>`<li><a href="/kategorie/${c.id}">${esc(c.name)}</a></li>`).join("")}</ul></div>
-   <div><h5>Service</h5><ul><li><a href="/abo">instantcodes Abo</a></li><li><a href="/angebote">Angebote</a></li><li><a href="/hilfe">Hilfe und FAQ</a></li><li><a href="/konto">Mein Konto</a></li><li><button class="lnk" data-a="chatOpen">Assistentin Mia</button></li></ul></div>
+   <div><h5>Service</h5><ul><li><a href="/abo">instantcodes Abo</a></li><li><a href="/angebote">Angebote</a></li><li><a href="/hilfe">Hilfe und FAQ</a></li><li><a href="/konto">Mein Konto</a></li><li><button class="lnk" data-a="chatOpen">KI-Beraterin Mia</button></li></ul></div>
    <div><h5>Rechtliches</h5><ul><li><a href="https://mein.online-impressum.de/instacode/" target="_blank" rel="noopener">Impressum</a></li><li><a href="/agb">AGB</a></li><li><a href="/widerruf">Widerrufsbelehrung</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><button class="lnk" data-a="cookieOpen">Cookie-Einstellungen</button></li><li><a href="/kuendigen">Verträge hier kündigen</a></li></ul></div>
    <div><h5>Kontakt</h5><ul><li><a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></li><li><a href="/hilfe">Hilfe und Kontakt</a></li>${CFG.trustpilot&&CFG.trustpilot.write?`<li><a href="${esc(CFG.trustpilot.write)}" target="_blank" rel="noopener">Bewerte uns auf Trustpilot<span class="sr"> (öffnet ein neues Fenster)</span></a></li>`:""}</ul></div>
   </div>
