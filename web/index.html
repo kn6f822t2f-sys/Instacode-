@@ -133,19 +133,20 @@
   <button class="x" data-a="nudgeClose" aria-label="Hinweis schließen"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
 </div>
 <button class="fab" id="chatFab" data-a="chatToggle" aria-label="Chat öffnen" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg><span class="badge" id="chatBadge" data-n="1">1</span></button>
-<section class="chat" id="chat" role="dialog" aria-label="Chat mit Mia">
-  <div class="chat-h">
-    <span class="av"><svg class="lg-mark" aria-hidden="true"><use href="#logo"/></svg></span>
-    <div><b>Mia</b><small>Digitale Assistentin · antwortet sofort</small></div>
-    <button class="x" data-a="chatClose" aria-label="Chat schließen"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+<div class="mia-scrim" id="miaScrim" data-a="chatClose" aria-hidden="true"></div>
+<section class="mia" id="chat" role="dialog" aria-modal="true" aria-labelledby="miaT" aria-describedby="miaSub">
+  <div class="mia-h" id="miaHead">
+    <i class="mia-grip" aria-hidden="true"></i>
+    <span class="mia-av" aria-hidden="true"><svg class="lg-mark"><use href="#logo"/></svg></span>
+    <div class="mia-ht"><h2 id="miaT">Mia</h2><small id="miaSub">KI-Shopberaterin von instantcodes</small></div>
+    <button class="mia-x" data-a="chatClose" aria-label="Chat schließen"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
   </div>
-  <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
-  <div class="chat-qr" id="chatQr"></div>
-  <form class="chat-f" id="chatForm" autocomplete="off">
-    <input id="chatIn" type="text" placeholder="Nachricht schreiben" aria-label="Nachricht an Mia" maxlength="200">
-    <button type="submit" aria-label="Senden"><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg></button>
+  <div class="mia-log" id="chatLog" tabindex="-1"></div>
+  <div class="mia-qr" id="chatQr" role="group" aria-label="Vorschläge"></div>
+  <form class="mia-f" id="chatForm" autocomplete="off">
+    <input id="chatIn" type="text" enterkeyhint="send" placeholder="Frag Mia, z. B. PlayStation 20 €" aria-label="Nachricht an Mia" maxlength="500">
+    <button type="submit" class="mia-send" aria-label="Senden"><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg></button>
   </form>
-  <p class="chat-note">Automatische Antworten · persönlicher Support per E-Mail</p>
 </section>
 <div class="qpanel" id="qpanel" role="dialog" aria-label="Schnellaktion" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>

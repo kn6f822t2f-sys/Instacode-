@@ -245,7 +245,15 @@ document.addEventListener("click",async e=>{const b=e.target.closest("[data-fimp
 
 /* ---------- Übersicht ---------- */
 let OV=null;
-async function loadOV(){try{OV=await API("/admin/overview");drawOV()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+async function loadOV(){try{OV=await API("/admin/overview");drawOV();loadAI()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+/* Mia: Status der KI und anonyme Zähler (keine Gesprächsinhalte) */
+async function loadAI(){const el=$("#aiCard");if(!el)return;let a;try{a=await API("/admin/ai")}catch(e){el.querySelector("p").textContent="Status nicht verfügbar.";return}
+  const t=a.today||{},n=v=>Number(v||0).toLocaleString("de-DE"),st=a.live?"ok":a.test?"warn":"bad";
+  el.innerHTML=`<b><span class="dot ${st}"></span>Mia (KI-Shopberaterin)</b><p class="muted" style="margin:6px 0 0">${a.keyRejected?"Anthropic lehnt den ANTHROPIC_API_KEY ab (Schlüssel prüfen, danach neu starten). Bis dahin einfacher Modus ohne KI.":a.live?`KI aktiv · Modell <b>${esc(a.model)}</b>`:a.test?"Attrappe aktiv (feste Testantworten, keine Verbindung zu Anthropic)":"Kein ANTHROPIC_API_KEY: Mia antwortet im einfachen Modus ohne KI."}</p>
+  <p class="muted" style="margin:6px 0 0">Schlüssel gesetzt: <b>${a.key?"ja":"nein"}</b> · Anfragen an die KI heute: <b>${n(t.ai)}</b> von ${n(a.limit)} (Tageslimit) · Einfacher Modus: ${n(t.fb)} · Fehler: ${n(t.err)} · gebremst: ${n(t.rl)}</p>
+  <p class="muted" style="margin:6px 0 0">Tokens heute: ${n(t.tin)} Eingabe, ${n(t.tout)} Ausgabe · Vorschläge im Shop: ${a.proactive?"an":"aus (AI_PROACTIVE=0)"} · Gespeichert werden nur diese Zähler, keine Gesprächsinhalte.</p>
+  ${(a.days||[]).length>1?`<p class="muted" style="margin:6px 0 0">Letzte Tage: ${a.days.map(d=>`${esc(d.day.slice(5))}: ${n(d.ai)}`).join(" · ")}</p>`:""}
+  <div class="links"><a href="https://console.anthropic.com/" target="_blank" rel="noopener">Anthropic Console (Verbrauch, Ausgabenlimit)</a></div>`}
 function drawOV(){
   const o=OV,rl=o.reloadly,bal=rl.balance&&!rl.balance.error?`${Number(rl.balance.amount).toLocaleString("de-DE",{minimumFractionDigits:2})} ${esc(rl.balance.currency)}`:"–";
   const lnk=(h,t)=>`<a href="${h}" target="_blank" rel="noopener">${t}</a>`;
@@ -268,6 +276,7 @@ function drawOV(){
     <div class="links">${lnk("https://resend.com/emails","Gesendete E-Mails")}${lnk("https://resend.com/domains","Domain")}</div></div>
    <div class="card"><b><span class="dot ok"></span>Shop und Server</b><p class="muted" style="margin:6px 0 0">Automatische Auslieferung ${o.auto.on?`an, bis ${eur(o.auto.max)} pro Bestellung, ${eur(o.auto.day)} pro Kunde und Tag`:"aus"}. ${o.auto.neverSoldout?"Nichts wird als ausverkauft angezeigt.":""}</p>
     <div class="links">${lnk(o.base,"Shop öffnen")}${lnk(o.base+"/sitemap.xml","Sitemap")}${lnk("https://search.google.com/search-console","Google Search Console")}${lnk("https://railway.com/dashboard","Railway")}${lnk("https://mein.online-impressum.de/instacode/","Impressum")}</div></div>
+   <div class="card" id="aiCard"><b><span class="dot"></span>Mia (KI-Shopberaterin)</b><p class="muted" style="margin:6px 0 0">Wird geladen …</p></div>
   </div>
   <div class="card"><b><span class="dot ${o.klarna.on?"warn":""}"></span>Klarna (Rechnungskauf)</b>
    <div class="warnbox">Stripe führt „Gutscheine und Geschenkkarten“ als verbotene Branche für Klarna. Schalte Kategorien nur frei, wenn Stripe dir das schriftlich bestätigt hat, sonst kann Klarna oder Stripe dein Konto sperren.</div>

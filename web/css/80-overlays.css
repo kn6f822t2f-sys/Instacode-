@@ -469,6 +469,8 @@
 .rc-prod{display:flex;flex-wrap:wrap;gap:6px;margin:0}
 .rc-prod a,.rc-prod>span{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:3px 10px 3px 4px;border-radius:var(--pill);font-size:12.5px;font-weight:560;color:var(--ink-2);background:rgba(14,16,20,.04);transition:background .2s,color .2s}
 .rc-prod>span{padding-left:10px}
+.rc-prod a{position:relative}
+.rc-prod a::after{content:"";position:absolute;inset:-6px 0}
 .rc-prod .mini-gc{width:36px}
 .rc-prod .mini{width:36px;border-radius:5px;font-size:9px}
 @media (hover:hover){.rc-prod a:hover{color:var(--ink);background:rgba(14,16,20,.07)}}

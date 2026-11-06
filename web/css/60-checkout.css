@@ -307,7 +307,14 @@
 /* Zahlung läuft: Knöpfe treten zurück, ein Ring dreht sich */
 .xpay[data-st="busy"] .xpay-btns{opacity:.25;pointer-events:none}
 .xpay[data-st="busy"] .xpay-w::after{content:"";position:absolute;left:50%;top:50%;z-index:4;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;border:2.5px solid rgba(14,16,20,.12);border-top-color:#0E1014;animation:spin .8s linear infinite}
-.xpay[data-st="none"] .xpay-w,.xpay[data-st="none"] .xpay-ok,.xpay[data-st="none"] .xpay-mail{display:none}
+.xpay[data-st="none"] .xpay-w,.xpay[data-st="none"] .xpay-ok,.xpay[data-st="none"] .xpay-mail,.xpay[data-st="none"] .xpay-wait{display:none}
+/* noch nicht bereit (z. B. Geschenk ohne Empfänger-Adresse): gesperrt mit Hinweis */
+.xpay-wait{display:none}
+.xpay.wait .xpay-lock{display:block}
+.xpay.wait:not([data-st="load"]) .xpay-btns{opacity:.4}
+.xpay.wait .xpay-wait{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;padding:10px 12px;border-radius:var(--r-s);font-size:13px;line-height:1.45;color:var(--ink-2);background:#F6F7F9;box-shadow:inset 0 0 0 1px rgba(14,16,20,.08)}
+.xpay-wait .ico{width:15px;height:15px;flex:none;margin-top:1px;color:var(--ink-3)}
+.xpay-wait.shake{animation:shake .4s var(--ease);box-shadow:inset 0 0 0 1.5px var(--rose)}
 .xpay-mail,.xpay-none{display:flex;gap:8px;align-items:flex-start;margin:10px 2px 0;font-size:12.5px;line-height:1.45;color:var(--ink-3)}
 .xpay-mail .ico,.xpay-none .ico{width:15px;height:15px;flex:none;margin-top:1px}
 .xpay-mail b{font-weight:600;color:var(--ink-2);overflow-wrap:anywhere}

@@ -1503,6 +1503,8 @@ const cardOf = id => { const b = CATALOG[id]; if (!b) return null; const r = pro
   if (r.img) x.img = `/img/p/${id}.${r.img}?v=${r.img_v}`; if (r.logo) x.logo = `/img/p/${id}.logo.${r.logo}?v=${r.logo_v}`; return x; };
 ABO = require("./abo")({ app, db, stripe, stripeCall, STRIPE_V, mail, CATALOG, E, BASE, ADMINS, TESTMODE, TEST_GEN, clock, now, rnd, enc, dec, norm, emailOk, bad, wrap, need, admin, rateLimit,
   verifiedEmail, EV_MSG, isAdmin, safe, takeCodes, codeHash, supply, Stockout, RL_USE: () => RL_USE, rlHas, freeCount, optLabel, fc, isCodeBrand, cardOf, kvGet, kvSet });
+/* Mia, KI-Shopberaterin (ai.js): Chat mit Claude und Werkzeugen, Fallback ohne Schlüssel, Status im Admin */
+require("./ai")({ app, E, PROD, bad, admin, kvGet, kvSet, shopCatalog, unitPrice, optLabel, FEE, SUPPORT, PROMOS, payWords: () => payWords(), abo: () => ABO });
 
 /* Rückkehr nach Zahlungen mit Weiterleitung (z. B. PayPal, Klarna) */
 app.get("/r/:id", (req, res) => res.redirect(302, `/bestellung/${encodeURIComponent(req.params.id)}?k=${encodeURIComponent(String(req.query.k || ""))}`));

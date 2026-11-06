@@ -369,8 +369,8 @@ button.setrow{transition:background .2s}
 @media (min-width:1200px){
   .hp-hero{padding-top:56px}
   .hp-bub{position:absolute;inset:0;max-width:none;height:auto;margin:0}
-  .hb{font-size:14px;max-width:250px}
-  .hb-q{left:calc(50% - 610px);top:120px}
+  .hb{font-size:14px;max-width:290px}
+  .hb-q{left:calc(50% - 620px);top:150px}
   .hb-a{right:calc(50% - 610px);top:190px}
   .hb-t{left:calc(50% - 530px);top:auto;bottom:40px}
 }
@@ -484,7 +484,7 @@ button.setrow{transition:background .2s}
 .lgl-docs{display:flex;gap:2px;width:max-content;max-width:100%;margin-top:18px;padding:4px;border-radius:var(--pill);overflow-x:auto;scrollbar-width:none;
   background:rgba(14,16,20,.05);box-shadow:inset 0 0 0 1px rgba(14,16,20,.05)}
 .lgl-docs::-webkit-scrollbar{display:none}
-.lgl-docs a{flex:none;display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 14px;border-radius:var(--pill);font-size:14.5px;font-weight:550;color:var(--ink-3);white-space:nowrap;transition:color .2s,background .2s,box-shadow .2s}
+.lgl-docs a{flex:none;display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 14px;border-radius:var(--pill);font-size:14.5px;font-weight:550;color:var(--ink-2);white-space:nowrap;transition:color .2s,background .2s,box-shadow .2s}
 .lgl-docs a .ico{width:14px;height:14px;opacity:.6}
 @media (hover:hover){.lgl-docs a:not([aria-current]):hover{color:var(--ink)}}
 @media (max-width:419px){.lgl-docs a{padding:0 10px;font-size:14px}}
@@ -558,8 +558,8 @@ html:not(.lite) .lgl-toc ul{-webkit-backdrop-filter:blur(22px) saturate(1.6);bac
   .lgl-toc>b{position:static!important;width:auto;height:auto;overflow:visible;clip:auto;display:block;margin:0 6px 12px;font-size:13px;font-weight:600;color:var(--ink-3)}
   .lgl-toc ul{display:grid;gap:2px;padding:0 0 0 12px;overflow:visible;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
   .lite .lgl-toc ul{background:none}
-  .lgl-toc a{align-items:flex-start;gap:10px;min-height:0;padding:7px 10px 7px 4px;border-radius:12px;white-space:normal}
-  .lgl-n{width:24px;height:24px;font-size:11.5px;margin-top:-2px}
+  .lgl-toc a{align-items:center;gap:10px;min-height:44px;padding:6px 10px 6px 4px;border-radius:12px;white-space:normal}
+  .lgl-n{width:24px;height:24px;font-size:11.5px}
   .lgl-prog{left:14px;right:auto;top:48px;bottom:16px;width:2px;height:auto}
   .lgl-prog::after{transform-origin:50% 0;transform:scaleY(var(--p,0));background:linear-gradient(180deg,#0E1014,#7D5CF0 55%,#5FC9F5)}
   .lgl-doc{padding:52px 60px 56px}

@@ -139,6 +139,8 @@ function xpayMount(box,getItems,o={}){
   const btns=$(".xpay-btns",box),err=$(".xpay-err",box),w=$(".xpay-w",box);
   if(w&&!$(".xpay-skel",w))w.insertAdjacentHTML("afterbegin",XSKEL);
   if(!$(".xpay-mail",box))err.insertAdjacentHTML("beforebegin",`<p class="xpay-mail">${ic("i-mail")}<span>${xpMailTxt()} Der Wallet-Knopf bestellt zahlungspflichtig.</span></p>`);
+  /* Noch nicht bereit (Produktseite: Geschenk ohne gültige Empfänger-Adresse): Knöpfe gesperrt, kurzer Hinweis */
+  if(o.ready&&!$(".xpay-wait",box))err.insertAdjacentHTML("beforebegin",`<p class="xpay-wait">${ic("i-gift")}<span>${esc(o.readyMsg||"Gib zuerst die E-Mail-Adresse der beschenkten Person ein, dann kannst du mit der Wallet bezahlen.")}</span></p>`);
   let dead=false,elements=null,ece=null,quote=null,seq=0,st="load",stripe=null;
   const set=s=>{st=s;box.dataset.st=s;const nb=$(".xpay-none",box);if(nb)nb.hidden=s!=="none";
     if(s==="none"&&!o.fallback){box.hidden=true;if(o.onHide)o.onHide()}else vis();if(o.onState)o.onState(s)};
@@ -146,11 +148,14 @@ function xpayMount(box,getItems,o={}){
   const ok=o.okEl||$(".xok",box),okL=ok&&ok.closest("label");
   const lock=()=>box.classList.toggle("locked",!!ok&&!ok.checked);
   const nudge=()=>{say("Bitte bestätige zuerst die AGB und die sofortige Lieferung.");if(okL){okL.classList.remove("shake");void okL.offsetWidth;okL.classList.add("shake")}ok&&ok.focus()};
-  if(ok){ok.addEventListener("change",()=>{lock();if(ok.checked)say("")});const lk=$(".xpay-lock",box);lk&&lk.addEventListener("click",nudge);lock()}
-  const items=()=>getItems().filter(i=>i&&i.a);
   const ready=()=>!o.ready||o.ready();
-  const vis=()=>{box.hidden=(st==="none"&&!o.fallback)||!ready()||!items().length};
-  const getQuote=async()=>{const it=items();if(!it.length)return null;const my=++seq;const q=await API("/quote",{method:"POST",body:{items:it}});return my===seq?q:quote};
+  const waitNudge=()=>{const h=$(".xpay-wait",box);if(h){h.classList.remove("shake");void h.offsetWidth;h.classList.add("shake")}};
+  if(ok){ok.addEventListener("change",()=>{lock();if(ok.checked)say("")});lock()}
+  const lk=$(".xpay-lock",box);lk&&lk.addEventListener("click",()=>ready()?nudge():waitNudge());
+  const items=()=>getItems().filter(i=>i&&i.a);
+  const vis=()=>{box.hidden=(st==="none"&&!o.fallback)||!items().length;box.classList.toggle("wait",!ready())};
+  /* Preis ohne Geschenkdaten abfragen, solange die Empfänger-Adresse fehlt (der Betrag hängt nicht davon ab) */
+  const getQuote=async()=>{const it=items().map(i=>ready()||!i.gift?i:Object.assign({},i,{gift:undefined}));if(!it.length)return null;const my=++seq;const q=await API("/quote",{method:"POST",body:{items:it}});return my===seq?q:quote};
   const remember=r=>{S.keys=Object.assign(S.keys||{},{[r.id]:r.key});if(o.ctx==="cart")S.cartOrder=r.id;save()};
   /* Bestellung anlegen: E-Mail aus der Wallet; der Server nimmt eine bestätigte E-Mail vorrangig */
   const intent=async email=>{const r=await API("/express/intent",{method:"POST",body:{items:items(),email,wallet:true,expect:quote&&quote.total,consent:!!(ok?ok.checked:o.consent)}});remember(r);if(email&&!S.user){S.lastEmail=email;save()}return r};
@@ -162,7 +167,7 @@ function xpayMount(box,getItems,o={}){
     const ws=(WALLETS().length?WALLETS():["apple_pay","google_pay"]).filter(k=>XW[k]).slice(0,4);
     btns.innerHTML=`<div class="xdev">${ws.map(k=>`<button type="button" class="xdb" data-w="${k}" aria-label="Kaufen mit ${XW[k]}">${k==="link"?`<b>link</b>`:`<span>Kaufen mit</span>${MARK[k]?`<img src="${markSrc(k)}" alt="">`:`<b>${XW[k]}</b>`}`}</button>`).join("")}</div>`;
     setTimeout(()=>{if(!dead)set("ready")},reduce?0:380);
-    btns.onclick=async e=>{const b=e.target.closest("[data-w]");if(!b)return;if(ok&&!ok.checked)return nudge();say("");
+    btns.onclick=async e=>{const b=e.target.closest("[data-w]");if(!b)return;if(!ready())return waitNudge();if(ok&&!ok.checked)return nudge();say("");
       try{quote=await getQuote();if(!quote)return;const res=await xsim(XW[b.dataset.w],quote,(S.user&&S.user.email)||S.lastEmail||"");if(!res)return;
         set("busy");const r=await intent(res.email);
         await fetch(`/__devpay/pi/${encodeURIComponent(r.client_secret.split("_secret_")[0])}/confirm?w=${b.dataset.w}&e=${encodeURIComponent(res.email)}${res.risky?"&risk=elevated":""}`,{method:"POST"});
@@ -181,7 +186,7 @@ function xpayMount(box,getItems,o={}){
     /* je nach Stripe.js-Version gibt es diese Ereignisse; unbekannte dürfen das Einbinden nicht abbrechen */
     try{ece.on("availablepaymentmethodschange",e=>{if(!dead)set(avail(e&&e.paymentMethods)?"ready":"none")})}catch(e){}
     try{ece.on("loaderror",()=>{if(!dead)set("none")})}catch(e){}
-    ece.on("click",ev=>{if(ok&&!ok.checked)return nudge();say("");ev.resolve({emailRequired:true,lineItems:(quote?quote.lines:[]).map(l=>({name:l.label,amount:l.amount}))})});
+    ece.on("click",ev=>{if(!ready())return waitNudge();if(ok&&!ok.checked)return nudge();say("");ev.resolve({emailRequired:true,lineItems:(quote?quote.lines:[]).map(l=>({name:l.label,amount:l.amount}))})});
     ece.on("confirm",async ev=>{say("");const fail=m=>{say(m);set("ready");try{ev.paymentFailed&&ev.paymentFailed({reason:"fail"})}catch(e){}};
       try{
         const {error:se}=await elements.submit();if(se)return fail(se.message);

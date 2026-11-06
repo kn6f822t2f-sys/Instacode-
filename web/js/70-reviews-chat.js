@@ -84,41 +84,7 @@ function applyTheme(){document.documentElement.setAttribute("data-theme","light"
 function confetti(){if(reduce)return;const box=$("#confetti"),cols=["#1A1C21","#7D5CF0","#E7438F","#2F7FD9","#0E9F6E","#B5BAC3"];for(let i=0;i<50;i++){const p=document.createElement("i");p.style.cssText=`left:${Math.random()*100}%;background:${cols[i%6]};--dx:${(Math.random()-.5)*180}px;--r:${Math.random()*720-360}deg;animation-duration:${1.7+Math.random()*1.4}s;animation-delay:${Math.random()*.3}s;width:${6+Math.random()*6}px;height:${8+Math.random()*8}px`;box.appendChild(p)}setTimeout(()=>{box.innerHTML=""},3800)}
 
 /* ---------- chat ---------- */
-const chat={open:false,started:false,asked:{}};
-const KB=[
-  [/rabatt|aktionscode|willkommen10|sparen|gutscheincode/i,"Mit dem Code <b>WILLKOMMEN10</b> bekommst du 10 % Rabatt auf deine erste Bestellung.",["/warenkorb","Zum Warenkorb"]],
-  [/einl(ö|oe)s|aktivier|code/i,"Öffne den Dienst der Marke, wähle „Code einlösen“ und gib den Code ein. Deine Codes findest du auch unter Konto › Bestellungen.",["/konto/bestellungen","Meine Codes"]],
-  [/dauer|lieferung|wann|schnell|sekunden|ankommen/i,"Meist sofort nach der Zahlung, automatisch per E-Mail. Falls wir eine Bestellung zur Sicherheit kurz prüfen, dauert es etwas länger. Den Stand siehst du auf der Bestellseite."],
-  [/zahl|bezahl|paypal|karte|klarna|ideal|apple pay|google pay/i,()=>`Du kannst mit ${payNames()} bezahlen. Die Zahlung läuft sicher über Stripe.`],
-  [/aufladen|handy|guthaben|nummer|prepaid|tarif|ausland/i,"Wähle Land und Nummer, der Anbieter wird meist automatisch erkannt. Danach Betrag wählen und bezahlen.",["/aufladen","Jetzt aufladen"]],
-  [/geschenk|verschenk|schenken/i,"Auf jeder Produktseite kannst du „Als Geschenk senden“ aktivieren, mit E-Mail, Nachricht und Kartendesign."],
-  [/konto|login|anmelden|registr/i,"Du kannst dich mit deiner E-Mail-Adresse anmelden. Dann bleiben Codes, Nummern und Favoriten gespeichert.",["/login","Anmelden"]],
-  [/spiel|steam|playstation|xbox|nintendo|roblox|fortnite/i,"Spielguthaben gibt es für Steam, PlayStation, Xbox, Nintendo und mehr.",["/kategorie/gaming","Zu den Spielen"]],
-  [/problem|fehler|erstatt|zur(ü|ue)ck|storno|funktioniert nicht/i,`Das tut mir leid. Schreib dem Team mit deiner Bestellnummer an <b>${esc(CFG.support)}</b>.`],
-  [/^(hallo|hi|hey|moin|servus)/i,"Hallo! Wobei kann ich dir helfen?"],
-  [/danke|super|perfekt/i,"Sehr gern! Sag Bescheid, wenn du noch etwas brauchst."]
-];
-const QR=["Wie löse ich einen Code ein?","Wie schnell kommt mein Code?","Welche Zahlungsarten gibt es?","Handy aufladen","Gibt es einen Rabattcode?","Kann ich verschenken?"];
-const logEnd=()=>{const l=$("#chatLog");l.scrollTop=l.scrollHeight};
-function qr(){const left=QR.filter(q=>!chat.asked[q]).slice(0,4);$("#chatQr").innerHTML=left.map(q=>`<button data-a="chatQ" data-v="${esc(q)}">${esc(q)}</button>`).join("");$("#chatQr").hidden=!left.length}
-function bot(html,act){const l=$("#chatLog"),t=document.createElement("div");t.className="msg bot typing";t.setAttribute("aria-hidden","true");t.innerHTML="<i></i><i></i><i></i>";l.appendChild(t);logEnd();setTimeout(()=>{t.remove();const m=document.createElement("div");m.className="msg bot";m.innerHTML=html+(act?`<a class="mact" href="${act[0]}" data-a="chatClose">${esc(act[1])}${ic("i-chev")}</a>`:"");l.appendChild(m);logEnd()},reduce?0:650+Math.random()*450)}
-function ask(text){const m=document.createElement("div");m.className="msg user";m.textContent=text;$("#chatLog").appendChild(m);logEnd();chat.asked[text]=true;qr();const hit=KB.find(k=>k[0].test(text));if(hit)bot(typeof hit[1]==="function"?hit[1]():hit[1],hit[2]);else bot("Dazu habe ich leider keine Antwort. Probier eine der Fragen unten oder schau in die Hilfe.",["/hilfe","Zur Hilfe"])}
-A.chatQ=v=>ask(v);
-/* Mia öffnet sich als Glas-Fenster unter ihrem Knopf in der Kopfzeile (#hai); der runde Knopf unten (#chatFab) bleibt ausgeblendet */
-const chatBtns=()=>[$("#hai"),$("#chatFab")].filter(Boolean);
-A.chatOpen=(v,el)=>{
-  if(!chat.open)chat.from=el&&!el.closest("#menu,#qpanel")?el:$("#hai");
-  closeMenu(true);palClose(true);qaClose();nudgeHide();
-  const ch=$("#chat");underHdr(ch);const o=originAt(ch,$("#hai"),true);if(o)ch.style.setProperty("--ox",o[0]);const hd=$("#hai .hai-dot");hd&&hd.remove();chat.open=true;$("#chat").classList.add("open");chatBtns().forEach(b=>b.setAttribute("aria-expanded","true"));
-  const b=$("#chatBadge");b.dataset.n="0";b.textContent="";
-  if(!chat.started){chat.started=true;bot(`Hi${S.user?" "+esc(S.user.name.split(" ")[0]):""}, ich bin Mia, die digitale Assistentin von instantcodes. Ich helfe dir bei Aufladung, Gutscheinen und Bezahlung. Für persönliche Hilfe leite ich dich an unser Support-Team weiter.`);setTimeout(()=>bot("Wobei kann ich helfen?"),reduce?0:1300);qr()}
-  if(matchMedia("(pointer:fine)").matches)setTimeout(()=>$("#chatIn").focus({preventScroll:true}),100);
-};
-function chatClose(silent){if(!chat.open)return;chat.open=false;$("#chat").classList.remove("open");chatBtns().forEach(b=>b.setAttribute("aria-expanded","false"));const f=chat.from||$("#hai");if(silent!==true&&f&&document.contains(f))f.focus({preventScroll:true})}
-A.chatClose=(v,el)=>chatClose(!!el&&el.tagName==="A");
-A.chatToggle=(v,el)=>chat.open?chatClose():A.chatOpen(v,el);
-$("#hai").setAttribute("aria-expanded","false");$("#hai").setAttribute("aria-controls","chat");
-$("#chatForm").addEventListener("submit",e=>{e.preventDefault();const i=$("#chatIn"),v=i.value.trim();if(!v)return;i.value="";ask(v)});
+/* Mia (Chat, Aktionen, Vorschläge) steht in 75-ai.js: chat, chatClose, A.chatOpen, A.chatClose, A.chatToggle, A.chatQ */
 
 /* ---------- pop-ups ---------- */
 const anyOverlay=()=>$("#scrim").classList.contains("open")||$("#menu").classList.contains("open")||chat.open||$("#cookie").classList.contains("show")||!!$(".proc");
