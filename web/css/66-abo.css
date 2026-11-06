@@ -216,3 +216,7 @@
   .kd-done,.kd-done *{color:#000!important;-webkit-text-fill-color:#000!important;background:none!important;box-shadow:none!important;filter:none!important}
   .kd-done .od-medal{display:none}
 }
+/* So läuft dein Abo: Schritte mit Handy-Video (wgPhone in js/22-widgets.js) */
+.ab-how{display:grid;gap:30px;align-items:center}
+.ab-how-ph .iph{--w:min(220px,58vw)}
+@media (min-width:860px){.ab-how{grid-template-columns:minmax(0,1fr) auto;gap:48px}.ab-how .ab-steps{grid-template-columns:minmax(0,1fr)}.ab-how-ph .iph{--w:244px}}

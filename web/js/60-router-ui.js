@@ -37,6 +37,9 @@ function routeNow(keep,vt){
   const h=(pth||"/")+location.search,qi=h.indexOf("?"),path=(qi>-1?h.slice(0,qi):h)||"/",qs=new URLSearchParams(qi>-1?h.slice(qi+1):"");
   cur={path,qs};curKey=location.pathname+location.search;
   let v=null;for(const [re,fn] of R){const m=path.match(re);if(m){v=fn(m[1],qs);break}}
+  /* Kurzadresse: unbekannter Pfad, der eine Produkt-ID ist (/steam), wird wie beim Server zu /marke/steam – ohne neuen Verlaufseintrag */
+  if(!v){const sm=path.match(/^\/([\w-]+)\/?$/),sid=sm&&[sm[1],sm[1].toLowerCase()].find(x=>byId(x));
+    if(sid){const np="/marke/"+sid;try{history.replaceState(null,"",np+location.search+location.hash)}catch(e){}cur={path:np,qs};curKey=np+location.search;v=brandPage(sid,qs)}}
   v=v||notFound();
   const y=scrollY;
   app.innerHTML=`<div class="view${keep||vt?" k":""}">${v.html}</div>`;

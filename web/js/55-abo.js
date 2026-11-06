@@ -56,11 +56,11 @@ function aboBody(){
   <ul class="ab-items">${sel.items.map(aboItem).join("")}</ul>
   <p class="fine ab-note">Du löst die Codes in deinem eigenen Konto beim jeweiligen Dienst ein. Amazon-Guthaben gilt für Einkäufe auf Amazon.de, nicht für die Prime-Mitgliedschaft. Codes mit mehreren Monaten Laufzeit kommen in passenden Abständen.</p></section>
  <section class="sec ab-sec">${secHead("So läuft dein Abo")}
-  <ol class="ab-steps">
+  <div class="ab-how"><ol class="ab-steps">
    <li class="card rv"><span class="si-ic">${ic("i-card-f")}</span><b>Plan wählen und bezahlen</b><span>Sicher über Stripe. Abgebucht wird zu Beginn jeder Laufzeit.</span></li>
    <li class="card rv" style="--d:80ms"><span class="si-ic">${ic("i-mail")}</span><b>Jeden Monat Codes</b><span>Wir prüfen jede Lieferung kurz und schicken dir das Paket per E-Mail. Alle Codes liegen auch in deinem Abo.</span></li>
    <li class="card rv" style="--d:160ms"><span class="si-ic">${ic("i-repeat")}</span><b>Online kündigen</b><span>Über „Verträge hier kündigen“, ohne Anmeldung. Die Bestätigung kommt sofort.</span></li>
-  </ol></section>
+  </ol>${wgPhone("abo","ab-how-ph rv")}</div></section>
  ${aboCheckout(sel)}
  <section class="sec ab-sec">${secHead("Häufige Fragen")}${faqList(ABO_FAQ)}</section>`;
 }

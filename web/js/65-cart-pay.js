@@ -78,7 +78,7 @@ A.qb=(id,a0)=>{
       ${vars.length>1?`<span class="lbl" id="qbVL">${K?"Plattform":"Variante"}</span><div class="qb-vars" role="group" aria-labelledby="qbVL">${vars.map(v=>`<button class="chip" data-a="qbVar" data-v="${v.id}" aria-pressed="${v.id===b.id}">${esc(varName(b,v))}</button>`).join("")}</div>`:""}
       ${b.amts.length>1?`<span class="lbl" id="qbAL">${card?"Betrag":"Option"}</span><div class="${card?"amounts":"qb-opts"}" role="group" aria-labelledby="qbAL">${b.amts.map(a=>`<button class="amt" data-a="qbAmt" data-v="${a}" aria-pressed="${a===Q.a}"${soldOut(b.id,a)?" disabled":""}>${card&&!b.labels?money(a):esc(optLabel(b,a))}${soldOut(b.id,a)?"<small>ausverkauft</small>":(!card||Math.abs(price(b,a)-a)>.004)?`<small>${money(price(b,a))}</small>`:""}</button>`).join("")}</div>`:""}
       <div class="qb-qty"><span class="lbl" id="qbQL">Menge</span><div class="qty" role="group" aria-labelledby="qbQL"><button data-a="qbQty" data-v="-1" aria-label="Weniger">−</button><span id="qbQ" aria-live="polite">${Q.q}</span><button data-a="qbQty" data-v="1" aria-label="Mehr">+</button></div></div>
-      <div class="pb-sum qb-sum" id="qbSum">${sumHTML()}</div>
+      ${ckBrand()}<div class="pb-sum qb-sum" id="qbSum">${sumHTML()}</div>
       ${Q.a?xpBox("qbX",{fallback:true}):""}
       <div class="qb-or" id="qbOr"><span>oder</span></div>
       <div class="qb-acts"><button class="btn btn-soft btn-lg" data-a="qbBuy" id="qbBuyB"${dis}>${ic("i-card-f")}<span>Mit Karte zahlen</span></button><button class="btn btn-soft btn-lg" data-a="qbAdd"${dis}>${ic("i-cart")}<span>In den Warenkorb</span></button></div>
@@ -113,13 +113,16 @@ let stripeP=null;
 const loadStripe=()=>stripeP||(stripeP=new Promise((ok,no)=>{if(window.Stripe)return ok(window.Stripe(CFG.pk));const s=document.createElement("script");s.src="https://js.stripe.com/v3/";s.async=true;s.onload=()=>window.Stripe?ok(window.Stripe(CFG.pk)):no(new Error("Stripe nicht verfügbar"));s.onerror=()=>{stripeP=null;no(new Error("Stripe.js konnte nicht geladen werden"))};document.head.appendChild(s)}));
 /* Heller Shop: Apple Pay und Google Pay in Schwarz (Richtlinien für hellen Grund) */
 const isDark=()=>false;
-const XOK_TXT=`Ich akzeptiere die <a href="/agb">AGB</a> und möchte, dass ihr sofort liefert. Mir ist bekannt, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt.`;
+/* Zustimmung (Pflicht, nie vorausgewählt): ausdrücklich sofort liefern + Kenntnis vom Erlöschen des Widerrufsrechts (§ 356 Abs. 5 BGB).
+   Kompakt, die ganze Zeile ist tippbar. Ohne Haken öffnet kein Wallet-Knopf die Zahlung (Stripe: click ohne resolve). */
+const XOK_TXT=`Ich stimme der <b>sofortigen Lieferung</b> zu und weiß, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt. Es gelten die <a href="/agb">AGB</a>.`;
+const XOK_HINT="Bitte kurz bestätigen";
 const walletNames=()=>{const n=WALLETS().filter(k=>PM[k]).map(k=>PM[k][0]);return n.length?(n.length>1?n.slice(0,-1).join(", ")+" oder "+n[n.length-1]:n[0]):"Apple Pay oder Google Pay"};
 const XSKEL=`<div class="xpay-skel" aria-hidden="true"><i></i><i></i></div>`;
 const xpMailTxt=()=>evMail()?`Codes gehen an <b>${esc(evMail())}</b>.`:`Codes gehen an die E-Mail aus deiner Wallet.`;
 /* Gerüst für Schnellkauf, Seiten-Warenkorb und Kasse */
 const xpBox=(id,o={})=>`<div class="xpay${o.compact?" xpay-c":""} locked" id="${id}" data-st="load">
-  <label class="chk xpay-ok"><input type="checkbox" class="xok"><span>${XOK_TXT}</span></label>
+  <label class="chk xpay-ok" data-c="1"><input type="checkbox" class="xok"><span>${XOK_TXT}</span></label><p class="xok-hint" aria-live="polite"></p>
   <div class="xpay-w">${XSKEL}<div class="xpay-btns"></div><button type="button" class="xpay-lock" aria-label="Bitte zuerst die Zustimmung bestätigen"></button></div>
   <p class="xpay-mail">${ic("i-mail")}<span>${xpMailTxt()} Der Wallet-Knopf bestellt zahlungspflichtig.</span></p>
   <p class="xpay-none" hidden>${ic("i-wallet")}<span>${walletNames().replace(/ oder /," und ")} sind auf diesem Gerät nicht eingerichtet. Zahl einfach mit Karte oder einer anderen Zahlungsart.</span></p>
@@ -146,11 +149,16 @@ function xpayMount(box,getItems,o={}){
     if(s==="none"&&!o.fallback){box.hidden=true;if(o.onHide)o.onHide()}else vis();if(o.onState)o.onState(s)};
   const say=m=>{err.textContent=m||""};
   const ok=o.okEl||$(".xok",box),okL=ok&&ok.closest("label");
+  /* Zeile vereinheitlichen (auch das Gerüst der Produktseite): kurzer Text, Hinweisfläche darunter */
+  if(okL&&!okL.dataset.c){okL.dataset.c="1";const sp=$("span",okL);if(sp)sp.innerHTML=XOK_TXT;if(!$(".xok-hint",box))okL.insertAdjacentHTML("afterend",`<p class="xok-hint" aria-live="polite"></p>`)}
+  const hint=$(".xok-hint",box);
   const lock=()=>box.classList.toggle("locked",!!ok&&!ok.checked);
-  const nudge=()=>{say("Bitte bestätige zuerst die AGB und die sofortige Lieferung.");if(okL){okL.classList.remove("shake");void okL.offsetWidth;okL.classList.add("shake")}ok&&ok.focus()};
+  /* Tipp auf einen Wallet-Knopf ohne Haken: Zeile pulsiert kurz, bekommt den Fokus, leiser Hinweis – keine Zahlung */
+  const nudge=()=>{say("");if(!okL)return;okL.classList.remove("ask");void okL.offsetWidth;okL.classList.add("ask");if(hint)hint.textContent=XOK_HINT;
+    try{ok.focus({preventScroll:true})}catch(e){}const r=okL.getBoundingClientRect();if(r.top<72||r.bottom>innerHeight-8)okL.scrollIntoView({block:"center",behavior:reduce?"auto":"smooth"})};
   const ready=()=>!o.ready||o.ready();
   const waitNudge=()=>{const h=$(".xpay-wait",box);if(h){h.classList.remove("shake");void h.offsetWidth;h.classList.add("shake")}};
-  if(ok){ok.addEventListener("change",()=>{lock();if(ok.checked)say("")});lock()}
+  if(ok){ok.addEventListener("change",()=>{lock();if(ok.checked){say("");if(okL)okL.classList.remove("ask");if(hint)hint.textContent=""}});lock()}
   const lk=$(".xpay-lock",box);lk&&lk.addEventListener("click",()=>ready()?nudge():waitNudge());
   const items=()=>getItems().filter(i=>i&&i.a);
   const vis=()=>{box.hidden=(st==="none"&&!o.fallback)||!items().length;box.classList.toggle("wait",!ready())};

@@ -11,7 +11,7 @@ const eurc=c=>money((c||0)/100);
 const mask=c=>"•••• •••• •••• "+String(c).slice(-4);
 const stBadge=s=>`<span class="ostat" data-s="${esc(s)}">${esc(STL[s]||s)}</span>`;
 const brandOr=id=>byId(id)||{bg:"#0B0D1C",fg:"#fff",ini:"?",name:id};
-function setUser(u){S.user=u?{name:u.name||u.email.split("@")[0],email:u.email,provider:u.google?"google":"email",loginAlerts:!!u.loginAlerts}:null;save();renderAcc()}
+function setUser(u){S.user=u?{name:u.name||u.email.split("@")[0],email:u.email,provider:u.google?"google":"email",loginAlerts:!!u.loginAlerts}:null;if(u)S.acct=1;/* Gerät kennt ein Konto (Bestellseite: kein „Konto anlegen“) */save();renderAcc()}
 function busy(el,on,label){if(!el)return;if(on){el.dataset.t=el.innerHTML;el.innerHTML=`<span class="spin" style="display:inline-block;width:18px;height:18px;border-width:2.5px;margin:0"></span>${label||""}`;el.disabled=true}else if(el.dataset.t){el.innerHTML=el.dataset.t;el.disabled=false}}
 function boot(){
   $("#testbar").hidden=!(CFG.testmode&&CFG.payments);
@@ -44,9 +44,10 @@ function apiLogin(_,qs){
    <p class="au-legal">Es gelten unsere <a href="/agb">AGB</a>. Wie wir mit deinen Daten umgehen, steht in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>`),
    after(){if(CFG.google)gsi(r)}};
 }
-/* Schnell-Login: nur eingerichtete Anbieter als Logo-Knöpfe */
-function quickAuth(r){const a=CFG.auth||{},rq=encodeURIComponent(r),L=k=>`<img src="/img/mark/logos/${k}.svg" alt="" onerror="this.remove()">`;
-  const o=[CFG.google&&`<div id="gbtn" class="au-g"></div>`,
+/* Schnell-Login: Passkey (wenn der Browser es kann) und nur eingerichtete Anbieter als Logo-Knöpfe; im Anmelde-Fenster (q.sheet) ist der Passkey der Hauptknopf */
+function quickAuth(r,q={}){const a=CFG.auth||{},rq=encodeURIComponent(r),L=k=>`<img src="/img/mark/logos/${k}.svg" alt="" onerror="this.remove()">`;
+  const o=[pkCan()&&`<button class="${q.sheet?"btn btn-primary btn-ink btn-lg btn-block ql-pk":"qa-btn qa-pk"}" data-a="pkLogin" data-v="${esc(r)}">${ic("i-face")}<span>Mit Passkey anmelden</span></button>`,
+    CFG.google&&`<div id="gbtn" class="au-g"></div>`,
     a.apple&&`<a class="qa-btn qa-apple" href="/auth/apple?r=${rq}">${L("apple")}<span>Mit Apple fortfahren</span></a>`,
     a.discord&&`<a class="qa-btn" href="/auth/discord?r=${rq}">${L("discord-icon")}<span>Mit Discord fortfahren</span></a>`,
     a.twitch&&`<a class="qa-btn" href="/auth/twitch?r=${rq}">${L("twitch")}<span>Mit Twitch fortfahren</span></a>`,
@@ -61,8 +62,8 @@ A.smsSend=async(_,el)=>{const e=$("#smsErr");e.textContent="";busy(el,true);try{
 A.smsCheck=async(r,el)=>{const e=$("#smsErr");e.textContent="";busy(el,true);try{const j=await API("/auth/sms/verify",{method:"POST",body:{phone:S.smsTel||$("#smsTel").value,code:$("#smsCode").value}});setUser(j.user);toast("Angemeldet");go(r||"/konto")}catch(x){e.textContent=x.message;busy(el,false)}};
 A.codeLogin=async(r,el)=>{const i=$("#aMail"),m=i.value.trim(),e=$("#aErr");e.textContent="";i.classList.remove("bad");if(!/^\S+@\S+\.\S+$/.test(m)){e.textContent="Gib deine E-Mail-Adresse ein – wir schicken dir einen Code.";i.classList.add("bad");i.focus();return}busy(el,true);
   try{await API("/auth/code",{method:"POST",body:{email:m}});S.pendingEmail=m;save();toast(`Code an ${m} geschickt`);go("/verifizieren?r="+encodeURIComponent(r||"/konto"))}catch(x){e.textContent=x.message;busy(el,false)}};
-function gsi(r){
-  const init=()=>{try{const g=window.google.accounts.id;g.initialize({client_id:CFG.google,callback:async x=>{try{const j=await API("/auth/google",{method:"POST",body:{credential:x.credential}});setUser(j.user);toast(`Angemeldet als ${j.user.name}`);go(r)}catch(e){const el=$("#aErr");if(el)el.textContent=e.message}}});g.renderButton($("#gbtn"),{theme:"outline",size:"large",shape:"pill",text:"continue_with",locale:"de",width:300})}catch(e){}};
+function gsi(r,done){
+  const init=()=>{try{const g=window.google.accounts.id;g.initialize({client_id:CFG.google,callback:async x=>{try{const j=await API("/auth/google",{method:"POST",body:{credential:x.credential}});if(done)return done(j.user);setUser(j.user);toast(`Angemeldet als ${j.user.name}`);go(r)}catch(e){const el=$("#sheet #qlErr")||$("#aErr");if(el)el.textContent=e.message}}});g.renderButton($("#gbtn"),{theme:"outline",size:"large",shape:"pill",text:"continue_with",locale:"de",width:300})}catch(e){}};
   if(window.google&&window.google.accounts)return init();
   const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.onload=init;document.head.appendChild(s);
 }
@@ -169,7 +170,7 @@ function orderView(o){
       :wait?(i.type==="topup"?`Das Guthaben wird auf ${esc(i.phone)} gebucht, sobald die Bestellung fertig ist.`:i.gift_to?`Der Code geht an ${esc(i.gift_to)}, sobald er fertig ist.`:"Dein Code erscheint hier, sobald er fertig ist."):"";
     return `<article class="card od-item"><div class="od-ih">${mini(b)}<div><b>${esc(i.name)}</b><small>${b.amts?esc(optLabel(b,i.face/100)):eurc(i.face)} × ${i.qty}${i.phone?" · "+esc(i.phone):""}${i.gift_to?" · Geschenk an "+esc(i.gift_to):""}</small></div></div>
   ${note?`<p class="od-note${done?" ok":""}">${done?ic("i-check"):`<span class="od-dot" aria-hidden="true"></span>`}<span>${note}</span></p>`:""}
-  ${coded?i.codes.map((c,j)=>{const k="oc"+(++cn);return `<div class="od-code" style="--g:${glowOf(b)};--j:${cn-1}"><div class="od-code-t"><span class="od-code-l" id="${k}l">${many?`Code ${j+1} von ${i.codes.length}`:"Dein Code"}</span>${LOGO(24)}</div><code class="od-code-v" id="${k}" data-code="${esc(c)}" aria-labelledby="${k}l ${k}">${esc(mask(c))}</code><div class="od-code-a"><button class="btn btn-soft" data-a="codeShow" data-v="${esc(c)}" aria-controls="${k}" aria-pressed="false">${ic("i-eye")}<span>Zeigen</span></button><button class="btn btn-primary" data-a="codeCopy" data-v="${esc(c)}">${ic("i-copy")}<span>Code kopieren</span></button></div><i class="od-code-gl" aria-hidden="true"></i></div>`}).join("")
+  ${coded?i.codes.map((c,j)=>{const k="oc"+(++cn);return `<div class="od-code" style="--g:${glowOf(b)};--j:${cn-1}"><div class="od-code-t"><span class="od-code-l" id="${k}l">${many?`Code ${j+1} von ${i.codes.length}`:"Dein Code"}</span>${LOGO(24)}</div><code class="od-code-v" id="${k}" data-code="${esc(c)}" aria-labelledby="${k}l ${k}">${esc(mask(c))}</code><div class="od-code-a"><button class="btn btn-soft" data-a="codeShow" data-v="${esc(c)}" aria-controls="${k}" aria-pressed="false">${ic("i-eye")}<span>Zeigen</span></button><button class="btn btn-primary" data-a="codeCopy" data-v="${esc(c)}">${ic("i-copy")}<span>Code kopieren</span></button>${ruBtn(b,{cls:"btn-soft od-go",text:"Jetzt einlösen",sr:`auf ${esc(ruDom(b.ru&&b.ru.url))}, der Code wird dabei kopiert `,attrs:` data-a="codeGo" data-v="${esc(c)}"`})}</div><i class="od-code-gl" aria-hidden="true"></i></div>`}).join("")
     +`<details class="od-how" data-b="${esc(i.brand)}"${how++?"":" open"}><summary><span>So löst du den Code ein</span>${ic("i-down")}</summary><ol>${redeemSteps(b).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></details>`:""}</article>`}).join("");
   /* Beleg: Daten, Positionen, Summe; drucken oder Rechnung anfordern */
   const sumRows=`<div class="sumrow"><span>Zwischensumme</span><span>${eurc(o.subtotal)}</span></div>${o.discount?`<div class="sumrow ok"><span>Rabatt</span><span>−${eurc(o.discount)}</span></div>`:""}${o.fee?`<div class="sumrow"><span>Servicegebühr</span><span>${eurc(o.fee)}</span></div>`:""}<div class="sumrow tot"><span>Gesamt</span><span>${eurc(o.total)}</span></div>${o.vat?`<div class="sumrow vatrow"><span>darin ${String(VATR()||19).replace(".",",")} % MwSt.</span><span>${eurc(o.vat)}</span></div>`:""}`;
@@ -186,7 +187,7 @@ function orderView(o){
 <div class="od-body">
  <div class="od-main"><h2 class="od-sh">${hasCodes?"Deine Codes":end?"Bestellte Artikel":"Deine Bestellung"}</h2>${items}${reviewBox(o)}</div>
  <aside class="od-side" aria-label="Beleg und weitere Schritte">${rc}
-  ${!S.user&&!end?`<div class="card od-cta"><h2 class="od-h2">Alles an einem Ort</h2><p>Erstelle ein Konto mit ${esc(o.email)}, dann erscheint diese Bestellung automatisch darin.</p><a class="btn btn-soft btn-block" href="/login?m=reg&r=/konto">Konto erstellen</a></div>`:""}
+  ${odAcct(o)/* Gast: „Konto mit einem Tipp anlegen“ (52-passkey.js) */}
   <div class="od-acts">${done?`<button class="btn btn-soft" data-a="reorderLive" data-v="${esc(o.id)}">${ic("i-repeat")}Erneut kaufen</button>`:`<a class="btn btn-soft" href="/hilfe">${ic("i-help")}Hilfe</a>`}<a class="btn btn-primary" href="/">Weiter einkaufen</a></div>
   <p class="od-sup">${done?"Problem mit einem Code?":"Fragen zur Bestellung?"} <a href="${sup}">Schreib uns</a> – mit Bestellnummer geht es am schnellsten.</p>
  </aside>
@@ -203,6 +204,8 @@ const odClip=async t=>{try{await navigator.clipboard.writeText(t);return true}ca
 A.codeCopy=async(c,el)=>{const ok=await odClip(c);if(!ok){toast("Kopieren nicht möglich. Tippe auf „Zeigen“ und markiere den Code.");return}toast("Code kopiert");
   const cd=el&&el.closest(".od-code");if(cd){cd.classList.remove("swept");void cd.offsetWidth;cd.classList.add("swept")}/* kurzer Glanz über die Chrom-Karte */
   if(el&&el.lastElementChild){clearTimeout(el._t);el.classList.add("done");el.lastElementChild.textContent="Kopiert";el._t=setTimeout(()=>{el.classList.remove("done");el.lastElementChild.textContent="Code kopieren"},2200)}};
+/* „Jetzt einlösen“: Link öffnet die offizielle Seite im neuen Tab, der Code liegt dann schon in der Zwischenablage */
+A.codeGo=async c=>{if(await odClip(c))toast("Code kopiert. Füge ihn auf der Einlöse-Seite ein.")};
 /* Bewertung nach der Lieferung (erscheint als verifizierter Kauf). Der Trustpilot-Link steht allen offen – unabhängig von den Sternen. */
 const RLBL=["","Schlecht","Geht so","In Ordnung","Gut","Sehr gut"];
 const reviewBox=o=>{if(o.status!=="delivered")return "";
@@ -228,15 +231,21 @@ function apiAccount(tab){
    <div class="setrow"><span class="si-ic">${ic("i-mail")}</span><div class="mid"><b>E-Mail</b><small>${esc(u.email)}</small></div></div>
    <div class="setrow"><span class="si-ic">${ic("i-bell")}</span><div class="mid"><b id="alL">Anmelde-Hinweise per E-Mail</b><small>Wir schreiben dir bei jeder neuen Anmeldung.</small></div><button class="switch" role="switch" aria-checked="${!!u.loginAlerts}" data-a="alerts" aria-labelledby="alL"></button></div>
    <button class="setrow" data-a="country"><span class="si-ic">${flag(ctry().c,22)}</span><div class="mid"><b>Land für Aufladungen</b><small>${esc(ctry().n)}</small></div>${ic("i-chev")}</button></div>
+   <h2 class="acc-sh" id="pkH">Passkeys</h2>
+   <section class="card acc-set acc-pk" aria-labelledby="pkH"><div id="pkList" class="pk-list" aria-live="polite"><div class="pk-wait"><span class="spin"></span></div></div>
+    ${pkCan()?`<div class="pk-add"><p>Anmelden mit Face ID, Touch ID oder Windows Hello – ohne Passwort und ohne Code.</p><button class="btn btn-primary btn-sm" data-a="pkAdd">${ic("i-plus")}Passkey hinzufügen</button></div>`:`<p class="pk-none">In diesem Browser kannst du keinen Passkey anlegen.</p>`}</section>
    <div class="acc-out"><button class="btn btn-soft btn-block btn-lg" data-a="logout">${ic("i-logout")}Abmelden</button><button class="btn btn-ghost btn-block acc-del" data-a="delAcc">Konto löschen</button></div>`;
   return {title:"Mein Konto",html:`<div class="acc sec">
 <header class="acc-head rv"><span class="acc-av" data-off aria-hidden="true">${esc(initials(u.name))}</span><div class="acc-hi"><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Abos, Favoriten und Einstellungen.</p></div><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span></header>
+${accQaHTML(tab)/* Schnellaktionen (52-passkey.js) */}
 <nav class="acc-tabs" aria-label="Kontobereiche">${T.map(t=>`<a href="/konto/${t[0]}"${t[0]===tab?' aria-current="page"':""}>${ic(t[2])}<span>${t[1]}</span></a>`).join("")}</nav>
 <div class="acc-body">${body}</div></div>`,
   after(){
+    const op=API("/orders");accQa(op);
+    if(tab==="einstellungen")pkMount();
     if(tab==="abos")return aboAccount();
     if(tab!=="bestellungen")return;
-    API("/orders").then(j=>{const el=$("#accBody");if(!el)return;j.orders.forEach(o=>ordCache[o.id]=o);el.classList.remove("acc-wait");
+    op.then(j=>{const el=$("#accBody");if(!el)return;j.orders.forEach(o=>ordCache[o.id]=o);el.classList.remove("acc-wait");
       el.innerHTML=j.orders.length?`<div class="acc-list">${j.orders.map(o=>{const n=o.items.reduce((s,i)=>s+(i.qty||1),0);const rate=o.status==="delivered"&&o.reviewed===false;/* Gelieferte, noch nicht bewertete Bestellung: „Bewerten“ führt zum Formular auf der Bestellseite */
         return `<div class="acc-row${rate?" can-rate":""}"><a class="card acc-ord" href="/bestellung/${o.id}"><span class="acc-fan" aria-hidden="true">${o.items.slice(0,3).map(i=>mini(brandOr(i.brand))).join("")}</span><span class="acc-om"><b>${new Date(o.created_at).toLocaleDateString("de-DE",{dateStyle:"medium"})}</b><small>${n} Artikel · ${esc(o.id)}</small>${stBadge(o.status)}</span><b class="acc-or">${eurc(o.total)}</b>${ic("i-chev")}</a>${rate?`<div class="acc-rate"><span>Wie zufrieden warst du?</span><a class="btn btn-soft btn-sm" href="/bestellung/${o.id}?bewerten=1">${ic("i-star")}Bewerten<span class="sr"> (Bestellung ${esc(o.id)})</span></a></div>`:""}</div>`}).join("")}</div>`
         :`<div class="card acc-none">${empty("Noch keine Bestellungen","Deine Bestellungen und Codes erscheinen hier.",["/","Jetzt stöbern"])}</div>`;

@@ -53,6 +53,7 @@ function cartPage(_,qs){
    ${payLogos()}
   </div></aside>
   <section class="ck-pay" id="payBox" aria-label="E-Mail und Bezahlen">
+   ${ckBrand()}
    <div class="ck-step" id="ckMail">${ckStepH(2,st,"E-Mail für deine Codes")}${evBox()}</div>
    <div class="ck-step" id="ckPay">${ckStepH(3,st,x?"Mit Karte oder anderer Zahlungsart":"Bezahlen")}
     <label class="chk pb-ok" id="payOkL"><input type="checkbox" id="payOk"><span>Ich akzeptiere die <a href="/agb">AGB</a> und habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen. Ich stimme der sofortigen Lieferung zu und weiß, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt.</span></label>
@@ -117,11 +118,17 @@ const promoHTML=()=>S.promo?`<div class="ck-promo-on">${ic("i-tag")}<span><b>WIL
 /* E-Mail-Bestätigung vor der Kartenzahlung (Pflicht). Der Code wird in sechs Feldern angezeigt;
    darüber liegt unsichtbar ein echtes Eingabefeld (Einfügen, Autofill „one-time-code“, Screenreader). */
 const evMail=()=>(S.user&&S.user.verified!==false&&S.user.email)||CFG.ev||null;
+/* Dezent: „Schneller: Mit Passkey anmelden“ – nur wenn das Gerät Passkeys mit Face ID / Touch ID / Windows Hello kann
+   und hier schon ein Konto bzw. ein Passkey benutzt wurde (sonst gibt es keinen Passkey zum Auswählen) */
+const ckPkLine=()=>!S.user&&pkCan()&&(S.pk||S.acct)&&PKUV!==false?`<p class="ck-pk" id="ckPk"${PKUV?"":" hidden"}>${ic("i-face")}<span>Schneller:</span><button class="more" data-a="pkLogin" data-v="${esc(cur.path)}">Mit Passkey anmelden</button></p>`:"";
+/* Marke über dem Bezahlbereich: Logo, Wortmarke, „Sichere Kasse“ */
+const ckBrand=()=>`<div class="ck-brand">${LOGO(22)}<span class="ck-brand-w"><b>instant</b>codes</span><span class="ck-brand-s">${ic("i-lock")}Sichere Kasse</span></div>`;
 function evBox(){
   const m=evMail();
   if(m)return `<div class="ck-evok" id="evBox"><span class="ck-evok-i">${ic("i-check")}</span><div><small>Codes gehen an</small><b>${esc(m)}</b></div>${S.user?"":`<button class="btn btn-ghost" data-a="evChange">Ändern</button>`}</div>`;
   return `<div class="ck-ev" id="evBox"><p class="ck-ev-t">Wir schicken dir einen 6-stelligen Code. An diese Adresse kommen auch deine Codes. Gelegentlich empfehlen wir dir dort ähnliche Produkte – dem kannst du jederzeit widersprechen.</p>
    <div class="ck-ev-row"><input class="inp" id="payMail" type="email" autocomplete="email" inputmode="email" aria-label="E-Mail für deine Codes" placeholder="deine@email.de" value="${esc(S.lastEmail||"")}"><button class="btn btn-soft" data-a="evSend" id="evSendB">Code senden</button></div>
+   ${ckPkLine()}
    <div class="ck-ev-code" id="evCodeW" hidden><label class="ck-ev-l" for="evCode">Code aus der E-Mail</label>
     <div class="ck-otp"><span class="ck-cells" aria-hidden="true">${"<i></i>".repeat(6)}</span><input class="inp evcode" id="evCode" aria-describedby="evErr" inputmode="numeric" autocomplete="one-time-code" maxlength="40"></div>
     <button class="btn btn-primary btn-block ck-ev-go" data-a="evCheck">Bestätigen</button>
@@ -183,6 +190,7 @@ async function payAfter(){
   if(CFG.express)PAY.x=xpayMount($("#cX"),cartItems,{ctx:"cart",fallback:true,doneIn:$(".ck-x")});
   const ok=$("#payOk");ok&&ok.addEventListener("change",()=>{if(ok.checked){const e=$("#payErr");if(e)e.textContent="";$("#payOkL").classList.remove("shake")}});
   PAY.mount=()=>{if(PAY.mounted)return;PAY.mounted=1;payMount()};
+  if($("#ckPk")&&PKUV===null)pkUV().then(v=>{const p=$("#ckPk");if(p)p.hidden=!v});
   if(!$("#payElW")||!$("#payElW").hidden)PAY.mount();
   rcNav($(".ck"));
   /* Von „Zur Kasse“ kommend: auf dem Handy direkt zur Übersicht, darunter Schnell bezahlen, E-Mail und Bezahlen */

@@ -126,6 +126,10 @@ if (!db.prepare("PRAGMA table_info(rl_map)").all().some(c => c.name === "manual"
 if (!prodCols.includes("img_src")) db.exec("ALTER TABLE products ADD COLUMN img_src TEXT");
 if (!orderCols.includes("consent_at")) db.exec("ALTER TABLE orders ADD COLUMN consent_at INTEGER");
 if (!orderCols.includes("pay_fp")) db.exec("ALTER TABLE orders ADD COLUMN pay_fp TEXT"); // Fingerabdruck des Zahlungsmittels (Tageslimit pro Karte/Wallet)
+/* Passkeys (WebAuthn): öffentlicher Schlüssel (SPKI, base64url), Algorithmus, Zähler; id = Credential-ID (base64url) */
+db.exec(`CREATE TABLE IF NOT EXISTS passkeys(id TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, pubkey TEXT NOT NULL, alg INTEGER NOT NULL,
+  sign_count INTEGER NOT NULL DEFAULT 0, transports TEXT, name TEXT, aaguid TEXT, user_handle TEXT, backed_up INTEGER DEFAULT 0, created_at INTEGER, last_used INTEGER);
+CREATE INDEX IF NOT EXISTS ix_passkeys_user ON passkeys(user_id);`);
 
 /* ---------- Hilfsfunktionen ---------- */
 const now = () => Date.now();
@@ -209,6 +213,12 @@ let shopCache = null;
    lc = Kartenmodus („brand“ Markenfarbe + helles Logo, „light“ weiße Karte + farbiges Original), lsc = Skalierung, lar = Seitenverhältnis, ltn = einfarbiges Logo (auf hellem Grund in Markenfarbe einfärbbar) */
 const BRANDLOGOS = (() => { try { return require("./brandlogos.json"); } catch (e) { return {}; } })();
 const brandLogo = x => { const L = BRANDLOGOS[x.id]; if (!L || !L.src) return x; x.logo = L.src; x.lc = L.card === "light" ? "light" : "brand"; if (L.scale && L.scale !== 1) x.lsc = L.scale; if (L.ar) x.lar = L.ar; if (L.tint) x.ltn = 1; return x; };
+/* Offizielle Einlöse-Seiten (redeemlinks.json, nur geprüfte Adressen): Schlüssel = Produkt-ID, „plat:<plattform>“ gilt für alle Spiele-Keys dieser Plattform.
+   Im Katalog als ru = {url, label}; /go/<id> leitet nur auf diese Ziele weiter (Allowlist). */
+const REDEEMLINKS = (() => { const out = {}; let raw = {}; try { raw = require("./redeemlinks.json"); } catch (e) { return out; }
+  for (const [k, v] of Object.entries(raw)) { try { const u = new URL(v.url); if (u.protocol === "https:" && v.label) out[k] = { url: u.href, label: String(v.label) }; } catch (e) {} }
+  return out; })();
+const redeemLink = b => (b && !b.rl && (REDEEMLINKS[b.id] || (b.type === "key" && b.plat && REDEEMLINKS["plat:" + b.plat]))) || null;
 function shopCatalog() {
   const rows = prodRows(), n = Object.keys(CATALOG).length;
   if (shopCache && shopCache.rows === rows && shopCache.n === n) return shopCache.out;
@@ -222,6 +232,7 @@ function shopCatalog() {
     if (r.img) x.img = `/img/p/${b.id}.${r.img}?v=${r.img_v}`;
     if (r.logo) x.logo = `/img/p/${b.id}.logo.${r.logo}?v=${r.logo_v}`;
     else brandLogo(x);
+    const ru = redeemLink(b); if (ru) x.ru = { url: ru.url, label: ru.label };
     if (COVERS[b.id] && !x.img) x.cov = 1;
     out.push(x);
   }
@@ -660,7 +671,7 @@ const OAUTH = {
     profile: async t => { const p = ((await (await fetch("https://api.twitch.tv/helix/users", { headers: { Authorization: "Bearer " + t.access_token, "Client-Id": E.TWITCH_CLIENT_ID } })).json()).data || [])[0] || {}; return { sub: p.id, email: p.email || null, name: p.display_name }; } } : null,
 };
 const SMS_ON = !!(E.TWILIO_ACCOUNT_SID && E.TWILIO_AUTH_TOKEN && E.TWILIO_VERIFY_SID);
-const authMethods = () => ({ google: !!E.GOOGLE_CLIENT_ID, apple: !!OAUTH.apple, discord: !!OAUTH.discord, twitch: !!OAUTH.twitch, sms: SMS_ON, code: !!E.RESEND_API_KEY || !PROD });
+const authMethods = () => ({ google: !!E.GOOGLE_CLIENT_ID, apple: !!OAUTH.apple, discord: !!OAUTH.discord, twitch: !!OAUTH.twitch, sms: SMS_ON, code: !!E.RESEND_API_KEY || !PROD, passkey: PK_RP });
 const safePath = r => /^\/[\w\-/?=&%.]*$/.test(String(r || "")) ? String(r) : "/konto";
 app.get("/auth/:p", (req, res) => {
   const P = OAUTH[req.params.p]; if (!P) return res.redirect(302, "/login");
@@ -714,6 +725,164 @@ app.post("/api/auth/sms/verify", lim, wrap(async (req, res) => {
     db.prepare("INSERT OR IGNORE INTO idents(provider,sub,user_id,created_at) VALUES('sms',?,?,?)").run(to, u.id, now()); }
   startSession(res, u.id); res.json({ ok: true, user: pub(u) });
 }));
+
+/* ---------- Passkeys (Face ID, Touch ID, Windows Hello) – WebAuthn ohne Zusatzpakete ----------
+   rpId = Host aus BASE_URL (ohne „www.“), lokal „localhost“. Erlaubte Herkunft: BASE_URL (und die www-Variante).
+   Challenge: 32 Zufallsbytes, serverseitig in tokens (pk_reg / pk_login), 5 Minuten gültig, nur einmal verwendbar.
+   Geprüft werden type, challenge, origin, rpIdHash, Flags UP + UV, Signatur (nur ES256 / RS256) und signCount.
+   Attestation „none“: Herstellerangaben werden weder verlangt noch ausgewertet. Auffindbare Passkeys (residentKey
+   „preferred“) erlauben die Anmeldung ohne E-Mail-Eingabe. */
+const PK_RP = (() => { try { return new URL(BASE).hostname.replace(/^www\./, ""); } catch (e) { return "localhost"; } })();
+const PK_ORIGINS = (() => { const s = new Set(); try { const u = new URL(BASE); s.add(u.origin);
+  if (u.hostname !== "localhost") { const w = new URL(BASE); w.hostname = u.hostname.startsWith("www.") ? u.hostname.slice(4) : "www." + u.hostname; s.add(w.origin); } } catch (e) {} return s; })();
+const PK_TTL = 5 * 60e3, PK_ALGS = [-7, -257], PK_RPHASH = crypto.createHash("sha256").update(PK_RP).digest();
+/* Kleiner CBOR-Decoder (RFC 8949) für attestationObject, authenticatorData und COSE-Schlüssel: nur Typen mit fester Länge */
+function cborRead(buf, at = 0) {
+  let p = at, depth = 0;
+  const need = n => { if (p + n > buf.length) throw new Error("CBOR zu kurz"); };
+  const len = ai => {
+    if (ai < 24) return ai;
+    if (ai === 24) { need(1); return buf[p++]; }
+    if (ai === 25) { need(2); p += 2; return buf.readUInt16BE(p - 2); }
+    if (ai === 26) { need(4); p += 4; return buf.readUInt32BE(p - 4); }
+    if (ai === 27) { need(8); p += 8; const v = buf.readBigUInt64BE(p - 8); if (v > 9007199254740991n) throw new Error("CBOR-Zahl zu groß"); return Number(v); }
+    throw new Error("CBOR: unbestimmte Länge nicht erlaubt");
+  };
+  const item = () => {
+    if (++depth > 12) throw new Error("CBOR zu tief verschachtelt");
+    need(1); const b = buf[p++], mt = b >> 5, ai = b & 31; let v;
+    if (mt === 0) v = len(ai);
+    else if (mt === 1) v = -1 - len(ai);
+    else if (mt === 2 || mt === 3) { const n = len(ai); need(n); v = mt === 2 ? buf.subarray(p, p + n) : buf.toString("utf8", p, p + n); p += n; }
+    else if (mt === 4) { const n = len(ai); if (n > 64) throw new Error("CBOR-Liste zu lang"); v = []; for (let i = 0; i < n; i++) v.push(item()); }
+    else if (mt === 5) { const n = len(ai); if (n > 64) throw new Error("CBOR-Map zu groß"); v = new Map(); for (let i = 0; i < n; i++) { const k = item(); v.set(k, item()); } }
+    else if (mt === 7 && ai >= 20 && ai <= 22) v = ai === 21 ? true : ai === 20 ? false : null;
+    else throw new Error("CBOR-Typ nicht unterstützt");
+    depth--; return v;
+  };
+  const v = item(); return [v, p];
+}
+/* authenticatorData: rpIdHash (32) · Flags (1) · signCount (4) · [AAGUID (16) · Länge (2) · Credential-ID · COSE-Schlüssel] · [Erweiterungen] */
+function pkAuthData(ad) {
+  if (!Buffer.isBuffer(ad) || ad.length < 37) throw new Error("authenticatorData zu kurz");
+  const f = ad[32], o = { rpIdHash: ad.subarray(0, 32), up: !!(f & 1), uv: !!(f & 4), bs: !!(f & 16), count: ad.readUInt32BE(33) };
+  let p = 37;
+  if (f & 64) {
+    if (ad.length < p + 18) throw new Error("Schlüsseldaten fehlen");
+    o.aaguid = ad.subarray(p, p + 16).toString("hex"); const n = ad.readUInt16BE(p + 16); p += 18;
+    if (n < 16 || n > 1023 || ad.length < p + n) throw new Error("Credential-ID ungültig");
+    o.credId = ad.subarray(p, p + n); p += n;
+    [o.cose, p] = cborRead(ad, p);
+  }
+  if (f & 128) p = cborRead(ad, p)[1];
+  if (p !== ad.length) throw new Error("authenticatorData hat Restbytes");
+  return o;
+}
+/* COSE → Node-Schlüssel: nur ES256 (EC2, P-256) und RS256 (RSA ≥ 2048 Bit) */
+function pkKey(m) {
+  const g = k => m instanceof Map ? m.get(k) : undefined, buf = v => Buffer.isBuffer(v);
+  let jwk = null;
+  if (g(3) === -7 && g(1) === 2 && g(-1) === 1 && buf(g(-2)) && g(-2).length === 32 && buf(g(-3)) && g(-3).length === 32)
+    jwk = { kty: "EC", crv: "P-256", x: g(-2).toString("base64url"), y: g(-3).toString("base64url") };
+  else if (g(3) === -257 && g(1) === 3 && buf(g(-1)) && g(-1).length >= 256 && buf(g(-2)) && g(-2).length <= 8)
+    jwk = { kty: "RSA", n: g(-1).toString("base64url"), e: g(-2).toString("base64url") };
+  if (!jwk) throw new Error("Schlüsseltyp nicht unterstützt (nur ES256 und RS256)");
+  return { alg: g(3), spki: crypto.createPublicKey({ key: jwk, format: "jwk" }).export({ type: "spki", format: "der" }).toString("base64url") };
+}
+const pkSigOk = (alg, spki, data, sig) => { try { const key = crypto.createPublicKey({ key: Buffer.from(spki, "base64url"), format: "der", type: "spki" });
+  return alg === -7 ? crypto.verify("sha256", data, { key, dsaEncoding: "der" }, sig) : alg === -257 ? crypto.verify("sha256", data, { key, padding: crypto.constants.RSA_PKCS1_PADDING }, sig) : false; } catch (e) { return false; } };
+const pkB64 = v => typeof v === "string" && v.length <= 8192 && /^[\w-]+$/.test(v) ? Buffer.from(v, "base64url") : null;
+/* Undurchsichtige Nutzerkennung für den Passkey (keine E-Mail, keine fortlaufende Nummer) */
+const pkHandle = u => crypto.createHmac("sha256", KEY).update(`pk-user|${u.id}|${u.created_at || 0}`).digest().subarray(0, 16).toString("base64url");
+/* Challenge aus clientDataJSON einlösen: muss existieren, unbenutzt und unabgelaufen sein; wird sofort verbraucht (auch wenn danach etwas scheitert) */
+function pkTake(kind, c, uid) {
+  const ch = c && typeof c.challenge === "string" && /^[\w-]{43}$/.test(c.challenge) ? c.challenge : null;
+  if (!ch) return false;
+  const t = db.prepare("SELECT id, user_id FROM tokens WHERE kind=? AND hash=? AND used=0 AND expires_at>?").get(kind, sha(ch), now());
+  if (!t || db.prepare("UPDATE tokens SET used=1 WHERE id=? AND used=0").run(t.id).changes !== 1) return false;
+  return uid == null || t.user_id === uid;
+}
+const pkClient = raw => { let c = null; try { c = JSON.parse(raw.toString("utf8")); } catch (e) {} return c && typeof c === "object" ? c : null; };
+const pkOriginOk = c => PK_ORIGINS.has(c.origin) && c.crossOrigin !== true && !c.topOrigin;
+const PK_AAGUID = { fbfc3007154e4ecc8c0b6e020557d7bd: "iCloud-Schlüsselbund", dd4ec289e01d41c9bb8970fa845d4bf2: "iCloud-Schlüsselbund", ea9b8d664d011d213ce4b6b48cb575d4: "Google Passwortmanager",
+  adce000235bcc60a648b0b25f1f05503: "Chrome", "08987058cadc4b81b6e130de50dcbe96": "Windows Hello", "9ddd1817af5a4672a2b93e3dd95000a9": "Windows Hello", "6028b017b1d44c02b4b3afcdafc96bb2": "Windows Hello",
+  bada5566a7aa401fbd9645619a55120d: "1Password", d548826e79b4db40a3d811116f7e8349: "Bitwarden" };
+const pkDevice = ua => /iPhone/.test(ua) ? "iPhone" : /iPad/.test(ua) ? "iPad" : /Android/.test(ua) ? "Android" : /Macintosh|Mac OS X/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : /CrOS/.test(ua) ? "Chromebook" : /Linux/.test(ua) ? "Linux" : "";
+const pkName = (aaguid, ua) => { const d = pkDevice(String(ua || "")), p = PK_AAGUID[aaguid]; return (p ? p + (d && p !== "Windows Hello" ? ` · ${d}` : "") : d ? `Passkey · ${d}` : "Passkey").slice(0, 60); };
+const pkOut = p => ({ id: p.id, name: p.name || "Passkey", created_at: p.created_at, last_used: p.last_used, synced: !!p.backed_up });
+const pkList = uid => db.prepare("SELECT * FROM passkeys WHERE user_id=? ORDER BY created_at DESC").all(uid).map(pkOut);
+
+/* Registrierung (angemeldet): Optionen, dann Prüfung und Speichern */
+app.post("/api/auth/passkey/register/options", lim, need, (req, res) => {
+  const u = req.user, ch = rnd(32);
+  db.prepare("INSERT INTO tokens(user_id,kind,hash,expires_at) VALUES(?,?,?,?)").run(u.id, "pk_reg", sha(ch), now() + PK_TTL);
+  const have = db.prepare("SELECT id, transports FROM passkeys WHERE user_id=?").all(u.id);
+  res.json({ challenge: ch, rp: { id: PK_RP, name: "instantcodes" }, user: { id: pkHandle(u), name: u.email, displayName: u.name || u.email },
+    pubKeyCredParams: PK_ALGS.map(alg => ({ type: "public-key", alg })), timeout: PK_TTL, attestation: "none",
+    authenticatorSelection: { residentKey: "preferred", requireResidentKey: false, userVerification: "required" },
+    excludeCredentials: have.map(c => ({ type: "public-key", id: c.id, transports: JSON.parse(c.transports || "[]") })), hints: ["client-device"] });
+});
+app.post("/api/auth/passkey/register", lim, need, (req, res) => {
+  const fail = why => { console.warn("Passkey-Registrierung abgelehnt:", why); return bad(res, "Der Passkey konnte nicht gespeichert werden. Bitte versuch es noch einmal."); };
+  const b = req.body || {}, r = b.response || {}, raw = pkB64(b.rawId), cd = pkB64(r.clientDataJSON), ao = pkB64(r.attestationObject);
+  if (b.type !== "public-key" || !raw || !cd || !ao || b.id !== b.rawId) return fail("Format");
+  const c = pkClient(cd);
+  if (!pkTake("pk_reg", c, req.user.id)) return fail("Challenge unbekannt, abgelaufen oder schon benutzt");
+  if (c.type !== "webauthn.create") return fail("type " + c.type);
+  if (!pkOriginOk(c)) return fail("Herkunft " + c.origin);
+  let att, ad, k;
+  try { att = cborRead(ao)[0]; if (!(att instanceof Map) || typeof att.get("fmt") !== "string" || !(att.get("attStmt") instanceof Map)) throw new Error("attestationObject ungültig"); ad = pkAuthData(att.get("authData")); }
+  catch (e) { return fail(e.message); }
+  /* Attestation „none“ angefordert; liefert ein Gerät trotzdem eine, wird sie nicht ausgewertet (kein Vertrauen daraus abgeleitet) */
+  if (att.get("fmt") === "none" && att.get("attStmt").size) return fail("attStmt bei none nicht leer");
+  if (!ad.rpIdHash.equals(PK_RPHASH)) return fail("rpIdHash");
+  if (!ad.up || !ad.uv) return fail("Flags UP/UV fehlen");
+  if (!ad.credId || !ad.credId.equals(raw)) return fail("Credential-ID passt nicht");
+  try { k = pkKey(ad.cose); } catch (e) { return fail(e.message); }
+  const id = raw.toString("base64url");
+  if (db.prepare("SELECT 1 FROM passkeys WHERE id=?").get(id)) return fail("Credential schon registriert");
+  if (db.prepare("SELECT COUNT(*) n FROM passkeys WHERE user_id=?").get(req.user.id).n >= 20) return bad(res, "Du hast schon 20 Passkeys. Lösche zuerst einen alten.");
+  const tr = Array.isArray(r.transports) ? r.transports.filter(t => typeof t === "string" && /^[a-z-]{2,16}$/.test(t)).slice(0, 6) : [];
+  db.prepare("INSERT INTO passkeys(id,user_id,pubkey,alg,sign_count,transports,name,aaguid,user_handle,backed_up,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)")
+    .run(id, req.user.id, k.spki, k.alg, ad.count, JSON.stringify(tr), pkName(ad.aaguid, req.get("user-agent")), ad.aaguid || null, pkHandle(req.user), ad.bs ? 1 : 0, now());
+  res.json({ ok: true, id, passkeys: pkList(req.user.id) });
+});
+/* Anmeldung: ohne E-Mail (leere allowCredentials → auffindbare Passkeys) */
+app.post("/api/auth/passkey/login/options", lim, (req, res) => {
+  const ch = rnd(32);
+  db.prepare("INSERT INTO tokens(user_id,kind,hash,expires_at) VALUES(NULL,'pk_login',?,?)").run(sha(ch), now() + PK_TTL);
+  res.json({ challenge: ch, rpId: PK_RP, timeout: PK_TTL, userVerification: "required", allowCredentials: [] });
+});
+app.post("/api/auth/passkey/login", lim, (req, res) => {
+  const fail = (why, msg) => { console.warn("Passkey-Anmeldung abgelehnt:", why); return bad(res, msg || "Die Anmeldung mit Passkey hat nicht geklappt. Bitte versuch es noch einmal oder melde dich mit einem Code an."); };
+  const b = req.body || {}, r = b.response || {}, raw = pkB64(b.rawId), cd = pkB64(r.clientDataJSON), adRaw = pkB64(r.authenticatorData), sig = pkB64(r.signature);
+  if (b.type !== "public-key" || !raw || !cd || !adRaw || !sig || b.id !== b.rawId) return fail("Format");
+  const c = pkClient(cd);
+  if (!pkTake("pk_login", c)) return fail("Challenge unbekannt, abgelaufen oder schon benutzt");
+  if (c.type !== "webauthn.get") return fail("type " + c.type);
+  if (!pkOriginOk(c)) return fail("Herkunft " + c.origin);
+  const pk = db.prepare("SELECT * FROM passkeys WHERE id=?").get(raw.toString("base64url"));
+  if (!pk) return fail("unbekannter Passkey", "Diesen Passkey kennen wir nicht (mehr). Melde dich mit einem Code an und füge im Konto einen neuen hinzu.");
+  if (r.userHandle && r.userHandle !== pk.user_handle) return fail("userHandle passt nicht");
+  let ad; try { ad = pkAuthData(adRaw); } catch (e) { return fail(e.message); }
+  if (!ad.rpIdHash.equals(PK_RPHASH)) return fail("rpIdHash");
+  if (!ad.up || !ad.uv) return fail("Flags UP/UV fehlen");
+  if (!pkSigOk(pk.alg, pk.pubkey, Buffer.concat([adRaw, crypto.createHash("sha256").update(cd).digest()]), sig)) return fail("Signatur");
+  /* Zähler: Geräte ohne Zähler melden immer 0; sonst muss er steigen (sonst Hinweis auf einen kopierten Schlüssel) */
+  if ((ad.count || pk.sign_count) && ad.count <= pk.sign_count) return fail(`signCount ${ad.count} ≤ ${pk.sign_count}`);
+  const u = userById(pk.user_id); if (!u) return fail("Konto fehlt");
+  db.prepare("UPDATE passkeys SET sign_count=?, last_used=?, backed_up=? WHERE id=?").run(ad.count, now(), ad.bs ? 1 : 0, pk.id);
+  startSession(res, u.id); linkOrders(u.id, u.email);
+  if (u.login_alerts) safe(mail.loginAlert(u.email, u.name, req.get("user-agent") || ""));
+  res.json({ ok: true, user: pub(u) });
+});
+/* Liste und Löschen im Konto */
+app.get("/api/passkeys", need, (req, res) => res.set("Cache-Control", "no-store").json({ passkeys: pkList(req.user.id) }));
+app.delete("/api/passkeys/:id", lim, need, (req, res) => {
+  const n = db.prepare("DELETE FROM passkeys WHERE id=? AND user_id=?").run(String(req.params.id), req.user.id).changes;
+  if (!n) return bad(res, "Diesen Passkey gibt es nicht mehr.", 404);
+  res.json({ ok: true, passkeys: pkList(req.user.id) });
+});
 
 app.post("/api/auth/logout", (req, res) => { endSession(req, res); res.json({ ok: true }); });
 
@@ -1598,6 +1767,15 @@ function seoTitle(b) {
 const crumbs = l => ({ "@type": "BreadcrumbList", itemListElement: l.map(([n, u], i) => ({ "@type": "ListItem", position: i + 1, name: n, item: BASE + u })) });
 const xesc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const seoCache = new Map();
+/* Echte Bewertungen eines Produkts (alle Länder-Varianten, wie auf der Produktseite) für aggregateRating; ohne Bewertungen null. 5 Minuten zwischengespeichert. */
+const ratingCache = new Map();
+function ratingOf(b) {
+  const cat = shopCatalog(), g = (cat.find(x => x.id === b.id) || {}).grp, ids = (g ? cat.filter(x => x.grp === g).map(x => x.id) : [b.id]).sort().slice(0, 40), key = ids.join(",");
+  const hit = ratingCache.get(key); if (hit && hit.t > Date.now() - 300e3) return hit.r;
+  const row = db.prepare(`SELECT COUNT(*) n, AVG(r.rating) avg FROM reviews r WHERE r.hidden=0 AND EXISTS (SELECT 1 FROM items i WHERE i.order_id=r.order_id AND i.brand IN (${ids.map(() => "?").join(",")}))`).get(...ids);
+  const r = row && row.n ? { "@type": "AggregateRating", ratingValue: Math.round(row.avg * 10) / 10, reviewCount: row.n, bestRating: 5, worstRating: 1 } : null;
+  if (ratingCache.size > 2000) ratingCache.clear(); ratingCache.set(key, { t: Date.now(), r }); return r;
+}
 function seoMeta(p) {
   let m;
   if ((m = p.match(/^\/marke\/([\w-]+)$/))) {
@@ -1610,10 +1788,13 @@ function seoMeta(p) {
     let d = lead + tailD;
     for (const extra of [b.regionName && b.cat !== "topup" ? ` Gültig in ${b.regionName}.` : "", ` ${pay}.`, b.cat === "topup" ? "" : " Ohne Versandkosten."])
       if (extra && (d + extra).length <= 158) d += extra;
-    const offer = { "@type": "AggregateOffer", priceCurrency: "EUR", lowPrice: Math.min(...b.amts.map(a => unitPrice(b, a))) / 100, highPrice: Math.max(...b.amts.map(a => unitPrice(b, a))) / 100, offerCount: b.amts.length,
-      availability: "https://schema.org/InStock", url: `${BASE}/marke/${b.id}`, seller: { "@type": "Organization", name: "instantcodes" } };
+    /* Strukturierte Daten nur mit echten Werten: Preise der lieferbaren Beträge, Verfügbarkeit aus dem Bestand, Sterne nur bei echten Bewertungen */
+    const so = soldoutMap()[b.id] || [], avail = b.amts.filter(a => !so.includes(a)), pl = (avail.length ? avail : b.amts).map(a => unitPrice(b, a));
+    const offer = { "@type": "AggregateOffer", priceCurrency: "EUR", lowPrice: Math.min(...pl) / 100, highPrice: Math.max(...pl) / 100, offerCount: avail.length || b.amts.length,
+      availability: avail.length ? "https://schema.org/InStock" : "https://schema.org/OutOfStock", url: `${BASE}/marke/${b.id}`, seller: { "@type": "Organization", name: "instantcodes" } };
+    const rating = ratingOf(b);
     const ld = { "@context": "https://schema.org", "@graph": [
-      { "@type": "Product", name: b.name, image: img, description: d, category: CAT_NAME[b.cat] || "Gutscheine", brand: { "@type": "Brand", name: b.brand || b.name }, sku: b.id, offers: offer },
+      { "@type": "Product", name: b.name, image: img, description: d, category: CAT_NAME[b.cat] || "Gutscheine", brand: { "@type": "Brand", name: b.brand || b.name }, sku: b.id, offers: offer, ...(rating ? { aggregateRating: rating } : {}) },
       crumbs([["Start", "/"], [CAT_NAME[b.cat] || "Kategorien", `/kategorie/${b.cat}`], [b.name, `/marke/${b.id}`]]) ] };
     return { t, d, img, ld, h1: b.name, url: `${BASE}/marke/${b.id}` };
   }
@@ -1634,7 +1815,7 @@ function seoMeta(p) {
 function sendSeo(req, res, next) {
   const meta = seoMeta(req.path); if (!meta) return next();
   sendIndex({ get: () => "" }, { set() { return this; }, type() { return this; }, send(raw) {
-    const key = req.path + "|" + pageOut.mtime + "|" + pageOut.data.length;
+    const key = req.path + "|" + pageOut.mtime + "|" + pageOut.data.length + "|" + (meta.ld ? crypto.createHash("sha1").update(JSON.stringify(meta.ld)).digest("base64url").slice(0, 12) : "");
     let out = seoCache.get(key);
     if (!out) {
       let h = pageOut.raw.toString("utf8")
@@ -1663,7 +1844,8 @@ app.get("/abmelden", (req, res) => {
   if (ok) db.prepare("INSERT OR IGNORE INTO optout(email,at) VALUES(?,?)").run(e, now());
   res.type("html").send(`<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Abgemeldet · instantcodes</title><body style="margin:0;font-family:system-ui,-apple-system,sans-serif;background:#F3F2FA;display:grid;place-items:center;min-height:100vh"><div style="background:#fff;border:1px solid #E7E3FA;border-radius:24px;padding:32px;max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 8px">${ok ? "Du bist abgemeldet" : "Link ungültig"}</h1><p style="color:#636A85;margin:0 0 20px">${ok ? "Du bekommst keine Produktempfehlungen mehr. Bestell- und Lieferbestätigungen erhältst du weiterhin." : "Bitte nutze den Link aus deiner E-Mail."}</p><a href="${BASE}/" style="display:inline-block;padding:12px 24px;border-radius:999px;background:linear-gradient(135deg,#7C5CFF,#4F46E5);color:#fff;text-decoration:none;font-weight:700">Zum Shop</a></div></body></html>`);
 });
-app.get("/robots.txt", (req, res) => res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /r/\n\nSitemap: ${BASE}/sitemap.xml\n`));
+/* Kasse, Konto, Bestellungen, Suche und Weiterleitungen zu fremden Seiten (/go/) gehören nicht in den Suchindex */
+app.get("/robots.txt", (req, res) => res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /r/\nDisallow: /go/\nDisallow: /kasse\nDisallow: /warenkorb\nDisallow: /konto\nDisallow: /login\nDisallow: /bestellung/\nDisallow: /verifizieren\nDisallow: /passwort\nDisallow: /suche\n\nSitemap: ${BASE}/sitemap.xml\n`));
 app.get("/sitemap.xml", (req, res) => {
   const day = new Date().toISOString().slice(0, 10);
   const urls = ["/", "/abo", "/kategorien", "/aufladen", "/angebote", "/hilfe", "/agb", "/datenschutz", "/widerruf", "/kuendigen"]
@@ -1680,6 +1862,26 @@ app.get(["/admin", "/admin.html"], (req, res) => {
   res.sendFile(path.join(__dirname, "private", "admin.html"));
 });
 
+/* Offizielle Einlöse-Seite: /go/<produkt-id> → 302 auf die Seite der Marke. Nur Ziele aus redeemlinks.json (Allowlist), sonst 404. */
+app.get("/go/:id", (req, res) => {
+  const ru = redeemLink(CATALOG[String(req.params.id)]);
+  res.set("X-Robots-Tag", "noindex, nofollow");
+  if (!ru) return res.status(404).set("Cache-Control", "no-store").type("text/plain").send("Nicht gefunden");
+  res.set("Cache-Control", "private, max-age=300").redirect(302, ru.url);
+});
+/* Kurzadressen: /steam → 301 /marke/steam (nur sichtbare Produkte, Groß-/Kleinschreibung egal, Suchparameter bleiben).
+   Steht hinter allen festen Routen und Dateien; reservierte Seitennamen werden nie umgeleitet. */
+const SHORT_SKIP = new Set(["api", "auth", "img", "mail", "cards", "admin", "go", "r", "marke", "kategorie", "kategorien", "aufladen", "angebote", "suche", "warenkorb", "kasse",
+  "bestellung", "login", "konto", "hilfe", "abo", "kuendigen", "verifizieren", "passwort", "agb", "datenschutz", "widerruf", "abmelden", "logo", "brand", "pay", "fonts", "vid", "anim"]);
+let shortIds = null;
+app.get("/:id", (req, res, next) => {
+  const id = String(req.params.id).toLowerCase();
+  if (!/^[\w-]{1,80}$/.test(id) || SHORT_SKIP.has(id)) return next();
+  const cat = shopCatalog(); if (!shortIds || shortIds.cat !== cat) shortIds = { cat, ids: new Set(cat.map(b => b.id)) };
+  if (!shortIds.ids.has(id)) return next();
+  const q = req.originalUrl.indexOf("?");
+  res.redirect(301, `/marke/${id}${q > -1 ? req.originalUrl.slice(q) : ""}`);
+});
 /* Alle Shop-Adressen (z. B. /marke/steam, /warenkorb, /bestellung/…) liefern die Seite aus; der Browser übernimmt das Routing */
 app.use((req, res, next) => (req.method === "GET" && /^\/(?!api\/|auth\/|img\/|mail\/|cards\/|admin|__)[^.]*$/.test(req.path)) ? sendIndex(req, res) : next());
 const PORT = E.PORT || 3000;

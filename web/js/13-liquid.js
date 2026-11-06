@@ -1,17 +1,18 @@
-/* ---------- Flüssigmetall-Ring (WebGL): Herzstück der Startseite ----------
+/* ---------- Flüssigmetall-Ring (WebGL): Herzstück der Startseite und Logo ----------
+   .lq-mini = das Logo in der Kopfzeile: Logo-Fassung (k=1, kräftigeres Chrom, rundere Form), 24 Bilder/s, Licht wandert beim Scrollen.
    Markup: <div class="lq" data-off aria-hidden="true"></div> in einem Element mit position:relative.
    LIQUID.mount(root) startet alle .lq darin. Ein Ring aus flüssigem Chrom, dessen Oberfläche langsam
    fließt; der Zeiger verschiebt die Lichtquelle. Läuft nur sichtbar, auf Touch-Geräten mit halber
    Auflösung und 30 Bildern/s, bei reduzierter Bewegung als Standbild. Ohne WebGL: CSS-Ring (.nogl). */
 const LIQUID=(()=>{
   const VS="attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
-  const FS=`precision highp float;uniform vec2 r;uniform float t;uniform vec2 m;
+  const FS=`precision highp float;uniform vec2 r;uniform float t;uniform vec2 m;uniform float k;
 float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
 float sh(vec2 p){float a=atan(p.y,p.x),d=length(p);
-  float w=.011*sin(a*3.+t*.32)+.006*sin(a*5.-t*.41)+.018*(fbm(p*2.1+vec2(t*.07,-t*.05))-.5);
-  float R=.31+w,th=.108+.01*sin(a*2.+t*.27)+.008*(fbm(p*3.+t*.12)-.5);
+  float w=mix(1.,.45,k)*(.011*sin(a*3.+t*.32)+.006*sin(a*5.-t*.41)+.018*(fbm(p*2.1+vec2(t*.07,-t*.05))-.5));
+  float R=mix(.31,.3,k)+w,th=mix(.108,.122,k)+.01*sin(a*2.+t*.27)+.008*(fbm(p*3.+t*.12)-.5);
   return abs(d-R)-th;}
 void main(){
   vec2 uv=(gl_FragCoord.xy-.5*r)/min(r.x,r.y);
@@ -26,19 +27,19 @@ void main(){
   float y=R.y+.18*m.y;
   /* Umgebung: Himmel hell, Horizont scharf, Boden dunkel – klassischer Chrom-Look */
   vec3 sky=mix(vec3(.62,.65,.71),vec3(.99,.99,1.),smoothstep(.0,.7,y));
-  vec3 gr=mix(vec3(.2,.21,.25),vec3(.62,.64,.7),smoothstep(-.95,-.05,y));
+  vec3 gr=mix(mix(vec3(.2,.21,.25),vec3(.06,.07,.09),k),mix(vec3(.62,.64,.7),vec3(.4,.42,.48),k),smoothstep(-.95,-.05,y));
   vec3 env=y>0.?sky:gr;
-  env=mix(env,vec3(.17,.18,.21),smoothstep(.035,0.,abs(y-.01))*.75);
+  env=mix(env,mix(vec3(.17,.18,.21),vec3(.05,.05,.06),k),smoothstep(mix(.035,.04,k),0.,abs(y-.01))*mix(.75,.9,k));
   /* zwei Softboxen als Glanzlichter, eine folgt dem Zeiger */
   env+=1.1*smoothstep(.9,.985,dot(R,normalize(vec3(.45+m.x*.5,.55,.7))));
   env+=.55*smoothstep(.93,.99,dot(R,normalize(vec3(-.6,.25,.75))));
   /* Perlmutt am Rand */
   float fr=pow(1.-max(N.z,0.),2.2);
   vec3 pr=.5+.5*cos(6.2831*(vec3(0.,.33,.67)+fr*1.1+t*.04+uv.x*.6));
-  env=mix(env,env*(.65+.55*pr),.35*fr+.06);
+  env=mix(env,env*(mix(.65,.6,k)+mix(.55,.65,k)*pr),mix(.35,.5,k)*fr+mix(.06,.1,k));
   env*=.92+.08*z;
   /* Rand etwas dunkler, damit sich das Chrom vom hellen Grund abhebt */
-  env*=mix(1.,.8,smoothstep(.35,1.,fr));
+  env*=mix(1.,mix(.8,.74,k),smoothstep(.35,1.,fr));
   gl_FragColor=vec4(env*al,al);
 }`;
   const lite=()=>document.documentElement.classList.contains("lite");
@@ -54,17 +55,24 @@ void main(){
     if(!gl.getProgramParameter(pr,gl.LINK_STATUS)){el.classList.add("nogl");c.remove();return null}
     gl.useProgram(pr);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
     const loc=gl.getAttribLocation(pr,"p");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-    const it={el,c,gl,u:{r:gl.getUniformLocation(pr,"r"),t:gl.getUniformLocation(pr,"t"),m:gl.getUniformLocation(pr,"m")},vis:true,w:0,h:0,t0:performance.now()-Math.random()*20000};
+    const mini=el.classList.contains("lq-mini");
+    const it={el,c,gl,mini,k:mini?1:0,fps:mini?24:0,lt:0,u:{r:gl.getUniformLocation(pr,"r"),t:gl.getUniformLocation(pr,"t"),m:gl.getUniformLocation(pr,"m"),k:gl.getUniformLocation(pr,"k")},vis:true,w:0,h:0,t0:performance.now()-(mini?7000:Math.random()*20000)};
     el._lq=it;io&&io.observe(el);return it;
   }
-  function size(it){const d=Math.min(devicePixelRatio||1,2)*(lite()?.7:.85),w=Math.round(it.el.clientWidth*d),h=Math.round(it.el.clientHeight*d);
+  function size(it){const d=it.mini?Math.min(devicePixelRatio||1,3):Math.min(devicePixelRatio||1,2)*(lite()?.7:.85),w=Math.round(it.el.clientWidth*d),h=Math.round(it.el.clientHeight*d);
     if(w&&h&&(w!==it.w||h!==it.h)){it.w=it.c.width=w;it.h=it.c.height=h;it.gl.viewport(0,0,w,h)}}
   function draw(it,now){const gl=it.gl;size(it);if(!it.w)return;gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.uniform2f(it.u.r,it.w,it.h);gl.uniform1f(it.u.t,(now-it.t0)/1000);gl.uniform2f(it.u.m,mx,-my);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+    gl.uniform2f(it.u.r,it.w,it.h);gl.uniform1f(it.u.k,it.k);
+    /* Mini-Ring: Zeit läuft halb so schnell, das Licht wandert mit dem Scrollen */
+    if(it.mini){const s=scrollY;gl.uniform1f(it.u.t,(now-it.t0)/2000+s/900);gl.uniform2f(it.u.m,Math.sin(s/260)*.75+mx*.4,Math.cos(s/420)*.25-my*.3)}
+    else{gl.uniform1f(it.u.t,(now-it.t0)/1000);gl.uniform2f(it.u.m,mx,-my)}
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    if(!it.on){it.on=1;it.el.classList.add("on");if(it.mini&&it.el.parentElement)it.el.parentElement.classList.add("live")}}
   function frame(now){raf=0;let any=false;
     if(lite()&&now-last<32){raf=requestAnimationFrame(frame);return}last=now;
     mx+=(tmx-mx)*.06;my+=(tmy-my)*.06;
-    items.forEach(it=>{if(!it.el.isConnected){items.delete(it);return}if(!it.vis||document.hidden)return;any=true;draw(it,now)});
+    items.forEach(it=>{if(!it.el.isConnected){items.delete(it);return}if(!it.vis||document.hidden)return;any=true;
+      if(it.fps){const f=lite()?15:it.fps;if(now-it.lt<1000/f-2)return;it.lt=now}draw(it,now)});
     if(any&&!reduce)raf=requestAnimationFrame(frame)}
   function kick(){if(!raf)raf=requestAnimationFrame(frame)}
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)kick()});

@@ -149,6 +149,18 @@ const descOf=b=>isKey(b)?`${b.name} als digitaler ${PLAT[b.plat]}-Key. Nach der 
   :b.type==="sub"?`${b.name} als digitaler Code. Nach der Zahlung kommt der Code per E-Mail, du löst ihn in deinem Konto ein und die Laufzeit startet. Kein Abo, keine automatische Verlängerung über instantcodes.`
   :`Digitaler ${b.name}-Code zum sofortigen Einlösen. Nach der Zahlung bekommst du den Code automatisch per E-Mail. In deinem Konto bleibt er gespeichert.${regTag(b)?` Wichtig: Dieser Code gilt nur für ${regDE(b.region)} und funktioniert nur mit einem Konto aus diesem Land. Der Wert ist in der Landeswährung angegeben, der Preis in Euro.`:""}`;
 const varName=(b,v)=>isKey(b)?PLAT[v.plat]:v.name.replace(/^PlayStation Plus /,"").replace(/^Microsoft 365 /,"");
+/* Offizielle Einlöse-Seite der Marke (b.ru = {url,label} aus redeemlinks.json). Der Link geht über /go/<id> (Server-Allowlist) und öffnet einen neuen Tab. */
+const ruDom=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return ""}};
+const ruBtn=(b,o={})=>b&&b.ru&&b.id?`<a class="btn ${o.cls||"btn-primary"}" href="/go/${esc(b.id)}" target="_blank" rel="noopener"${o.attrs||""}><span>${o.text||"Auf "+esc(ruDom(b.ru.url))+" einlösen"}</span>${ic("i-arrow")}<span class="sr"> ${o.sr||""}(öffnet ein neues Fenster)</span></a>`:"";
+/* Strukturierte Daten der Produktseite (Product + BreadcrumbList) nur mit echten Werten: Preise der lieferbaren Beträge, Verfügbarkeit aus dem Bestand,
+   Sterne nur bei echten Bewertungen (R aus /api/reviews). Das Skript liegt in der Ansicht und verschwindet beim Seitenwechsel mit ihr. */
+const pdOrigin=()=>{try{return String(CFG.base||location.origin).replace(/\/+$/,"")}catch(e){return location.origin}};
+const pdLd=(b,c,R)=>{const O=pdOrigin(),abs=u=>/^https?:/.test(u)?u:O+u,avail=b.amts.filter(a=>!soldOut(b.id,a)),pl=(avail.length?avail:b.amts).map(a=>price(b,a)),url=O+"/marke/"+b.id;
+  const p={"@type":"Product",name:b.name,image:abs(b.img||(b.cov?`/img/cover/${b.id}/p`:"/og.png")),description:descOf(b),sku:b.id,category:c.name,brand:{"@type":"Brand",name:b.name},
+    offers:{"@type":"AggregateOffer",priceCurrency:"EUR",lowPrice:Math.min(...pl),highPrice:Math.max(...pl),offerCount:avail.length||b.amts.length,availability:"https://schema.org/"+(avail.length?"InStock":"OutOfStock"),url,seller:{"@type":"Organization",name:"instantcodes"}}};
+  if(R&&R.count>0&&R.avg)p.aggregateRating={"@type":"AggregateRating",ratingValue:R.avg,reviewCount:R.count,bestRating:5,worstRating:1};
+  const bc={"@type":"BreadcrumbList",itemListElement:[["Start","/"],[c.name,"/kategorie/"+c.id],[b.name,"/marke/"+b.id]].map(([n,u],i)=>({"@type":"ListItem",position:i+1,name:n,item:O+u}))};
+  return JSON.stringify({"@context":"https://schema.org","@graph":[p,bc]}).replace(/</g,"\\u003c")};
 /* Express-Checkout-Box (auch im Warenkorb und im Schnellkauf verwendet) */
 const xpayBox=(id,title,o={})=>`<div class="xpay locked" id="${id}" hidden>${title?`<div class="xpay-or">${title}</div>`:""}${o.noConsent?"":`<label class="chk xpay-ok"><input type="checkbox" class="xok"><span>Ich akzeptiere die <a href="/agb">AGB</a> und möchte, dass ihr sofort liefert. Mir ist bekannt, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt.</span></label>`}<div class="xpay-w"><div class="xpay-btns"></div><button type="button" class="xpay-lock" aria-label="Bitte zuerst die Zustimmung bestätigen"></button></div><div class="xpay-err" role="alert"></div></div>`;
 /* Klebende Spalten (Desktop): die kürzere fährt mit, eine Spalte höher als das Fenster klebt mit ihrer Unterkante */
@@ -228,16 +240,21 @@ function brandPage(id){
     <ul class="pinfo">${tiles.map(t=>`<li><span class="pinfo-ic">${ic(t[0])}</span><span><small>${t[1]}</small><b>${t[2]}</b></span></li>`).join("")}</ul>
     <div class="tabs" role="tablist" aria-label="Produktinformationen">${["Beschreibung","Einlösen","Hinweise"].map((t,i)=>`<button role="tab" id="pt${i}" aria-controls="pp${i}" aria-selected="${!i}" tabindex="${i?-1:0}" data-a="ptab" data-v="${i}">${t}</button>`).join("")}</div>
     <div class="tabp" id="pp0" role="tabpanel" aria-labelledby="pt0" data-p="0"><p>${esc(descOf(b))}</p></div>
-    <div class="tabp" id="pp1" role="tabpanel" aria-labelledby="pt1" data-p="1" hidden><ol class="pd-steps" id="redeemOl">${redeemSteps(b).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>
+    <div class="tabp" id="pp1" role="tabpanel" aria-labelledby="pt1" data-p="1" hidden><ol class="pd-steps" id="redeemOl">${redeemSteps(b).map(x=>`<li>${esc(x)}</li>`).join("")}</ol>${b.ru?`<div class="pd-go">${ruBtn(b)}<small>Offizielle Seite: ${esc(b.ru.label)}</small></div>`:""}</div>
     <div class="tabp" id="pp2" role="tabpanel" aria-labelledby="pt2" data-p="2" hidden><p>Gültig in ${region}. Es gelten die Bedingungen von ${esc(b.name)}${K?` und ${esc(PLAT[b.plat])}`:""}. Digitale Codes sind nach der Auslieferung vom Umtausch ausgeschlossen.</p></div>
   </div>
 </div>
 ${similar.length?`<section class="sec pd-more">${secHead("Mehr aus "+esc(c.name),["/kategorie/"+c.id,"Alle"],railNav("simRail"))}${rail("simRail",similar,{cover:K})}</section>`:""}
 <div class="pd-bar" id="pdBar"><div class="pd-bar-in"><span class="pd-bar-t"><b id="bbTot">${money(total())}</b><small id="bbSub">${esc(barSub())}</small></span><button class="btn btn-primary btn-ink" data-a="pBuy"${dis}>Jetzt kaufen</button></div></div>
+<script type="application/ld+json" id="pdLd">${pdLd(b,c)}<\/script>
 `,
   after(){if(b.rl)API("/product/"+encodeURIComponent(b.id)).then(j=>{const o=document.getElementById("redeemOl");if(o&&j.redeem){const st=String(j.redeem).replace(/<[^>]+>/g," ").split(/(?<=[.!])\s+|\n+|\r+/).map(x=>x.trim()).filter(x=>x.length>2).slice(0,8);if(st.length)o.innerHTML=st.map(x=>`<li>${esc(x)}</li>`).join("")}}).catch(()=>{});
     const stg=$("#pdStage"),bar=$("#pdBar"),buy=$(".pd-buy");
     stick($(".pd-side"));kBadge($(".pd-more"));
+    /* Strukturierte Daten: die vom Server eingesetzte Fassung (Produkt/Kategorie) weicht der aktuellen in der Ansicht; Sterne kommen nur mit echten Bewertungen dazu */
+    $$('head script[type="application/ld+json"]').forEach(s=>{if(/"(Product|BreadcrumbList|CollectionPage)"/.test(s.textContent))s.remove()});
+    {const rk=variants(b).map(x=>x.id).filter(Boolean).sort().join(","),ldR=R=>{const s=document.getElementById("pdLd");if(s&&R&&R.count)s.textContent=pdLd(b,c,R)};
+      if(REVB[rk])ldR(REVB[rk]);else API("/reviews?brand="+encodeURIComponent(rk)).then(R=>{REVB[rk]=REVB[rk]||R;ldR(R)}).catch(()=>{})}
     stg.addEventListener("pointerleave",()=>{stg.style.removeProperty("--mx");stg.style.removeProperty("--my")});
     const side=$(".pd-side");side.addEventListener("focusin",e=>{if(e.target.matches("input,textarea"))bar.classList.add("typing")});side.addEventListener("focusout",()=>bar.classList.remove("typing"));
     /* Kaufleiste (Handy): erscheint, wenn weder die Karte noch die Kaufknöpfe zu sehen sind, und verschwindet vor der Fußzeile */

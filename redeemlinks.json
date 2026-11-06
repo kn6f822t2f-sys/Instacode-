@@ -1,0 +1,39 @@
+{
+  "steam": { "url": "https://store.steampowered.com/account/redeemwalletcode", "label": "Steam-Guthaben einlösen" },
+  "plat:steam": { "url": "https://store.steampowered.com/account/registerkey", "label": "Produkt bei Steam aktivieren" },
+
+  "psn": { "url": "https://store.playstation.com/", "label": "PlayStation Store: Profil, dann „Code einlösen“" },
+  "psplus-essential": { "url": "https://store.playstation.com/", "label": "PlayStation Store: Profil, dann „Code einlösen“" },
+  "psplus-extra": { "url": "https://store.playstation.com/", "label": "PlayStation Store: Profil, dann „Code einlösen“" },
+  "psplus-premium": { "url": "https://store.playstation.com/", "label": "PlayStation Store: Profil, dann „Code einlösen“" },
+  "plat:ps5": { "url": "https://store.playstation.com/", "label": "PlayStation Store: Profil, dann „Code einlösen“" },
+
+  "xbox": { "url": "https://redeem.microsoft.com/", "label": "Code im Microsoft-Konto einlösen" },
+  "microsoft": { "url": "https://redeem.microsoft.com/", "label": "Code im Microsoft-Konto einlösen" },
+  "gpu": { "url": "https://redeem.microsoft.com/", "label": "Code im Microsoft-Konto einlösen" },
+  "pcgp": { "url": "https://redeem.microsoft.com/", "label": "Code im Microsoft-Konto einlösen" },
+  "plat:xbox": { "url": "https://redeem.microsoft.com/", "label": "Code im Microsoft-Konto einlösen" },
+  "plat:xpc": { "url": "https://redeem.microsoft.com/", "label": "Code im Microsoft-Konto einlösen" },
+
+  "nintendo": { "url": "https://ec.nintendo.com/redeem", "label": "Code im Nintendo eShop einlösen" },
+  "nso": { "url": "https://ec.nintendo.com/redeem", "label": "Code im Nintendo eShop einlösen" },
+  "nsoplus": { "url": "https://ec.nintendo.com/redeem", "label": "Code im Nintendo eShop einlösen" },
+  "plat:switch": { "url": "https://ec.nintendo.com/redeem", "label": "Code im Nintendo eShop einlösen" },
+  "plat:switch2": { "url": "https://ec.nintendo.com/redeem", "label": "Code im Nintendo eShop einlösen" },
+
+  "ea": { "url": "https://myaccount.ea.com/am/ui/payment-wallet", "label": "EA-Konto: Zahlung und Wallet" },
+  "eaplay": { "url": "https://www.ea.com/redeem", "label": "Produktcode bei EA einlösen" },
+  "plat:ea": { "url": "https://www.ea.com/redeem", "label": "Produktcode bei EA einlösen" },
+
+  "minecraft-pc": { "url": "https://www.minecraft.net/redeem", "label": "Minecraft-Code einlösen" },
+  "minecoins": { "url": "https://minecraft.net/en-us/redeem/minecoins", "label": "Minecoins einlösen" },
+
+  "fortnite": { "url": "https://www.fortnite.com/vbuckscard", "label": "V-Bucks-Karte einlösen" },
+  "roblox": { "url": "https://www.roblox.com/redeem", "label": "Roblox-Geschenkkarte einlösen" },
+
+  "apple": { "url": "https://www.apple.com/redeem/", "label": "Apple Gift Card einlösen" },
+  "gplay": { "url": "https://play.google.com/redeem", "label": "Google-Play-Code einlösen" },
+  "netflix": { "url": "https://www.netflix.com/redeem", "label": "Netflix-Geschenkkarte einlösen" },
+  "spotify": { "url": "https://www.spotify.com/account/redeem/", "label": "Spotify-Geschenkkarte einlösen" },
+  "amazon": { "url": "https://www.amazon.de/gc/redeem", "label": "Amazon.de-Geschenkkarte einlösen" }
+}

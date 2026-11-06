@@ -62,7 +62,8 @@ function mountTrustpilot(box){
   if(!$("#tpjs")){const sc=document.createElement("script");sc.id="tpjs";sc.src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";sc.async=true;sc.onload=go2;document.head.appendChild(sc)}
 }
 
-function renderAcc(){const a=$("#hacc");a.innerHTML=S.user?`<span class="avatar" title="${esc(S.user.name)}">${esc(initials(S.user.name))}</span>`:`<span class="btn btn-primary btn-sm">Anmelden</span>`;a.setAttribute("href",S.user?"/konto":"/login")}
+function renderAcc(){const a=$("#hacc");a.innerHTML=S.user?`<span class="avatar" title="${esc(S.user.name)}">${esc(initials(S.user.name))}</span>`:`<span class="btn btn-primary btn-sm">Anmelden</span>`;a.setAttribute("href",S.user?"/konto":"/login");
+  /* abgemeldet öffnet der Link das Anmelde-Fenster (52-passkey.js) */S.user?a.removeAttribute("aria-haspopup"):a.setAttribute("aria-haspopup","dialog")}
 function renderFooter(){
   const cats=CATSV();
   $("#ftr").innerHTML=`<div class="ft">

@@ -62,6 +62,7 @@ ${trustBand({n:16})}
 <section class="sec hm-cats">${head("Kategorien","Vom Spiele-Key bis zum Streaming-Guthaben.",`<a class="more" href="/kategorien">Alle Kategorien${ic("i-chev")}</a>`)}
   <div class="bento-cats">${cats.slice(0,6).map((k,i)=>{const l=VIS().filter(b=>b.cat===k.id),n=BRANDS.filter(b=>b.cat===k.id).length;return `<a class="bc spot rv" href="/kategorie/${k.id}" style="--c:${CCOL[k.id]};--d:${i*70}ms"><span class="bc-t"><b>${esc(k.name)}</b><small>${n} ${k.id==="keys"?"Spiele":"Produkte"}</small></span><span class="bc-go">${ic("i-arrow")}</span><span class="bc-fan" aria-hidden="true">${l.slice(0,3).map(b=>gc(b,{tilt:false,badge:false,plat:false})).join("")}</span></a>`}).join("")}</div>
 </section>
+${wgHome()}
 <section class="sec hm-pay"><div class="payband rv">
   <div class="payband-copy"><h2 class="h2">Bezahlen, wie du willst</h2><p>${payNames()}. Die Zahlung läuft verschlüsselt über Stripe – deine Kartendaten sehen wir nie.</p></div>
   <div class="payband-logos">${payLogos()}</div>

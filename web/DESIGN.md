@@ -48,14 +48,16 @@ Deutsch, Du-Form, Satzanfang groß, kurze klare Verben („Jetzt kaufen“, „I
 **Verboten:** erfundene Bewertungen, Zahlen, Käufe, „X Personen sehen gerade“, Zertifikate/Siegel, Countdown-Druck. Bewertungen nur echte (`/api/reviews`, Anzeige ab 3 Bewertungen). Marken-Logos nicht selbst zeichnen: nur Reloadly-Kartenbilder (`b.img`), Simple-Icons-Dateien in `public/logo/` (`siI()`, Seitenverhältnis `SIA`) oder Proxy `/img/mark/<set>/<name>.svg`.
 
 ## Marke
-- Name **instantcodes** (Wortmarke `<b>instant</b>codes`: „instant“ kräftig, „codes“ leicht). Zeichen `#logo`: Graphit-Kachel mit Chromkante, Code-Klammern aus Chrom, Blitz in Perlmutt (`public/logo.svg`, `favicon.svg`, PNG-Größen, `og.png`).
+- Name **instantcodes** (Wortmarke `<b>instant</b>codes`: „instant“ kräftig, „codes“ leicht). Zeichen `#logo`: **Ring aus flüssigem Chrom** – derselbe Ring wie auf der Startseite, in der Logo-Fassung (rundere Form, kräftigeres Chrom, Perlmutt am Rand). Bilddateien: `public/logo-ring.webp` (Symbol `#logo`, `LOGO()`), `logo.png`/`logo.svg`, `favicon.png/.svg`, `apple-touch-icon.png`, `icon-512.png` (auch Mail-Logo und Stripe-Symbol), `brand/checkout-logo.png` (Stripe-Kasse), `og.png`. In der Kopfzeile läuft der Ring live (WebGL, `.lq-mini`, Uniform `k=1`), das Bild ist der Platzhalter.
 - Interne Namen bleiben: Speicher-Schlüssel `instacode_v1`, Datenbank `instacode.db`, Adressen `@instacode.store`.
 
 ## Startseite (Aufbau)
 Bühne (Überschrift „Digitale Codes. In Sekunden bei dir.“, große Suche öffnet die Palette, Schnellwahl, Zahlungs-Badges; rechts der Metall-Ring mit schwebenden Glaskarten) · Markenband in Chrom · Bestseller · Kategorien-Bento · Abo-Teaser · So einfach geht's (Video `/vid/ablauf.*`) · Handy aufladen · Spiele-Keys · Angebote · Zuletzt angesehen · Aussage + Zusagen · Bewertungen · Ratgeber · Fragen · Abschluss.
 
 ## Muss erhalten bleiben
-- Kopfzeile: Glas-Pille, Wortmarke mit Polier-Glanz, Logo führt zur Startseite, Suche (Strg K), Konto, Warenkorb.
+- Kopfzeile: schmale, fast durchsichtige Glas-Pille (52 px, Desktop 56 px). Effekte im Balken: lebendiger Chrom-Ring, Lichtkante folgt dem Zeiger (`--hx`), Glanz zieht alle 10 s durch, Perlmutt-Linie zeigt den Lesefortschritt (`--sp`), Glas-Linse hinter der Navigation. Wortmarke mit Polier-Glanz, Suche (Strg K), KI-Beraterin (Funkel-Symbol), Warenkorb, Konto.
+- Hintergrund (`.bgfx`, liegt hinter allem, deshalb hat `body` keinen eigenen Hintergrund): Farbschleier, drei unscharfe Chrom-Ringe und ein Perlmutt-Lichtband bewegen sich beim Scrollen mit eigener Geschwindigkeit (`--sy`, nur an `.bgfx` gesetzt). Große Flächen gleiten scroll-gekoppelt herein (`animation-timeline:view()`, sonst `.rv`).
+- Überschriften in klarer Tinte ohne Verlauf (`.h1` 470, `.h2` 460), Flächen als helles Glas (60–65 % Weiß), damit der bewegte Hintergrund durchscheint.
 - Zahlungs-Badges im Stil echter Akzeptanzlogos (`.pmk`), Klarna-Badge wo verfügbar (`klarnaBadge()`, nicht bei Abos).
 - Produktseiten mit echter URL, Aktionen Teilen/Merken/Link kopieren/Verschenken.
 - Servicegebühr 4,99 € transparent; Preise = Nennwert.
