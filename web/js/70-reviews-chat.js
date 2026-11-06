@@ -38,7 +38,7 @@ function renderFooter(){
   </div>`;
 }
 function applyTheme(){document.documentElement.setAttribute("data-theme","dark")}
-function confetti(){if(reduce)return;const box=$("#confetti"),cols=["#5B4BF0","#2E6BFF","#9D8BFF","#FFFFFF","#FFC857","#12B76A"];for(let i=0;i<50;i++){const p=document.createElement("i");p.style.cssText=`left:${Math.random()*100}%;background:${cols[i%6]};--dx:${(Math.random()-.5)*180}px;--r:${Math.random()*720-360}deg;animation-duration:${1.7+Math.random()*1.4}s;animation-delay:${Math.random()*.3}s;width:${6+Math.random()*6}px;height:${8+Math.random()*8}px`;box.appendChild(p)}setTimeout(()=>{box.innerHTML=""},3800)}
+function confetti(){if(reduce)return;const box=$("#confetti"),cols=["#FFFFFF","#E9EBEE","#B5BAC3","#FFE0F0","#DCCBFF","#D3FBF2"];for(let i=0;i<50;i++){const p=document.createElement("i");p.style.cssText=`left:${Math.random()*100}%;background:${cols[i%6]};--dx:${(Math.random()-.5)*180}px;--r:${Math.random()*720-360}deg;animation-duration:${1.7+Math.random()*1.4}s;animation-delay:${Math.random()*.3}s;width:${6+Math.random()*6}px;height:${8+Math.random()*8}px`;box.appendChild(p)}setTimeout(()=>{box.innerHTML=""},3800)}
 
 /* ---------- chat ---------- */
 const chat={open:false,started:false,asked:{}};

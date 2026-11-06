@@ -183,6 +183,7 @@ CREATE TABLE IF NOT EXISTS sub_events(id TEXT PRIMARY KEY, type TEXT, at INTEGER
       }
     }
     db.prepare("DELETE FROM subs WHERE status IN ('pending','expired') AND created_at<?").run(X.now() - 3 * 864e5);
+    db.prepare("DELETE FROM sub_events WHERE at<?").run(X.now() - 90 * 864e5);
     if (created) console.log(`Abo: ${created} neue Lieferung(en) warten auf Freigabe`);
     return created;
   }
@@ -394,7 +395,7 @@ CREATE TABLE IF NOT EXISTS sub_events(id TEXT PRIMARY KEY, type TEXT, at INTEGER
         if (!got) throw new X.Stockout(`${it.name} ${X.optLabel(CATALOG[it.brand] || {}, it.face / 100)}`);
         return got;
       });
-      db.prepare("UPDATE sub_deliveries SET status='delivered', codes=?, delivered_at=?, delivered_by=?, note=COALESCE(?,note) WHERE id=? AND status='pending'").run(X.enc(JSON.stringify(out)), X.now(), by, note || null, d.id);
+      db.prepare("UPDATE sub_deliveries SET status='delivered', codes=?, delivered_at=?, delivered_by=?, note=COALESCE(?,note) WHERE id=? AND status='pending'").run(X.enc(JSON.stringify(out)), T(), by, note || null, d.id);
     })();
     const fresh = db.prepare("SELECT * FROM sub_deliveries WHERE id=?").get(d.id);
     X.safe(mail.aboDelivery(view(s), deliveryOut(fresh, true)));
@@ -444,9 +445,11 @@ CREATE TABLE IF NOT EXISTS sub_events(id TEXT PRIMARY KEY, type TEXT, at INTEGER
     db.prepare("INSERT INTO subs(id,access_key,user_id,email,name,plan,price,months,status,created_at,consent_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)")
       .run(id, key, req.user ? req.user.id : null, e, name, P.id, P.price, P.months, "pending", X.now(), X.now());
     const term = P.months === 1 ? "monatlich" : `alle ${P.months} Monate`;
-    const s = await X.stripeCall((p, o) => stripe.checkout.sessions.create(p, o), {
+    /* Feste Zahlungsarten (ohne Klarna). Lehnt Stripe eine davon ab (z. B. Link im Konto aus), noch einmal nur mit Karte (Apple Pay und Google Pay laufen über Karte). */
+    const create = async pm => X.stripeCall((p, o) => stripe.checkout.sessions.create(p, o), Object.assign(params(), { payment_method_types: pm }), newer, { idempotencyKey: `abo-cs-${id}-${pm.join("-")}` });
+    const params = () => ({
       mode: "subscription", locale: "de", customer_email: e, client_reference_id: id,
-      expires_at: Math.floor(Date.now() / 1000) + 30 * 60, billing_address_collection: "auto", payment_method_types: PM,
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60, billing_address_collection: "auto",
       metadata: { sub_id: id },
       subscription_data: { metadata: { sub_id: id }, description: `instantcodes Abo ${P.name} (${id})` },
       line_items: [{ quantity: 1, price_data: { currency: "eur", unit_amount: P.price, recurring: { interval: "month", interval_count: P.months },
@@ -455,10 +458,17 @@ CREATE TABLE IF NOT EXISTS sub_events(id TEXT PRIMARY KEY, type TEXT, at INTEGER
       custom_text: { submit: { message: `Das Abo verlängert sich automatisch um ${P.months === 1 ? "einen Monat" : P.months + " Monate"}, bis du kündigst. Die Codes kommen nach einer kurzen Prüfung per E-Mail.` } },
       success_url: `${BASE}/abo/${id}?k=${key}&neu=1`,
       cancel_url: `${BASE}/abo?abgebrochen=1`
-    }, {
+    });
+    const newer = {
       branding_settings: { display_name: "instantcodes", button_color: "#1700D2", background_color: "#FFFFFF", border_style: "rounded", font_family: "inter",
         icon: { type: "url", url: `${BASE}/icon-512.png` }, logo: { type: "url", url: `${BASE}/brand/checkout-logo.png` } }
-    }, { idempotencyKey: "abo-cs-" + id });
+    };
+    let s;
+    try { s = await create(PM); }
+    catch (err) {
+      if (PM.length > 1 && /payment_method_types|payment method type|link|paypal/i.test((err && err.message) || "")) { console.error("Abo-Checkout: Zahlungsart abgelehnt, nur Karte:", err.message); s = await create(["card"]); }
+      else throw err;
+    }
     db.prepare("UPDATE subs SET stripe_session=? WHERE id=?").run(s.id, id);
     res.json({ url: s.url, id, key });
   }));
@@ -564,7 +574,7 @@ CREATE TABLE IF NOT EXISTS sub_events(id TEXT PRIMARY KEY, type TEXT, at INTEGER
   app.post("/api/admin/abos/deliveries/:id/skip", X.admin, (req, res) => {
     const d = db.prepare("SELECT * FROM sub_deliveries WHERE id=?").get(Number(req.params.id));
     if (!d || d.status !== "pending") return bad(res, "Diese Lieferung kann nicht übersprungen werden.");
-    db.prepare("UPDATE sub_deliveries SET status='skipped', note=?, delivered_by='admin', delivered_at=? WHERE id=?").run(String(req.body.note || "Nicht geliefert").slice(0, 500), X.now(), d.id);
+    db.prepare("UPDATE sub_deliveries SET status='skipped', note=?, delivered_by='admin', delivered_at=? WHERE id=?").run(String(req.body.note || "Nicht geliefert").slice(0, 500), T(), d.id);
     res.json({ ok: true });
   });
   app.post("/api/admin/abos/:id/refund", X.admin, X.wrap(async (req, res) => {

@@ -331,7 +331,7 @@ const M = {
             <td valign="middle" style="padding-left:14px;text-align:left"><div style="${T()}font-size:15px;line-height:1.3;font-weight:700;color:${C.white}">${esc(i.label || P.name)}</div>
             <div style="${T()}font-size:13px;line-height:1.4;color:${C.muted};margin-top:2px">Wert ${eur(i.face)}</div></td></tr></table>` +
             (i.codes || []).map(c => codeBox(c, P.type === "key" ? "Dein Key" : "Dein Code")).join("") +
-            small(`Einlösen ${redeemWhere(P)} unter „Code einlösen“ oder im Konto unter „Guthaben“. <a href="${BASE}/marke/${esc(P.id)}" style="color:${C.label};font-weight:700">Anleitung</a>`, "margin:6px 0 0")); }).join("") +
+            small(`Einlösen ${redeemWhere(P)} unter „Code einlösen“. <a href="${BASE}/marke/${esc(P.id)}" style="color:${C.label};font-weight:700">Anleitung</a>`, "margin:6px 0 0")); }).join("") +
         btn(v.link, "Abo ansehen") + h2("So löst du ein") + steps(["Code antippen und kopieren", "Beim Dienst „Code einlösen“ wählen", "Einfügen – fertig"]) +
         small(`Vertragsnummer ${esc(v.id)} · Kündigen kannst du jederzeit online: <a href="${v.cancelLink}" style="color:${C.label}">Verträge hier kündigen</a>`, "text-align:center;margin-top:18px") }; },
 

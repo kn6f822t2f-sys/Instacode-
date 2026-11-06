@@ -1,4 +1,6 @@
-/* ---------- Handy aufladen ---------- */
+/* ---------- Handy aufladen ----------
+   Drei Schritte als Glasflächen mit Chrom-Marken (erledigte Schritte zeigen einen Haken), Anbieter-Erkennung als Glas-Chip,
+   Beträge als Chrom-Pillen; rechts eine Telefon-Vorschau mit Chromrahmen auf einem Sockel und die Zusammenfassung. */
 /* Nummer lesbar gruppieren: Vorwahl (3 Ziffern) und Rest */
 const telFmt=n=>n.length>3?n.slice(0,3)+" "+n.slice(3):n;
 function topup(_,qs){
@@ -10,30 +12,33 @@ function topup(_,qs){
   if(!T.op)T.op=detect(T.n);
   T.auto=!!T.op&&!q0;
   if(T.op)T.a=amt0(byId(T.op));
+  const mark=n=>`<span class="tu-n" aria-hidden="true"><b>${n}</b>${ic("i-check")}</span>`;
   return {tab:"topup",title:"Handy aufladen",html:`${crumb([["Handy aufladen"]])}
 <div class="tu">
   <div class="tu-head"><h1 class="h1 page-h1">Handy aufladen</h1><p class="lead">Guthaben für ${ops.length} Anbieter. Nummer eingeben, Betrag wählen, bezahlen – das Guthaben wird direkt nach der Zahlung gebucht.</p></div>
   <div class="tu-steps">
-    <section class="tu-step spot" aria-labelledby="tuS1"><h2 class="tu-sh" id="tuS1"><span class="tu-n" aria-hidden="true">1</span>Land und Nummer</h2>
+    <section class="tu-step tu-s1 spot" aria-labelledby="tuS1"><h2 class="tu-sh" id="tuS1">${mark(1)}<span>Land und Nummer</span></h2>
       <button class="sel" data-a="country" aria-label="Land: ${esc(c.n)}. Ändern">${flag(c.c,24)}<span>${esc(c.n)}</span>${ic("i-down")}</button>
       <label class="lbl" for="tNum">Handynummer</label>
       <div class="phone"><span>${c.dial}</span><input id="tNum" type="tel" inputmode="tel" placeholder="151 2345678" value="${esc(T.n)}" autocomplete="tel-national" aria-describedby="tErr"></div>
       <div class="err" id="tErr" role="alert"></div>
       ${saved.length?`<span class="lbl tu-sl">Gespeicherte Nummern</span><div class="tu-saved">${saved.map(x=>`<button class="chip" data-a="tSaved" data-v="${esc(x.n)}|${esc(x.op)}">${ic("i-user")}${esc(telFmt(x.n))}</button>`).join("")}</div>`:""}
     </section>
-    <section class="tu-step spot" aria-labelledby="tuS2"><h2 class="tu-sh" id="tuS2"><span class="tu-n" aria-hidden="true">2</span>Anbieter</h2>
-      <p class="tu-det" id="tDet"></p>
-      <div class="tu-ops" id="tOps" role="group" aria-labelledby="tuS2">${ops.map(x=>`<button class="chip" data-a="tOp" data-v="${x.id}" aria-pressed="false"><i class="tu-dot" style="background:${x.bg}" aria-hidden="true"></i>${esc(x.name)}</button>`).join("")}</div>
+    <section class="tu-step tu-s2 spot" aria-labelledby="tuS2"><i class="tu-wire" aria-hidden="true"></i><h2 class="tu-sh" id="tuS2">${mark(2)}<span>Anbieter</span></h2>
+      <div class="tu-chip" id="tChip"><span class="tu-chip-m" id="tChipM" aria-hidden="true"></span><p class="tu-det" id="tDet"></p></div>
+      <div class="tu-ops" id="tOps" role="group" aria-labelledby="tuS2">${ops.map(x=>`<button class="chip tu-op" data-a="tOp" data-v="${x.id}" aria-pressed="false"><span class="tu-oc" aria-hidden="true">${gc(x,{tilt:false,badge:false})}</span>${esc(x.name)}</button>`).join("")}</div>
     </section>
-    <section class="tu-step spot" aria-labelledby="tuS3"><h2 class="tu-sh" id="tuS3"><span class="tu-n" aria-hidden="true">3</span>Betrag</h2>
+    <section class="tu-step tu-s3 spot" aria-labelledby="tuS3"><i class="tu-wire" aria-hidden="true"></i><h2 class="tu-sh" id="tuS3">${mark(3)}<span>Betrag</span></h2>
       <div class="amounts" id="tAmts" role="group" aria-labelledby="tuS3" data-off></div>
     </section>
   </div>
   <aside class="tu-aside" aria-label="Zusammenfassung">
     <div class="tu-prev" id="tuPrev">
-      <div class="phone-mock" id="pMock" aria-hidden="true"><span class="lm" aria-hidden="true"></span><div class="pm-screen"><div class="pm-card" id="pmCard"><span class="gc ghost"></span></div><div class="pm-op"><i id="pmOpC"></i><span id="pmOp">Anbieter wählen</span></div><div class="pm-num" id="pmNum">${c.dial} …</div><div class="pm-amt" id="pmAmt"><small>Aufladung</small><span>–</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div></div>
+      <span class="tu-halo" aria-hidden="true"></span>
+      <div class="phone-mock" id="pMock" aria-hidden="true"><div class="pm-screen"><div class="pm-card" id="pmCard"><span class="gc ghost"></span></div><div class="pm-op"><i id="pmOpC"></i><span id="pmOp">Anbieter wählen</span></div><div class="pm-num" id="pmNum">${c.dial} …</div><div class="pm-amt" id="pmAmt"><small>Aufladung</small><span>–</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div></div>
+      <span class="tu-base" aria-hidden="true"></span>
     </div>
-    <div class="tu-sum spot">
+    <div class="tu-sum">
       <h2 class="h3">Zusammenfassung</h2>
       <dl class="tu-rows"><div><dt>Nummer</dt><dd id="sNum">–</dd></div><div><dt>Anbieter</dt><dd id="sOp">–</dd></div><div><dt>Guthaben</dt><dd id="sAmt">–</dd></div></dl>
       <div class="tu-tot"><span>Gesamt</span><b id="sTot" aria-live="polite">–</b></div>
@@ -46,7 +51,7 @@ function topup(_,qs){
   </aside>
 </div>`,
   after(){
-    const num=$("#tNum"),pm=$("#pMock"),prev=$("#tuPrev");
+    const num=$("#tNum"),pm=$("#pMock"),prev=$("#tuPrev"),steps=$$(".tu-step");
     stick($(".tu-aside"));
     let amtOp=null;
     const draw=()=>{
@@ -55,6 +60,11 @@ function topup(_,qs){
       if(amtOp!==T.op){amtOp=T.op;$("#tAmts").innerHTML=o?o.amts.map(a=>`<button class="amt" data-a="tAmt" data-v="${a}" aria-pressed="false">${money(a)}${Math.abs(price(o,a)-a)>.004?`<small>${money(price(o,a))}</small>`:""}</button>`).join(""):`<p class="tu-hint">Wähle zuerst einen Anbieter.</p>`}
       $$("#tAmts .amt").forEach(x=>x.setAttribute("aria-pressed",+x.dataset.v===T.a));
       $("#tDet").textContent=T.auto&&o?`Automatisch erkannt: ${o.name}. Stimmt das nicht? Wähle einen anderen Anbieter.`:o?"Wähle einen anderen Anbieter, falls die Nummer woanders ist.":"Wähle den Mobilfunkanbieter der Nummer.";
+      /* Glas-Chip der Erkennung: Mini-Karte des Anbieters, Chromkante wenn automatisch erkannt */
+      const ch=$("#tChip"),cm=$("#tChipM");ch.classList.toggle("auto",!!(T.auto&&o));ch.classList.toggle("has",!!o);
+      if(cm.dataset.op!==(o?o.id:"")){cm.dataset.op=o?o.id:"";cm.innerHTML=o?gc(o,{tilt:false,badge:false}):ic("i-phone-f")}
+      /* Erledigte Schritte: Haken statt Nummer */
+      steps[0].classList.toggle("done",T.n.length>=6&&T.n.length<=12);steps[1].classList.toggle("done",!!o);steps[2].classList.toggle("done",ok);
       $("#sNum").textContent=T.n?`${dial} ${telFmt(T.n)}`:"–";
       $("#sOp").textContent=o?o.name:"–";
       $("#sAmt").textContent=ok?money(T.a):"–";

@@ -97,12 +97,13 @@ const menuScrim=document.createElement("div");menuScrim.className="menu-scrim";m
 let menuFrom=null;
 function renderMenu(){
   const c=ctry(),u=S.user,row=(tag,attr,icon,t,v)=>`<${tag} class="mi" ${attr}><span class="si-ic">${icon}</span><span class="mi-t">${t}</span>${v?`<span class="mi-v">${v}</span>`:""}${ic("i-chev","mi-c")}</${tag}>`;
+  /* Vollbild-Glas: große Einträge in Chrom, darunter Kategorien als Glas-Kacheln, Service und Konto */
+  const big=[["/angebote","Angebote"],["/abo","Abo","m-abo"],["/aufladen","Handy aufladen"],["/hilfe","Hilfe und Kontakt"]];
   $("#menuBody").innerHTML=`<button class="m-search" data-a="palOpen">${ic("i-search")}<span>Marke oder Gutschein suchen</span></button>
-  <section class="m-sec" aria-labelledby="mCats"><h2 class="m-h" id="mCats">Kategorien</h2><div class="m-cats">${CATSV().map(k=>`<a class="m-cat" href="/kategorie/${k.id}" style="--c:${CCOL[k.id]}"><span class="cc-ic">${ic(k.icon)}</span><span>${esc(k.name)}</span></a>`).join("")}</div></section>
+  <nav class="m-big" aria-label="Hauptbereiche">${big.map((b,i)=>`<a href="${b[0]}"${b[2]?` class="${b[2]}"`:""} style="--i:${i}"><span>${b[1]}</span>${ic("i-arrow")}</a>`).join("")}</nav>
+  <section class="m-sec" aria-labelledby="mCats"><div class="m-hrow"><h2 class="m-h" id="mCats">Kategorien</h2><a class="more" href="/kategorien">Alle ansehen${ic("i-chev")}</a></div><div class="m-cats">${CATSV().filter(k=>k.id!=="topup").map(k=>`<a class="m-cat" href="/kategorie/${k.id}" style="--c:${CCOL[k.id]}"><span class="cc-ic">${ic(k.icon)}</span><span>${esc(k.name)}</span></a>`).join("")}</div></section>
   <section class="m-sec" aria-labelledby="mSvc"><h2 class="m-h" id="mSvc">Service</h2><div class="m-list">
-   ${row("a",`href="/angebote" style="--c:#C8261C"`,ic("i-tag"),"Angebote")}
-   ${row("a",`href="/hilfe" style="--c:#4532DA"`,ic("i-help"),"Hilfe und Kontakt")}
-   ${row("button",`data-a="chatOpen"`,LOGO(24),"Mia fragen")}
+   ${row("button",`data-a="chatOpen"`,LOGO(24),"Mia fragen<small>Digitale Assistentin, antwortet sofort</small>")}
    ${row("button",`data-a="country"`,flag(c.c,22),"Land",esc(c.n))}
   </div></section>
   <div class="m-acc">${u?`<a class="mi m-user" href="/konto"><span class="avatar">${esc(initials(u.name))}</span><span class="mi-t">${esc(u.name)}<small>Bestellungen, Codes und Einstellungen</small></span>${ic("i-chev","mi-c")}</a>`

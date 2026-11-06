@@ -7,6 +7,7 @@ const aboBrand=id=>{const b=byId(id);if(b)return b;if(ABO_B[id])return ABO_B[id]
   const c=ABOD&&ABOD.flatMap(p=>p.items).map(i=>i.card).find(x=>x&&x.id===id);if(!c)return null;
   const x=Object.assign({},c,{fg:c.fg||"#fff",disc:0});x.art=artOf(x);x.ini=(String(x.name).replace(/[^A-Za-z0-9]/g,"")||"?").slice(0,2);x.from=Math.min.apply(null,x.amts||[0]);return ABO_B[id]=x};
 const aboDay=t=>t?new Date(t).toLocaleDateString("de-DE",{timeZone:"Europe/Berlin",day:"numeric",month:"long",year:"numeric"}):"–";
+const aboE=c=>c%100?eurc(c):`${(c/100).toLocaleString("de-DE")} €`;
 const aboDT=t=>new Date(t).toLocaleString("de-DE",{timeZone:"Europe/Berlin",dateStyle:"long",timeStyle:"short"})+" Uhr";
 const aboTxt=p=>{const n=p.months,one=n===1;return {term:one?"1 Monat":`${n} Monate`,per:one?"pro Monat":`für ${n} Monate`,
   renew:one?"verlängert sich jeden Monat":`verlängert sich um jeweils ${n} Monate`,
@@ -33,7 +34,8 @@ function aboPage(_,qs){
 const aboKey=p=>JSON.stringify(p.items.map(i=>[i.brand,i.a,i.every]));
 function aboBody(){
   const P=ABOD,sel=P.find(p=>p.id===S.aboPlan)||P[0],same=P.every(p=>aboKey(p)===aboKey(sel));
-  const fan=sel.items.map(i=>aboBrand(i.brand)).filter(Boolean).slice(0,7);
+  const pref=["netflix","disney","spotify","gpu","psplus-essential"],ids=sel.items.map(i=>i.brand);
+  const fan=pref.filter(x=>ids.includes(x)).concat(ids.filter(x=>!pref.includes(x))).slice(0,5).map(aboBrand).filter(Boolean);
   return `<section class="sec ab-hero">
   <div class="ab-hero-copy">
    <h1 class="h1 rv">Jeden Monat neue Codes</h1>
@@ -61,7 +63,7 @@ function aboBody(){
 const aboPlanCard=(p,i)=>{const t=aboTxt(p),on=S.aboPlan===p.id;
   return `<article class="card ab-plan rv${on?" on":""}" style="--d:${i*80}ms" data-plan="${p.id}">
   <header class="ab-plan-h"><h3 class="h3">${esc(p.name)}</h3>${p.months===6?`<span class="chip ab-tag">Günstigster Monatspreis</span>`:""}</header>
-  <p class="ab-price"><b>${eurc(p.price)}</b><span>${t.per}</span></p>
+  <p class="ab-price"><b>${aboE(p.price)}</b><span>${t.per}</span></p>
   <p class="ab-eq">${p.months>1?`entspricht ${eurc(p.perMonth)} pro Monat`:"monatlich kündbar"}</p>
   <dl class="ab-dl">
    <div><dt>Code-Wert</dt><dd>im Schnitt ${eurc(p.avgValue)} pro Monat</dd></div>
@@ -76,7 +78,7 @@ function aboCheckout(p){
   const t=aboTxt(p);
   return `<section class="sec ab-sec" id="abschluss"><div class="card ab-co rv">
   <div class="ab-co-l"><h2 class="h2">Abo abschließen</h2>
-   <div class="chips ab-pick" role="group" aria-label="Plan wählen">${ABOD.map(x=>`<button class="chip" data-a="aboPick" data-v="${x.id}" data-stay="1" aria-pressed="${x.id===p.id}">${esc(x.name)} · ${eurc(x.price)}</button>`).join("")}</div>
+   <div class="chips ab-pick" role="group" aria-label="Plan wählen">${ABOD.map(x=>`<button class="chip" data-a="aboPick" data-v="${x.id}" data-stay="1" aria-pressed="${x.id===p.id}">${esc(x.name)} · ${aboE(x.price)}</button>`).join("")}</div>
    <dl class="ab-dl ab-sum">
     <div><dt>Plan</dt><dd>${esc(p.name)}</dd></div>
     <div><dt>Preis</dt><dd>${eurc(p.price)} ${t.per}${p.months>1?` (entspricht ${eurc(p.perMonth)} pro Monat)`:""}</dd></div>
@@ -184,19 +186,19 @@ function cancelPage(_,qs){
  <div class="kd-grid">
   <form class="card kd-form rv" id="kdForm" novalidate>
    <fieldset class="kd-fs"><legend class="h3">Deine Angaben</legend>
-    <div class="field"><label class="lbl" for="kdName">Vor- und Nachname</label><input class="inp" id="kdName" autocomplete="name" value="${esc(u?u.name:"")}"></div>
-    <div class="field"><label class="lbl" for="kdMail">E-Mail-Adresse</label><input class="inp" id="kdMail" type="email" inputmode="email" autocomplete="email" value="${esc(u?u.email:"")}" aria-describedby="kdMailH"><small class="fine" id="kdMailH">Die Adresse, mit der du das Abo abgeschlossen hast.</small></div>
-    <div class="field"><label class="lbl" for="kdRef">Vertragsnummer (falls bekannt)</label><input class="inp" id="kdRef" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="AB-1A2B3C4D" value="${esc(ref)}" aria-describedby="kdRefH"><small class="fine" id="kdRefH">Steht in jeder E-Mail zu deinem Abo.</small></div>
+    <div class="kd-f"><label class="lbl" for="kdName">Vor- und Nachname</label><input class="inp" id="kdName" autocomplete="name" value="${esc(u?u.name:"")}"></div>
+    <div class="kd-f"><label class="lbl" for="kdMail">E-Mail-Adresse</label><input class="inp" id="kdMail" type="email" inputmode="email" autocomplete="email" value="${esc(u?u.email:"")}" aria-describedby="kdMailH"><small class="fine" id="kdMailH">Die Adresse, mit der du das Abo abgeschlossen hast.</small></div>
+    <div class="kd-f"><label class="lbl" for="kdRef">Vertragsnummer (falls bekannt)</label><input class="inp" id="kdRef" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="AB-1A2B3C4D" value="${esc(ref)}" aria-describedby="kdRefH"><small class="fine" id="kdRefH">Steht in jeder E-Mail zu deinem Abo.</small></div>
    </fieldset>
    <fieldset class="kd-fs"><legend class="h3">Art der Kündigung</legend>
     ${opt("kdKind","ordentlich","Ordentliche Kündigung","Zum nächstmöglichen Termin laut Vertrag.",true)}
     ${opt("kdKind","ausserordentlich","Außerordentliche Kündigung","Fristlos aus wichtigem Grund.")}
-    <div class="field" id="kdReasonW" hidden><label class="lbl" for="kdReason">Grund für die außerordentliche Kündigung</label><textarea class="inp" id="kdReason" rows="3" maxlength="1000"></textarea></div>
+    <div class="kd-f" id="kdReasonW" hidden><label class="lbl" for="kdReason">Grund für die außerordentliche Kündigung</label><textarea class="inp" id="kdReason" rows="3" maxlength="1000"></textarea></div>
    </fieldset>
    <fieldset class="kd-fs"><legend class="h3">Zeitpunkt</legend>
     ${opt("kdWhen","asap","Zum nächstmöglichen Zeitpunkt","",true)}
     ${opt("kdWhen","date","Zu einem bestimmten Datum","")}
-    <div class="field" id="kdDateW" hidden><label class="lbl" for="kdDate">Datum</label><input class="inp" id="kdDate" type="date" min="${min}"></div>
+    <div class="kd-f" id="kdDateW" hidden><label class="lbl" for="kdDate">Datum</label><input class="inp" id="kdDate" type="date" min="${min}"></div>
    </fieldset>
    <section class="kd-sum" aria-labelledby="kdSumH"><h2 class="h3" id="kdSumH">Deine Kündigung</h2><dl class="ab-dl" id="kdSum"></dl></section>
    <div class="err" id="kdErr" role="alert"></div>

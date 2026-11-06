@@ -476,6 +476,7 @@ document.addEventListener("click",async e=>{
 (async()=>{
   try{const me=(await API("/me")).user;
     if(!me||!me.admin){$("#m").innerHTML=`<div class="card"><b>Kein Zugriff</b><p class="muted">Deine Sitzung ist abgelaufen.</p><a class="btn p" href="/">Zum Shop</a></div>`;return}
+    try{const ap=await API("/admin/abos/pending");aboN=ap.count;aboU=ap.unmatched}catch(e){}
     load(true);
   }catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
 })();

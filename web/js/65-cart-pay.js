@@ -1,14 +1,23 @@
 /* ---------- Seiten-Warenkorb (rechts als schwebendes Glas, auf dem Handy von unten) ---------- */
-let drX=null;
+let drX=null,drFrom=null;
 function drawerHTML(){
   const n=cartCount();
   return `<div class="dr-h"><h2 class="dr-t">Warenkorb${n?` <span>${n} Artikel</span>`:""}</h2><button class="x" data-a="cartClose" aria-label="Warenkorb schließen">${ic("i-x")}</button></div>
   ${n?`<div class="dr-b">${S.cart.map(lineHTML).join("")}</div>
-  <div class="dr-f"><div class="dr-tot"><span>Gesamt</span><b>${money(grandTotal())}</b></div><p class="dr-tax">${[VATR()?`inkl. ${String(VATR()).replace(".",",")} % MwSt.`:"",feeAmt()?`inkl. ${feeTxt()} Servicegebühr pro Bestellung`:""].filter(Boolean).join(" · ")||"Endpreis"}</p>${xpayBox("drX","")}<a class="btn btn-primary btn-lg btn-block" href="/kasse">Zur Kasse</a><a class="btn btn-ghost btn-block" href="/warenkorb">Warenkorb ansehen</a></div>`
-  :`<div class="dr-b dr-empty"><div class="ghostfan" aria-hidden="true"><span class="gc ghost"></span><span class="gc ghost"></span><span class="gc" style="--b:var(--foil)"></span></div><p>Dein Warenkorb ist leer.</p><button class="btn btn-primary" data-a="browse">Jetzt stöbern</button></div>`}`;
+  <div class="dr-f"><div class="dr-tot"><span>Gesamt</span><b>${money(grandTotal())}</b></div><p class="dr-tax">${[VATR()?`inkl. ${String(VATR()).replace(".",",")} % MwSt.`:"",feeAmt()?`inkl. ${feeTxt()} Servicegebühr pro Bestellung`:""].filter(Boolean).join(" · ")||"Endpreis"}</p>${xpayBox("drX","")}<a class="btn btn-primary btn-lg btn-block" href="/kasse">${ic("i-lock")}Zur Kasse</a><a class="btn btn-ghost btn-block" href="/warenkorb">Warenkorb ansehen</a></div>`
+  :`<div class="dr-b dr-empty"><div class="ck-fan sm" aria-hidden="true">${POP.map(byId).filter(Boolean).slice(0,3).map((b,i)=>`<span class="ck-fc" style="--i:${i}"><i>${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`).join("")}</div><p>Dein Warenkorb ist leer.</p><button class="btn btn-primary" data-a="browse">Jetzt stöbern</button></div>`}`;
 }
-A.cartOpen=()=>{const d=$("#drawer"),was=d.classList.contains("open");d.innerHTML=drawerHTML();d.classList.add("open");$("#drawerScrim").classList.add("open");document.body.classList.add("lock");drX&&drX.destroy();drX=cartCount()?xpayMount($("#drX"),cartItems,{ctx:"cart"}):null;if(!was){const x=$("#drawer .x");x&&x.focus({preventScroll:true})}};
-A.cartClose=()=>{const d=$("#drawer");if(!d||!d.classList.contains("open"))return;d.classList.remove("open");$("#drawerScrim").classList.remove("open");drX&&drX.destroy();drX=null;if(!$("#scrim").classList.contains("open")&&!$("#menu").classList.contains("open")&&!$("#pal").classList.contains("open"))document.body.classList.remove("lock")};
+A.cartOpen=()=>{const d=$("#drawer"),was=d.classList.contains("open");if(!was)drFrom=document.activeElement;d.innerHTML=drawerHTML();d.classList.add("open");$("#drawerScrim").classList.add("open");document.body.classList.add("lock");drX&&drX.destroy();drX=cartCount()?xpayMount($("#drX"),cartItems,{ctx:"cart"}):null;if(!was){const x=$("#drawer .x");x&&x.focus({preventScroll:true})}};
+A.cartClose=()=>{const d=$("#drawer");if(!d||!d.classList.contains("open"))return;const inside=d.contains(document.activeElement);d.classList.remove("open");$("#drawerScrim").classList.remove("open");drX&&drX.destroy();drX=null;if(!$("#scrim").classList.contains("open")&&!$("#menu").classList.contains("open")&&!$("#pal").classList.contains("open"))document.body.classList.remove("lock");
+  /* Fokus zurück zum Auslöser (meist der Warenkorb-Knopf in der Kopfzeile) */
+  if(inside){const t=drFrom&&drFrom.isConnected&&drFrom.getClientRects().length?drFrom:$("#hcart");t&&t.focus({preventScroll:true})}drFrom=null};
+/* Tab bleibt im offenen Seiten-Warenkorb */
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Tab")return;const d=$("#drawer");if(!d||!d.classList.contains("open")||$("#pal").classList.contains("open"))return;
+  const f=focusables(d);if(!f.length)return;const a=document.activeElement,i=f.indexOf(a);
+  if(!d.contains(a)){e.preventDefault();f[0].focus();return}
+  if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}
+});
 
 /* ---------- Schnellkauf-Fenster ---------- */
 A.qb=(id,a0)=>{

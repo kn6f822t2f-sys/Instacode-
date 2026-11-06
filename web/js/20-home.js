@@ -41,7 +41,7 @@ ${logos.length>7?`<section class="hm-brands" aria-label="Marken bei instantcodes
   <div class="bento-cats">${cats.slice(0,6).map((k,i)=>{const l=VIS().filter(b=>b.cat===k.id),n=BRANDS.filter(b=>b.cat===k.id).length;return `<a class="bc spot rv" href="/kategorie/${k.id}" style="--c:${CCOL[k.id]};--d:${i*70}ms"><span class="bc-t"><b>${esc(k.name)}</b><small>${n} ${k.id==="keys"?"Spiele":"Produkte"}</small></span><span class="bc-go">${ic("i-arrow")}</span><span class="bc-fan" aria-hidden="true">${l.slice(0,3).map(b=>gc(b,{tilt:false,badge:false,plat:false})).join("")}</span></a>`}).join("")}</div>
 </section>
 <section class="sec hm-abo"><div class="abo-tz chrome-rim rv">
-  <div class="abo-tz-copy"><h2 class="h2">instantcodes Abo</h2><p>Netflix, Disney+, Spotify, Game Pass, PlayStation Plus und mehr – jeden Monat als Codes per E-Mail. Ein fester Preis, online kündbar.</p>
+  <div class="abo-tz-copy"><h2 class="h2">instantcodes Abo</h2><p>Netflix, Disney+, Spotify, Game Pass, PlayStation Plus und mehr – als Code-Paket per E-Mail. Ein fester Preis, online kündbar.</p>
     <ul class="abo-tz-plans"><li><b>Pro</b><span>30 €</span><small>pro Monat</small></li><li><b>Premium</b><span>50 €</span><small>für 3 Monate</small></li><li><b>Max</b><span>80 €</span><small>für 6 Monate</small></li></ul>
     <a class="btn btn-primary btn-lg" href="/abo">Abo ansehen</a></div>
   <div class="abo-tz-art" data-off aria-hidden="true"><div class="abo-tz-ring"></div><div class="abo-tz-orb">${aboSvc.map((b,i)=>`<span class="abo-tz-c" style="--a:${(i*360/aboSvc.length).toFixed(1)}deg"><i>${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`).join("")}</div><span class="abo-tz-core">${LOGO(56)}</span></div>

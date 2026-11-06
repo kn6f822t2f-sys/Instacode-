@@ -21,8 +21,9 @@ function boot(){
   if(BRANDS.length){API("/checkout/email").then(ev=>{const e=ev&&ev.email||null;if(e!==(CFG.ev||null)){CFG.ev=e;if(/^\/(kasse|warenkorb)/.test(cur.path))route(true)}}).catch(()=>{});return start()}
   Promise.all([API("/catalog"),API("/config"),API("/stock"),API("/checkout/email").catch(()=>({}))]).then(([c,f,st,ev])=>{setCatalog(c.products);cleanCart();CFG=Object.assign(CFG,f);CFG.ev=ev&&ev.email||null;STOCK=st;start()}).catch(()=>start());
 }
-/* Anmelde-Karte: ruhiges Glas, zwei Karten schweben dahinter */
-const authCard=(title,text,inner)=>`<section class="au"><div class="au-wrap">${stage(["apple","spotify"],"au-stage")}<div class="card au-card rv">${LOGO(48)}<h1 class="au-h">${title}</h1>${text?`<p class="au-p">${text}</p>`:""}${inner}</div></div></section>`;
+/* Anmelde-Karte: Glas mit Chromkante vor einem Kartenfächer (öffnet sich einmal, folgt mit der Maus dem Zeiger) */
+const AU_FAN=["netflix","psn","apple","steam","spotify"];
+const authCard=(title,text,inner)=>`<section class="au" data-mouse><div class="au-wrap"><div class="au-fan" aria-hidden="true">${AU_FAN.map((id,i)=>`<span class="au-fc">${gc(pk(id,i+3),{tilt:false,badge:false,plat:false})}</span>`).join("")}</div><div class="au-card rv">${LOGO(48)}<h1 class="au-h">${title}</h1>${text?`<p class="au-p">${text}</p>`:""}${inner}</div></div></section>`;
 
 /* Login + Registrierung */
 function apiLogin(_,qs){
@@ -80,14 +81,18 @@ function apiVerify(_,qs){
   const e=S.pendingEmail,r=qs.get("r")||"/konto";
   if(!e)return {title:"E-Mail bestätigen",html:`<section class="au"><div class="card au-card au-none">${empty("Kein Code offen","Melde dich an oder erstelle ein Konto, dann schicken wir dir einen Code.",["/login","Zur Anmeldung"])}</div></section>`};
   return {title:"E-Mail bestätigen",html:authCard("E-Mail bestätigen",`Wir haben einen 6-stelligen Code an <b>${esc(e)}</b> geschickt. Schau auch im Spam-Ordner nach.`,`
-   <label class="lbl au-otp-l" for="otp">Bestätigungscode</label><input class="inp otp au-otp" id="otp" inputmode="numeric" maxlength="40" autocomplete="one-time-code" placeholder="000000" aria-describedby="otpErr">
+   <label class="lbl au-otp-l" for="otp">Bestätigungscode</label><div class="au-otpw"><span class="au-cells" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><input class="inp otp au-otp" id="otp" inputmode="numeric" maxlength="40" autocomplete="one-time-code" placeholder="000000" aria-describedby="otpErr"></div>
    <div class="err" id="otpErr" role="alert"></div>
    <button class="btn btn-primary btn-lg btn-block" data-a="otpGo" data-v="${esc(r)}" data-off>Bestätigen</button>
    <button class="btn btn-ghost btn-block au-forgot" data-a="otpResend" id="otpRe">Code erneut senden</button>
    <p class="au-alt">Falsche Adresse? <a href="/login?m=reg">Neu registrieren</a></p>`),
-   after(){const o=$("#otp");o.addEventListener("input",()=>{o.value=o.value.replace(/\D/g,"").slice(0,6);o.classList.remove("bad");if(o.value.length===6)A.otpGo(r,$("[data-a=otpGo]"))});setTimeout(()=>o.focus(),100);auWait($("#otpRe"))}};
+   after(){const o=$("#otp");o.addEventListener("input",()=>{o.value=o.value.replace(/\D/g,"").slice(0,6);o.classList.remove("bad");if(o.value.length===6)A.otpGo(r,$("[data-a=otpGo]"))});setTimeout(()=>o.focus(),100);auWait($("#otpRe"));otpPaint(o)}};
 }
 A.otpGo=async(r,el)=>{const o=$("#otp");if(!o||o.value.length!==6){$("#otpErr").textContent="Bitte gib den 6-stelligen Code ein.";o&&o.classList.add("bad");return}if(el.disabled)return;busy(el,true);try{const j=await API("/auth/verify",{method:"POST",body:{email:S.pendingEmail,code:o.value}});S.pendingEmail=null;setUser(j.user);toast("E-Mail bestätigt. Willkommen!");go(r||"/konto")}catch(e){$("#otpErr").textContent=e.message;o.classList.add("bad");busy(el,false)}};
+/* Sechs Felder zeigen die Ziffern des (unsichtbar darüberliegenden) Eingabefelds; das nächste Feld trägt den Cursor */
+const otpPaint=o=>{const cells=$$(".au-cells i",o.parentNode);if(!cells.length)return;
+  const p=()=>{const v=o.value.replace(/\D/g,"").slice(0,6),f=document.activeElement===o;cells.forEach((c,i)=>{const d=v[i]||"";if(c.textContent!==d)c.textContent=d;c.classList.toggle("on",!!d);c.classList.toggle("cur",f&&i===Math.min(v.length,5))})};
+  ["input","focus","blur"].forEach(t=>o.addEventListener(t,p));p()};
 /* Neuer Code frühestens nach 30 Sekunden; der Knopf zählt sichtbar herunter */
 const auWait=el=>{if(!el)return;const t=()=>{if(!el.isConnected)return;const w=30-Math.floor((Date.now()-lastResend)/1000);if(w>0){el.disabled=true;el.textContent=`Neuer Code in ${w} s`;setTimeout(t,1000)}else{el.disabled=false;el.textContent="Code erneut senden"}};t()};
 A.otpResend=async(_,el)=>{if(Date.now()-lastResend<30000)return;lastResend=Date.now();auWait(el);try{await API("/auth/resend",{method:"POST",body:{email:S.pendingEmail}});toast("Neuer Code ist unterwegs")}catch(e){toast(e.message)}};
@@ -121,17 +126,17 @@ A.payRedirect=async(v,el)=>{
 function apiOrder(id,qs){
   const k=qs.get("k")||(S.keys&&S.keys[id])||"";
   if(qs.get("k")){S.keys=Object.assign(S.keys||{},{[id]:k});save()}
-  return {title:"Bestellung "+id,html:`<div id="ord"><div class="od-load"><div class="spin"></div><p>Bestellung wird geladen …</p></div></div>`,
+  return {title:"Bestellung "+id,html:`<div id="ord"><div class="od-load" role="status"><span class="od-ring od-spin" aria-hidden="true"></span><p>Bestellung wird geladen …</p></div></div>`,
   after(){
     clearTimeout(pollT);const path=cur.path;let n=0,seen=null;
     const tick=async()=>{
       if(cur.path!==path)return;n++;let o;
       try{o=(await API(`/orders/${encodeURIComponent(id)}?k=${encodeURIComponent(k)}`)).order}
-      catch(e){const el=$("#ord");if(el)el.innerHTML=`<section class="sec"><div class="card od-miss">${empty("Bestellung nicht gefunden",esc(e.message),["/","Zur Startseite"])}</div></section>`;return}
+      catch(e){const el=$("#ord");if(el){el.innerHTML=`<section class="sec od-nf"><div class="card od-miss">${empty("Bestellung nicht gefunden",esc(e.message),["/","Zur Startseite"])}<p class="od-sup">Den Link zu deiner Bestellung findest du in unserer E-Mail zur Zahlung. Fragen? <a href="mailto:${SUP()}">Schreib uns</a>.</p></div></section>`;$$(".rv",el).forEach(x=>x.classList.add("in"))}return}
       if(cur.path!==path)return;
       ordCache[id]=o;
       if(["processing","delivered"].includes(o.status)&&S.cartOrder===id){S.cart=[];S.promo=0;S.cartOrder=null;save();updBadges()}
-      if(o.status!==seen){const el=$("#ord");el.innerHTML=orderView(o);$$(".rv",el).forEach(x=>x.classList.add("in"));fx(el);
+      if(o.status!==seen){const el=$("#ord");el.innerHTML=orderView(o);$$(".rv",el).forEach(x=>x.classList.add("in"));fx(el);odHow(el);
         if(o.status==="delivered"&&qs.get("bewerten")){const f=$("#rForm"),sv=+qs.get("s");if(f&&sv>=1&&sv<=5)A.rStar(sv);f&&setTimeout(()=>f.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"}),300)}seen=o.status}
       const wait={awaiting_payment:2500,payment_pending:20000,processing:n<20?3000:15000}[o.status];
       if(wait&&n<500)pollT=setTimeout(tick,wait);
@@ -147,33 +152,56 @@ function orderView(o){
     delivered:["Deine Codes sind da",`Sie stehen unten zum Kopieren bereit und wurden auch an ${esc(o.email)} gesendet.`],
     canceled:["Bestellung storniert","Die Zahlung wurde nicht abgeschlossen. Es wurde nichts abgebucht."],
     refunded:["Bestellung erstattet","Wir konnten leider nicht liefern und haben den Betrag erstattet."]}[o.status]||[esc(o.status),""];
-  const done=o.status==="delivered",end=["canceled","refunded"].includes(o.status);
+  const done=o.status==="delivered",end=["canceled","refunded"].includes(o.status),wait=!done&&!end,paid=!!o.paid_at;
   const dealtB=[...new Set(o.items.map(i=>i.brand))].slice(0,3).map(brandOr);
-  /* Belohnung: Karten werden einmal ausgeteilt, darunter die Medaille mit Chromrand */
-  const icon=done?`<div class="od-deal n${dealtB.length}" aria-hidden="true">${dealtB.map((b,i)=>gc(b.art||b.img?b:{bg:b.bg,fg:b.fg,art:`<span class="wm" style="font-size:.3em;font-weight:800">${esc(b.name)}</span>`},{tilt:false,badge:false,cls:"flash",style:"--i:"+i})).join("")}<span class="od-medal metal" data-off>${ic("i-check")}</span></div>`
-    :end?`<div class="od-x" aria-hidden="true">${ic("i-x")}</div>`
-    :`<div class="od-mint" data-off aria-hidden="true"><span class="gc"><span class="art">${LOGO(34)}<span class="lines"><i></i><i></i></span></span><i class="gc-glare"></i></span></div>`;
-  const steps=[["Bestellung aufgegeben",d(o.created_at),1],["Zahlung bestätigt",d(o.paid_at),o.paid_at?1:0],["Codes werden vorbereitet",o.status==="processing"?"läuft gerade":"",o.status==="processing"?2:done?1:0],["Geliefert",d(o.delivered_at),done?1:0]];
-  const tl=end?"":`<div class="card od-tl rv"><h2 class="od-h2">Verlauf</h2><ol class="tl">${steps.map(s=>`<li class="tl-s${s[2]===2?" now":s[2]?" done":""}"><span class="tl-d">${s[2]===1?ic("i-check"):""}</span><div><b>${s[0]}</b>${s[1]?`<small>${s[1]}</small>`:""}</div></li>`).join("")}</ol></div>`;
-  let cn=0;
-  const items=o.items.map(i=>{const b=brandOr(i.brand),many=i.codes&&i.codes.length>1;return `<article class="card od-item rv"><div class="od-ih">${mini(b)}<div><b>${esc(i.name)}</b><small>${b.amts?esc(optLabel(b,i.face/100)):eurc(i.face)} × ${i.qty}${i.phone?" · "+esc(i.phone):""}${i.gift_to?" · Geschenk an "+esc(i.gift_to):""}</small></div></div>
-  ${!done?"":i.type==="topup"?`<p class="od-note">${ic("i-check")}Guthaben wurde auf ${esc(i.phone)} gebucht.</p>`:i.gift_to?`<p class="od-note">${ic("i-check")}Der Code wurde an ${esc(i.gift_to)} gesendet.</p>`:i.codes.map((c,j)=>{const k="oc"+(++cn);return `<div class="od-code"><span class="od-code-l" id="${k}l">${many?`Code ${j+1} von ${i.codes.length}`:"Dein Code"}</span><code class="od-code-v" id="${k}" data-code="${esc(c)}" aria-labelledby="${k}l ${k}">${esc(mask(c))}</code><div class="od-code-a"><button class="btn btn-soft" data-a="codeShow" data-v="${esc(c)}" aria-controls="${k}" aria-pressed="false">${ic("i-eye")}<span>Zeigen</span></button><button class="btn btn-primary" data-a="codeCopy" data-v="${esc(c)}">${ic("i-copy")}<span>Code kopieren</span></button></div></div>`}).join("")}</article>`}).join("");
-  const sum=`<div class="card od-sum pb-sum"><div class="sumrow"><span>Zwischensumme</span><span>${eurc(o.subtotal)}</span></div>${o.discount?`<div class="sumrow ok"><span>Rabatt</span><span>−${eurc(o.discount)}</span></div>`:""}${o.fee?`<div class="sumrow"><span>Servicegebühr</span><span>${eurc(o.fee)}</span></div>`:""}<div class="sumrow tot"><span>Gesamt</span><span>${eurc(o.total)}</span></div>${o.vat?`<div class="sumrow vatrow"><span>darin ${String(VATR()||19).replace(".",",")} % MwSt.</span><span>${eurc(o.vat)}</span></div>`:""}</div>`;
-  const sup=`mailto:${SUP()}?subject=${encodeURIComponent("Bestellung "+o.id)}`;
-  return `<div class="od" data-st="${esc(o.status)}"><header class="od-hero">${icon}<h1 class="od-h">${H[0]}</h1>${H[1]?`<p class="od-lead">${H[1]}</p>`:""}<p class="od-meta">${stBadge(o.status)}<span>Bestellnummer ${esc(o.id)}</span></p></header>
+  const card=(b,i)=>gc(b.art||b.img?b:{bg:b.bg,fg:b.fg,art:`<span class="wm" style="font-size:.3em;font-weight:800">${esc(b.name)}</span>`},{tilt:false,badge:false,plat:false,cls:"flash",style:"--i:"+i});
+  /* Status-Bühne: Chrom-Ring läuft, solange wir arbeiten (Puls, leere Karte mit Lichtstreifen);
+     bei Lieferung steht er still, die Karten werden einmal ausgeteilt, die Medaille trägt den Haken */
+  const vis=`<div class="od-vis ${done?"is-done":end?"is-end":"is-wait"}" data-off aria-hidden="true"><span class="od-glow"></span><span class="od-ring"></span>${wait?`<span class="od-pulse"></span><span class="od-blank"><span class="gc"><span class="art">${LOGO(30)}<span class="lines"><i></i><i></i></span></span><i class="gc-glare"></i></span></span>`
+    :done?`<span class="od-deal n${dealtB.length}">${dealtB.map(card).join("")}</span><span class="od-medal">${ic("i-check")}</span>`:`<span class="od-x">${ic("i-x")}</span>`}</div>`;
+  const payNow=["awaiting_payment","payment_pending"].includes(o.status);
+  const steps=[["Bestellung aufgegeben",d(o.created_at),1],["Zahlung bestätigt",payNow?"wird bestätigt":d(o.paid_at),paid?1:payNow?2:0],["Codes werden vorbereitet",o.status==="processing"?"läuft gerade":"",o.status==="processing"?2:done?1:0],["Geliefert",d(o.delivered_at),done?1:0]];
+  const tl=wait?`<ol class="tl" aria-label="Verlauf">${steps.map(s=>`<li class="tl-s${s[2]===2?" now":s[2]?" done":""}"${s[2]===2?' aria-current="step"':""}><span class="tl-d">${s[2]===1?ic("i-check"):""}</span><div><b>${s[0]}</b>${s[1]?`<small>${s[1]}</small>`:""}</div></li>`).join("")}</ol>`:"";
+  /* Codes als Chrom-Karten; darunter die Einlöse-Schritte der Marke */
+  let cn=0,how=0;
+  const items=o.items.map(i=>{const b=brandOr(i.brand),many=i.codes&&i.codes.length>1,coded=done&&i.type!=="topup"&&!i.gift_to&&i.codes&&i.codes.length;
+    const note=done?(i.type==="topup"?`Guthaben wurde auf ${esc(i.phone)} gebucht.`:i.gift_to?`Der Code wurde an ${esc(i.gift_to)} gesendet.`:"")
+      :wait?(i.type==="topup"?`Das Guthaben wird auf ${esc(i.phone)} gebucht, sobald die Bestellung fertig ist.`:i.gift_to?`Der Code geht an ${esc(i.gift_to)}, sobald er fertig ist.`:"Dein Code erscheint hier, sobald er fertig ist."):"";
+    return `<article class="card od-item"><div class="od-ih">${mini(b)}<div><b>${esc(i.name)}</b><small>${b.amts?esc(optLabel(b,i.face/100)):eurc(i.face)} × ${i.qty}${i.phone?" · "+esc(i.phone):""}${i.gift_to?" · Geschenk an "+esc(i.gift_to):""}</small></div></div>
+  ${note?`<p class="od-note${done?" ok":""}">${done?ic("i-check"):`<span class="od-dot" aria-hidden="true"></span>`}<span>${note}</span></p>`:""}
+  ${coded?i.codes.map((c,j)=>{const k="oc"+(++cn);return `<div class="od-code" style="--g:${glowOf(b)}"><div class="od-code-t"><span class="od-code-l" id="${k}l">${many?`Code ${j+1} von ${i.codes.length}`:"Dein Code"}</span>${LOGO(24)}</div><code class="od-code-v" id="${k}" data-code="${esc(c)}" aria-labelledby="${k}l ${k}">${esc(mask(c))}</code><div class="od-code-a"><button class="btn btn-soft" data-a="codeShow" data-v="${esc(c)}" aria-controls="${k}" aria-pressed="false">${ic("i-eye")}<span>Zeigen</span></button><button class="btn btn-primary" data-a="codeCopy" data-v="${esc(c)}">${ic("i-copy")}<span>Code kopieren</span></button></div><i class="od-code-gl" aria-hidden="true"></i></div>`}).join("")
+    +`<details class="od-how" data-b="${esc(i.brand)}"${how++?"":" open"}><summary><span>So löst du den Code ein</span>${ic("i-down")}</summary><ol>${redeemSteps(b).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></details>`:""}</article>`}).join("");
+  /* Beleg: Daten, Positionen, Summe; drucken oder Rechnung anfordern */
+  const sumRows=`<div class="sumrow"><span>Zwischensumme</span><span>${eurc(o.subtotal)}</span></div>${o.discount?`<div class="sumrow ok"><span>Rabatt</span><span>−${eurc(o.discount)}</span></div>`:""}${o.fee?`<div class="sumrow"><span>Servicegebühr</span><span>${eurc(o.fee)}</span></div>`:""}<div class="sumrow tot"><span>Gesamt</span><span>${eurc(o.total)}</span></div>${o.vat?`<div class="sumrow vatrow"><span>darin ${String(VATR()||19).replace(".",",")} % MwSt.</span><span>${eurc(o.vat)}</span></div>`:""}`;
+  const meta=[["Bestellnummer",esc(o.id)],["Bestellt am",d(o.created_at)],paid&&["Bezahlt am",d(o.paid_at)],o.delivered_at&&["Geliefert am",d(o.delivered_at)],["E-Mail",esc(o.email)]].filter(Boolean);
+  const sup=`mailto:${SUP()}?subject=${encodeURIComponent("Bestellung "+o.id)}`,inv=`mailto:${SUP()}?subject=${encodeURIComponent("Rechnung zu Bestellung "+o.id)}`;
+  const rc=`<section class="card od-rc" aria-labelledby="odRcH"><h2 class="od-h2" id="odRcH">${paid?"Beleg":"Übersicht"}</h2><p class="od-rc-pr">instantcodes – Beleg zur Bestellung ${esc(o.id)}</p>
+   <dl class="od-rc-m">${meta.map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join("")}</dl>
+   <ul class="od-rc-l">${o.items.map(i=>{const b=brandOr(i.brand);return `<li><span>${esc(i.name)}<small>${b.amts?esc(optLabel(b,i.face/100)):eurc(i.face)} × ${i.qty}</small></span><span>${eurc((i.unit!=null?i.unit:i.face)*i.qty)}</span></li>`}).join("")}</ul>
+   <div class="pb-sum">${sumRows}</div>
+   ${paid?`<div class="od-rc-a"><button class="btn btn-soft btn-sm" data-a="odPrint">${ic("i-receipt")}Beleg drucken</button><a class="btn btn-ghost btn-sm" href="${inv}">Rechnung anfordern</a></div>`:""}</section>`;
+  const hasCodes=done&&o.items.some(i=>i.type!=="topup"&&!i.gift_to&&i.codes&&i.codes.length);
+  return `<div class="od" data-st="${esc(o.status)}">
+<section class="od-stage chrome-rim" aria-labelledby="odH">${vis}<div class="od-copy"><p class="od-meta">${stBadge(o.status)}<span>Bestellnummer ${esc(o.id)}</span></p><h1 class="od-h" id="odH">${H[0]}</h1>${H[1]?`<p class="od-lead">${H[1]}</p>`:""}${tl}</div></section>
 <div class="od-body">
- ${done?items+tl:tl+items}
- ${sum}
- ${reviewBox(o)}
- ${!S.user&&!end?`<div class="card od-cta rv"><h2 class="od-h2">Alles an einem Ort</h2><p>Erstelle ein Konto mit ${esc(o.email)}, dann erscheint diese Bestellung automatisch darin.</p><a class="btn btn-soft btn-block" href="/login?m=reg&r=/konto">Konto erstellen</a></div>`:""}
- <div class="od-acts">${done?`<button class="btn btn-soft" data-a="reorderLive" data-v="${esc(o.id)}">${ic("i-repeat")}Erneut kaufen</button>`:`<a class="btn btn-soft" href="/hilfe">${ic("i-help")}Hilfe</a>`}<a class="btn btn-primary" href="/">Weiter einkaufen</a></div>
- <p class="od-sup">${done?"Problem mit einem Code?":"Fragen zur Bestellung?"} <a href="${sup}">Schreib uns</a> – mit Bestellnummer geht es am schnellsten.</p>
+ <div class="od-main"><h2 class="od-sh">${hasCodes?"Deine Codes":end?"Bestellte Artikel":"Deine Bestellung"}</h2>${items}${reviewBox(o)}</div>
+ <aside class="od-side" aria-label="Beleg und weitere Schritte">${rc}
+  ${!S.user&&!end?`<div class="card od-cta"><h2 class="od-h2">Alles an einem Ort</h2><p>Erstelle ein Konto mit ${esc(o.email)}, dann erscheint diese Bestellung automatisch darin.</p><a class="btn btn-soft btn-block" href="/login?m=reg&r=/konto">Konto erstellen</a></div>`:""}
+  <div class="od-acts">${done?`<button class="btn btn-soft" data-a="reorderLive" data-v="${esc(o.id)}">${ic("i-repeat")}Erneut kaufen</button>`:`<a class="btn btn-soft" href="/hilfe">${ic("i-help")}Hilfe</a>`}<a class="btn btn-primary" href="/">Weiter einkaufen</a></div>
+  <p class="od-sup">${done?"Problem mit einem Code?":"Fragen zur Bestellung?"} <a href="${sup}">Schreib uns</a> – mit Bestellnummer geht es am schnellsten.</p>
+ </aside>
 </div></div>`;
 }
+/* Einlöse-Schritte von Reloadly-Produkten nachladen (wie auf der Produktseite) */
+const odHow=el=>$$(".od-how[data-b]",el).forEach(dt=>{const b=byId(dt.dataset.b);if(!b||!b.rl)return;
+  API("/product/"+encodeURIComponent(b.id)).then(j=>{const st=j&&j.redeem?String(j.redeem).replace(/<[^>]+>/g," ").split(/(?<=[.!])\s+|\n+|\r+/).map(x=>x.trim()).filter(x=>x.length>2).slice(0,8):[];
+    if(st.length&&dt.isConnected)$("ol",dt).innerHTML=st.map(x=>`<li>${esc(x)}</li>`).join("")}).catch(()=>{})});
+A.odPrint=()=>{try{window.print()}catch(e){}};
 A.codeShow=(c,el)=>{const s=document.getElementById(el.getAttribute("aria-controls")),shown=el.getAttribute("aria-pressed")==="true";s.textContent=shown?mask(c):c;el.setAttribute("aria-pressed",String(!shown));el.lastElementChild.textContent=shown?"Zeigen":"Verbergen"};
 /* Kopieren mit Rückmeldung am Knopf; Ausweichweg für ältere Browser */
 const odClip=async t=>{try{await navigator.clipboard.writeText(t);return true}catch(e){const a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.cssText="position:fixed;top:0;left:0;opacity:0";document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(x){}a.remove();return ok}};
 A.codeCopy=async(c,el)=>{const ok=await odClip(c);if(!ok){toast("Kopieren nicht möglich. Tippe auf „Zeigen“ und markiere den Code.");return}toast("Code kopiert");
+  const cd=el&&el.closest(".od-code");if(cd){cd.classList.remove("swept");void cd.offsetWidth;cd.classList.add("swept")}/* kurzer Glanz über die Chrom-Karte */
   if(el&&el.lastElementChild){clearTimeout(el._t);el.classList.add("done");el.lastElementChild.textContent="Kopiert";el._t=setTimeout(()=>{el.classList.remove("done");el.lastElementChild.textContent="Code kopieren"},2200)}};
 /* Bewertung nach der Lieferung (erscheint als verifizierter Kauf) */
 const reviewBox=o=>o.status!=="delivered"?"":o.reviewed?`<div class="card rform rform-done rv"><b>Danke für deine Bewertung!</b><p>Sie erscheint im Shop als verifizierter Kauf.</p></div>`
@@ -199,7 +227,7 @@ function apiAccount(tab){
    <button class="setrow" data-a="country"><span class="si-ic">${flag(ctry().c,22)}</span><div class="mid"><b>Land für Aufladungen</b><small>${esc(ctry().n)}</small></div>${ic("i-chev")}</button></div>
    <div class="acc-out"><button class="btn btn-soft btn-block btn-lg" data-a="logout">${ic("i-logout")}Abmelden</button><button class="btn btn-ghost btn-block acc-del" data-a="delAcc">Konto löschen</button></div>`;
   return {title:"Mein Konto",html:`<div class="acc sec">
-<header class="acc-head rv"><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span><div><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Abos, Favoriten und Einstellungen.</p></div></header>
+<header class="acc-head rv"><span class="acc-av" data-off aria-hidden="true">${esc(initials(u.name))}</span><div class="acc-hi"><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Abos, Favoriten und Einstellungen.</p></div><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span></header>
 <nav class="acc-tabs" aria-label="Kontobereiche">${T.map(t=>`<a href="/konto/${t[0]}"${t[0]===tab?' aria-current="page"':""}>${ic(t[2])}<span>${t[1]}</span></a>`).join("")}</nav>
 <div class="acc-body">${body}</div></div>`,
   after(){
@@ -299,11 +327,23 @@ ${CFG.trustpilot?`<li><b>Trustpilot:</b> Trustpilot A/S, Dänemark. Das Bewertun
 <h2>7. Sicherheit</h2>
 <p>Alle Verbindungen sind per TLS verschlüsselt. Gekaufte Codes speichern wir verschlüsselt. Passwörter werden nur als sicherer Hash gespeichert.</p>`]
 };
-/* Lesbare Langform: Inhaltsverzeichnis (ab Tablet quer) und Textspalte mit höchstens 68 Zeichen */
+/* Lesbare Langform: Inhaltsverzeichnis als Glas-Leiste (Handy: klebend oben, Desktop: links) mit Lesefortschritt, Textspalte mit höchstens 68 Zeichen */
+const LGL_DOCS=[["agb","AGB"],["widerruf","Widerruf"],["datenschutz","Datenschutz"]];
+let lglSpy=null;
 function legalPage(id){const x=LEGAL[id],toc=[];let n=0;
   const body=x[1]().replace(/<h2>([\s\S]*?)<\/h2>/g,(m,t)=>{const a=`${id}-${++n}`;toc.push([a,t.replace(/<[^>]+>/g,"")]);return `<h2 id="${a}">${t}</h2>`});
-  return {title:x[0],html:`${crumb([[x[0]]])}<div class="lgl sec"><header class="lgl-head"><h1 class="lgl-h">${x[0]}</h1><p class="lgl-meta">Stand: ${LEGAL_STAND}</p></header>
-  <div class="lgl-grid"><nav class="lgl-toc" aria-label="Inhalt"><b>Inhalt</b><ul>${toc.map(([a,t])=>`<li><a href="#${a}">${esc(t)}</a></li>`).join("")}</ul></nav><article class="card lgl-doc prose">${body}</article></div></div>`,
+  return {title:x[0],html:`${crumb([[x[0]]])}<div class="lgl sec"><header class="lgl-head"><h1 class="lgl-h">${x[0]}</h1><p class="lgl-meta">Stand: ${LEGAL_STAND}</p>
+  <nav class="lgl-docs" aria-label="Rechtstexte">${LGL_DOCS.map(([k,t])=>`<a href="/${k}"${k===id?' aria-current="page"':""}>${t}</a>`).join("")}<a href="${IMP}" target="_blank" rel="noopener">Impressum${ic("i-arrow")}<span class="sr"> (öffnet ein neues Fenster)</span></a></nav></header>
+  <div class="lgl-grid"><nav class="lgl-toc" aria-label="Inhalt"><b>Inhalt</b><ul>${toc.map(([a,t],i)=>`<li><a href="#${a}"><span class="lgl-n" aria-hidden="true">${i+1}</span><span>${esc(t.replace(/^\s*\d+\.\s*/,""))}</span></a></li>`).join("")}</ul><i class="lgl-prog" aria-hidden="true"></i></nav><article class="lgl-doc prose">${body}</article></div></div>`,
   /* Sprung im Inhaltsverzeichnis ohne Navigation (sonst baut popstate die Seite neu auf und springt nach oben) */
-  after(){const t=$(".lgl-toc");t&&t.addEventListener("click",e=>{const a=e.target.closest("a[href^='#']"),h=a&&document.getElementById(a.hash.slice(1));if(!h)return;e.preventDefault();try{history.replaceState(null,"",a.hash)}catch(x){}
-    $$(".lgl-doc h2.on").forEach(x=>x.classList.remove("on"));h.classList.add("on");h.setAttribute("tabindex","-1");h.focus({preventScroll:true});h.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})})}}}
+  after(){const t=$(".lgl-toc");if(!t)return;t.addEventListener("click",e=>{const a=e.target.closest("a[href^='#']"),h=a&&document.getElementById(a.hash.slice(1));if(!h)return;e.preventDefault();try{history.replaceState(null,"",a.hash)}catch(x){}
+    $$(".lgl-doc h2.on").forEach(x=>x.classList.remove("on"));h.classList.add("on");h.setAttribute("tabindex","-1");h.focus({preventScroll:true});h.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})});
+    /* Aktueller Abschnitt und Lesefortschritt; die Leiste auf dem Handy rollt den aktiven Eintrag in die Mitte */
+    const ul=$("ul",t),ls=$$("a",t),hs=$$(".lgl-doc h2"),doc=$(".lgl-doc");let on=-1,raf=0;
+    if(lglSpy)removeEventListener("scroll",lglSpy);
+    const upd=()=>{raf=0;if(!doc.isConnected){removeEventListener("scroll",lglSpy);lglSpy=null;return}
+      const y=Math.min(innerHeight*.35,240);let k=0;hs.forEach((h,i)=>{if(h.getBoundingClientRect().top<y)k=i});
+      if(k!==on){on=k;ls.forEach((a,i)=>i===k?a.setAttribute("aria-current","location"):a.removeAttribute("aria-current"));
+        const li=ls[k]&&ls[k].parentNode;if(li&&ul.scrollWidth>ul.clientWidth+4)ul.scrollTo({left:Math.max(0,li.offsetLeft-(ul.clientWidth-li.offsetWidth)/2),behavior:reduce?"auto":"smooth"})}
+      const r=doc.getBoundingClientRect();t.style.setProperty("--p",Math.max(0,Math.min(1,(innerHeight*.5-r.top)/Math.max(1,r.height-innerHeight*.3))).toFixed(3))};
+    lglSpy=()=>{if(!raf)raf=requestAnimationFrame(upd)};addEventListener("scroll",lglSpy,{passive:true});upd()}}}

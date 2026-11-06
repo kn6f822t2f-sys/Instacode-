@@ -1,16 +1,60 @@
-/* ---------- Katalog: Kategorien, Kategorie, Angebote ---------- */
+/* ---------- Katalog: Kategorien, Kategorie, Angebote, Suche, Produkt, 404 ----------
+   Formensprache „Chrome & Glas“ (Bereich 50, Stil in css/50-catalog.css):
+   kFan   Fächer schwebender Gutscheinkarten auf Glasplatten (Köpfe, Leer-Zustände, 404)
+   kHead  Seitenkopf mit Chrom-Überschrift, kurzer Beschreibung, Glas-Chips und Kartenfächer
+   kbar   Filter- und Sortierleiste als klebende Glas-Pille unter der Kopfzeile
+   kb     Kategorie-Kachel im Bento-Raster (eigene Klassen, nicht .bc der Startseite)
+   kVoid  Leer-Zustand mit Kartenfächer und klarem Weg zurück */
 /* Anfangsbuchstabe für das A–Z-Verzeichnis (Umlaute zählen zum Grundbuchstaben, Ziffern unter #) */
 const azKey=n=>{const ch=String(n||"").normalize("NFD").replace(/[̀-ͯ]/g,"").charAt(0).toUpperCase();return /[A-Z]/.test(ch)?ch:"#"};
 const azId=k=>"az-"+(k==="#"?"0":k.toLowerCase());
+/* Reihenfolge für Fächer: das wichtigste Element in die Mitte, die übrigen abwechselnd links und rechts */
+const fanOrder=l=>{const r=[];l.forEach((b,i)=>i%2?r.unshift(b):r.push(b));return r};
+/* Karten mit Kartenbild zuerst (wirken im Fächer am klarsten) */
+const imgFirst=l=>l.filter(b=>b&&b.img).concat(l.filter(b=>b&&!b.img));
+/* Fächer: list = Marken (null = leere Glaskarte, "pearl" = Perlmutt-Karte). Jede Karte liegt auf einer Glasplatte und schwebt;
+   Zeiger (--mx/--my aus [data-mouse]) und Scrollen (--sy aus [data-par]) verschieben die Ebenen unterschiedlich stark. */
+const kFan=(list,o={})=>{const n=list.length,l=fanOrder(list);
+  return `<div class="kf${o.cls?" "+o.cls:""}" data-off${o.par===false?"":" data-par"} aria-hidden="true"><span class="kf-halo"></span><span class="kf-ring"></span><span class="kf-floor"></span>${l.map((b,i)=>{const off=i-(n-1)/2,a=Math.abs(off);
+    return `<span class="kf-c${a>=2?" kf-e":""}" style="--i:${i};--o:${off};--a:${a};--z:${10-Math.ceil(a)}"><i class="kf-p">${b==="pearl"?'<span class="gc kf-pearl"></span>':b?gc(b,{tilt:false,badge:false,plat:false}):'<span class="gc ghost"></span>'}</i></span>`}).join("")}</div>`};
+/* Seitenkopf: links Chrom-Überschrift, Text und Glas-Chips, rechts (Handy: oben) der Kartenfächer */
+const kHead=o=>`<div class="kh${o.cls?" "+o.cls:""}" data-mouse style="--c:${o.c||"#8F9BFF"}">
+  <div class="kh-art">${kFan(imgFirst(o.cards).slice(0,5))}</div>
+  <div class="kh-copy">
+    <h1 class="h1 kh-t rv">${o.title}</h1>
+    <p class="kh-l rv" style="--d:80ms">${o.text}</p>
+    ${o.meta&&o.meta.length?`<ul class="kh-m rv" style="--d:150ms">${o.meta.map(m=>`<li>${ic(m[0])}<span>${m[1]}</span></li>`).join("")}</ul>`:""}
+    ${o.extra?`<div class="kh-x rv" style="--d:220ms">${o.extra}</div>`:""}
+  </div>
+</div>`;
+/* Leer-Zustand: leere Glaskarten mit einer Perlmutt-Karte in der Mitte, darunter ein klarer Weg weiter */
+const kVoid=(title,text,btns)=>`<div class="kvoid rv">${kFan(["pearl",null,null],{cls:"kf-void",par:false})}<h2 class="kvoid-t">${title}</h2><p>${text}</p>${btns&&btns.length?`<div class="kvoid-b">${btns.map((b,i)=>`<a class="btn ${i?"btn-soft":"btn-primary"}" href="${b[0]}">${esc(b[1])}</a>`).join("")}</div>`:""}</div>`;
+/* Bento-Raster: Breiten je Kachel. Desktop 12 Spalten in Reihen zu drei (5·4·3 / 3·4·5), Rest in Paaren;
+   Handy 2 Spalten: jede dritte Kachel breit, eine einzelne letzte Kachel ebenfalls */
+const kbSpans=n=>{const d=[];let r=0;
+  while(d.length<n){const left=n-d.length;const row=left===4||left===2?(r%2?[5,7]:[7,5]):left===1?[12]:(r%2?[3,4,5]:[5,4,3]);row.forEach(x=>d.push(x));r++}
+  const m=d.map((_,i)=>i%3===0?2:1);if(n>1&&m[n-1]===1&&m[n-2]===2)m[n-1]=2;
+  return d.map((x,i)=>[x,m[i]])};
+const kbCard=(c,i,sp)=>{const l=VIS().filter(b=>b.cat===c.id),n=BRANDS.filter(b=>b.cat===c.id).length,unit=c.id==="keys"?"Spiele":c.id==="topup"?"Anbieter":"Produkte";
+  return `<a class="kb spot rv" href="/kategorie/${c.id}" style="--c:${CCOL[c.id]};--d:${(i%6)*60}ms${sp?`;--sp:${sp[0]};--spm:${sp[1]}`:""}"${sp&&sp[0]>=5?' data-big':""}>
+  <span class="kb-l" aria-hidden="true"></span>
+  <span class="kb-t"><b>${esc(c.name)}</b><small>${n} ${unit}</small></span>
+  <span class="kb-d">${esc(c.desc)}</span>
+  <span class="kb-go" aria-hidden="true">${ic("i-arrow")}</span>
+  <span class="kb-fan" aria-hidden="true">${fanOrder(imgFirst(l).slice(0,3)).map(b=>`<i>${gc(b,{tilt:false,badge:false,plat:false})}</i>`).join("")}</span>
+</a>`};
+
 function cats(){
-  const az=VIS().slice().sort((a,b)=>a.name.localeCompare(b.name,"de")), cs=CATSV(), groups=[];
+  const az=VIS().slice().sort((a,b)=>a.name.localeCompare(b.name,"de")), cs=CATSV(), groups=[], sp=kbSpans(cs.length);
   az.forEach(b=>{const k=azKey(b.name);let g=groups.find(x=>x.k===k);if(!g)groups.push(g={k,l:[]});g.l.push(b)});
   const sub=b=>esc(catById(b.cat).name)+(isKey(b)?" · "+variants(b).map(v=>PLAT[v.plat]).join(", "):"");
+  const cards=["netflix","steam","psn","fortnite","amazon","spotify","apple"].map(byId).filter(Boolean);
   return {tab:"cats",title:"Kategorien",html:`${crumb([["Kategorien"]])}
-${phead({c:"#7048E8",icon:"i-grid-f",title:"Kategorien",text:`${BRANDS.length} Produkte in ${cs.length} Kategorien. Codes kommen nach der Zahlung per E&#8209;Mail, Handy-Guthaben geht direkt auf die Nummer.`,cards:["netflix","fc26-ps5","steam"]})}
-<section class="sec cat-sec"><div class="catgrid">${cs.map(catCard).join("")}</div></section>
-<section class="sec" aria-labelledby="azH"><div class="sec-head"><h2 class="h2" id="azH">Alle Produkte von A bis Z</h2></div>
-  <nav class="az-nav" aria-label="Nach Anfangsbuchstabe springen">${groups.map(g=>`<a href="#${azId(g.k)}" aria-label="Buchstabe ${g.k==="#"?"Ziffern":g.k}">${g.k}</a>`).join("")}</nav>
+${kHead({c:"#7048E8",title:"Kategorien",text:"Vom Spiele-Key bis zum Handy-Guthaben. Codes kommen nach der Zahlung per E&#8209;Mail, Handy-Guthaben geht direkt auf die Nummer.",
+  meta:[["i-grid-f",`${cs.length} Kategorien`],["i-box",`${BRANDS.length} Produkte`],["i-mail","Code per E&#8209;Mail"]],cards:cards.length>=3?cards:IMGB().slice(0,5)})}
+<section class="sec kb-sec" aria-label="Alle Kategorien"><div class="kb-grid">${cs.map((c,i)=>kbCard(c,i,sp[i])).join("")}</div></section>
+<section class="sec az-sec" aria-labelledby="azH"><div class="sec-head"><div><h2 class="h2" id="azH">Alle Produkte von A bis Z</h2><p>${VIS().length} Marken und Spiele, alphabetisch sortiert.</p></div></div>
+  <nav class="az-nav" aria-label="Nach Anfangsbuchstabe springen"><div class="az-nav-in">${groups.map(g=>`<a href="#${azId(g.k)}" aria-label="Buchstabe ${g.k==="#"?"Ziffern":g.k}">${g.k}</a>`).join("")}</div></nav>
   <div class="az">${groups.map(g=>`<div class="az-g spot" id="${azId(g.k)}"><h3 class="az-k">${g.k}</h3><ul>${g.l.map(b=>`<li><a href="/marke/${b.id}">${mini(b)}<span class="az-t"><b>${esc(b.name)}</b><small>${sub(b)}</small></span>${ic("i-chev")}</a></li>`).join("")}</ul></div>`).join("")}</div>
 </section>`};
 }
@@ -18,27 +62,38 @@ function category(id,qs){
   const c=catById(id);if(!c||c.id!==id)return notFound();
   const sort=qs.get("s")||"pop", pf=qs.get("p")||"all", K=id==="keys", TU=id==="topup", all=BRANDS.filter(b=>b.cat===id).length, uniq=VIS().filter(b=>b.cat===id).length;
   let l=K&&pf!=="all"?dedupeGrp(BRANDS.filter(b=>isKey(b)&&PLATG[b.plat]===pf)):VIS().filter(b=>b.cat===id);
-  const top=l.slice(0,3).map(b=>b.id);
+  const fan=VIS().filter(b=>b.cat===id);
   if(sort==="az")l.sort((a,b)=>a.name.localeCompare(b.name,"de"));
   if(sort==="price")l.sort((a,b)=>price(a,a.from)-price(b,b.from));
   const q=o=>`/kategorie/${id}?s=${o.s||sort}${(o.p||pf)!=="all"?"&p="+(o.p||pf):""}`;
   const n=K?`${l.length} ${l.length===1?"Spiel":"Spiele"}`:TU?`${l.length} Anbieter`:`${l.length} ${l.length===1?"Marke":"Marken"}${all>l.length?` · ${all} Produkte`:""}`;
+  const meta=K?[["i-key",`${uniq} Spiele`],["i-monitor","PC und Konsole"],["i-mail","Key per E&#8209;Mail"]]
+    :TU?[["i-phone-f",`${uniq} Anbieter`],["i-zap","Direkt auf die Nummer"]]
+    :[["i-grid-f",`${all} ${all===1?"Produkt":"Produkte"}`],["i-mail","Code per E&#8209;Mail"]];
+  const text=K?`${esc(c.desc)}. Nach der Zahlung kommt dein Key per E&#8209;Mail, eingelöst wird er auf der jeweiligen Plattform.`
+    :TU?"Prepaid-Guthaben für deine Nummer: Nummer eingeben, Betrag wählen, das Guthaben wird direkt nach der Zahlung gebucht."
+    :`${esc(c.desc)}. Nach der Zahlung kommt dein Code per E&#8209;Mail.`;
+  const others=CATSV().filter(x=>x.id!==id);
   return {tab:"cats",title:c.name,html:`${crumb([["Kategorien","/kategorien"],[c.name]])}
-${phead({c:CCOL[id],icon:c.icon,title:esc(c.name),text:K?`${esc(c.desc)}. ${uniq} Spiele, Key per E&#8209;Mail.`:TU?`Prepaid-Guthaben für ${uniq} Anbieter, direkt auf die Nummer gebucht.`:`${esc(c.desc)}. ${all} Produkte, Code per E&#8209;Mail.`,cards:top,extra:TU?`<a class="btn btn-primary cat-cta" href="/aufladen">Nummer eingeben</a>`:""})}
-<section class="sec cat-list">
-  ${K?`<div class="chips" role="group" aria-label="Plattform">${[["all","Alle"],["pc","PC"],["ps","PlayStation"],["xbox","Xbox"],["nin","Nintendo"]].map(p=>`<a class="chip" href="${q({p:p[0]})}" ${p[0]===pf?'aria-current="page"':""}>${p[1]}</a>`).join("")}</div>`:""}
-  <div class="cat-bar"><p class="cat-n">${n}</p>
-    <label class="cat-sort"><span>Sortieren</span><select class="sel" data-sort="${id}"><option value="pop"${sort==="pop"?" selected":""}>Beliebt</option><option value="az"${sort==="az"?" selected":""}>A bis Z</option><option value="price"${sort==="price"?" selected":""}>Günstigster Preis</option></select></label></div>
-  ${l.length?tilesPaged(l,{cover:K}):empty("Nichts gefunden","Für diese Auswahl gibt es gerade keine Produkte.",[`/kategorie/${id}`,"Alle anzeigen"])}
+${kHead({c:CCOL[id],title:esc(c.name),text,meta,cards:fan,extra:TU?`<a class="btn btn-primary btn-lg" href="/aufladen">Nummer eingeben</a>`:""})}
+<section class="sec kat" aria-label="${esc(c.name)}">
+  <div class="kbar${K?" has-f":""}">
+    <p class="kbar-n">${n}</p>
+    ${K?`<div class="kbar-f" role="group" aria-label="Plattform">${[["all","Alle"],["pc","PC"],["ps","PlayStation"],["xbox","Xbox"],["nin","Nintendo"]].map(p=>`<a class="chip" href="${q({p:p[0]})}" ${p[0]===pf?'aria-current="page"':""}>${p[1]}</a>`).join("")}</div>`:""}
+    <label class="kbar-s"><span>Sortieren</span><select class="sel" data-sort="${id}"><option value="pop"${sort==="pop"?" selected":""}>Beliebt</option><option value="az"${sort==="az"?" selected":""}>A bis Z</option><option value="price"${sort==="price"?" selected":""}>Günstigster Preis</option></select></label>
+  </div>
+  ${K?`<p class="kat-n">${n}</p>`:""}
+  ${l.length?tilesPaged(l,{cover:K}):kVoid("Nichts gefunden","Für diese Auswahl gibt es gerade keine Produkte. Probier eine andere Plattform oder schau dir alle an.",[[`/kategorie/${id}`,"Alle anzeigen"],["/kategorien","Andere Kategorien"]])}
 </section>
-<section class="sec">${secHead("Andere Kategorien")}<div class="catgrid">${CATSV().filter(x=>x.id!==id).map(catCard).join("")}</div></section>`,
+${others.length?`<section class="sec kat-more">${secHead("Andere Kategorien",["/kategorien","Alle"],railNav("catRail"))}<div class="rail"><div class="rail-track kb-rail" id="catRail">${others.map((x,i)=>kbCard(x,i)).join("")}</div></div></section>`:""}`,
   after(){const s=$("[data-sort]");s&&s.addEventListener("change",()=>go(`/kategorie/${id}?s=${s.value}${pf!=="all"?"&p="+pf:""}`))}};
 }
 function deals(){
-  const l=DEALS(), pop=POP.map(byId).filter(Boolean);
+  const l=DEALS(), pop=POP.map(byId).filter(Boolean), off=l.length?Math.round(Math.max.apply(null,l.map(b=>b.disc))*100):0;
   return {tab:"home",title:"Angebote",html:`${crumb([["Angebote"]])}
-${phead({c:"#E11D48",icon:"i-tag",title:"Angebote",text:l.length?`${l.length} ${l.length===1?"Gutschein ist":"Gutscheine sind"} gerade günstiger als der Nennwert.`:"Gerade gibt es keine reduzierten Gutscheine.",cards:l.length?l.slice(0,3).map(b=>b.id):["zalando","netflix","spotify"]})}
-<section class="sec cat-sec">${l.length?tilesPaged(l):empty("Gerade keine Angebote","Sobald ein Gutschein günstiger ist als sein Nennwert, steht er hier. Bis dahin findest du alles in den Kategorien.",["/kategorien","Kategorien ansehen"])}</section>
+${kHead({c:"#E11D48",title:"Angebote",text:l.length?`${l.length} ${l.length===1?"Gutschein ist":"Gutscheine sind"} gerade günstiger als der Nennwert. Der Preis gilt, solange er hier steht.`:"Hier stehen Gutscheine, die gerade günstiger sind als ihr Nennwert.",
+  meta:l.length?[["i-tag",`Bis zu ${off} % unter Nennwert`],["i-mail","Code per E&#8209;Mail"]]:[["i-mail","Code per E&#8209;Mail"]],cards:l.length?l:pop})}
+<section class="sec kat">${l.length?tilesPaged(l):kVoid("Gerade keine Angebote","Sobald ein Gutschein günstiger ist als sein Nennwert, steht er hier. Bis dahin findest du alles in den Kategorien.",[["/kategorien","Kategorien ansehen"],["/","Zur Startseite"]])}</section>
 ${!l.length&&pop.length?`<section class="sec">${secHead("Beliebt",["/kategorien","Alle"],railNav("popRail"))}${rail("popRail",pop)}</section>`:""}`};
 }
 
@@ -66,28 +121,18 @@ const descOf=b=>isKey(b)?`${b.name} als digitaler ${PLAT[b.plat]}-Key. Nach der 
 const varName=(b,v)=>isKey(b)?PLAT[v.plat]:v.name.replace(/^PlayStation Plus /,"").replace(/^Microsoft 365 /,"");
 /* Express-Checkout-Box (auch im Warenkorb und im Schnellkauf verwendet) */
 const xpayBox=(id,title,o={})=>`<div class="xpay locked" id="${id}" hidden>${title?`<div class="xpay-or">${title}</div>`:""}${o.noConsent?"":`<label class="chk xpay-ok"><input type="checkbox" class="xok"><span>Ich akzeptiere die <a href="/agb">AGB</a> und möchte, dass ihr sofort liefert. Mir ist bekannt, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt.</span></label>`}<div class="xpay-w"><div class="xpay-btns"></div><button type="button" class="xpay-lock" aria-label="Bitte zuerst die Zustimmung bestätigen"></button></div><div class="xpay-err" role="alert"></div></div>`;
-/* Lichtfarbe der Marke: die kräftigste Farbe aus Kartengrund und Schrift, auf gut sichtbare Helligkeit gebracht */
-const lightOf=b=>{
-  let best=null;
-  for(const h of (String(b.bg||"")+" "+String(b.fg||"")).match(/#[0-9a-f]{6}\b/gi)||[]){
-    const [r,g,bl]=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255),mx=Math.max(r,g,bl),mn=Math.min(r,g,bl);
-    if(!best||mx-mn>best.c)best={r,g,bl,mx,mn,c:mx-mn};
-  }
-  if(!best||best.c<.12)return "hsl(240 72% 64%)";
-  const {r,g,bl,mx,mn,c}=best,l=(mx+mn)/2,s=c/(1-Math.abs(2*l-1));
-  const h=Math.round(((mx===r?((g-bl)/c)%6:mx===g?(bl-r)/c+2:(r-g)/c+4)*60+360)%360);
-  return `hsl(${h} ${Math.round(Math.max(.6,Math.min(.9,s))*100)}% ${Math.round(Math.max(.5,Math.min(.6,l))*100)}%)`;
-};
 /* Klebende Spalten (Desktop): die kürzere fährt mit, eine Spalte höher als das Fenster klebt mit ihrer Unterkante */
 const stickRO="ResizeObserver" in window?new ResizeObserver(es=>es.forEach(e=>e.target.style.setProperty("--h",Math.ceil(e.target.offsetHeight)+"px"))):null;
 let stuck=[];
 const stick=(...els)=>{if(!stickRO)return;stuck.forEach(x=>stickRO.unobserve(x));stuck=els.filter(Boolean);stuck.forEach(x=>stickRO.observe(x))};
 let pdIO=null;
+/* Produktseite: links die Bühne (Karte auf einer Glasplatte über einem Chrom-Sockel, Studiolicht, Perlmutt-Reflexe),
+   rechts die Kaufsäule aus Glas (Desktop klebend), darunter ruhige Info-Kacheln und Reiter */
 function brandPage(id){
   const b=byId(id);if(!b)return notFound();
   if(b.cat==="topup")return topup(null,new URLSearchParams("op="+id));
   S.recent=[id].concat(S.recent.filter(x=>x!==id)).slice(0,12);save();
-  const c=catById(b.cat), fav=S.favs.includes(id), K=isKey(b), vars=variants(b), card=b.type==="card", lc=lightOf(b);
+  const c=catById(b.cat), fav=S.favs.includes(id), K=isKey(b), vars=variants(b), card=b.type==="card";
   const def=b.amts[Math.min(1,b.amts.length-1)], avail=b.amts.filter(a=>!soldOut(id,a));
   const P={a:avail.includes(def)?def:(avail[0]||0),q:1,gift:false,design:0};
   const total=()=>P.a?price(b,P.a)*P.q:0;
@@ -97,15 +142,16 @@ function brandPage(id){
   const dis=avail.length?"":" disabled", region=REGION[b.region]||esc(regDE(b.region)||b.regionName||"Deutschland");
   const amtSub=a=>soldOut(id,a)?"<small>ausverkauft</small>":!card||Math.abs(price(b,a)-a)>.004?`<small>${money(price(b,a))}</small>`:"";
   const short=b.name.replace(/ (Gift Card|Geschenkkarte)$/,""), barSub=()=>short+(card||!P.a?"":" · "+tagRaw())+(P.q>1?` · ${P.q} Stück`:"")+(P.gift?" · als Geschenk":"");
+  const tiles=[["i-pin","Gültig in",region],["i-mail","Lieferung","Sofort per E&#8209;Mail"]].concat(K?[["i-monitor","Aktivierung",esc(STORE[b.plat]||PLAT[b.plat])],["i-key","Typ","Digitaler Key"]]:[["i-card-f","Format",b.type==="sub"?"Code mit fester Laufzeit":"Digitaler Code"]]);
   return {tab:"cats",title:b.name+(K?` (${PLAT[b.plat]})`:""),buybar:true,html:`${crumb([[c.name,"/kategorie/"+c.id],[b.name]])}
-<div class="pd${K?" pd-key":""}" style="--lc:${lc};--gd:${DESIGNS[0][1]}">
+<div class="pd${K?" pd-key":""}" style="--gd:${DESIGNS[0][1]}">
   <div class="pd-media">
-    <div class="pd-stage" id="pdStage" data-mouse>
-      ${b.img?`<span class="pd-ext" style="--bx:url('${esc(b.img)}')" aria-hidden="true"></span>`:""}<span class="pd-glow" aria-hidden="true"></span><span class="pd-shine" aria-hidden="true"></span>
+    <div class="pd-stage" id="pdStage" data-mouse data-off>
+      <span class="pd-sky" aria-hidden="true"></span><span class="pd-soft" aria-hidden="true"></span><span class="pd-beam" aria-hidden="true"></span><span class="pd-shine" aria-hidden="true"></span>
+      <span class="pd-plinth" aria-hidden="true"><i class="pd-top"></i><i class="pd-spot"></i><i class="pd-shade"></i></span>
       <div class="pd-obj">
-        <span class="pd-floor" aria-hidden="true"></span>
         ${K?"":`<span class="ge-back" aria-hidden="true"></span>`}
-        <div class="pd-card">${gc(b,{cls:"flash",cover:K,amt:K?null:tagTxt(),amtId:"pAmtTag",style:"--g:"+lc})}</div>
+        <div class="pd-card"><div class="pd-float"><div class="pd-glass">${gc(b,{cls:"flash",cover:K,amt:K?null:tagTxt(),amtId:"pAmtTag"})}</div></div></div>
         ${K?"":`<div class="ge-front" id="gEnv" aria-hidden="true"><b id="gHead">Ein Geschenk für dich</b><span id="gSub">${S.user?"Von "+esc(S.user.name):"Mit persönlicher Nachricht"}</span></div>`}
       </div>
     </div>
@@ -113,6 +159,7 @@ function brandPage(id){
   <div class="pd-side">
     <a class="pd-tag" href="/kategorie/${c.id}" style="--c:${CCOL[c.id]}">${ic(c.icon)}${esc(c.name)}</a>
     <h1 class="h1">${esc(b.name)}</h1>
+    <p class="pd-sub">${K?esc(PLAT[b.plat])+" · Digitaler Key":"Digitaler Code"} · Gültig in ${region}</p>
     <div class="pact lg-group" role="group" aria-label="Aktionen">
       <button data-a="share" data-v="${id}">${ic("i-share")}<span>Teilen</span></button>
       <button data-a="fav" data-v="${id}" aria-pressed="${fav}" class="pact-fav">${ic(fav?"i-heart-f":"i-heart")}<span>${fav?"Gemerkt":"Merken"}</span></button>
@@ -120,7 +167,6 @@ function brandPage(id){
       ${K?"":`<button data-a="giftNow">${ic("i-gift")}<span>Verschenken</span></button>`}
     </div>
     ${vars.length>1?(vars.some(v=>v.rl)?`<span class="lbl">Land und Währung <small class="muted">· ${vars.length} Varianten</small></span><div class="variants regions">${vars.map(v=>`<a class="chip" href="/marke/${v.id}" ${v.id===id?'aria-current="page"':""}>${flagE(v.region||"DE")}${esc(regDE(v.region||"DE"))}<small>${esc(v.cur||"EUR")}</small></a>`).join("")}</div>`:`<span class="lbl">${K?"Plattform":"Variante"}</span><div class="variants">${vars.map(v=>`<a class="chip" href="/marke/${v.id}" ${v.id===id?'aria-current="page"':""}>${esc(varName(b,v))}</a>`).join("")}</div>`):""}
-    <div class="pinfo"><div><span class="si-ic">${ic("i-pin")}</span><div><small>Gültig in</small><b>${region}</b></div></div><div><span class="si-ic">${ic("i-mail")}</span><div><small>Lieferung</small><b>Sofort per E&#8209;Mail</b></div></div>${K?`<div><span class="si-ic">${ic("i-monitor")}</span><div><small>Aktivierung</small><b>${esc(STORE[b.plat]||PLAT[b.plat])}</b></div></div><div><span class="si-ic">${ic("i-key")}</span><div><small>Typ</small><b>Digitaler Key</b></div></div>`:""}</div>
     ${b.amts.length>1||!K?`<span class="lbl" id="pAmtL">${card?"Betrag":"Option"}</span><div class="${card?"amounts":"opts"}" id="pAmts" role="group" aria-labelledby="pAmtL" data-off>${b.amts.map(a=>`<button class="amt" data-a="pAmt" data-v="${a}" aria-pressed="${a===P.a}"${soldOut(id,a)?" disabled":""}>${card&&!b.labels?money(a):esc(optLabel(b,a))}${amtSub(a)}</button>`).join("")}</div>`:""}${avail.length?"":`<p class="err pd-sold">Derzeit ausverkauft. Schau bald wieder vorbei.</p>`}
     <div class="pd-qty"><span class="lbl" id="pQL">Menge</span><div class="qty" role="group" aria-labelledby="pQL"><button data-a="pQty" data-v="-1" aria-label="Weniger">−</button><span id="pQ" aria-live="polite">1</span><button data-a="pQty" data-v="1" aria-label="Mehr">+</button></div></div>
     ${K?"":`<div class="giftbox spot">
@@ -133,12 +179,15 @@ function brandPage(id){
         <div class="err" id="gErr" role="alert"></div>
       </div>
     </div>`}
-    <div class="pd-sum spot"><div class="pd-tot"><span>Gesamt</span><b id="pTot">${money(total())}</b></div><p class="pd-save" id="pSave"${saving()?"":" hidden"}>Du sparst ${money(saving())} gegenüber dem Nennwert</p><p class="pd-fee">${taxHint()}</p></div>
-    <div class="pd-buy" data-off><button class="btn btn-primary btn-lg" data-a="pBuy"${dis}>Jetzt kaufen</button><button class="btn btn-outline btn-lg" data-a="pAdd"${dis}>In den Warenkorb</button></div>
-    ${xpayBox("pX","Express-Checkout")}
-    ${payLogos(b)}
+    <div class="pd-pay">
+      <div class="pd-sum"><div class="pd-tot"><span>Gesamt</span><b id="pTot">${money(total())}</b></div><p class="pd-save" id="pSave"${saving()?"":" hidden"}>Du sparst ${money(saving())} gegenüber dem Nennwert</p><p class="pd-fee">${taxHint()}</p></div>
+      <div class="pd-buy" data-off><button class="btn btn-primary btn-lg" data-a="pBuy"${dis}>Jetzt kaufen</button><button class="btn btn-outline btn-lg" data-a="pAdd"${dis}>In den Warenkorb</button></div>
+      ${xpayBox("pX","Express-Checkout")}
+      ${payLogos(b)}
+    </div>
   </div>
   <div class="pd-info">
+    <ul class="pinfo">${tiles.map(t=>`<li><span class="pinfo-ic">${ic(t[0])}</span><span><small>${t[1]}</small><b>${t[2]}</b></span></li>`).join("")}</ul>
     <div class="tabs" role="tablist" aria-label="Produktinformationen">${["Beschreibung","Einlösen","Hinweise"].map((t,i)=>`<button role="tab" id="pt${i}" aria-controls="pp${i}" aria-selected="${!i}" tabindex="${i?-1:0}" data-a="ptab" data-v="${i}">${t}</button>`).join("")}</div>
     <div class="tabp" id="pp0" role="tabpanel" aria-labelledby="pt0" data-p="0"><p>${esc(descOf(b))}</p></div>
     <div class="tabp" id="pp1" role="tabpanel" aria-labelledby="pt1" data-p="1" hidden><ol class="pd-steps" id="redeemOl">${redeemSteps(b).map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>
@@ -201,9 +250,11 @@ function searchPage(_,qs){
   const q=qs.get("q")||"", f=CATS.some(c=>c.id===qs.get("c"))?qs.get("c"):"all";
   return {tab:"cats",title:q?`Suche: ${q}`:"Suche",html:`${crumb([["Suche"]])}
 <section class="sec srch">
-  <h1 class="h1 page-h1">Suche</h1>
-  <form class="srch-f" role="search" action="/suche"><div class="field">${ic("i-search")}<input id="sq" name="q" type="search" value="${esc(q)}" placeholder="Marke, Spiel oder Gutschein" aria-label="Suchbegriff" autocomplete="off" enterkeyhint="search"></div></form>
-  <div class="chips" role="group" aria-label="Kategorie"><button class="chip" aria-pressed="${f==="all"}" data-a="sf" data-v="all">Alle</button>${CATSV().map(c=>`<button class="chip" aria-pressed="${f===c.id}" data-a="sf" data-v="${c.id}">${ic(c.icon)}${esc(c.short)}</button>`).join("")}</div>
+  <div class="srch-h">
+    <h1 class="h1 srch-t">Suche</h1>
+    <form class="srch-f" role="search" action="/suche"><div class="field srch-in">${ic("i-search")}<input id="sq" name="q" type="search" value="${esc(q)}" placeholder="Marke, Spiel oder Gutschein" aria-label="Suchbegriff" autocomplete="off" enterkeyhint="search"></div></form>
+  </div>
+  <div class="kbar srch-bar"><div class="kbar-f" role="group" aria-label="Kategorie"><button class="chip" aria-pressed="${f==="all"}" data-a="sf" data-v="all">Alle</button>${CATSV().map(c=>`<button class="chip" aria-pressed="${f===c.id}" data-a="sf" data-v="${c.id}">${ic(c.icon)}${esc(c.short)}</button>`).join("")}</div></div>
   <p class="srch-n" id="scount" role="status"></p>
   <div id="sres"></div>
 </section>`,
@@ -212,7 +263,7 @@ function searchPage(_,qs){
     const url=()=>{const v=inp.value.trim(),p=new URLSearchParams();if(v)p.set("q",v);if(F!=="all")p.set("c",F);try{history.replaceState(null,"","/suche"+(p.toString()?"?"+p:""))}catch(e){}};
     const draw=()=>{const v=inp.value.trim(),l=(v?searchBrands(v):VIS()).filter(b=>F==="all"||b.cat===F);
       $("#scount").textContent=l.length?`${l.length} ${l.length===1?"Ergebnis":"Ergebnisse"}${v?` für „${v}“`:""}`:"";
-      $("#sres").innerHTML=l.length?tilesPaged(l):empty("Nichts gefunden",v?`Für „${esc(v)}“ gibt es in dieser Auswahl keine Treffer. Versuch einen Marken- oder Spielnamen.`:"In dieser Kategorie gibt es gerade keine Produkte.",["/kategorien","Kategorien ansehen"]);
+      $("#sres").innerHTML=l.length?tilesPaged(l):kVoid("Nichts gefunden",v?`Für „${esc(v)}“ gibt es in dieser Auswahl keine Treffer. Versuch einen Marken- oder Spielnamen.`:"In dieser Kategorie gibt es gerade keine Produkte.",[["/kategorien","Kategorien ansehen"],["/","Zur Startseite"]]);
       $$("#sres .rv").forEach(x=>x.classList.add("in"));moreIO&&$$("#sres [data-more]").forEach(e=>moreIO.observe(e))};
     A.sf=(v,el)=>{F=v;$$("[data-a=sf]").forEach(c=>c.setAttribute("aria-pressed",c===el));url();draw()};
     let t;inp.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(()=>{url();draw()},140)});
@@ -220,4 +271,14 @@ function searchPage(_,qs){
     draw();if(!q)setTimeout(()=>inp.focus({preventScroll:true}),80);
   }};
 }
-function notFound(){return {html:`<section class="sec">${empty("Seite nicht gefunden","Diese Seite gibt es nicht oder nicht mehr.",["/","Zur Startseite"])}</section>`,title:"Nicht gefunden"}}
+/* 404: „4 ◯ 4“ – die Null ist der Ring aus flüssigem Chrom, dahinter ein Fächer leerer Glaskarten; darunter klare Wege zurück */
+function notFound(){
+  const cs=CATSV().filter(c=>c.id!=="topup").slice(0,5);
+  return {title:"Nicht gefunden",html:`<section class="nf" data-mouse>
+  <div class="nf-stage" aria-hidden="true">${kFan(["pearl",null,null,null,null],{cls:"kf-nf",par:false})}<div class="nf-num"><span>4</span><span class="nf-o"><span class="lq" data-off></span></span><span>4</span></div></div>
+  <h1 class="h1 nf-t">Seite nicht gefunden</h1>
+  <p class="lead nf-l">Diese Seite gibt es nicht oder nicht mehr. Über die Suche oder die Kategorien findest du schnell, was du brauchst.</p>
+  <div class="nf-b"><a class="btn btn-primary btn-lg" href="/">Zur Startseite</a><button class="btn btn-soft btn-lg" data-a="palOpen">${ic("i-search")}Suchen</button></div>
+  ${cs.length?`<nav class="nf-c" aria-label="Beliebte Kategorien">${cs.map(c=>`<a class="chip" href="/kategorie/${c.id}">${ic(c.icon)}${esc(c.short)}</a>`).join("")}<a class="chip" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></nav>`:""}
+</section>`};
+}
