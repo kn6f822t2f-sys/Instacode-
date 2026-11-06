@@ -85,7 +85,7 @@
   transition:transform .35s var(--spring),background .2s,color .2s}
 .m-big a:active>.ico,.m-big a:focus-visible>.ico{color:#0D0E11;background:var(--chrome-fill);box-shadow:var(--ov-chrome-sh)}
 @media (hover:hover){.m-big a:hover>.ico{color:#0D0E11;background:var(--chrome-fill);box-shadow:var(--ov-chrome-sh);transform:translateX(3px)}}
-.m-big a.m-abo>span::after{content:"";display:inline-block;width:8px;height:8px;margin:0 0 .5em 6px;border-radius:50%;background:var(--pearl);box-shadow:0 0 10px rgba(255,224,240,.8);vertical-align:middle}
+.m-big a.m-abo>span::after{content:"";display:inline-block;width:9px;height:9px;margin-left:10px;border-radius:50%;background:var(--pearl);box-shadow:0 0 12px rgba(255,224,240,.85);vertical-align:.22em}
 .menu.open .m-big a{animation:ovBig .6s var(--ease-out) both;animation-delay:calc(.05s + var(--i,0) * .045s)}
 .m-sec{margin-top:28px}
 .m-hrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 12px}

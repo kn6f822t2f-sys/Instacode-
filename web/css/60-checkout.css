@@ -172,7 +172,6 @@
 .ck-otp .evcode{position:absolute;inset:0;z-index:2;width:100%;height:100%;min-height:0;margin:0;padding:0!important;border-radius:14px;font-size:16px;letter-spacing:0;
   color:transparent;-webkit-text-fill-color:transparent;caret-color:transparent;background:transparent!important;box-shadow:none!important;outline:none;cursor:text}
 .ck-otp .evcode::selection{background:transparent}
-.ck-otp:has(.evcode:focus-visible) .ck-cells{outline:2px solid #DCCBFF;outline-offset:4px;border-radius:16px}
 .ck-otp.bad .ck-cells{animation:shake .4s var(--ease)}
 .ck-otp.bad .ck-cells i{box-shadow:inset 0 0 0 1.5px var(--rose)}
 .ck-ev-go{max-width:420px;margin-top:12px}
@@ -232,6 +231,9 @@
 .pb-fine>.ico{width:15px;height:15px;flex:none;margin-top:2px;color:var(--ink-2)}
 .pb-fine .more{display:inline;font-size:13px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
 .ck-pay .shake{animation:shake .4s var(--ease)}
+/* Hinweis bleibt sichtbar, bis er erledigt ist (die Klasse entfernt 40-cart.js beim Haken bzw. beim Neuzeichnen) */
+.ck-pay .pb-ok.shake:not(:has(input:checked)){box-shadow:inset 0 0 0 1.5px var(--rose),0 0 0 4px rgba(255,122,134,.12)}
+.ck-ev.shake #payMail{box-shadow:inset 0 0 0 1.5px var(--rose),0 0 0 4px rgba(255,122,134,.12)}
 
 /* ---------- Expresszahlung (Kasse, Seiten-Warenkorb, Schnellkauf, Produktseite) ---------- */
 .xpay{margin-top:14px}
@@ -458,7 +460,7 @@
 .od-x .ico{width:28px;height:28px}
 
 .od-copy{margin-top:26px;min-width:0}
-.od-meta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 12px;margin:0 0 14px;font-size:13.5px;color:var(--ink-3)}
+.od-meta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 12px;margin:18px 0 0;font-size:13.5px;color:var(--ink-3)}
 .od-h{margin:0;font-size:clamp(32px,4.4vw,58px);line-height:1.02;font-weight:560;letter-spacing:-.05em;text-wrap:balance;padding-bottom:.06em;
   color:var(--ink);background:var(--chrome-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .od-lead{max-width:34em;margin:12px auto 0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty;overflow-wrap:anywhere}

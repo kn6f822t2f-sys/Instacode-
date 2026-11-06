@@ -22,7 +22,7 @@ function boot(){
   Promise.all([API("/catalog"),API("/config"),API("/stock"),API("/checkout/email").catch(()=>({}))]).then(([c,f,st,ev])=>{setCatalog(c.products);cleanCart();CFG=Object.assign(CFG,f);CFG.ev=ev&&ev.email||null;STOCK=st;start()}).catch(()=>start());
 }
 /* Anmelde-Karte: Glas mit Chromkante vor einem Kartenfächer (öffnet sich einmal, folgt mit der Maus dem Zeiger) */
-const AU_FAN=["netflix","psn","apple","steam","spotify"];
+const AU_FAN=["spotify","psn","netflix","apple","steam"];
 const authCard=(title,text,inner)=>`<section class="au" data-mouse><div class="au-wrap"><div class="au-fan" aria-hidden="true">${AU_FAN.map((id,i)=>`<span class="au-fc">${gc(pk(id,i+3),{tilt:false,badge:false,plat:false})}</span>`).join("")}</div><div class="au-card rv">${LOGO(48)}<h1 class="au-h">${title}</h1>${text?`<p class="au-p">${text}</p>`:""}${inner}</div></div></section>`;
 
 /* Login + Registrierung */
@@ -132,7 +132,7 @@ function apiOrder(id,qs){
     const tick=async()=>{
       if(cur.path!==path)return;n++;let o;
       try{o=(await API(`/orders/${encodeURIComponent(id)}?k=${encodeURIComponent(k)}`)).order}
-      catch(e){const el=$("#ord");if(el){el.innerHTML=`<section class="sec od-nf"><div class="card od-miss">${empty("Bestellung nicht gefunden",esc(e.message),["/","Zur Startseite"])}<p class="od-sup">Den Link zu deiner Bestellung findest du in unserer E-Mail zur Zahlung. Fragen? <a href="mailto:${SUP()}">Schreib uns</a>.</p></div></section>`;$$(".rv",el).forEach(x=>x.classList.add("in"))}return}
+      catch(e){const el=$("#ord");if(el){el.innerHTML=`<section class="sec od-nf"><div class="card od-miss">${empty("Bestellung nicht gefunden",/nicht gefunden/i.test(e.message)?"Der Link ist unvollständig oder die Bestellung gehört zu einem Konto. Wenn du mit Konto bestellt hast, melde dich an.":esc(e.message),["/","Zur Startseite"])}<p class="od-sup">Den Link zu deiner Bestellung findest du in unserer E-Mail zur Zahlung. Fragen? <a href="mailto:${SUP()}">Schreib uns</a>.</p></div></section>`;$$(".rv",el).forEach(x=>x.classList.add("in"))}return}
       if(cur.path!==path)return;
       ordCache[id]=o;
       if(["processing","delivered"].includes(o.status)&&S.cartOrder===id){S.cart=[];S.promo=0;S.cartOrder=null;save();updBadges()}
@@ -182,7 +182,7 @@ function orderView(o){
    ${paid?`<div class="od-rc-a"><button class="btn btn-soft btn-sm" data-a="odPrint">${ic("i-receipt")}Beleg drucken</button><a class="btn btn-ghost btn-sm" href="${inv}">Rechnung anfordern</a></div>`:""}</section>`;
   const hasCodes=done&&o.items.some(i=>i.type!=="topup"&&!i.gift_to&&i.codes&&i.codes.length);
   return `<div class="od" data-st="${esc(o.status)}">
-<section class="od-stage chrome-rim" aria-labelledby="odH">${vis}<div class="od-copy"><p class="od-meta">${stBadge(o.status)}<span>Bestellnummer ${esc(o.id)}</span></p><h1 class="od-h" id="odH">${H[0]}</h1>${H[1]?`<p class="od-lead">${H[1]}</p>`:""}${tl}</div></section>
+<section class="od-stage chrome-rim" aria-labelledby="odH">${vis}<div class="od-copy"><h1 class="od-h" id="odH">${H[0]}</h1>${H[1]?`<p class="od-lead">${H[1]}</p>`:""}<p class="od-meta">${stBadge(o.status)}<span>Bestellnummer ${esc(o.id)}</span></p>${tl}</div></section>
 <div class="od-body">
  <div class="od-main"><h2 class="od-sh">${hasCodes?"Deine Codes":end?"Bestellte Artikel":"Deine Bestellung"}</h2>${items}${reviewBox(o)}</div>
  <aside class="od-side" aria-label="Beleg und weitere Schritte">${rc}

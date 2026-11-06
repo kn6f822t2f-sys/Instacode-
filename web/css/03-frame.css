@@ -114,3 +114,9 @@
 /* Ohne WebGL: Ring aus Chrom-Verlauf */
 .lq.nogl::after{content:"";position:absolute;left:50%;top:50%;width:min(86%,560px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;background:var(--chrome);
   -webkit-mask:radial-gradient(closest-side,transparent 52%,#000 54%,#000 80%,transparent 82%);mask:radial-gradient(closest-side,transparent 52%,#000 54%,#000 80%,transparent 82%);animation:metalSpin 14s linear infinite}
+/* Tablet (768–1079 px): Navigation und Suchfeld passen nicht in die Pille → Aufbau wie auf dem Handy (Lupe, Menü) */
+@media (min-width:768px) and (max-width:1079px){
+  .hdr .hnav,.hdr .hsearch,.hdr #hacc{display:none!important}
+  .hdr .hgrp>.m-only{display:grid!important}
+  .hdr .hgrp{margin-left:auto}
+}
