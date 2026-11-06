@@ -33,3 +33,27 @@ function logoStrip(){
 }
 /* Band aus, wenn die Seite selbst Bewertungen zeigt */
 function bandsVis(){const el=$("#rband");if(!el||!el.dataset.on)return;const own=$("#revSec:not([hidden]),.rvs:not([hidden])",app);el.hidden=!!own}
+/* ---------- Zahlungsarten: echte Zeichen der Anbieter, oben in der Leiste und als Band über der Fußzeile ----------
+   Gezeigt wird nur, was der Shop gerade wirklich anbietet: payLogos() liest CFG.methods (vom Server aus der
+   Stripe-Konfiguration ermittelt) und CFG.klarna (nur wenn Klarna aktiv ist, mit den erlaubten Kategorien).
+   Passen die Zeichen oben auf dem Handy nicht in eine Zeile, laufen sie als leises Band (eine Animation für alle). */
+const joinDe=l=>l.length>1?l.slice(0,-1).join(", ")+" und "+l[l.length-1]:(l[0]||"");
+function payTop(){
+  const r=$("#trustbar .pm-row");if(!r)return;const li=r.closest(".tb-pm");
+  /* Klarna oben nur, wenn es für alle Produkte gilt – die Einschränkung steht sonst im Band unten und auf der Produktseite */
+  const kl={klarna:!klarnaScope()};
+  r.innerHTML=payLogos(null,kl);li.classList.remove("mq");
+  requestAnimationFrame(()=>{const pl=$(".paylogos",r);if(innerWidth<900&&pl&&pl.scrollWidth>r.clientWidth+2){
+    const set=payLogos(null,kl);li.classList.add("mq");r.innerHTML=`<span class="pm-track">${set}${set}</span>`}});
+  if(typeof offIO!=="undefined"&&offIO)offIO.observe(li);
+}
+function payBand(){
+  const el=$("#pband");if(!el)return;
+  const ex=WALLETS().map(k=>PM[k]&&PM[k][0]).filter(Boolean);
+  el.innerHTML=`<div class="pb-in">
+  <div class="pb-t"><h2 class="h3" id="pbH">Bezahlen, wie du willst</h2>
+   <p>${ex.length?`Express-Checkout mit ${joinDe(ex)}: Ein Tipp, fertig. `:""}Abgewickelt über Stripe, mit TLS-Verschlüsselung und 3&#8209;D&nbsp;Secure.</p></div>
+  ${payLogos()}
+</div>`;
+  el.hidden=false;
+}

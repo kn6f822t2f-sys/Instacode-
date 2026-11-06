@@ -32,3 +32,54 @@
 i.ls-m:not(.bm){height:24px;width:calc(24px * var(--a,1));max-width:92px;background:currentColor;-webkit-mask:var(--si) center/contain no-repeat;mask:var(--si) center/contain no-repeat}
 @media (prefers-reduced-motion:reduce){.rb-track,.ls-track{animation:none}.rb-row,.ls-row{overflow-x:auto}.rb-stars i{animation:none;opacity:1}}
 .lite .rb-row,.lite .ls-row{-webkit-mask:none;mask:none}
+
+/* ---------- Zahlungsarten oben in der Leiste (74-bands.js payTop) ---------- */
+.tb-pm{min-width:0}
+.pm-row{display:block;max-width:100%;overflow:hidden;padding:2px 1px}
+.tb-pm .paylogos{margin:0;gap:5px;flex-wrap:nowrap;justify-content:center}
+.tb-pm .pmk{flex:none;width:38px;height:24px;padding:0 4px;border-radius:5px;box-shadow:0 0 0 .5px rgba(14,16,20,.18),0 2px 6px -3px rgba(14,16,20,.28)}
+.tb-pm .pmk img{max-width:30px;max-height:14px}
+.tb-pm .pmk-kl img{max-height:10px}
+.tb-pm .kl-cap{display:none}
+.tb-pm .pmk-tx{width:auto;padding:0 6px;gap:3px}
+.tb-pm .pmk-tx img{max-height:11px}
+.tb-pm .pmk-tx b{font-size:9.5px}
+.tb-pm.mq .pm-row{-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.pm-track{display:flex;width:max-content;animation:tbMove 28s linear infinite}
+.pm-track .paylogos{padding-right:5px}
+.off .pm-track,.tb-pm.off .pm-track{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.pm-track{animation:none}}
+@media (max-width:899px){
+  .trustbar{padding-top:8px}
+  .trustbar ul{height:auto;overflow:visible}
+  .trustbar li:not(.tb-pm){display:none}
+  .trustbar li.tb-pm{position:static;display:block;width:100%;opacity:1;transform:none}
+}
+/* Revolut Pay: laut Revolut immer Zeichen und Name */
+.pmk-tx{width:auto;grid-auto-flow:column;gap:5px;padding:0 10px}
+.pmk-tx b{display:block;color:#191C1F}
+
+/* ---------- Band „Bezahlen, wie du willst“ über der Fußzeile (74-bands.js payBand) ---------- */
+.pband{margin:calc(var(--sec) * .6) var(--gut) 0}
+.pb-in{position:relative;display:grid;gap:18px;padding:26px 20px;border-radius:var(--r-xl);text-align:center;
+  background:var(--g-fill);box-shadow:var(--g-edge),var(--g-line),var(--g-drop)}
+html:not(.lite) .pb-in{-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5)}
+.pb-t h2{margin:0}
+.pb-t p{max-width:34em;margin:6px auto 0;font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+.pband .paylogos{margin:0;gap:10px}
+.pband .pmk{width:64px;height:42px;border-radius:10px}
+.pband .pmk img{max-width:50px;max-height:26px}
+.pband .pmk-tx{width:auto}
+.pband .pmk-kl{height:42px}
+.pb-note{margin:0;font-size:12.5px;line-height:1.5;color:var(--ink-3)}
+@media (min-width:900px){
+  .pb-in{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px 32px;padding:30px 34px;text-align:left}
+  .pb-t p{margin-left:0}
+  .pband .paylogos{justify-content:flex-end;max-width:600px}
+  .pb-note{grid-column:1/-1}
+}
+/* Vertrauensband: Revolut Pay mit Zeichen und Name, Klarna im Rosa der Marke */
+.tb-pay .tb-rv{display:inline-flex;align-items:center;gap:5px;color:#191C1F}
+.tb-pay .tb-rv img{height:14px;width:auto;padding:0;background:none;box-shadow:none}
+.tb-pay img.tb-kl{background:#FFB3C7;box-shadow:0 0 0 1px rgba(14,16,20,.06)}
+.tb-pm .pmk-tx{min-width:0}

@@ -92,6 +92,15 @@ table.pv{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}tabl
 details.adet{margin-top:10px}details.adet summary{cursor:pointer;font-weight:700;color:var(--m);font-size:14px}
 .alist{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}.alist td{padding:7px 6px;border-top:1px solid var(--b);vertical-align:top}
 .ok{color:var(--ok)}.bad{color:#B42318}
+/* E-Mails und Newsletter */
+.mv{display:grid;gap:12px;margin-top:12px}@media(min-width:900px){.mv{grid-template-columns:250px minmax(0,1fr);align-items:start}}
+.mv-l{display:grid;gap:4px;align-content:start}@media(min-width:900px){.mv-l{position:sticky;top:70px;max-height:calc(100vh - 90px);overflow:auto}}
+.mv-g{font-size:12px;font-weight:800;color:var(--m);margin:10px 6px 2px}
+.mv-i{display:block;width:100%;text-align:left;border:1px solid var(--b);background:var(--s);border-radius:12px;padding:8px 10px;font:inherit;cursor:pointer;color:var(--t)}
+.mv-i b{display:block;font-size:13.5px}.mv-i small{display:block;color:var(--m);font-size:12px;line-height:1.35;margin-top:2px}.mv-i.on{border-color:var(--t);background:#fff}
+.mv-r{margin-top:0;min-width:0}.mv-f{margin-top:12px;overflow:auto;background:#E9EBEF;border-radius:14px;padding:12px 0;text-align:center}
+.mv-f iframe,.mv-pf{display:block;margin:0 auto;border:0;background:#F3F4F6;height:900px;max-width:none}.mv-pf{width:100%;margin-top:10px;border-radius:12px}
+.mv-t{text-align:left;white-space:pre-wrap;font:13px/1.5 ui-monospace,Menlo,monospace;margin:0 12px;padding:14px;background:#fff;border-radius:10px;max-height:900px;overflow:auto}
 </style>
 </head>
 <body>
@@ -104,7 +113,7 @@ const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const eur=c=>(c/100).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
 async function API(p,o={}){const r=await fetch("/api"+p,{method:o.method||"GET",headers:{"Content-Type":"application/json","X-IC":"1"},body:o.body?JSON.stringify(o.body):undefined,credentials:"same-origin"});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Fehler "+r.status);return j}
-const TABS=[["overview","Übersicht"],["processing","Prüfen"],["abos","Abos"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"]];
+const TABS=[["overview","Übersicht"],["processing","Prüfen"],["abos","Abos"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"],["mails","E-Mails"],["newsletter","Newsletter"]];
 const STC={awaiting_payment:"#B54708",payment_pending:"#B54708",processing:"#3B5BDB",delivered:"#067647",canceled:"#6B7280",refunded:"#6B7280"};
 const STN={awaiting_payment:"Warte auf Zahlung",payment_pending:"Zahlung läuft",processing:"Prüfen",delivered:"Geliefert",canceled:"Storniert",refunded:"Erstattet"};
 let tab="overview",timer,tt,counts={},mode=null;
@@ -123,6 +132,8 @@ async function load(force){
   if(tab==="reloadly"){if(force)loadRL();return}
   if(tab==="overview"){if(force)loadOV();return}
   if(tab==="abos"){if(force)loadAbos();return}
+  if(tab==="mails"){if(force)loadMails();return}
+  if(tab==="newsletter"){if(force)loadNL();return}
   timer=setTimeout(()=>load(),30000);
   if(!force&&typing())return;
   try{const [j,ap]=await Promise.all([API("/admin/orders?status="+tab),API("/admin/abos/pending").catch(()=>null)]);counts=j.counts||{};if(ap){aboN=ap.count;aboU=ap.unmatched}setMode(j);render(j)}catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
@@ -492,6 +503,61 @@ document.addEventListener("click",async e=>{
   if(t.hasAttribute("data-aereset")){ABE=clone(AB.content);aeDraw();return}
   if(t.hasAttribute("data-aesave")){const all=$("#aeall")&&$("#aeall").checked;if(all&&!confirm("Dieses Paket für Pro, Premium und Max übernehmen?"))return;
     t.disabled=true;try{const j=await API("/admin/abos/content",{method:"POST",body:{plan:ABP,items:ABE[ABP],all}});AB.plans=j.plans.map(p=>Object.assign(p,{running:(AB.plans.find(x=>x.id===p.id)||{}).running||0}));AB.content=j.content;ABE=clone(j.content);drawAbos();toast("Paket gespeichert")}catch(x){alert(x.message);t.disabled=false}return}
+});
+/* ---------- E-Mails: alle Vorlagen mit Beispieldaten · Newsletter: Abonnenten, Nachweis, Aktionen ---------- */
+let MV=null,mvSel=null,mvW=600,mvText=false,NL=null,nlPrev=null;
+const mvGroups=["Konto","Kauf","Abo","Werbung","Intern"];
+async function loadMails(){try{MV=await API("/admin/mails");if(!mvSel)mvSel=MV.mails[0].id;drawMails()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+function drawMails(){
+  const m=MV.mails.find(x=>x.id===mvSel)||MV.mails[0];
+  $("#m").innerHTML=tabsHTML()+`<div class="card"><b>E-Mail-Vorlagen</b><div class="muted">Alle ${MV.mails.length} Mails im hellen Design, gefüllt mit Beispieldaten. Absender ${esc(MV.from)} · Antworten an ${esc(MV.support)} · Versand ${MV.mail?`<span class="ok">aktiv</span>`:`<span class="bad">aus (RESEND_API_KEY fehlt, Mails stehen nur im Log)</span>`}</div></div>
+  <div class="mv"><nav class="mv-l" aria-label="Vorlagen">${mvGroups.map(g=>{const l=MV.mails.filter(x=>x.group===g);return l.length?`<div class="mv-g">${g}</div>`+l.map(x=>`<button class="mv-i${x.id===m.id?" on":""}" data-mv="${esc(x.id)}" aria-pressed="${x.id===m.id}"><b>${esc(x.name)}${x.ad?`<span class="tag">Werbung</span>`:""}</b><small>${esc(x.trigger)}</small></button>`).join(""):""}).join("")}</nav>
+  <section class="card mv-r"><div class="mv-h"><div><div class="muted">Betreff</div><b>${esc(m.subject)}</b><div class="muted" style="margin-top:4px">Vorschautext: ${esc(m.pre||"–")}</div></div></div>
+   <div class="acts" style="margin-top:10px"><div class="tabs" style="padding:0"><button class="${!mvText&&mvW===600?"on":""}" data-mvw="600">600 px</button><button class="${!mvText&&mvW===375?"on":""}" data-mvw="375">Handy 375 px</button><button class="${mvText?"on":""}" data-mvw="text">Textfassung</button></div>
+    <button class="btn g sm" data-mvtest="${esc(m.id)}"${MV.mail?"":" disabled title=\"RESEND_API_KEY fehlt\""}>Test an mich senden</button><a class="btn g sm" href="/admin/mail/${encodeURIComponent(m.id)}" target="_blank" rel="noopener">In neuem Tab</a></div>
+   <div class="mv-f">${mvText?`<pre class="mv-t" id="mvT">Lade …</pre>`:`<iframe id="mvF" title="Vorschau ${esc(m.name)}" src="/admin/mail/${encodeURIComponent(m.id)}" style="width:${mvW}px"></iframe>`}</div>
+   <p class="muted" style="margin-top:8px">Größe ${(m.size/1024).toFixed(0)} KB (Gmail kürzt ab 102 KB). Bilder kommen von ${esc(location.origin)}/mail/ und /cards/.</p></section></div>`;
+  const f=$("#mvF");if(f)f.addEventListener("load",()=>{try{f.style.height=(f.contentDocument.documentElement.scrollHeight+4)+"px"}catch(e){}});
+  if(mvText)fetch(`/admin/mail/${encodeURIComponent(m.id)}?text=1`,{credentials:"same-origin"}).then(r=>r.text()).then(t=>{const p=$("#mvT");if(p)p.textContent=t});
+}
+async function loadNL(){try{NL=await API("/admin/newsletter");drawNL()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+const nlF=k=>{const el=$("#nl_"+k);return el?el.value:""};
+const nlBody=()=>({subject:nlF("subject"),pre:nlF("pre"),title:nlF("title"),text:nlF("text"),brands:nlF("brands"),cta:nlF("cta"),url:nlF("url"),code:nlF("code"),codeNote:nlF("codeNote"),img:nlF("img")});
+const NLST={active:["Bestätigt","#067647"],pending:["Wartet auf Bestätigung","#B54708"],unsub:["Abgemeldet","#6B7280"]};
+function drawNL(){
+  const c=NL.counts||{},act=c.active||0,keep=$("#nl_subject")?nlBody():null,dt=t=>t?new Date(t).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"}):"–";
+  const fld=(k,l,ph,area)=>`<label class="lbl" for="nl_${k}">${l}</label>${area?`<textarea id="nl_${k}" rows="5" placeholder="${esc(ph)}"></textarea>`:`<input id="nl_${k}" placeholder="${esc(ph)}">`}`;
+  $("#m").innerHTML=tabsHTML()+`<div class="kpis"><div class="kpi"><small>Bestätigt</small><b>${act}</b></div><div class="kpi"><small>Wartet auf Bestätigung</small><b>${c.pending||0}</b></div><div class="kpi"><small>Abgemeldet</small><b>${c.unsub||0}</b></div><div class="kpi"><small>Bewertungs-Einwilligungen</small><b>${NL.review.accounts+NL.review.orders}</b></div></div>
+  <div class="card"><b>Aktion oder Newsletter verschicken</b><div class="ahint">Geht nur an bestätigte Abonnenten (Double-Opt-in). Jede Mail hat einen Abmeldelink und die Ein-Klick-Abmeldung (List-Unsubscribe). Bitte nur wahre Angaben: keine erfundenen Rabatte, Fristen oder Bewertungen.</div>
+   <div class="grid2"><div>${fld("subject","Betreff *","Neu im Sortiment: …")}</div><div>${fld("pre","Vorschautext","Ein Satz, der im Postfach neben dem Betreff steht")}</div></div>
+   ${fld("title","Überschrift","Neu bei instantcodes")}${fld("text","Text (Leerzeile = neuer Absatz)","Ab sofort findest du …",true)}
+   <div class="grid2"><div>${fld("brands","Produkte (IDs, mit Komma)","spotify, netflix, apple")}</div><div>${fld("img","Bild (optional, https://…)","https://…")}</div></div>
+   <div class="grid2"><div>${fld("cta","Knopf-Text","Jetzt ansehen")}</div><div>${fld("url","Knopf-Link (Seite im Shop)","/angebote")}</div></div>
+   <div class="grid2"><div><label class="lbl" for="nl_code">Rabattcode (nur echte Codes aus dem Shop)</label><select id="nl_code"><option value="">kein Code</option>${(NL.promos||[]).map(p=>`<option>${esc(p)}</option>`).join("")}</select></div><div>${fld("codeNote","Hinweis zum Code","Gilt für deine erste Bestellung.")}</div></div>
+   <div class="acts"><button class="btn g" data-nlprev="1">Vorschau</button><button class="btn g" data-nltest="1"${NL.mail?"":" disabled"}>Test an mich</button><button class="btn p" data-nlsend="1"${NL.mail&&act&&!NL.sending?"":" disabled"}>An ${act} Abonnenten senden</button></div>
+   ${NL.mail?"":`<div class="warnbox">RESEND_API_KEY fehlt – Versand ist aus.</div>`}${NL.sending?`<div class="warnbox">Ein Versand läuft gerade.</div>`:""}
+   <div id="nlPrev"></div></div>
+  <div class="card"><b>Versendet</b>${NL.campaigns.length?`<table class="alist"><tr><td class="muted">Datum</td><td class="muted">Betreff</td><td class="muted">Empfänger</td><td class="muted">Gesendet</td></tr>${NL.campaigns.map(x=>`<tr><td>${dt(x.created_at)}</td><td>${esc(x.subject)}</td><td>${x.recipients}</td><td>${x.sent}${x.failed?` <span class="bad">(${x.failed} Fehler)</span>`:""}${x.finished_at?"":" · läuft"}</td></tr>`).join("")}</table>`:`<p class="muted">Noch keine Aktion verschickt.</p>`}</div>
+  <div class="card"><div class="row"><b>Abonnenten</b><a class="btn g sm" href="/api/admin/newsletter.csv">Nachweis als CSV</a></div><p class="muted">Gespeichert werden Zeitpunkt, Quelle und ein Hash der IP-Adresse – bei Anmeldung und Bestätigung. Nie bestätigte Anmeldungen werden nach 30 Tagen gelöscht.</p>
+   ${NL.list.length?`<table class="alist"><tr><td class="muted">E-Mail</td><td class="muted">Status</td><td class="muted">Quelle</td><td class="muted">Angemeldet</td><td class="muted">Bestätigt</td><td></td></tr>${NL.list.map(r=>{const s=NLST[r.status]||[r.status,"#6B7280"];return `<tr><td>${esc(r.email)}</td><td><span class="st" style="margin:0;color:${s[1]};background:${s[1]}1a">${s[0]}</span>${r.unsub_at?`<div class="muted">${dt(r.unsub_at)} · ${esc(r.unsub_via||"")}</div>`:""}</td><td>${esc(r.source||"–")}</td><td>${dt(r.created_at)}<div class="muted" title="IP-Hash">${esc((r.ip_hash||"").slice(0,10))}</div></td><td>${dt(r.confirmed_at)}${r.confirm_ip_hash?`<div class="muted" title="IP-Hash">${esc(r.confirm_ip_hash.slice(0,10))}</div>`:""}</td><td>${r.status==="active"?`<button class="btn g sm" data-nlunsub="${esc(r.email)}">Abmelden</button>`:""}</td></tr>`}).join("")}</table>`:`<p class="muted">Noch keine Anmeldungen. Das Anmeldefeld steht in der Fußzeile des Shops.</p>`}</div>
+  <div class="card"><b>Bewertungsanfragen</b><p class="muted">${NL.review.on?`Aktiv: ${NL.review.delayH} Stunden nach der Lieferung, einmal pro Bestellung, nur mit Einwilligung (Konto: ${NL.review.accounts}, Bestellseite: ${NL.review.orders}). Bisher gefragt: ${NL.review.asked}.`:"Ausgeschaltet (REVIEW_MAILS=0)."} Warenkorb-Erinnerungen gibt es bewusst nicht – dafür fehlt eine Einwilligung.</p>
+   <div class="acts"><button class="btn g sm" data-rvnow="1"${NL.review.on?"":" disabled"}>Fällige Anfragen jetzt senden</button></div></div>`;
+  if(keep)Object.entries(keep).forEach(([k,v])=>{const el=$("#nl_"+k);if(el)el.value=v});
+  if(nlPrev)showNLPrev(nlPrev);
+}
+function showNLPrev(r){const box=$("#nlPrev");if(!box)return;box.innerHTML=`<div class="it"><div class="muted">Betreff</div><b>${esc(r.subject)}</b><div class="muted">Vorschautext: ${esc(r.pre||"–")}</div><iframe class="mv-pf" title="Vorschau der Aktion"></iframe></div>`;
+  const f=$(".mv-pf",box);f.srcdoc=r.html;f.addEventListener("load",()=>{try{f.style.height=(f.contentDocument.documentElement.scrollHeight+4)+"px"}catch(e){}})}
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-mv],[data-mvw],[data-mvtest],[data-nlprev],[data-nltest],[data-nlsend],[data-nlunsub],[data-rvnow]");if(!t)return;
+  if(t.dataset.mv){mvSel=t.dataset.mv;drawMails();return}
+  if(t.dataset.mvw){if(t.dataset.mvw==="text")mvText=true;else{mvText=false;mvW=+t.dataset.mvw}drawMails();return}
+  if(t.dataset.mvtest){t.disabled=true;try{const j=await API(`/admin/mails/${encodeURIComponent(t.dataset.mvtest)}/test`,{method:"POST"});toast("Gesendet an "+j.to)}catch(x){alert(x.message)}t.disabled=false;return}
+  if(t.dataset.nlprev){try{nlPrev=await API("/admin/newsletter/preview",{method:"POST",body:nlBody()});showNLPrev(nlPrev)}catch(x){alert(x.message)}return}
+  if(t.dataset.nltest){t.disabled=true;try{const j=await API("/admin/newsletter/test",{method:"POST",body:nlBody()});toast("Test gesendet an "+j.to)}catch(x){alert(x.message)}t.disabled=false;return}
+  if(t.dataset.nlsend){const n=(NL.counts||{}).active||0;if(!confirm(`Diese Mail jetzt an ${n} bestätigte Abonnenten senden?`))return;t.disabled=true;
+    try{const j=await API("/admin/newsletter/send",{method:"POST",body:Object.assign(nlBody(),{confirm:n})});toast(`Versand an ${j.recipients} Abonnenten gestartet`);setTimeout(loadNL,1500)}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.dataset.nlunsub){if(!confirm(`${t.dataset.nlunsub} vom Newsletter abmelden?`))return;try{await API("/admin/newsletter/unsub",{method:"POST",body:{email:t.dataset.nlunsub}});toast("Abgemeldet");loadNL()}catch(x){alert(x.message)}return}
+  if(t.dataset.rvnow){t.disabled=true;try{const j=await API("/admin/review-mails/run",{method:"POST"});toast(j.sent?`${j.sent} Bewertungsanfrage(n) gesendet`:"Gerade keine fällig");loadNL()}catch(x){alert(x.message);t.disabled=false}return}
 });
 (async()=>{
   try{const me=(await API("/me")).user;

@@ -45,3 +45,10 @@
 .od-acct-b{display:flex;flex-wrap:wrap;gap:8px}
 .od-acct-b .btn{min-height:44px}
 @media (prefers-reduced-motion:reduce){.ql-otp{animation:none}}
+/* Bestellseite: Konto auch mit Google oder Apple (nur wenn eingerichtet) */
+.od-acct-q{display:grid;gap:9px;margin-top:12px}
+.od-acct-or{display:flex;align-items:center;gap:10px;margin:2px 0 0;font-size:12.5px;font-weight:550;color:var(--ink-3)}
+.od-acct-or::before,.od-acct-or::after{content:"";flex:1;height:1px;background:rgba(14,16,20,.1)}
+.od-acct-g{display:flex;justify-content:center;min-height:44px}
+.od-acct-q .qa-btn{min-height:44px}
+.od-acct-q .od-acct-f{margin:0 2px}

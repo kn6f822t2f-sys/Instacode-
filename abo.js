@@ -268,6 +268,7 @@ CREATE TABLE IF NOT EXISTS sub_events(id TEXT PRIMARY KEY, type TEXT, at INTEGER
   function markEnded(s, at) {
     if (!s || s.status === "ended") return;
     db.prepare("UPDATE subs SET status='ended', ended_at=COALESCE(ended_at,?) WHERE id=?").run(at || T(), s.id);
+    if (s.started_at) X.safe(mail.aboEnded(view(subById(s.id)))); // nur, wenn das Abo wirklich lief (nicht bei abgebrochener Erstzahlung)
     console.log(`Abo ${s.id}: beendet`);
   }
   async function applyStripeSub(s, sub) {

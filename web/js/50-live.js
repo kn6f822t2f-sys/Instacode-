@@ -62,8 +62,9 @@ A.smsSend=async(_,el)=>{const e=$("#smsErr");e.textContent="";busy(el,true);try{
 A.smsCheck=async(r,el)=>{const e=$("#smsErr");e.textContent="";busy(el,true);try{const j=await API("/auth/sms/verify",{method:"POST",body:{phone:S.smsTel||$("#smsTel").value,code:$("#smsCode").value}});setUser(j.user);toast("Angemeldet");go(r||"/konto")}catch(x){e.textContent=x.message;busy(el,false)}};
 A.codeLogin=async(r,el)=>{const i=$("#aMail"),m=i.value.trim(),e=$("#aErr");e.textContent="";i.classList.remove("bad");if(!/^\S+@\S+\.\S+$/.test(m)){e.textContent="Gib deine E-Mail-Adresse ein – wir schicken dir einen Code.";i.classList.add("bad");i.focus();return}busy(el,true);
   try{await API("/auth/code",{method:"POST",body:{email:m}});S.pendingEmail=m;save();toast(`Code an ${m} geschickt`);go("/verifizieren?r="+encodeURIComponent(r||"/konto"))}catch(x){e.textContent=x.message;busy(el,false)}};
-function gsi(r,done){
-  const init=()=>{try{const g=window.google.accounts.id;g.initialize({client_id:CFG.google,callback:async x=>{try{const j=await API("/auth/google",{method:"POST",body:{credential:x.credential}});if(done)return done(j.user);setUser(j.user);toast(`Angemeldet als ${j.user.name}`);go(r)}catch(e){const el=$("#sheet #qlErr")||$("#aErr");if(el)el.textContent=e.message}}});g.renderButton($("#gbtn"),{theme:"outline",size:"large",shape:"pill",text:"continue_with",locale:"de",width:300})}catch(e){}};
+/* Google-Knopf (Google Identity Services). el/opt: anderer Platz und Größe (Kasse, Bestellseite); Fehler landen im nächsten Fehlerfeld */
+function gsi(r,done,el,opt){
+  const init=()=>{try{const g=window.google.accounts.id,t=el||$("#gbtn");if(!t||!t.isConnected)return;g.initialize({client_id:CFG.google,callback:async x=>{try{const j=await API("/auth/google",{method:"POST",body:{credential:x.credential}});if(done)return done(j.user);setUser(j.user);toast(`Angemeldet als ${j.user.name}`);go(r)}catch(e){const er=(el&&el.closest(".ck-ev")&&$("#evErr"))||(el&&el.closest(".od-acct")&&$("#odaErr"))||$("#sheet #qlErr")||$("#aErr");if(er)er.textContent=e.message}}});g.renderButton(t,Object.assign({theme:"outline",size:"large",shape:"pill",text:"continue_with",locale:"de",width:300},opt||{}))}catch(e){}};
   if(window.google&&window.google.accounts)return init();
   const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.onload=init;document.head.appendChild(s);
 }
@@ -185,7 +186,7 @@ function orderView(o){
   return `<div class="od" data-st="${esc(o.status)}">
 <section class="od-stage chrome-rim" aria-labelledby="odH">${vis}<div class="od-copy"><h1 class="od-h" id="odH">${H[0]}</h1>${H[1]?`<p class="od-lead">${H[1]}</p>`:""}<p class="od-meta">${stBadge(o.status)}<span>Bestellnummer ${esc(o.id)}</span></p>${tl}</div></section>
 <div class="od-body">
- <div class="od-main"><h2 class="od-sh">${hasCodes?"Deine Codes":end?"Bestellte Artikel":"Deine Bestellung"}</h2>${items}${reviewBox(o)}</div>
+ <div class="od-main"><h2 class="od-sh">${hasCodes?"Deine Codes":end?"Bestellte Artikel":"Deine Bestellung"}</h2>${items}${reviewBox(o)}${typeof rvOptBox==="function"?rvOptBox(o)/* Bewertungsanfrage per E-Mail, freiwillig (71-newsletter.js) */:""}</div>
  <aside class="od-side" aria-label="Beleg und weitere Schritte">${rc}
   ${odAcct(o)/* Gast: „Konto mit einem Tipp anlegen“ (52-passkey.js) */}
   <div class="od-acts">${done?`<button class="btn btn-soft" data-a="reorderLive" data-v="${esc(o.id)}">${ic("i-repeat")}Erneut kaufen</button>`:`<a class="btn btn-soft" href="/hilfe">${ic("i-help")}Hilfe</a>`}<a class="btn btn-primary" href="/">Weiter einkaufen</a></div>
@@ -230,6 +231,7 @@ function apiAccount(tab){
   if(tab==="einstellungen")body=`<div class="card acc-set">
    <div class="setrow"><span class="si-ic">${ic("i-mail")}</span><div class="mid"><b>E-Mail</b><small>${esc(u.email)}</small></div></div>
    <div class="setrow"><span class="si-ic">${ic("i-bell")}</span><div class="mid"><b id="alL">Anmelde-Hinweise per E-Mail</b><small>Wir schreiben dir bei jeder neuen Anmeldung.</small></div><button class="switch" role="switch" aria-checked="${!!u.loginAlerts}" data-a="alerts" aria-labelledby="alL"></button></div>
+   ${typeof consentRows==="function"?consentRows()/* Bewertungsanfragen + Newsletter (71-newsletter.js) */:""}
    <button class="setrow" data-a="country"><span class="si-ic">${flag(ctry().c,22)}</span><div class="mid"><b>Land für Aufladungen</b><small>${esc(ctry().n)}</small></div>${ic("i-chev")}</button></div>
    <h2 class="acc-sh" id="pkH">Passkeys</h2>
    <section class="card acc-set acc-pk" aria-labelledby="pkH"><div id="pkList" class="pk-list" aria-live="polite"><div class="pk-wait"><span class="spin"></span></div></div>
@@ -242,7 +244,7 @@ ${accQaHTML(tab)/* Schnellaktionen (52-passkey.js) */}
 <div class="acc-body">${body}</div></div>`,
   after(){
     const op=API("/orders");accQa(op);
-    if(tab==="einstellungen")pkMount();
+    if(tab==="einstellungen"){pkMount();if(typeof consentMount==="function")consentMount()}
     if(tab==="abos")return aboAccount();
     if(tab!=="bestellungen")return;
     op.then(j=>{const el=$("#accBody");if(!el)return;j.orders.forEach(o=>ordCache[o.id]=o);el.classList.remove("acc-wait");
@@ -318,6 +320,8 @@ const LEGAL={
 <li><b>Server-Logs:</b> IP-Adresse, Zeitpunkt, aufgerufene Seite, Browser. Zur Sicherheit und Fehlersuche, Speicherung höchstens 30 Tage. Rechtsgrundlage: berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).</li>
 <li><b>Betrugsprüfung:</b> Zahlungs- und Risikodaten von Stripe, um Missbrauch zu verhindern. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</li>
 <li><b>Produktempfehlungen:</b> Nach einem Kauf schicken wir dir in der Liefer-E-Mail Empfehlungen zu ähnlichen Produkten (§ 7 Abs. 3 UWG). Du kannst dem jederzeit über den Link in jeder E-Mail oder per Nachricht an uns widersprechen. Rechtsgrundlage: berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).</li>
+<li><b>Newsletter:</b> Nur mit deiner Einwilligung und erst nach Bestätigung über den Link in unserer E-Mail (Double-Opt-in). Wir speichern deine E-Mail-Adresse, Zeitpunkt und Quelle der Anmeldung und der Bestätigung sowie einen Hashwert der IP-Adresse als Nachweis. Abmelden kannst du dich jederzeit über den Link in jeder E-Mail, im Konto oder per Nachricht an uns. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 7 Abs. 2 UWG); Nachweis: Art. 6 Abs. 1 lit. c DSGVO.</li>
+<li><b>Bewertungsanfrage:</b> Nur wenn du im Konto oder auf der Bestellseite zugestimmt hast, fragen wir dich einige Tage nach der Lieferung einmal per E-Mail nach deiner Meinung. Widerruf jederzeit über den Link in der E-Mail oder im Konto. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO).</li>
 <li><b>Bewertungen:</b> Name, Sterne und Text, die du freiwillig nach einer Bestellung abgibst. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO).</li>
 <li><b>Abos:</b> Name, E-Mail-Adresse, gewählter Plan, Zahlungs- und Laufzeitdaten von Stripe, gelieferte Codes sowie Kündigungserklärungen mit Eingangszeitpunkt. Rechtsgrundlage: Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) und gesetzliche Nachweispflichten (Art. 6 Abs. 1 lit. c DSGVO).</li>
 </ul>

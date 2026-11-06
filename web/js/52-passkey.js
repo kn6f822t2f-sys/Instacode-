@@ -5,7 +5,8 @@
    A.pkAdd()        Passkey für das angemeldete Konto anlegen · pkMount() Liste mit Löschen (Konto › Einstellungen)
    A.loginOpen(r)   kompaktes Anmelde-Fenster: Express-Knöpfe (nur eingerichtete), Code per E-Mail, Link „Mit Passwort anmelden“.
                     Öffnet sich für Links auf /login (Kopfzeile, Menü …), nicht für „Konto erstellen“ und Links mit data-full.
-   odAcct(o)        Bestellseite (Gast): „Konto mit einem Tipp anlegen“ – Code an die Bestell-E-Mail, verknüpft die Bestellung.
+   odAcct(o)        Bestellseite (Gast): „Konto mit einem Tipp anlegen“ – Code an die Bestell-E-Mail, verknüpft die Bestellung;
+                    daneben Google und Apple, wenn eingerichtet (odQuick).
                     Der Server antwortet für neue und bestehende Adressen gleich (keine Kontenaufzählung).
    accQaHTML/accQa  Konto: Schnellaktionen (Nochmal kaufen, Meine Codes, Passkey hinzufügen, Abo verwalten) */
 const b64u=b=>{const u=new Uint8Array(b);let s="";for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")};
@@ -130,13 +131,20 @@ document.addEventListener("click",e=>{
    und alle Gastbestellungen dieser Adresse – auch diese – landen darin. Ausgeblendet, wenn auf diesem Gerät schon
    ein Konto angemeldet war. Ob es zur Adresse ein Konto gibt, verrät der Server nicht. */
 let ODA={};
+/* Neben dem E-Mail-Code: Google und Apple (nur wenn eingerichtet). Der Server legt dabei alle Gastbestellungen
+   derselben E-Mail-Adresse ins Konto (linkOrders) – deshalb der Hinweis auf die gleiche Adresse. */
+const odQuick=o=>{const a=CFG.auth||{},k=new URLSearchParams(location.search).get("k")||(S.keys||{})[o.id]||"",r=`/bestellung/${o.id}${k?"?k="+encodeURIComponent(k):""}`;
+  const q=[CFG.google&&`<div class="od-acct-g" id="odG"></div>`,a.apple&&`<a class="qa-btn qa-apple" href="/auth/apple?r=${encodeURIComponent(r)}"><img src="/logo/apple.svg" alt=""><span>Mit Apple fortfahren</span></a>`].filter(Boolean);
+  if(!q.length)return "";
+  if(CFG.google){let n=0;const t=()=>{const el=$("#odG");if(el&&!el.childElementCount)return gsi(r,u=>{setUser(u);toast(`Angemeldet als ${u.name||u.email}`);route(true)},el,{width:280});if(!el&&n++<20)setTimeout(t,100)};setTimeout(t,0)}
+  return `<div class="od-acct-q"><p class="od-acct-or">oder schneller</p>${q.join("")}<p class="od-acct-f">Mit Google oder Apple landet die Bestellung im Konto, wenn dort dieselbe E-Mail-Adresse hinterlegt ist.</p></div>`};
 function odAcct(o){
   if(S.user||S.acct||!o||!o.email||["canceled","refunded"].includes(o.status))return "";
   const st=ODA.id===o.id&&ODA.sent;
   return `<section class="card od-acct" id="odAcct" aria-labelledby="odAcctH"><span class="od-acct-i" aria-hidden="true">${ic("i-user")}</span>
    <h2 class="od-h2" id="odAcctH">Konto mit einem Tipp anlegen</h2>
    <p class="od-acct-p">Deine Codes jederzeit wiederfinden, auch auf anderen Geräten. Wir schicken einen Code an <b>${esc(o.email)}</b> und legen diese Bestellung in dein Konto.</p>
-   <div class="od-acct-a"${st?" hidden":""}><button class="btn btn-primary btn-block" data-a="odAcctSend" data-v="${esc(o.id)}">${ic("i-mail")}Code an meine E-Mail senden</button></div>
+   <div class="od-acct-a"${st?" hidden":""}><button class="btn btn-primary btn-block" data-a="odAcctSend" data-v="${esc(o.id)}">${ic("i-mail")}Code an meine E-Mail senden</button>${odQuick(o)}</div>
    <div class="od-acct-c"${st?"":" hidden"}><label class="lbl" for="odaCode">Code aus der E-Mail</label>
     <div class="au-otpw"><span class="au-cells" aria-hidden="true">${"<i></i>".repeat(6)}</span><input class="inp otp au-otp" id="odaCode" inputmode="numeric" maxlength="40" autocomplete="one-time-code" placeholder="000000" aria-describedby="odaErr"></div>
     <button class="btn btn-primary btn-ink btn-block" data-a="odAcctGo" data-v="${esc(o.id)}">Konto anlegen</button>

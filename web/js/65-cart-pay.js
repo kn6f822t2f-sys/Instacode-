@@ -60,7 +60,7 @@ const bumpEl=el=>{if(!el||reduce)return;el.classList.remove("ck-pop");void el.of
 
 /* ---------- Schnellkauf-Fenster ----------
    Betrag wählen → Expresszahlung direkt im Fenster (E-Mail kommt aus der Wallet) → Bestellseite.
-   Daneben „Mit Karte zahlen“ (normale Kasse) und „In den Warenkorb“. */
+   Darunter „oder mit Karte bezahlen“: „Mit Karte zahlen“ (normale Kasse) und „In den Warenkorb“. */
 let qbX=null;
 A.qb=(id,a0)=>{
   let b=byId(id);if(!b)return;
@@ -80,14 +80,13 @@ A.qb=(id,a0)=>{
       <div class="qb-qty"><span class="lbl" id="qbQL">Menge</span><div class="qty" role="group" aria-labelledby="qbQL"><button data-a="qbQty" data-v="-1" aria-label="Weniger">−</button><span id="qbQ" aria-live="polite">${Q.q}</span><button data-a="qbQty" data-v="1" aria-label="Mehr">+</button></div></div>
       ${ckBrand()}<div class="pb-sum qb-sum" id="qbSum">${sumHTML()}</div>
       ${Q.a?xpBox("qbX",{fallback:true}):""}
-      <div class="qb-or" id="qbOr"><span>oder</span></div>
       <div class="qb-acts"><button class="btn btn-soft btn-lg" data-a="qbBuy" id="qbBuyB"${dis}>${ic("i-card-f")}<span>Mit Karte zahlen</span></button><button class="btn btn-soft btn-lg" data-a="qbAdd"${dis}>${ic("i-cart")}<span>In den Warenkorb</span></button></div>
       ${trustBadges(b)}
       <a class="qb-more" href="/marke/${b.id}">${K?"Details und Aktivierung":"Details und Geschenkoption"}</a></div></div>`;
     qbX&&qbX.destroy();
-    qbX=Q.a?xpayMount($("#qbX"),()=>Q.a?[{id:b.id,a:Q.a,q:Q.q}]:[],{ctx:"quick",fallback:true,doneIn:$("#sheet").firstElementChild,
-      onState:st=>{const p=$("#qbBuyB"),or=$("#qbOr");if(p){p.classList.toggle("btn-primary",st==="none");p.classList.toggle("btn-soft",st!=="none")}if(or)or.hidden=st==="none"}}):null;
-    if(!qbX){const p=$("#qbBuyB");if(p){p.classList.add("btn-primary");p.classList.remove("btn-soft")}const or=$("#qbOr");if(or)or.hidden=true}
+    qbX=Q.a?xpayMount($("#qbX"),()=>Q.a?[{id:b.id,a:Q.a,q:Q.q}]:[],{ctx:"quick",fallback:true,doneIn:$("#sheet").firstElementChild,toKasse:()=>A.qbBuy(),
+      onState:st=>{const p=$("#qbBuyB");if(p){p.classList.toggle("btn-primary",st==="none");p.classList.toggle("btn-soft",st!=="none")}}}):null;
+    if(!qbX){const p=$("#qbBuyB");if(p){p.classList.add("btn-primary");p.classList.remove("btn-soft")}}
   };
   const upd=()=>{const q=$("#qbQ");if(q)q.textContent=Q.q;const sm=$("#qbSum"),t0=$("#qbTot"),old=t0?parseFloat(t0.dataset.v||"NaN"):NaN;
     if(sm){sm.innerHTML=sumHTML();const t=$("#qbTot");countUp(t,isFinite(old)?old:tot()+fee(),tot()+fee());t.dataset.v=tot()+fee();bumpEl(t)}
@@ -104,11 +103,15 @@ A.qb=(id,a0)=>{
   const t=$("#qbTot");if(t)t.dataset.v=tot()+fee();
 };
 
-/* ---------- Expresszahlung: Apple Pay, Google Pay, Link … (Stripe Express Checkout Element) ----------
-   Eine Box für Schnellkauf, Seiten-Warenkorb, Kasse und Produktseite (dort kommt das Gerüst aus xpayBox in 30-catalog.js).
-   Ablauf: Zustimmung (AGB, sofortige Lieferung, Widerruf erlischt) → Wallet-Knopf → Wallet-Fenster liefert die E-Mail →
-   /api/express/intent (E-Mail aus der Wallet, außer es gibt schon eine bestätigte) → Zahlung → Häkchen → Bestellseite.
-   Zustände an data-st: load (Platzhalter glänzt) · ready · none (keine Wallet: Hinweis oder ausblenden) · busy · done. */
+/* ---------- Expresszahlung: Apple Pay, Google Pay, PayPal, Revolut Pay, Klarna, Amazon Pay, Link ----------
+   Eine Box (xpBox) für Produktseite, Schnellkauf, Seiten-Warenkorb, Warenkorb und Kasse – überall gleich:
+   Zustimmungszeile · Express-Knöpfe · Hinweis zur E-Mail · „oder mit Karte bezahlen“.
+   Stripe Express Checkout Element: Apple Pay, Google Pay, PayPal, Klarna, Amazon Pay, Link (Reihenfolge XORD, nur in Stripe aktive).
+   Revolut Pay kann das Element nicht: eigener Knopf direkt darunter, Weiterleitung zu Revolut (App oder QR-Code) und zurück.
+   Ablauf Wallet: Zustimmung → Knopf → Wallet-Fenster liefert die E-Mail → /api/express/intent → Zahlung → Häkchen → Bestellseite.
+   Klarna und Revolut Pay liefern keine geprüfte E-Mail: Klarna erscheint nur mit bestätigter E-Mail (und freigegebenen Kategorien),
+   Revolut Pay führt Gäste zuerst zur E-Mail-Bestätigung in der Kasse.
+   Zustände an data-st: load (Platzhalter glänzt) · ready · none (keine Expresszahlung: Hinweis oder ausblenden) · busy · done. */
 let stripeP=null;
 const loadStripe=()=>stripeP||(stripeP=new Promise((ok,no)=>{if(window.Stripe)return ok(window.Stripe(CFG.pk));const s=document.createElement("script");s.src="https://js.stripe.com/v3/";s.async=true;s.onload=()=>window.Stripe?ok(window.Stripe(CFG.pk)):no(new Error("Stripe nicht verfügbar"));s.onerror=()=>{stripeP=null;no(new Error("Stripe.js konnte nicht geladen werden"))};document.head.appendChild(s)}));
 /* Heller Shop: Apple Pay und Google Pay in Schwarz (Richtlinien für hellen Grund) */
@@ -117,16 +120,21 @@ const isDark=()=>false;
    Kompakt, die ganze Zeile ist tippbar. Ohne Haken öffnet kein Wallet-Knopf die Zahlung (Stripe: click ohne resolve). */
 const XOK_TXT=`Ich stimme der <b>sofortigen Lieferung</b> zu und weiß, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt. Es gelten die <a href="/agb">AGB</a>.`;
 const XOK_HINT="Bitte kurz bestätigen";
-const walletNames=()=>{const n=WALLETS().filter(k=>PM[k]).map(k=>PM[k][0]);return n.length?(n.length>1?n.slice(0,-1).join(", ")+" oder "+n[n.length-1]:n[0]):"Apple Pay oder Google Pay"};
+const walletNames=()=>{const n=WALLETS().filter(k=>PM[k]).map(k=>PM[k][0]);if(n.length>3)return n.slice(0,3).join(", ")+" und mehr";return n.length?(n.length>1?n.slice(0,-1).join(", ")+" oder "+n[n.length-1]:n[0]):"Apple Pay oder Google Pay"};
 const XSKEL=`<div class="xpay-skel" aria-hidden="true"><i></i><i></i></div>`;
 const xpMailTxt=()=>evMail()?`Codes gehen an <b>${esc(evMail())}</b>.`:`Codes gehen an die E-Mail aus deiner Wallet.`;
-/* Gerüst für Schnellkauf, Seiten-Warenkorb und Kasse */
+/* „oder mit Karte bezahlen“ unter den Express-Knöpfen; in der Kasse ein Knopf, der zum Kartenfeld springt */
+const XCARD=o=>o&&o.cardBtn?`<button type="button" class="xpay-or xpay-cardor" data-a="ckToCard">oder mit Karte bezahlen</button>`:`<p class="xpay-or xpay-cardor">oder mit Karte bezahlen</p>`;
+/* Gerüst für Produktseite, Schnellkauf, Seiten-Warenkorb und Kasse */
 const xpBox=(id,o={})=>`<div class="xpay${o.compact?" xpay-c":""} locked" id="${id}" data-st="load">
   <label class="chk xpay-ok" data-c="1"><input type="checkbox" class="xok"><span>${XOK_TXT}</span></label><p class="xok-hint" aria-live="polite"></p>
-  <div class="xpay-w">${XSKEL}<div class="xpay-btns"></div><button type="button" class="xpay-lock" aria-label="Bitte zuerst die Zustimmung bestätigen"></button></div>
+  <div class="xpay-w">${XSKEL}<div class="xpay-btns"></div><div class="xpay-rv" hidden></div><button type="button" class="xpay-lock" aria-label="Bitte zuerst die Zustimmung bestätigen"></button></div>
   <p class="xpay-mail">${ic("i-mail")}<span>${xpMailTxt()} Der Wallet-Knopf bestellt zahlungspflichtig.</span></p>
-  <p class="xpay-none" hidden>${ic("i-wallet")}<span>${walletNames().replace(/ oder /," und ")} sind auf diesem Gerät nicht eingerichtet. Zahl einfach mit Karte oder einer anderen Zahlungsart.</span></p>
-  <div class="xpay-err" role="alert"></div></div>`;
+  <p class="xpay-kl" hidden>${ic("i-receipt")}<span></span></p>
+  <p class="xpay-none" hidden>${ic("i-wallet")}<span>Auf diesem Gerät ist gerade keine Expresszahlung eingerichtet. Zahl einfach mit Karte oder einer anderen Zahlungsart.</span></p>
+  <div class="xpay-err" role="alert"></div>${o.noCard?"":XCARD(o)}</div>`;
+/* Revolut Pay (eigener Knopf, Stripe leitet weiter): Zeichen plus Name, Name nie übersetzt, nicht fett (Revolut-Richtlinien) */
+const rvBtn=()=>`<button type="button" class="xdb xrv" data-w="revolut_pay" aria-label="Bezahlen mit Revolut Pay"><img src="${markSrc("revolut")}" alt=""><em>Revolut Pay</em></button>`;
 /* Erfolg: Häkchen erscheint über dem Bereich, dann geht es zur Bestellseite */
 function paidFx(host,r){
   const url=`/bestellung/${r.id}?k=${encodeURIComponent(r.key)}`;
@@ -141,7 +149,9 @@ function xpayMount(box,getItems,o={}){
   if(!CFG.express||!CFG.payments){box.hidden=true;if(o.onHide)o.onHide();return null}
   const btns=$(".xpay-btns",box),err=$(".xpay-err",box),w=$(".xpay-w",box);
   if(w&&!$(".xpay-skel",w))w.insertAdjacentHTML("afterbegin",XSKEL);
+  if(btns&&!$(".xpay-rv",box))btns.insertAdjacentHTML("afterend",`<div class="xpay-rv" hidden></div>`);
   if(!$(".xpay-mail",box))err.insertAdjacentHTML("beforebegin",`<p class="xpay-mail">${ic("i-mail")}<span>${xpMailTxt()} Der Wallet-Knopf bestellt zahlungspflichtig.</span></p>`);
+  if(!$(".xpay-cardor",box)&&!o.noCard)err.insertAdjacentHTML("afterend",XCARD(o));
   /* Noch nicht bereit (Produktseite: Geschenk ohne gültige Empfänger-Adresse): Knöpfe gesperrt, kurzer Hinweis */
   if(o.ready&&!$(".xpay-wait",box))err.insertAdjacentHTML("beforebegin",`<p class="xpay-wait">${ic("i-gift")}<span>${esc(o.readyMsg||"Gib zuerst die E-Mail-Adresse der beschenkten Person ein, dann kannst du mit der Wallet bezahlen.")}</span></p>`);
   let dead=false,elements=null,ece=null,quote=null,seq=0,st="load",stripe=null;
@@ -149,7 +159,7 @@ function xpayMount(box,getItems,o={}){
     if(s==="none"&&!o.fallback){box.hidden=true;if(o.onHide)o.onHide()}else vis();if(o.onState)o.onState(s)};
   const say=m=>{err.textContent=m||""};
   const ok=o.okEl||$(".xok",box),okL=ok&&ok.closest("label");
-  /* Zeile vereinheitlichen (auch das Gerüst der Produktseite): kurzer Text, Hinweisfläche darunter */
+  /* Zeile vereinheitlichen (auch ältere Gerüste): kurzer Text, Hinweisfläche darunter */
   if(okL&&!okL.dataset.c){okL.dataset.c="1";const sp=$("span",okL);if(sp)sp.innerHTML=XOK_TXT;if(!$(".xok-hint",box))okL.insertAdjacentHTML("afterend",`<p class="xok-hint" aria-live="polite"></p>`)}
   const hint=$(".xok-hint",box);
   const lock=()=>box.classList.toggle("locked",!!ok&&!ok.checked);
@@ -161,53 +171,81 @@ function xpayMount(box,getItems,o={}){
   if(ok){ok.addEventListener("change",()=>{lock();if(ok.checked){say("");if(okL)okL.classList.remove("ask");if(hint)hint.textContent=""}});lock()}
   const lk=$(".xpay-lock",box);lk&&lk.addEventListener("click",()=>ready()?nudge():waitNudge());
   const items=()=>getItems().filter(i=>i&&i.a);
-  const vis=()=>{box.hidden=(st==="none"&&!o.fallback)||!items().length;box.classList.toggle("wait",!ready())};
+  /* Klarna aktiv und alle Artikel freigegeben, aber E-Mail noch nicht bestätigt: kurzer Hinweis, wo es Klarna gibt */
+  const klHint=()=>{const h=$(".xpay-kl",box);if(!h)return;const on=!!CFG.klarna&&!evMail()&&st!=="none"&&items().length>0&&items().every(i=>{const b=byId(i.id);return b&&CFG.klarna.includes(b.cat)});
+    h.hidden=!on;if(on)$("span",h).textContent=o.ctx==="cart"&&/^\/(kasse|warenkorb)$/.test(cur.path)?"Klarna (Rechnung, Raten) erscheint hier, sobald deine E-Mail bestätigt ist.":"Klarna (Rechnung, Raten) gibt es nach der E-Mail-Bestätigung in der Kasse."};
+  const vis=()=>{box.hidden=(st==="none"&&!o.fallback)||!items().length;box.classList.toggle("wait",!ready());klHint()};
   /* Preis ohne Geschenkdaten abfragen, solange die Empfänger-Adresse fehlt (der Betrag hängt nicht davon ab) */
   const getQuote=async()=>{const it=items().map(i=>ready()||!i.gift?i:Object.assign({},i,{gift:undefined}));if(!it.length)return null;const my=++seq;const q=await API("/quote",{method:"POST",body:{items:it}});return my===seq?q:quote};
   const remember=r=>{S.keys=Object.assign(S.keys||{},{[r.id]:r.key});if(o.ctx==="cart")S.cartOrder=r.id;save()};
-  /* Bestellung anlegen: E-Mail aus der Wallet; der Server nimmt eine bestätigte E-Mail vorrangig */
-  const intent=async email=>{const r=await API("/express/intent",{method:"POST",body:{items:items(),email,wallet:true,expect:quote&&quote.total,consent:!!(ok?ok.checked:o.consent)}});remember(r);if(email&&!S.user){S.lastEmail=email;save()}return r};
+  /* Bestellung anlegen: E-Mail aus der Wallet; der Server nimmt eine bestätigte E-Mail vorrangig. pm = gewählte Express-Zahlungsart */
+  const intent=async(email,pm)=>{const r=await API("/express/intent",{method:"POST",body:{items:items(),email,pm,wallet:true,expect:quote&&quote.total,consent:!!(ok?ok.checked:o.consent)}});remember(r);if(email&&!S.user){S.lastEmail=email;save()}return r};
   const paid=r=>{set("done");if(o.onPaid)o.onPaid(r);else paidFx(o.doneIn||box,r)};
+  /* Aktive Express-Zahlungsarten: Stripe-Einstellung (CFG.methods), Klarna nur mit bestätigter E-Mail und freigegebenen Kategorien */
+  const has=k=>pmKeys().includes(k);
+  const klOn=()=>!!evMail()&&!!CFG.klarna&&items().length>0&&items().every(i=>{const b=byId(i.id);return b&&CFG.klarna.includes(b.cat)});
+  const rvOn=has("revolut_pay");
+  /* Bestätigte E-Mail kommt beim Seitenstart nachgeladen; für Klarna vor dem Aufbau der Knöpfe abwarten */
+  const evReady=!S.user&&!CFG.ev&&CFG.klarna?API("/checkout/email").then(j=>{if(j&&j.email&&!CFG.ev)CFG.ev=j.email}).catch(()=>{}):Promise.resolve();
+  /* Revolut Pay: Zustimmung → (Gast: erst E-Mail bestätigen) → Bestellung → Weiterleitung zu Revolut → zurück zur Bestellseite */
+  const rvBox=$(".xpay-rv",box);
+  const rvGo=async()=>{
+    if(!ready())return waitNudge();if(ok&&!ok.checked)return nudge();say("");
+    if(!evMail()){toast("Für Revolut Pay bestätigst du kurz deine E-Mail – danach geht es direkt weiter.");return o.toKasse?o.toKasse():go("/kasse")}
+    try{quote=await getQuote();if(!quote)return;set("busy");
+      const r=await API("/express/intent",{method:"POST",body:{items:items(),pm:"revolut_pay",expect:quote.total,consent:!!(ok?ok.checked:o.consent)}});
+      remember(r);if(r.redirect)return location.assign(r.redirect);
+      const sp=await loadStripe(),{error}=await sp.handleNextAction({clientSecret:r.client_secret});if(error)throw error;go(`/bestellung/${r.id}?k=${encodeURIComponent(r.key)}`)}
+    catch(x){set("ready");say(x.message)}};
+  if(rvBox&&rvOn){rvBox.innerHTML=rvBtn();rvBox.hidden=false;rvBox.onclick=e=>{if(e.target.closest("[data-w]"))rvGo()}}
   vis();
-  /* Vorschau ohne echtes Stripe: Wallet-Knöpfe und Wallet-Fenster werden simuliert (gleicher Server-Weg) */
+  /* Vorschau ohne echtes Stripe: Express-Knöpfe und Wallet-Fenster werden simuliert (gleicher Server-Weg) */
   if(CFG.devpay){
-    const XW={apple_pay:"Apple Pay",google_pay:"Google Pay",link:"Link",paypal:"PayPal",amazon_pay:"Amazon Pay"};
-    const ws=(WALLETS().length?WALLETS():["apple_pay","google_pay"]).filter(k=>XW[k]).slice(0,4);
-    btns.innerHTML=`<div class="xdev">${ws.map(k=>`<button type="button" class="xdb" data-w="${k}" aria-label="Kaufen mit ${XW[k]}">${k==="link"?`<b>link</b>`:`<span>Kaufen mit</span>${MARK[k]?`<img src="${markSrc(k)}" alt="">`:`<b>${XW[k]}</b>`}`}</button>`).join("")}</div>`;
+    const XW={apple_pay:"Apple Pay",google_pay:"Google Pay",link:"Link",paypal:"PayPal",amazon_pay:"Amazon Pay",klarna:"Klarna"};
+    const wl=WALLETS().length?WALLETS():["apple_pay","google_pay"];
+    let painted="";
+    const paint=()=>{const ws=XORD.filter(k=>XW[k]&&(k==="klarna"?klOn():wl.includes(k)));if(ws.join()===painted)return;painted=ws.join();
+      btns.innerHTML=`<div class="xdev">${ws.map(k=>`<button type="button" class="xdb" data-w="${k}" aria-label="${k==="klarna"?"Bezahlen":"Kaufen"} mit ${XW[k]}">${k==="link"?`<b>link</b>`:`<span>${k==="klarna"?"Bezahlen":"Kaufen"} mit</span>${MARK[k]?`<img src="${markSrc(k)}" alt="">`:`<b>${XW[k]}</b>`}`}</button>`).join("")}</div>`};
+    paint();evReady.then(()=>{if(!dead)paint()});
     setTimeout(()=>{if(!dead)set("ready")},reduce?0:380);
     btns.onclick=async e=>{const b=e.target.closest("[data-w]");if(!b)return;if(!ready())return waitNudge();if(ok&&!ok.checked)return nudge();say("");
-      try{quote=await getQuote();if(!quote)return;const res=await xsim(XW[b.dataset.w],quote,(S.user&&S.user.email)||S.lastEmail||"");if(!res)return;
-        set("busy");const r=await intent(res.email);
-        await fetch(`/__devpay/pi/${encodeURIComponent(r.client_secret.split("_secret_")[0])}/confirm?w=${b.dataset.w}&e=${encodeURIComponent(res.email)}${res.risky?"&risk=elevated":""}`,{method:"POST"});
+      try{quote=await getQuote();if(!quote)return;const k=b.dataset.w,res=await xsim(XW[k],quote,(k==="klarna"&&evMail())||(S.user&&S.user.email)||S.lastEmail||"");if(!res)return;
+        set("busy");const r=await intent(res.email,k);
+        await fetch(`/__devpay/pi/${encodeURIComponent(r.client_secret.split("_secret_")[0])}/confirm?w=${k}&e=${encodeURIComponent(res.email)}${res.risky?"&risk=elevated":""}`,{method:"POST"});
         paid(r)}catch(x){set("ready");say(x.message)}};
-    return {refresh:async()=>{vis();try{quote=await getQuote()}catch(x){}},destroy(){dead=true}};
+    return {refresh:async()=>{vis();paint();try{quote=await getQuote()}catch(x){}},destroy(){dead=true}};
   }
+  /* Keine Wallet im Element: mit Revolut Pay bleibt die Box nutzbar (nur dieser Knopf), sonst Hinweis bzw. ausblenden */
+  const show=a=>{if(dead)return;box.classList.toggle("xpay-rvonly",!a&&rvOn);set(a||rvOn?"ready":"none")},none=()=>show(false);
   (async()=>{try{
-    quote=await getQuote();if(dead)return;if(!quote){set("none");return}
+    quote=await getQuote();await evReady;if(dead)return;if(!quote){set("none");return}
+    if(!["apple_pay","google_pay","paypal","amazon_pay","link"].some(has)&&!klOn())return none();
     stripe=await loadStripe();if(dead)return;
-    const kl=!!evMail()&&!!CFG.klarna&&items().every(i=>{const b=byId(i.id);return b&&CFG.klarna.includes(b.cat)});
+    const kl=klOn(),auto=k=>has(k)?"auto":"never";
     elements=stripe.elements({mode:"payment",amount:quote.total,currency:"eur",locale:"de",appearance:APPEAR({borderRadius:"24px"})});
     const cmp=box.classList.contains("xpay-c");
-    ece=elements.create("expressCheckout",{emailRequired:true,buttonHeight:44,layout:cmp?{maxColumns:3,maxRows:1,overflow:"auto"}:{maxColumns:2,maxRows:2,overflow:"auto"},paymentMethodOrder:["apple_pay","google_pay","link","paypal","amazon_pay"],
-      paymentMethods:{klarna:kl?"auto":"never"},buttonType:{applePay:"buy",googlePay:"buy",paypal:"buynow"},buttonTheme:{applePay:"black",googlePay:"black",paypal:"gold"}});
+    ece=elements.create("expressCheckout",{emailRequired:true,buttonHeight:44,layout:cmp?{maxColumns:3,maxRows:1,overflow:"auto"}:{maxColumns:2,maxRows:2,overflow:"auto"},
+      paymentMethodOrder:XORD.filter(k=>k!=="revolut_pay"),
+      paymentMethods:{applePay:auto("apple_pay"),googlePay:auto("google_pay"),paypal:auto("paypal"),amazonPay:auto("amazon_pay"),link:auto("link"),klarna:kl?"auto":"never"},
+      buttonType:{applePay:"buy",googlePay:"buy",paypal:"buynow",klarna:"pay"},buttonTheme:{applePay:"black",googlePay:"black",paypal:"gold"}});
     const avail=m=>!!m&&Object.values(m).some(Boolean);
-    ece.on("ready",e=>{if(!dead)set(avail(e&&e.availablePaymentMethods)?"ready":"none")});
+    ece.on("ready",e=>show(avail(e&&e.availablePaymentMethods)));
     /* je nach Stripe.js-Version gibt es diese Ereignisse; unbekannte dürfen das Einbinden nicht abbrechen */
-    try{ece.on("availablepaymentmethodschange",e=>{if(!dead)set(avail(e&&e.paymentMethods)?"ready":"none")})}catch(e){}
-    try{ece.on("loaderror",()=>{if(!dead)set("none")})}catch(e){}
+    try{ece.on("availablepaymentmethodschange",e=>show(avail(e&&e.paymentMethods)))}catch(e){}
+    try{ece.on("loaderror",none)}catch(e){}
     ece.on("click",ev=>{if(!ready())return waitNudge();if(ok&&!ok.checked)return nudge();say("");ev.resolve({emailRequired:true,lineItems:(quote?quote.lines:[]).map(l=>({name:l.label,amount:l.amount}))})});
     ece.on("confirm",async ev=>{say("");const fail=m=>{say(m);set("ready");try{ev.paymentFailed&&ev.paymentFailed({reason:"fail"})}catch(e){}};
       try{
         const {error:se}=await elements.submit();if(se)return fail(se.message);
         set("busy");
-        const r=await intent(ev.billingDetails&&ev.billingDetails.email);
+        const r=await intent(ev.billingDetails&&ev.billingDetails.email,ev.expressPaymentType);
         const {error}=await stripe.confirmPayment({elements,clientSecret:r.client_secret,confirmParams:{return_url:`${location.origin}/r/${r.id}?k=${encodeURIComponent(r.key)}`},redirect:"if_required"});
         if(error)return fail(error.message);
         paid(r);
       }catch(x){fail(x.message)}});
     ece.mount(btns);
-    setTimeout(()=>{if(!dead&&st==="load")set("none")},12000);
-  }catch(x){if(!dead)set("none")}})();
+    setTimeout(()=>{if(!dead&&st==="load")none()},12000);
+  }catch(x){none()}})();
   return {async refresh(){vis();if(!elements||dead)return;try{quote=await getQuote();if(quote)elements.update({amount:quote.total})}catch(x){}},destroy(){dead=true;try{ece&&ece.destroy()}catch(e){}}};
 }
 /* Simuliertes Wallet-Fenster (nur Vorschau): zeigt Händler, Positionen, Summe und die E-Mail, die die Wallet übermittelt */

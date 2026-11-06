@@ -48,9 +48,9 @@ function cartPage(_,qs){
   <aside class="ck-side" aria-labelledby="ckSumH"><div class="ck-col" id="ckSum">
    <h2 class="ck-col-h" id="ckSumH">Übersicht</h2>
    <div class="pb-sum" id="sumBox">${paySum()}</div>
-   ${x?`<div class="ck-x"><div class="ck-x-h"><span class="ck-x-i" aria-hidden="true">${ic("i-zap")}</span><div><b>Schnell bezahlen</b><small>${esc(walletNames())} – ohne Kartendaten eintippen</small></div></div>${xpBox("cX",{fallback:true})}</div>`:""}
+   ${x?`<div class="ck-x"><div class="ck-x-h"><span class="ck-x-i" aria-hidden="true">${ic("i-zap")}</span><div><b>Schnell bezahlen</b><small>${esc(walletNames())} – ohne Kartendaten eintippen</small></div></div>${xpBox("cX",{fallback:true,cardBtn:true})}</div>`:""}
    <ul class="ck-assure"><li>${ic("i-zap")}<span>Code meist in Sekunden per E-Mail und auf der Bestellseite</span></li><li>${ic("i-lock")}<span>Sichere Zahlung über Stripe</span></li><li>${ic("i-mail")}<span>Persönlicher Support per E-Mail</span></li></ul>
-   ${payLogos()}
+   ${payLogos(null,{klarna:klarnaCart()})}
   </div></aside>
   <section class="ck-pay" id="payBox" aria-label="E-Mail und Bezahlen">
    ${ckBrand()}
@@ -118,9 +118,19 @@ const promoHTML=()=>S.promo?`<div class="ck-promo-on">${ic("i-tag")}<span><b>WIL
 /* E-Mail-Bestätigung vor der Kartenzahlung (Pflicht). Der Code wird in sechs Feldern angezeigt;
    darüber liegt unsichtbar ein echtes Eingabefeld (Einfügen, Autofill „one-time-code“, Screenreader). */
 const evMail=()=>(S.user&&S.user.verified!==false&&S.user.email)||CFG.ev||null;
-/* Dezent: „Schneller: Mit Passkey anmelden“ – nur wenn das Gerät Passkeys mit Face ID / Touch ID / Windows Hello kann
-   und hier schon ein Konto bzw. ein Passkey benutzt wurde (sonst gibt es keinen Passkey zum Auswählen) */
-const ckPkLine=()=>!S.user&&pkCan()&&(S.pk||S.acct)&&PKUV!==false?`<p class="ck-pk" id="ckPk"${PKUV?"":" hidden"}>${ic("i-face")}<span>Schneller:</span><button class="more" data-a="pkLogin" data-v="${esc(cur.path)}">Mit Passkey anmelden</button></p>`:"";
+/* „Schneller: mit Google / Apple / Passkey fortfahren“ – nur eingerichtete Wege (CFG.google, CFG.auth.apple).
+   Google und Apple legen beim ersten Mal das Konto an (bestätigte E-Mail), danach geht es hier mit der Kasse weiter.
+   Passkey nur, wenn das Gerät Face ID / Touch ID / Windows Hello kann und hier schon ein Konto bzw. Passkey benutzt wurde. */
+const ckPkOn=()=>pkCan()&&(S.pk||S.acct)&&PKUV!==false;
+const ckPkLine=()=>{if(S.user)return "";const a=CFG.auth||{},r=cur.path,pk=ckPkOn();
+  const o=[CFG.google&&`<span class="ck-g" id="ckG"></span>`,
+    a.apple&&`<a class="ck-qa ck-qa-apple" href="/auth/apple?r=${encodeURIComponent(r)}"><img src="/logo/apple.svg" alt=""><span>Mit Apple fortfahren</span></a>`,
+    pk&&`<button class="ck-qa" data-a="pkLogin" data-v="${esc(r)}" id="ckPkB"${PKUV?"":" hidden"}>${ic("i-face")}<span>Mit Passkey</span></button>`].filter(Boolean);
+  if(!o.length)return "";
+  return `<div class="ck-pk" id="ckPk"${CFG.google||a.apple||PKUV?"":" hidden"}><span class="ck-pk-t">Schneller:</span>${o.join("")}</div>`};
+/* „oder mit Karte bezahlen“ (unter Schnell bezahlen): zur E-Mail, falls noch nicht bestätigt, sonst zum Zahlungsfeld */
+const ckToMail=()=>{const b=$("#evBox");if(!b)return;b.scrollIntoView({block:"center",behavior:reduce?"auto":"smooth"});const m=$("#payMail");m&&m.focus({preventScroll:true})};
+A.ckToCard=()=>{if(!evMail())return ckToMail();const w=$("#payElW");if(w&&w.hidden)return A.payMore();const t=$("#ckPay");t&&t.scrollIntoView({block:"start",behavior:reduce?"auto":"smooth"})};
 /* Marke über dem Bezahlbereich: Logo, Wortmarke, „Sichere Kasse“ */
 const ckBrand=()=>`<div class="ck-brand">${LOGO(22)}<span class="ck-brand-w"><b>instant</b>codes</span><span class="ck-brand-s">${ic("i-lock")}Sichere Kasse</span></div>`;
 function evBox(){
@@ -187,10 +197,11 @@ const APPEAR=(o={})=>({theme:"stripe",variables:Object.assign({colorPrimary:"#0E
     ".AccordionItem":{border:"none",backgroundColor:"#FFFFFF",boxShadow:"inset 0 0 0 1px rgba(14,16,20,.1)"},".Block":{backgroundColor:"#F6F7F9",boxShadow:"inset 0 0 0 1px rgba(14,16,20,.08)"},".Label":{fontWeight:"550",color:"#474D59"},".Error":{color:"#D9364C"}}});
 async function payAfter(){
   PAY={};ckTot=grandTotal();
-  if(CFG.express)PAY.x=xpayMount($("#cX"),cartItems,{ctx:"cart",fallback:true,doneIn:$(".ck-x")});
+  if(CFG.express)PAY.x=xpayMount($("#cX"),cartItems,{ctx:"cart",fallback:true,doneIn:$(".ck-x"),toKasse:ckToMail});
   const ok=$("#payOk");ok&&ok.addEventListener("change",()=>{if(ok.checked){const e=$("#payErr");if(e)e.textContent="";$("#payOkL").classList.remove("shake")}});
   PAY.mount=()=>{if(PAY.mounted)return;PAY.mounted=1;payMount()};
-  if($("#ckPk")&&PKUV===null)pkUV().then(v=>{const p=$("#ckPk");if(p)p.hidden=!v});
+  if($("#ckPkB")&&PKUV===null)pkUV().then(v=>{const p=$("#ckPkB"),row=$("#ckPk");if(p)p.hidden=!v;if(row)row.hidden=!v&&!$("#ckG,.ck-qa-apple",row)});
+  if($("#ckG")&&CFG.google)gsi(cur.path,u=>loggedIn(u,cur.path),$("#ckG"),{size:"medium",width:230});
   if(!$("#payElW")||!$("#payElW").hidden)PAY.mount();
   rcNav($(".ck"));
   /* Von „Zur Kasse“ kommend: auf dem Handy direkt zur Übersicht, darunter Schnell bezahlen, E-Mail und Bezahlen */

@@ -69,7 +69,7 @@ function renderFooter(){
   $("#ftr").innerHTML=`<div class="ft">
   <div class="ft-top"><a class="ft-logo" href="/" aria-label="instantcodes Startseite">${LOGO(40)}<span class="wordmark"><b>instant</b>codes</span></a>
    <p>Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von ${BRANDS.length.toLocaleString("de-DE")} Produkten. Bezahlt in Sekunden, Code direkt per E-Mail.</p>
-   ${payLogos()}</div>
+   ${payLogos()}${typeof nlFooter==="function"?nlFooter()/* Newsletter-Anmeldung (71-newsletter.js) */:""}</div>
   <div class="ft-cols">
    <div><h5>Sortiment</h5><ul>${cats.slice(0,7).map(c=>`<li><a href="/kategorie/${c.id}">${esc(c.name)}</a></li>`).join("")}</ul></div>
    <div><h5>Service</h5><ul><li><a href="/abo">instantcodes Abo</a></li><li><a href="/angebote">Angebote</a></li><li><a href="/hilfe">Hilfe und FAQ</a></li><li><a href="/konto">Mein Konto</a></li><li><button class="lnk" data-a="chatOpen">KI-Beraterin Mia</button></li></ul></div>

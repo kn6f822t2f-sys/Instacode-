@@ -26,8 +26,9 @@ const kSig=(cls="")=>`<span class="ksig${cls?" "+cls:""}" data-off aria-hidden="
 /* Cover-Wand: offizielle Spielebilder in vier Spalten, schräg im Raum; die Spalten wandern beim Scrollen gegeneinander (--sy) */
 const kWall=list=>{const l=list.filter(b=>b&&b.cov).slice(0,12),V=[150,-110,190,-90],O=[-30,-150,-70,-200];
   return `<div class="kw" data-par data-off aria-hidden="true"><div class="kw-in">${[0,1,2,3].map(k=>`<div class="kw-col" style="--k:${k};--v:${V[k]};--o0:${O[k]}">${l.filter((_,i)=>i%4===k).map(b=>gc(b,{tilt:false,badge:false,plat:false,cover:true})).join("")}</div>`).join("")}</div></div>`};
-/* Kategorie-Zeichen schweben um den Fächer (/kategorien) */
-const kOrbit=cs=>`<div class="ko" data-off aria-hidden="true">${cs.slice(0,8).map((c,i)=>`<span class="ko-i" style="--c:${CCOL[c.id]};--k:${i}"><span>${ic(c.icon)}</span></span>`).join("")}</div>`;
+/* Offizielle Markenzeichen schweben um den Fächer (/kategorien) */
+const kOrbit=cs=>{const seen=new Set(),l=ORBLOGO.map(byId).filter(b=>kMarkOk(b)&&!seen.has(b.si||b.logo)&&seen.add(b.si||b.logo)).slice(0,8);
+  return `<div class="ko" data-off aria-hidden="true">${l.map((b,i)=>`<span class="ko-i" style="--c:${brandInk(b)};--k:${i}"><span>${kMark(b,52)}</span></span>`).join("")}</div>`};
 /* Je Markenzeichen nur eine Marke (PlayStation Plus, EA … kommen sonst mehrfach) */
 const uniqSi=l=>{const s=new Set();return l.filter(b=>b&&b.si&&!s.has(b.si)&&s.add(b.si))};
 /* Markenwand: alle Marken mit offiziellem Logo oder Markenzeichen, jede nur einmal */
@@ -58,10 +59,10 @@ const kbSpans=n=>{const d=[];let r=0;
   while(d.length<n){const left=n-d.length;const row=left===4||left===2?(r%2?[5,7]:[7,5]):left===1?[12]:(r%2?[3,4,5]:[5,4,3]);row.forEach(x=>d.push(x));r++}
   const m=d.map((_,i)=>i%3===0?2:1);if(n>1&&m[n-1]===1&&m[n-2]===2)m[n-1]=2;
   return d.map((x,i)=>[x,m[i]])};
-const kbCard=(c,i,sp)=>{const l=VIS().filter(b=>b.cat===c.id),n=BRANDS.filter(b=>b.cat===c.id).length,unit=c.id==="keys"?"Spiele":c.id==="topup"?"Anbieter":"Produkte";
+const kbCard=(c,i,sp)=>{const l=VIS().filter(b=>b.cat===c.id),n=catCount(c.id),unit=c.id==="keys"?"Spiele":c.id==="topup"?"Anbieter":"Produkte";
   return `<a class="kb spot rv" href="/kategorie/${c.id}" style="--c:${CCOL[c.id]};--d:${(i%6)*60}ms${sp?`;--sp:${sp[0]};--spm:${sp[1]}`:""}"${sp&&sp[0]>=5?' data-big':""}>
   <span class="kb-l" aria-hidden="true"></span>
-  <span class="kb-ic" aria-hidden="true">${ic(c.icon)}</span>
+  ${kLogos(c.id,3,"kb-lg")||`<span class="kb-ic" aria-hidden="true">${ic(c.icon)}</span>`}
   <span class="kb-t"><b>${esc(c.name)}</b><small>${n} ${unit}</small></span>
   <span class="kb-d">${esc(c.desc)}</span>
   <span class="kb-go" aria-hidden="true">${ic("i-arrow")}</span>
@@ -164,7 +165,9 @@ const pdLd=(b,c,R)=>{const O=pdOrigin(),abs=u=>/^https?:/.test(u)?u:O+u,avail=b.
   const bc={"@type":"BreadcrumbList",itemListElement:[["Start","/"],[c.name,"/kategorie/"+c.id],[b.name,"/marke/"+b.id]].map(([n,u],i)=>({"@type":"ListItem",position:i+1,name:n,item:O+u}))};
   return JSON.stringify({"@context":"https://schema.org","@graph":[p,bc]}).replace(/</g,"\\u003c")};
 /* Express-Checkout-Box (auch im Warenkorb und im Schnellkauf verwendet) */
-const xpayBox=(id,title,o={})=>`<div class="xpay locked" id="${id}" hidden>${title?`<div class="xpay-or">${title}</div>`:""}${o.noConsent?"":`<label class="chk xpay-ok"><input type="checkbox" class="xok"><span>Ich akzeptiere die <a href="/agb">AGB</a> und möchte, dass ihr sofort liefert. Mir ist bekannt, dass mein <a href="/widerruf">Widerrufsrecht</a> damit erlischt.</span></label>`}<div class="xpay-w"><div class="xpay-btns"></div><button type="button" class="xpay-lock" aria-label="Bitte zuerst die Zustimmung bestätigen"></button></div><div class="xpay-err" role="alert"></div></div>`;
+/* Express-Box der Produktseite: dasselbe Gerüst wie Schnellkauf, Warenkorb und Kasse (xpBox in 65-cart-pay.js):
+   Zustimmung · Express-Knöpfe · „oder mit Karte bezahlen“, darunter „Jetzt kaufen“ und „In den Warenkorb“ */
+const xpayBox=(id,o={})=>xpBox(id,o);
 /* Klebende Spalten (Desktop): die kürzere fährt mit, eine Spalte höher als das Fenster klebt mit ihrer Unterkante */
 const stickRO="ResizeObserver" in window?new ResizeObserver(es=>es.forEach(e=>e.target.style.setProperty("--h",Math.ceil(e.target.offsetHeight)+"px"))):null;
 let stuck=[];
@@ -232,8 +235,8 @@ function brandPage(id){
     </div>`}
     <div class="pd-pay">
       <div class="pd-sum"><div class="pd-tot"><span>Gesamt</span><b id="pTot">${money(total())}</b></div><p class="pd-save" id="pSave"${saving()?"":" hidden"}>Du sparst ${money(saving())} gegenüber dem Nennwert</p><p class="pd-fee">${taxHint()}</p></div>
+      ${xpayBox("pX")}
       <div class="pd-buy" data-off><button class="btn btn-primary btn-ink btn-lg" data-a="pBuy"${dis}>Jetzt kaufen</button><button class="btn btn-outline btn-lg" data-a="pAdd"${dis}>In den Warenkorb</button></div>
-      ${xpayBox("pX","Express-Checkout")}
       ${payLogos(b)}
       ${trustBadges(b)}
     </div>
@@ -264,7 +267,9 @@ ${similar.length?`<section class="sec pd-more">${secHead("Mehr aus "+esc(c.name)
     if("IntersectionObserver" in window){const more=$(".pd-more"),ft=$("#ftr"),v=new Map([[stg,true],[buy,false]]);if(more)v.set(more,false);if(ft)v.set(ft,false);
       pdIO=new IntersectionObserver(es=>{es.forEach(e=>v.set(e.target,e.isIntersecting));bar.classList.toggle("show",!v.get(stg)&&!v.get(buy)&&!v.get(ft))});[...v.keys()].forEach(el=>el&&pdIO.observe(el))}
     const giftOk=()=>!P.gift||/^\S+@\S+\.\S+$/.test(($("#gTo")||{}).value||"");
-    const X=xpayMount($("#pX"),()=>[Object.assign({id,a:P.a,q:P.q},P.gift?{gift:{to:$("#gTo").value.trim(),name:$("#gName").value.trim(),msg:$("#gMsg").value.trim(),design:P.design}}:{})],{ctx:"product",ready:giftOk});
+    const X=xpayMount($("#pX"),()=>[Object.assign({id,a:P.a,q:P.q},P.gift?{gift:{to:$("#gTo").value.trim(),name:$("#gName").value.trim(),msg:$("#gMsg").value.trim(),design:P.design}}:{})],{ctx:"product",ready:giftOk,toKasse:()=>A.pBuy(),
+      /* Express sichtbar: „Jetzt kaufen“ tritt als Glasknopf zurück (höchstens ein dunkler Kaufknopf im Blick) */
+      onState:st=>{const p=$(".pd-buy [data-a=pBuy]");if(p)p.classList.toggle("btn-ink",st==="none")}});
     const upd=()=>{$("#pTot").textContent=money(total());$("#bbTot").textContent=money(total());$("#bbSub").textContent=barSub();$("#pQ").textContent=P.q;
       const sv=saving(),ps=$("#pSave");ps.hidden=!sv;ps.textContent=`Du sparst ${money(sv)} gegenüber dem Nennwert`;X&&X.refresh()};
     const tag=()=>{const t=$("#pAmtTag");if(!t)return;t.textContent=tagRaw();t.classList.remove("tick");void t.offsetWidth;t.classList.add("tick")};

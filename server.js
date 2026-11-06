@@ -38,12 +38,16 @@ const clock = () => Date.now() + (DEVPAY ? (+globalThis.__icClock || 0) : 0);
 const SUPPORT = E.SUPPORT_EMAIL || "support@instacode.store";
 /* Neuere Stripe-API-Version nur für Checkout und PaymentIntents (Branding, ausgeschlossene Zahlungsarten) */
 const STRIPE_V = "2025-09-30.clover";
-/* Klarna verbietet laut Stripe den Verkauf von Gutscheinen und Guthabenkarten – deshalb immer ausgeschlossen */
+/* Klarna verbietet laut Stripe den Verkauf von Gutscheinen und Guthabenkarten – deshalb ausgeschlossen, außer alle Artikel
+   liegen in einer im Admin freigegebenen Kategorie (klarnaOk / KLARNA_CATS) */
 const EXCLUDED_PM = ["klarna"];
-/* Welche Zahlungsarten im Shop beschriftet werden: live aus der Stripe-Zahlungsarten-Einstellung gelesen */
-const PM_SHOW = ["apple_pay", "google_pay", "paypal", "amazon_pay", "link", "card", "eps", "bancontact"];
+/* Welche Zahlungsarten im Shop beschriftet werden: live aus der Stripe-Zahlungsarten-Einstellung gelesen.
+   Reihenfolge = Reihenfolge der Express-Knöpfe (Apple Pay, Google Pay, PayPal, Revolut Pay, Klarna, Amazon Pay, Link).
+   crypto = Stripe-Stablecoin-Zahlung: nur Zeichen, erscheint live ausschließlich, wenn sie im Stripe-Konto wirklich aktiv ist */
+const PM_SHOW = ["apple_pay", "google_pay", "paypal", "revolut_pay", "amazon_pay", "link", "card", "eps", "bancontact", "crypto"];
 let KLARNA_AVAIL = E.KLARNA_AVAILABLE === "1";
-let PAY_METHODS = (E.PAY_METHODS || "apple_pay,google_pay,card,link").split(",").map(s => s.trim()).filter(m => PM_SHOW.includes(m));
+/* Vorschau ohne echtes Stripe: alle Express-Zahlungsarten simuliert aktiv (PAY_METHODS bzw. KLARNA_AVAILABLE=1 überschreiben) */
+let PAY_METHODS = (E.PAY_METHODS || (DEVPAY ? "apple_pay,google_pay,paypal,revolut_pay,amazon_pay,link,card,crypto" : "apple_pay,google_pay,card,link")).split(",").map(s => s.trim()).filter(m => PM_SHOW.includes(m));
 async function loadPayMethods() {
   if (!stripe || /_attrappe$/.test(E.STRIPE_SECRET_KEY || "") || E.PAY_METHODS) return;
   try {
@@ -56,7 +60,8 @@ async function loadPayMethods() {
   } catch (e) { console.error("Zahlungsarten konnten nicht gelesen werden:", e.message); }
 }
 /* Eingebettetes Zahlungsfeld im Warenkorb (Payment Element): Karte (inkl. Apple/Google Pay über die Express-Buttons) plus aktive Zusatzarten */
-const INLINE_PM = ["card", "link", "paypal", "amazon_pay", "eps", "bancontact"];
+/* crypto bewusst nicht: Stripe-Stablecoins laufen laut Stripe nur in USD (andere Währungen private Vorschau) – ein EUR-Zahlungsfeld würde scheitern */
+const INLINE_PM = ["card", "link", "paypal", "revolut_pay", "amazon_pay", "eps", "bancontact"];
 const inlineTypes = () => INLINE_PM.filter(m => m === "card" || PAY_METHODS.includes(m));
 /* Trustpilot: der Link „Bewerte uns auf Trustpilot“ steht immer bereit (TRUSTPILOT_URL=aus schaltet ihn ab).
    Das Widget mit Sternen (TrustBox) gibt es nur mit TRUSTPILOT_BUSINESS_ID und TRUSTPILOT_TEMPLATE_ID, geladen erst nach Einwilligung. */
@@ -180,7 +185,7 @@ async function sendVerify(u) {
   const code = String(crypto.randomInt(100000, 1000000));
   db.prepare("UPDATE tokens SET used=1 WHERE user_id=? AND kind='verify'").run(u.id);
   db.prepare("INSERT INTO tokens(user_id,kind,hash,expires_at) VALUES(?,?,?,?)").run(u.id, "verify", sha(code), now() + 15 * 60e3);
-  await mail.verify(u.email, u.name, code);
+  await (u.verified ? mail.loginCode(u.email, u.name, code) : mail.verify(u.email, u.name, code)); // bestätigtes Konto: Anmelde-Code, sonst E-Mail bestätigen
 }
 
 function orderFull(id) {
@@ -257,7 +262,8 @@ const publicConfig = () => ({ site: (BASE_HOST || "").replace(/^www\./, ""), vat
 
 /* Produktempfehlungen in Liefer-Mails: Abmeldung per signiertem Link */
 const unsubSig = e => crypto.createHmac("sha256", KEY).update("unsub|" + e).digest("base64url").slice(0, 24);
-mail.configure({ recs: E.MAIL_RECS !== "0", optedOut: e => !!db.prepare("SELECT 1 FROM optout WHERE email=?").get(norm(e)), unsubLink: e => `${BASE}/abmelden?e=${encodeURIComponent(norm(e))}&s=${unsubSig(norm(e))}` });
+mail.configure({ recs: E.MAIL_RECS !== "0", optedOut: e => !!db.prepare("SELECT 1 FROM optout WHERE email=?").get(norm(e)), unsubLink: e => `${BASE}/abmelden?e=${encodeURIComponent(norm(e))}&s=${unsubSig(norm(e))}`,
+  redeem: id => redeemLink(CATALOG[id]) }); // „Jetzt einlösen“ in Liefer-Mails: /go/<id> nur, wenn es eine geprüfte offizielle Seite gibt
 
 /* ---------- Code-Lager + Testcode-Generator ---------- */
 class Stockout extends Error {}
@@ -330,8 +336,8 @@ function deliverOrder(o, given, topups, by, note) {
 
 const sendDelivered = id => {
   const full = orderFull(id);
-  safe(mail.delivered(full));
   full.items.filter(i => i.gift_to).forEach(i => safe(mail.gift(full, i)));
+  safe(mail.delivered(full)); // Codes geliefert · nur Aufladungen: „Guthaben gebucht“ · nur Geschenke: „Geschenk verschickt“
   if (E.INVOICE_MAIL === "1") safe(mail.invoice(full)); // Rechnung als eigene Mail (erst einschalten, wenn Firmen- und Steuerangaben stimmen)
   return full;
 };
@@ -368,6 +374,9 @@ async function holdReason(o) {
 }
 /* Wallets, deren E-Mail wir bei der Expresszahlung übernehmen (Apple Pay, Google Pay, Link, PayPal, Amazon Pay) */
 const WALLET_PM = ["apple_pay", "google_pay", "link", "paypal", "amazon_pay"];
+/* Express-Zahlungsarten insgesamt; Klarna und Revolut Pay liefern keine geprüfte E-Mail und brauchen deshalb eine bestätigte */
+const NOMAIL_PM = ["klarna", "revolut_pay"];
+const XPM = WALLET_PM.concat(NOMAIL_PM);
 /* Zahlungsmittel aus PaymentIntent/Charge: Wallet-Art, von der Wallet übermittelte E-Mail, Fingerabdruck */
 function payInfo(pi, ch) {
   const pm = pi.payment_method && typeof pi.payment_method === "object" ? pi.payment_method : {};
@@ -427,6 +436,8 @@ app.set("trust proxy", 1);
 app.disable("x-powered-by");
 /* same-origin-allow-popups: Wallet- und PayPal-Fenster von Stripe brauchen den Rückkanal zum Shop */
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false, crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" } }));
+/* Bilder und Schriften, die in E-Mails stecken, dürfen Mailprogramme von außen laden (sonst blockiert CORP „same-origin“ sie z. B. in Thunderbird) */
+app.use((req, res, next) => { if (/^\/(mail|cards|fonts|img\/(rl|p|cover))\//.test(req.path) || req.path === "/icon-512.png") res.set("Cross-Origin-Resource-Policy", "cross-origin").set("Access-Control-Allow-Origin", "*"); next(); });
 
 /* Stripe-Webhook braucht den unveränderten Body, deshalb vor express.json() */
 let ABO = null; // Abo-Modul (abo.js), wird weiter unten eingerichtet
@@ -450,9 +461,9 @@ app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async
         .run(now(), isPI ? s.id : s.payment_intent, isPI ? (s.amount_received || s.amount) : s.amount_total, id);
       afterPayment(id).catch(err => console.error("Auslieferung fehlgeschlagen:", err));
     } else if (ev.type === "checkout.session.completed") {
-      db.prepare("UPDATE orders SET status='payment_pending' WHERE id=? AND status='awaiting_payment'").run(id);
+      if (db.prepare("UPDATE orders SET status='payment_pending' WHERE id=? AND status='awaiting_payment'").run(id).changes) safe(mail.orderPending(orderFull(id)));
     } else if (ev.type === "payment_intent.processing") {
-      db.prepare("UPDATE orders SET status='payment_pending' WHERE id=? AND status='awaiting_payment'").run(id);
+      if (db.prepare("UPDATE orders SET status='payment_pending' WHERE id=? AND status='awaiting_payment'").run(id).changes) safe(mail.orderPending(orderFull(id)));
     } else if (ev.type === "payment_intent.canceled") {
       db.prepare("UPDATE orders SET status='canceled' WHERE id=? AND status IN ('awaiting_payment','payment_pending')").run(id);
     } else if (ev.type === "checkout.session.async_payment_failed" || ev.type === "checkout.session.expired") {
@@ -845,6 +856,7 @@ app.post("/api/auth/passkey/register", lim, need, (req, res) => {
   const tr = Array.isArray(r.transports) ? r.transports.filter(t => typeof t === "string" && /^[a-z-]{2,16}$/.test(t)).slice(0, 6) : [];
   db.prepare("INSERT INTO passkeys(id,user_id,pubkey,alg,sign_count,transports,name,aaguid,user_handle,backed_up,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)")
     .run(id, req.user.id, k.spki, k.alg, ad.count, JSON.stringify(tr), pkName(ad.aaguid, req.get("user-agent")), ad.aaguid || null, pkHandle(req.user), ad.bs ? 1 : 0, now());
+  safe(mail.passkeyAdded(req.user.email, req.user.name, db.prepare("SELECT name, created_at FROM passkeys WHERE id=?").get(id), req.get("user-agent") || "")); // Sicherheitshinweis
   res.json({ ok: true, id, passkeys: pkList(req.user.id) });
 });
 /* Anmeldung: ohne E-Mail (leere allowCredentials → auffindbare Passkeys) */
@@ -879,8 +891,10 @@ app.post("/api/auth/passkey/login", lim, (req, res) => {
 /* Liste und Löschen im Konto */
 app.get("/api/passkeys", need, (req, res) => res.set("Cache-Control", "no-store").json({ passkeys: pkList(req.user.id) }));
 app.delete("/api/passkeys/:id", lim, need, (req, res) => {
+  const old = db.prepare("SELECT name, created_at FROM passkeys WHERE id=? AND user_id=?").get(String(req.params.id), req.user.id);
   const n = db.prepare("DELETE FROM passkeys WHERE id=? AND user_id=?").run(String(req.params.id), req.user.id).changes;
   if (!n) return bad(res, "Diesen Passkey gibt es nicht mehr.", 404);
+  safe(mail.passkeyRemoved(req.user.email, req.user.name, old)); // Sicherheitshinweis
   res.json({ ok: true, passkeys: pkList(req.user.id) });
 });
 
@@ -1062,13 +1076,36 @@ app.post("/api/express/intent", expressLim, walletLim, wrap(async (req, res) => 
     e = we; channel = "wallet";
   }
   if (req.body.consent !== true) return bad(res, CONSENT_MSG);
+  /* Gewählte Express-Zahlungsart. Klarna und Revolut Pay übermitteln keine geprüfte E-Mail: nur mit bestätigter E-Mail (Kanal „express“) */
+  const pm = XPM.includes(req.body.pm) ? req.body.pm : null;
+  if (NOMAIL_PM.includes(pm) && channel !== "express") return bad(res, EV_MSG, 403);
+  if (pm === "revolut_pay" && !PAY_METHODS.includes("revolut_pay")) return bad(res, "Revolut Pay ist gerade nicht verfügbar. Bitte nimm eine andere Zahlungsart.");
   let P; try { P = prepareOrder({ items: req.body.items }); } catch (err) { if (err instanceof Bad) return bad(res, err.message); throw err; }
+  if (pm === "klarna" && !klarnaOk(P.lines)) return bad(res, "Klarna ist für diese Artikel nicht verfügbar. Bitte nimm eine andere Zahlungsart.");
   if (req.body.expect != null && Number(req.body.expect) !== P.total) return bad(res, "Der Preis hat sich gerade geändert. Bitte versuch es noch einmal.", 409);
   const { id, key } = createOrder(req, e, P, channel);
+  const meta = { order_id: id, email_src: channel === "wallet" ? "wallet" : "verified" };
+  if (pm) meta.express_pm = pm;
+  /* Revolut Pay gibt es nicht im Express Checkout Element: eigener Knopf, Zahlung wird hier bestätigt und der Kunde
+     direkt zu Revolut weitergeleitet (App auf dem Handy, QR-Code am Computer), danach zurück auf die Bestellseite */
+  if (pm === "revolut_pay") {
+    const back = `/r/${id}?k=${encodeURIComponent(key)}`;
+    const pi = await stripe.paymentIntents.create({
+      amount: P.total, currency: "eur", payment_method_types: ["revolut_pay"], payment_method_data: { type: "revolut_pay" }, confirm: true, return_url: BASE + back,
+      metadata: DEVPAY ? { ...meta, wallet: "Revolut Pay" } : meta, description: `instantcodes Bestellung ${id}`
+    }, { idempotencyKey: "pi-" + id });
+    db.prepare("UPDATE orders SET payment_intent=? WHERE id=?").run(pi.id, id);
+    /* Weiterleitung zu Revolut; ohne Adresse (anderer next_action-Typ) übernimmt Stripe.js im Browser (handleNextAction) */
+    const next = pi.next_action && pi.next_action.redirect_to_url && pi.next_action.redirect_to_url.url;
+    const redirect = DEVPAY ? `/__devpay/pi/${pi.id}?r=${encodeURIComponent(back)}` : next || (pi.status === "requires_action" ? null : BASE + back);
+    return res.json({ id, key, total: P.total, redirect, client_secret: pi.client_secret });
+  }
+  /* Klarna nur, wenn alle Artikel freigegeben sind (gleiche Regel wie Stripe-Kasse und Zahlungsfeld) und die E-Mail bestätigt ist */
+  const klarna = channel === "express" && klarnaOk(P.lines);
   const pi = await stripeCall((p, o) => stripe.paymentIntents.create(p, o), {
     amount: P.total, currency: "eur", automatic_payment_methods: { enabled: true },
-    metadata: { order_id: id, email_src: channel === "wallet" ? "wallet" : "verified" }, description: `instantcodes Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
-  }, { excluded_payment_method_types: EXCLUDED_PM }, { idempotencyKey: "pi-" + id });
+    metadata: meta, description: `instantcodes Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
+  }, { excluded_payment_method_types: klarna ? [] : EXCLUDED_PM }, { idempotencyKey: "pi-" + id });
   db.prepare("UPDATE orders SET payment_intent=? WHERE id=?").run(pi.id, id);
   res.json({ client_secret: pi.client_secret, id, key, total: P.total });
 }));
@@ -1154,7 +1191,9 @@ const kvSet = (k, v) => db.prepare("INSERT INTO kv(k,v) VALUES(?,?) ON CONFLICT(
 /* Klarna: nur für im Admin freigegebene Kategorien (Standard: aus). Stripe nennt Gutscheine als verbotene Kategorie – erst nach schriftlicher Freigabe durch Stripe einschalten. */
 /* Klarna (Rechnung, Raten, Sofort): Standard = alle Kategorien; im Admin einschränkbar, „-“ = aus */
 const ALL_CATS = ["topup", "keys", "gaming", "currency", "subs", "apps", "entertainment", "shopping", "software", "payment"];
-const KLARNA_CATS = () => { const v = kvGet("klarna_cats"); return v == null || v === "" ? ALL_CATS : v === "-" ? [] : v.split(",").map(x => x.trim()).filter(Boolean); };
+/* Klarna verbietet laut Stripe „Stored value cards, vouchers and gift cards“: ohne eigene Einstellung im Admin daher nur Spiele-Keys und Software */
+const KLARNA_SAFE = ["keys", "software"];
+const KLARNA_CATS = () => { const v = kvGet("klarna_cats"); return v == null || v === "" ? KLARNA_SAFE : v === "-" ? [] : v.split(",").map(x => x.trim()).filter(Boolean); };
 const KLARNA_ON = () => KLARNA_AVAIL && KLARNA_CATS().length > 0;
 const klarnaOk = lines => KLARNA_ON() && lines.length > 0 && lines.every(l => KLARNA_CATS().includes(l.b.cat));
 const KLARNA_INFO = () => ({ available: KLARNA_AVAIL, cats: KLARNA_CATS(), on: KLARNA_ON() });
@@ -1639,7 +1678,7 @@ app.delete("/api/admin/products/:id/logo", admin, (req, res) => {
   res.json({ ok: true });
 });
 /* Offizielle Zahlungslogos (Apple Pay, Visa …) – lädst du aus den Markenportalen der Anbieter hoch */
-const PAY_LOGO_KEYS = ["apple_pay", "google_pay", "paypal", "amazon_pay", "link", "visa", "mastercard", "amex", "eps", "bancontact", "klarna"];
+const PAY_LOGO_KEYS = ["apple_pay", "google_pay", "paypal", "revolut_pay", "amazon_pay", "link", "visa", "mastercard", "amex", "eps", "bancontact", "klarna", "crypto"];
 const PAY_DIR = path.join(IMG_DIR, "pay");
 fs.mkdirSync(PAY_DIR, { recursive: true });
 let payLogoCache = null;
@@ -1752,7 +1791,7 @@ const CAT_SEO = {
   software: ["Software", "Software-Lizenzen für Office, Antivirus und VPN als Code kaufen – sofort per E-Mail."],
   payment: ["Prepaid-Karten", "paysafecard und weitere Prepaid-Bezahlkarten online kaufen. Anonym online bezahlen, Code sofort per E-Mail."],
   keys: ["Spiele-Keys", "Spiele-Keys für PC, PlayStation, Xbox und Nintendo Switch online kaufen. Key sofort per E-Mail, direkt aktivieren."] };
-const PAY_NAMES = { apple_pay: "Apple Pay", google_pay: "Google Pay", paypal: "PayPal", amazon_pay: "Amazon Pay", link: "Link", card: "Karte", eps: "eps", bancontact: "Bancontact" };
+const PAY_NAMES = { apple_pay: "Apple Pay", google_pay: "Google Pay", paypal: "PayPal", revolut_pay: "Revolut Pay", amazon_pay: "Amazon Pay", link: "Link", card: "Karte", eps: "eps", bancontact: "Bancontact", crypto: "Krypto (Stablecoins)" };
 const payWords = () => { const l = PAY_METHODS.map(m => PAY_NAMES[m]).filter(Boolean); return l.length > 1 ? l.slice(0, -1).join(", ") + " oder " + l[l.length - 1] : (l[0] || "Karte"); };
 /* Suchbegriff pro Kategorie: so wie Leute bei Google tippen („Steam Guthaben kaufen“, „Amazon Gutschein kaufen“) */
 const KW = { topup: "aufladen", gaming: "Guthaben kaufen", currency: "kaufen", subs: "kaufen", apps: "Guthaben kaufen", entertainment: "Geschenkkarte kaufen",
@@ -1842,10 +1881,251 @@ app.get(["/marke/:id", "/kategorie/:id", "/kategorien", "/aufladen", "/angebote"
 app.get("/abmelden", (req, res) => {
   const e = norm(req.query.e), ok = e && req.query.s === unsubSig(e);
   if (ok) db.prepare("INSERT OR IGNORE INTO optout(email,at) VALUES(?,?)").run(e, now());
-  res.type("html").send(`<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Abgemeldet · instantcodes</title><body style="margin:0;font-family:system-ui,-apple-system,sans-serif;background:#F3F2FA;display:grid;place-items:center;min-height:100vh"><div style="background:#fff;border:1px solid #E7E3FA;border-radius:24px;padding:32px;max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 8px">${ok ? "Du bist abgemeldet" : "Link ungültig"}</h1><p style="color:#636A85;margin:0 0 20px">${ok ? "Du bekommst keine Produktempfehlungen mehr. Bestell- und Lieferbestätigungen erhältst du weiterhin." : "Bitte nutze den Link aus deiner E-Mail."}</p><a href="${BASE}/" style="display:inline-block;padding:12px 24px;border-radius:999px;background:linear-gradient(135deg,#7C5CFF,#4F46E5);color:#fff;text-decoration:none;font-weight:700">Zum Shop</a></div></body></html>`);
+  res.set("Cache-Control", "no-store").set("X-Robots-Tag", "noindex, nofollow").type("html").send(nlPage(ok ? "Du bist abgemeldet" : "Link ungültig",
+    ok ? "Du bekommst keine Produktempfehlungen mehr. Bestell- und Lieferbestätigungen erhältst du weiterhin." : "Bitte nutze den Link aus deiner E-Mail.", `<a class="b" href="${BASE}/">Zum Shop</a>`));
 });
+
+/* ---------- Newsletter (Double-Opt-in), Einwilligungen, Bewertungsanfragen, Admin-Mailvorschau ----------
+   UWG § 7 Abs. 2 Nr. 2 und DSGVO Art. 6 Abs. 1 lit. a, Art. 7 Abs. 1 (Nachweis der Einwilligung):
+   - Anmeldung (Fußzeile, Konto) speichert Zeitpunkt, IP-Hash (HMAC, keine Klar-IP) und Quelle; eingetragen ist man erst nach
+     dem Klick auf den Bestätigungslink (Zeitpunkt + IP-Hash der Bestätigung). Alle Schritte stehen zusätzlich in newsletter_log.
+   - Jede Werbemail hat einen Abmeldelink und die Kopfzeilen List-Unsubscribe + List-Unsubscribe-Post (RFC 8058). Abmeldung wirkt sofort.
+   - Bewertungsanfrage nur mit ausdrücklicher Einwilligung (Konto oder Bestellseite), einmal pro Bestellung, REVIEW_DELAY_H Stunden
+     nach der Lieferung (Standard 72). REVIEW_MAILS=0 schaltet sie ab. Einwilligungen und Widerrufe stehen in consent_log.
+   - Keine Warenkorb-Erinnerungen: dafür gibt es keine Einwilligung. */
+db.exec(`CREATE TABLE IF NOT EXISTS newsletter(email TEXT PRIMARY KEY, status TEXT NOT NULL DEFAULT 'pending', source TEXT, created_at INTEGER, ip_hash TEXT,
+  token_hash TEXT, token_exp INTEGER, sent_at INTEGER, confirmed_at INTEGER, confirm_ip_hash TEXT, unsub_at INTEGER, unsub_via TEXT);
+CREATE INDEX IF NOT EXISTS ix_newsletter_status ON newsletter(status);
+CREATE INDEX IF NOT EXISTS ix_newsletter_token ON newsletter(token_hash);
+CREATE TABLE IF NOT EXISTS newsletter_log(id INTEGER PRIMARY KEY, email TEXT NOT NULL, event TEXT NOT NULL, at INTEGER NOT NULL, ip_hash TEXT, source TEXT, detail TEXT);
+CREATE INDEX IF NOT EXISTS ix_newsletter_log ON newsletter_log(email, at);
+CREATE TABLE IF NOT EXISTS campaigns(id INTEGER PRIMARY KEY, subject TEXT, data TEXT, created_at INTEGER, finished_at INTEGER, recipients INTEGER, sent INTEGER DEFAULT 0, failed INTEGER DEFAULT 0, by TEXT);
+CREATE TABLE IF NOT EXISTS consent_log(id INTEGER PRIMARY KEY, email TEXT, kind TEXT, granted INTEGER, source TEXT, order_id TEXT, at INTEGER, ip_hash TEXT);`);
+if (!db.prepare("PRAGMA table_info(orders)").all().some(c => c.name === "review_ok_at")) db.exec("ALTER TABLE orders ADD COLUMN review_ok_at INTEGER");
+if (!db.prepare("PRAGMA table_info(orders)").all().some(c => c.name === "review_asked_at")) db.exec("ALTER TABLE orders ADD COLUMN review_asked_at INTEGER");
+if (!db.prepare("PRAGMA table_info(users)").all().some(c => c.name === "review_ok_at")) db.exec("ALTER TABLE users ADD COLUMN review_ok_at INTEGER");
+
+const nlEsc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+/* Kleine Seite im Markenauftritt (Bestätigung, Abmeldung) */
+const nlPage = (title, text, extra = "") => `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${nlEsc(title)} · instantcodes</title><link rel="icon" href="/favicon.png"><style>
+@font-face{font-family:Geist;src:url(/fonts/geist.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#F3F4F6;color:#0E1014;font:16px/1.6 Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:24px 16px}
+.c{width:100%;max-width:440px;background:#fff;border-radius:24px;box-shadow:inset 0 0 0 1px rgba(14,16,20,.08),0 24px 60px -30px rgba(14,16,20,.28);padding:36px 28px 28px;text-align:center;position:relative;overflow:hidden}
+.c::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(115deg,#FFD7EB 0%,#DCE3FF 34%,#C8F5EA 66%,#F0DDFF 100%)}
+.l{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:#0E1014;font-size:22px;letter-spacing:-.04em;margin-bottom:22px}.l img{width:34px;height:34px}.l b{font-weight:640}.l span{font-weight:300}
+h1{font-size:24px;line-height:1.25;font-weight:520;letter-spacing:-.02em;margin:0 0 10px}p{margin:0 0 22px;color:#474D59}form{margin:0}
+.b{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 26px;border-radius:999px;border:0;background:#0E1014;color:#fff;font:inherit;font-size:15px;font-weight:500;text-decoration:none;cursor:pointer}
+.b:focus-visible,a:focus-visible{outline:2px solid #7D5CF0;outline-offset:3px}.s{font-size:13px;color:#656B78;margin:22px 0 0}.s a{color:#6A4FE0}</style></head>
+<body><main class="c"><a class="l" href="/" aria-label="instantcodes Startseite"><img src="/mail/logo-ring.png" alt=""><span><b>instant</b>codes</span></a><h1>${nlEsc(title)}</h1><p>${text}</p>${extra}
+<p class="s">Fragen? <a href="mailto:${nlEsc(SUPPORT)}">${nlEsc(SUPPORT)}</a> · <a href="https://mein.online-impressum.de/instacode/">Impressum</a> · <a href="/datenschutz">Datenschutz</a></p></main></body></html>`;
+const nlPageSend = (res, code, ...a) => res.status(code).set("Cache-Control", "no-store").set("X-Robots-Tag", "noindex, nofollow").set("Referrer-Policy", "no-referrer").type("html").send(nlPage(...a));
+/* IP nur als HMAC-Hash (pseudonym), reicht als Nachweis zusammen mit Zeitpunkt und Quelle */
+const ipHash = req => crypto.createHmac("sha256", KEY).update("ip|" + String((req && req.ip) || "")).digest("hex").slice(0, 32);
+const nlSig = (k, e) => crypto.createHmac("sha256", KEY).update(`nl|${k}|${e}`).digest("base64url").slice(0, 24);
+/* Abmeldelink: k=news (Newsletter) oder k=review (Bewertungsanfragen) */
+const nlUnsub = (e, k = "news") => `${BASE}/newsletter/abmelden?e=${encodeURIComponent(norm(e))}&k=${k}&s=${nlSig(k, norm(e))}`;
+const nlLog = (e, event, req, source, detail) => db.prepare("INSERT INTO newsletter_log(email,event,at,ip_hash,source,detail) VALUES(?,?,?,?,?,?)").run(e, event, now(), req ? ipHash(req) : null, source || null, detail || null);
+const consentLog = (e, kind, granted, source, orderId, req) => db.prepare("INSERT INTO consent_log(email,kind,granted,source,order_id,at,ip_hash) VALUES(?,?,?,?,?,?,?)").run(e, kind, granted ? 1 : 0, source, orderId || null, now(), req ? ipHash(req) : null);
+const maskMail = e => String(e).replace(/^(.{1,2})[^@]*(@.*)$/, "$1…$2");
+const NL_SRC = ["fusszeile", "konto"], NL_TTL = 7 * 864e5;
+const NL_MSG = "Fast geschafft! Wir haben dir eine E-Mail geschickt. Bitte bestätige darin deine Anmeldung – erst dann bist du eingetragen.";
+const nlLim = rateLimit({ windowMs: 15 * 60e3, limit: 8, standardHeaders: true, legacyHeaders: false, message: { error: "Zu viele Versuche. Bitte warte ein paar Minuten." } });
+
+/* Anmeldung: immer dieselbe Antwort (niemand kann testen, wer schon angemeldet ist); höchstens eine Bestätigungsmail pro 10 Minuten */
+app.post("/api/newsletter", nlLim, wrap(async (req, res) => {
+  const e = norm(req.body.email), src = NL_SRC.includes(req.body.source) ? req.body.source : "fusszeile";
+  if (!emailOk(e) || /@sms\.instacode\.store$/.test(e)) return bad(res, "Bitte gib eine gültige E-Mail-Adresse ein.");
+  const r = db.prepare("SELECT * FROM newsletter WHERE email=?").get(e);
+  if (r && (r.status === "active" || (r.status === "pending" && r.sent_at > now() - 10 * 60e3 && r.token_exp > now()))) return res.json({ ok: true, msg: NL_MSG });
+  const t = rnd(24);
+  db.prepare(`INSERT INTO newsletter(email,status,source,created_at,ip_hash,token_hash,token_exp,sent_at) VALUES(?,'pending',?,?,?,?,?,?)
+    ON CONFLICT(email) DO UPDATE SET status='pending', source=excluded.source, created_at=excluded.created_at, ip_hash=excluded.ip_hash,
+      token_hash=excluded.token_hash, token_exp=excluded.token_exp, sent_at=excluded.sent_at, confirmed_at=NULL, confirm_ip_hash=NULL`)
+    .run(e, src, now(), ipHash(req), sha(t), now() + NL_TTL, now());
+  nlLog(e, "anmeldung", req, src);
+  await mail.newsletterConfirm(e, `${BASE}/newsletter/bestaetigen?t=${t}`);
+  res.json({ ok: true, msg: NL_MSG });
+}));
+/* Bestätigung in zwei Schritten (Seite mit Knopf → POST), damit Link-Scanner von Mailprogrammen niemanden versehentlich eintragen */
+const nlByToken = t => t ? db.prepare("SELECT * FROM newsletter WHERE token_hash=?").get(sha(t)) : null;
+app.get("/newsletter/bestaetigen", (req, res) => {
+  const t = String(req.query.t || ""), r = nlByToken(t);
+  if (!r || r.status !== "pending" || !(r.token_exp > now())) return nlPageSend(res, 410, "Link abgelaufen", "Dieser Bestätigungslink ist nicht mehr gültig. Melde dich einfach noch einmal unten im Shop an – du bekommst dann einen neuen Link.", `<a class="b" href="${BASE}/">Zum Shop</a>`);
+  nlPageSend(res, 200, "Anmeldung bestätigen", `Soll <b>${nlEsc(maskMail(r.email))}</b> den Newsletter von instantcodes bekommen? Neue Marken, Angebote und Aktionen per E-Mail – abmelden geht jederzeit mit einem Klick.`,
+    `<form method="post" action="/newsletter/bestaetigen"><input type="hidden" name="t" value="${nlEsc(t)}"><button class="b" type="submit">Ja, Anmeldung bestätigen</button></form>`);
+});
+app.post("/newsletter/bestaetigen", wrap(async (req, res) => {
+  const b = await formBody(req), r = nlByToken(String((b && b.t) || ""));
+  if (!r || r.status !== "pending" || !(r.token_exp > now())) return nlPageSend(res, 410, "Link abgelaufen", "Dieser Bestätigungslink ist nicht mehr gültig. Melde dich einfach noch einmal an.", `<a class="b" href="${BASE}/">Zum Shop</a>`);
+  db.prepare("UPDATE newsletter SET status='active', confirmed_at=?, confirm_ip_hash=?, token_hash=NULL, token_exp=NULL, unsub_at=NULL, unsub_via=NULL WHERE email=?").run(now(), ipHash(req), r.email);
+  nlLog(r.email, "bestaetigt", req, r.source);
+  nlPageSend(res, 200, "Du bist dabei!", "Danke für deine Bestätigung. Ab jetzt bekommst du Neuigkeiten zu neuen Marken, Angeboten und Aktionen. Abmelden kannst du dich jederzeit mit einem Klick am Ende jeder E-Mail.", `<a class="b" href="${BASE}/">Zum Shop</a>`);
+}));
+/* Abmeldung: Newsletter oder Bewertungsanfragen, sofort wirksam */
+function nlOff(e, k, via, req) {
+  if (k === "review") {
+    db.prepare("UPDATE users SET review_ok_at=NULL WHERE email=?").run(e);
+    db.prepare("UPDATE orders SET review_ok_at=NULL WHERE email=? AND review_ok_at IS NOT NULL").run(e);
+    consentLog(e, "bewertung", false, via, null, req);
+    return;
+  }
+  const r = db.prepare("SELECT status FROM newsletter WHERE email=?").get(e);
+  if (r && r.status !== "unsub") { db.prepare("UPDATE newsletter SET status='unsub', unsub_at=?, unsub_via=?, token_hash=NULL, token_exp=NULL WHERE email=?").run(now(), via, e); nlLog(e, "abmeldung", req, via); }
+}
+const nlUnsubOk = q => { const e = norm(q.e), k = q.k === "review" ? "review" : "news", s = String(q.s || ""), want = nlSig(k, e);
+  return e && s.length === want.length && crypto.timingSafeEqual(Buffer.from(s), Buffer.from(want)) ? { e, k } : null; };
+app.get("/newsletter/abmelden", (req, res) => {
+  const v = nlUnsubOk(req.query);
+  if (!v) return nlPageSend(res, 400, "Link ungültig", `Bitte nutze den Abmeldelink aus deiner E-Mail oder schreib uns an ${nlEsc(SUPPORT)} – wir tragen dich sofort aus.`);
+  nlOff(v.e, v.k, "link", req);
+  nlPageSend(res, 200, "Du bist abgemeldet", v.k === "review" ? "Wir schicken dir keine Bewertungsanfragen mehr. Bestell- und Lieferbestätigungen bekommst du weiterhin." : "Du bekommst keinen Newsletter mehr von uns. Bestell- und Lieferbestätigungen bekommst du weiterhin.", `<a class="b" href="${BASE}/">Zum Shop</a>`);
+});
+/* Ein-Klick-Abmeldung aus dem Mailprogramm (RFC 8058: POST mit „List-Unsubscribe=One-Click“ an dieselbe Adresse) */
+app.post("/newsletter/abmelden", wrap(async (req, res) => {
+  await formBody(req); // Inhalt („List-Unsubscribe=One-Click“) wird nicht gebraucht, nur gelesen
+  const v = nlUnsubOk(req.query);
+  if (!v) return res.status(400).type("text/plain").send("Link ungültig");
+  nlOff(v.e, v.k, "ein-klick", req);
+  res.set("Cache-Control", "no-store").type("text/plain").send("Abgemeldet");
+}));
+
+/* Einwilligungen im Konto und auf der Bestellseite */
+const orderAccess = (req, id, k) => { const o = db.prepare("SELECT * FROM orders WHERE id=?").get(String(id || "")); return o && ((req.user && o.user_id === req.user.id) || (k && k === o.access_key) || isAdmin(req.user)) ? o : null; };
+app.get("/api/consent", need, (req, res) => {
+  const u = userById(req.user.id), nl = db.prepare("SELECT status FROM newsletter WHERE email=?").get(u.email);
+  res.set("Cache-Control", "no-store").json({ review: !!u.review_ok_at, newsletter: nl ? nl.status : null });
+});
+app.get("/api/consent/review", (req, res) => {
+  const o = orderAccess(req, req.query.order, String(req.query.k || ""));
+  if (!o) return bad(res, "Bestellung nicht gefunden.", 404);
+  const u = o.user_id ? userById(o.user_id) : null;
+  res.set("Cache-Control", "no-store").json({ on: !!o.review_ok_at, account: !!(u && u.review_ok_at), asked: !!o.review_asked_at, reviewed: !!db.prepare("SELECT 1 FROM reviews WHERE order_id=?").get(o.id), status: o.status });
+});
+app.post("/api/consent/review", lim, (req, res) => {
+  const on = req.body.on === true;
+  if (req.body.order) {
+    const o = orderAccess(req, req.body.order, String(req.body.k || ""));
+    if (!o) return bad(res, "Bestellung nicht gefunden.", 404);
+    db.prepare("UPDATE orders SET review_ok_at=? WHERE id=?").run(on ? now() : null, o.id);
+    consentLog(o.email, "bewertung", on, "bestellseite", o.id, req);
+    return res.json({ ok: true, on });
+  }
+  if (!req.user) return bad(res, "Bitte melde dich an.", 401);
+  db.prepare("UPDATE users SET review_ok_at=? WHERE id=?").run(on ? now() : null, req.user.id);
+  consentLog(req.user.email, "bewertung", on, "konto", null, req);
+  res.json({ ok: true, on });
+});
+app.post("/api/newsletter/off", need, (req, res) => { nlOff(req.user.email, "news", "konto", req); res.json({ ok: true }); });
+
+/* Bewertungsanfragen: einmal pro Bestellung, nur mit Einwilligung, nicht nach einer Bewertung, höchstens 30 Tage nach der Lieferung */
+const REVIEW_DELAY = Math.max(0, Number(E.REVIEW_DELAY_H != null && E.REVIEW_DELAY_H !== "" ? E.REVIEW_DELAY_H : 72)) * 36e5;
+function askReviews() {
+  if (E.REVIEW_MAILS === "0") return 0;
+  const t = now(), ids = db.prepare(`SELECT o.id FROM orders o WHERE o.status='delivered' AND o.review_asked_at IS NULL AND o.delivered_at <= ? AND o.delivered_at > ?
+      AND NOT EXISTS (SELECT 1 FROM reviews r WHERE r.order_id=o.id)
+      AND (o.review_ok_at IS NOT NULL OR EXISTS (SELECT 1 FROM users u WHERE u.id=o.user_id AND u.review_ok_at IS NOT NULL))
+    ORDER BY o.delivered_at LIMIT 50`).all(t - REVIEW_DELAY, t - 30 * 864e5).map(r => r.id);
+  for (const id of ids) {
+    if (!db.prepare("UPDATE orders SET review_asked_at=? WHERE id=? AND review_asked_at IS NULL").run(t, id).changes) continue;
+    const o = orderFull(id);
+    safe(mail.reviewRequest(o, nlUnsub(o.email, "review")));
+  }
+  /* Datensparsamkeit: nie bestätigte Anmeldungen nach 30 Tagen löschen */
+  const old = db.prepare("SELECT email FROM newsletter WHERE status='pending' AND created_at < ?").all(t - 30 * 864e5).map(r => r.email);
+  old.forEach(e => { db.prepare("DELETE FROM newsletter WHERE email=? AND status='pending'").run(e); if (!db.prepare("SELECT 1 FROM newsletter_log WHERE email=? AND event='bestaetigt'").get(e)) db.prepare("DELETE FROM newsletter_log WHERE email=?").run(e); });
+  return ids.length;
+}
+setTimeout(askReviews, 90e3).unref(); setInterval(askReviews, 30 * 60e3).unref();
+app.post("/api/admin/review-mails/run", admin, (req, res) => res.json({ sent: askReviews() }));
+
+/* ---------- Admin: Newsletter ---------- */
+let nlSending = false;
+function campaignIn(b) {
+  const c = { subject: String(b.subject || "").trim().slice(0, 150), pre: String(b.pre || "").trim().slice(0, 150), title: String(b.title || "").trim().slice(0, 120),
+    text: String(b.text || "").trim().slice(0, 4000), cta: String(b.cta || "").trim().slice(0, 40), url: String(b.url || "").trim().slice(0, 300),
+    code: String(b.code || "").trim().toUpperCase().slice(0, 40), codeNote: String(b.codeNote || "").trim().slice(0, 200), img: String(b.img || "").trim().slice(0, 500),
+    brands: [...new Set((Array.isArray(b.brands) ? b.brands : String(b.brands || "").split(/[\s,;]+/)).map(x => String(x).trim().toLowerCase()).filter(id => CATALOG[id]))].slice(0, 6) };
+  if (!c.subject) throw new Bad("Bitte einen Betreff eingeben.");
+  if (c.url && c.url.startsWith(BASE + "/")) c.url = c.url.slice(BASE.length);
+  if (c.url && !/^\/[\w\-/?=&%.#]*$/.test(c.url)) throw new Bad("Der Link muss auf eine Seite im Shop zeigen, z. B. /angebote oder /marke/steam.");
+  if (c.img && !/^https:\/\/[^\s"'<>]+$/.test(c.img)) throw new Bad("Die Bild-Adresse muss mit https:// beginnen.");
+  if (c.code && !PROMOS[c.code]) throw new Bad(`Den Rabattcode ${c.code} gibt es im Shop nicht. Verfügbar: ${Object.keys(PROMOS).join(", ")}.`);
+  return c;
+}
+app.get("/api/admin/newsletter", admin, (req, res) => {
+  const counts = Object.fromEntries(db.prepare("SELECT status, COUNT(*) n FROM newsletter GROUP BY status").all().map(r => [r.status, r.n]));
+  res.set("Cache-Control", "no-store").json({ counts, sending: nlSending, mail: !!E.RESEND_API_KEY, promos: Object.keys(PROMOS),
+    list: db.prepare("SELECT email, status, source, created_at, ip_hash, confirmed_at, confirm_ip_hash, unsub_at, unsub_via FROM newsletter ORDER BY COALESCE(unsub_at, confirmed_at, created_at) DESC LIMIT 500").all(),
+    campaigns: db.prepare("SELECT id, subject, created_at, finished_at, recipients, sent, failed, by FROM campaigns ORDER BY id DESC LIMIT 20").all(),
+    review: { on: E.REVIEW_MAILS !== "0", delayH: REVIEW_DELAY / 36e5, accounts: db.prepare("SELECT COUNT(*) n FROM users WHERE review_ok_at IS NOT NULL").get().n,
+      orders: db.prepare("SELECT COUNT(*) n FROM orders WHERE review_ok_at IS NOT NULL").get().n, asked: db.prepare("SELECT COUNT(*) n FROM orders WHERE review_asked_at IS NOT NULL").get().n } });
+});
+/* Nachweis als CSV (Semikolon, für Excel) */
+app.get("/api/admin/newsletter.csv", admin, (req, res) => {
+  const d = t => t ? new Date(t).toISOString() : "", q = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+  const rows = db.prepare("SELECT * FROM newsletter ORDER BY created_at").all().map(r => [r.email, r.status, r.source, d(r.created_at), r.ip_hash, d(r.confirmed_at), r.confirm_ip_hash, d(r.unsub_at), r.unsub_via].map(q).join(";"));
+  res.set("Cache-Control", "no-store").set("Content-Disposition", `attachment; filename="newsletter-nachweis-${new Date().toISOString().slice(0, 10)}.csv"`).type("text/csv; charset=utf-8")
+    .send("﻿" + ["E-Mail;Status;Quelle;Angemeldet (UTC);IP-Hash Anmeldung;Bestätigt (UTC);IP-Hash Bestätigung;Abgemeldet (UTC);Abgemeldet über"].concat(rows).join("\r\n"));
+});
+app.post("/api/admin/newsletter/preview", admin, (req, res) => {
+  let c; try { c = campaignIn(req.body || {}); } catch (e) { return bad(res, e.message); }
+  const r = mail._render("promo", req.user.email, c, nlUnsub(req.user.email));
+  res.json({ subject: r.subject, pre: r.pre, html: r.html, text: r.text, campaign: c });
+});
+app.post("/api/admin/newsletter/test", admin, wrap(async (req, res) => {
+  if (!E.RESEND_API_KEY) return bad(res, "RESEND_API_KEY fehlt.");
+  let c; try { c = campaignIn(req.body || {}); } catch (e) { return bad(res, e.message); }
+  await mail.promo(req.user.email, { ...c, subject: "[Test] " + c.subject }, nlUnsub(req.user.email));
+  res.json({ ok: true, to: req.user.email });
+}));
+/* Versand nur an bestätigte Abonnenten; die Anzahl muss im Admin bestätigt werden (Schutz vor Versehen) */
+app.post("/api/admin/newsletter/send", admin, (req, res) => {
+  if (!E.RESEND_API_KEY) return bad(res, "RESEND_API_KEY fehlt.");
+  if (nlSending) return bad(res, "Es läuft schon ein Versand. Bitte warte, bis er fertig ist.");
+  let c; try { c = campaignIn(req.body || {}); } catch (e) { return bad(res, e.message); }
+  const to = db.prepare("SELECT email FROM newsletter WHERE status='active' ORDER BY confirmed_at").all().map(r => r.email);
+  if (!to.length) return bad(res, "Es gibt noch keine bestätigten Abonnenten.");
+  if (Number(req.body.confirm) !== to.length) return bad(res, `Bitte bestätige den Versand an ${to.length} Abonnenten.`, 409);
+  const id = db.prepare("INSERT INTO campaigns(subject,data,created_at,recipients,by) VALUES(?,?,?,?,?)").run(c.subject, JSON.stringify(c), now(), to.length, req.user.email).lastInsertRowid;
+  nlSending = true;
+  (async () => {
+    let sent = 0, failed = 0;
+    for (const e of to) {
+      if ((db.prepare("SELECT status FROM newsletter WHERE email=?").get(e) || {}).status !== "active") continue; // inzwischen abgemeldet
+      try { await mail.promo(e, c, nlUnsub(e)); sent++; } catch (err) { failed++; console.error("Newsletter an", e, err.message); }
+      db.prepare("UPDATE campaigns SET sent=?, failed=? WHERE id=?").run(sent, failed, id);
+      await new Promise(ok => setTimeout(ok, 550)); // Resend erlaubt standardmäßig etwa 2 Mails pro Sekunde
+    }
+    db.prepare("UPDATE campaigns SET finished_at=? WHERE id=?").run(now(), id);
+    console.log(`Newsletter ${id}: ${sent} gesendet, ${failed} fehlgeschlagen`);
+  })().catch(e => console.error("Newsletter-Versand:", e)).finally(() => { nlSending = false; });
+  res.json({ ok: true, id, recipients: to.length });
+});
+app.post("/api/admin/newsletter/unsub", admin, (req, res) => {
+  const e = norm(req.body.email); if (!emailOk(e)) return bad(res, "Ungültige Adresse.");
+  nlOff(e, "news", "admin", req); res.json({ ok: true });
+});
+
+/* ---------- Admin: alle Mail-Vorlagen mit Beispieldaten ansehen (nur Inhaber) ---------- */
+app.get("/api/admin/mails", admin, (req, res) => {
+  res.set("Cache-Control", "no-store").json({ mail: !!E.RESEND_API_KEY, from: E.MAIL_FROM || "hallo@instacode.store", support: SUPPORT,
+    mails: mail._samples().map(s => { const r = mail._render(s.key, ...s.args); return { id: s.id, group: s.group, key: s.key, name: s.name, trigger: s.trigger, subject: r.subject, pre: r.pre, ad: !!r.listUnsub, size: Buffer.byteLength(r.html) }; }) });
+});
+app.get("/admin/mail/:id", (req, res) => {
+  res.set("Cache-Control", "no-store").set("X-Robots-Tag", "noindex, nofollow");
+  if (!isAdmin(req.user)) return res.status(404).type("text/plain").send("Not Found");
+  const s = mail._samples().find(x => x.id === String(req.params.id));
+  if (!s) return res.status(404).type("text/plain").send("Vorlage nicht gefunden");
+  const r = mail._render(s.key, ...s.args);
+  if (req.query.text) return res.type("text/plain; charset=utf-8").send(`Betreff: ${r.subject}\nVorschautext: ${r.pre}\n\n${r.text}`);
+  res.type("html").send(r.html);
+});
+app.post("/api/admin/mails/:id/test", admin, wrap(async (req, res) => {
+  if (!E.RESEND_API_KEY) return bad(res, "RESEND_API_KEY fehlt.");
+  try { await mail._sendSample(String(req.params.id), req.user.email); res.json({ ok: true, to: req.user.email }); } catch (e) { bad(res, "Versand fehlgeschlagen: " + e.message); }
+}));
 /* Kasse, Konto, Bestellungen, Suche und Weiterleitungen zu fremden Seiten (/go/) gehören nicht in den Suchindex */
-app.get("/robots.txt", (req, res) => res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /r/\nDisallow: /go/\nDisallow: /kasse\nDisallow: /warenkorb\nDisallow: /konto\nDisallow: /login\nDisallow: /bestellung/\nDisallow: /verifizieren\nDisallow: /passwort\nDisallow: /suche\n\nSitemap: ${BASE}/sitemap.xml\n`));
+app.get("/robots.txt", (req, res) => res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /r/\nDisallow: /go/\nDisallow: /kasse\nDisallow: /warenkorb\nDisallow: /konto\nDisallow: /login\nDisallow: /bestellung/\nDisallow: /verifizieren\nDisallow: /passwort\nDisallow: /suche\nDisallow: /newsletter/\nDisallow: /abmelden\n\nSitemap: ${BASE}/sitemap.xml\n`));
 app.get("/sitemap.xml", (req, res) => {
   const day = new Date().toISOString().slice(0, 10);
   const urls = ["/", "/abo", "/kategorien", "/aufladen", "/angebote", "/hilfe", "/agb", "/datenschutz", "/widerruf", "/kuendigen"]
@@ -1872,7 +2152,7 @@ app.get("/go/:id", (req, res) => {
 /* Kurzadressen: /steam → 301 /marke/steam (nur sichtbare Produkte, Groß-/Kleinschreibung egal, Suchparameter bleiben).
    Steht hinter allen festen Routen und Dateien; reservierte Seitennamen werden nie umgeleitet. */
 const SHORT_SKIP = new Set(["api", "auth", "img", "mail", "cards", "admin", "go", "r", "marke", "kategorie", "kategorien", "aufladen", "angebote", "suche", "warenkorb", "kasse",
-  "bestellung", "login", "konto", "hilfe", "abo", "kuendigen", "verifizieren", "passwort", "agb", "datenschutz", "widerruf", "abmelden", "logo", "brand", "pay", "fonts", "vid", "anim"]);
+  "bestellung", "login", "konto", "hilfe", "abo", "kuendigen", "verifizieren", "passwort", "agb", "datenschutz", "widerruf", "abmelden", "newsletter", "logo", "brand", "pay", "fonts", "vid", "anim"]);
 let shortIds = null;
 app.get("/:id", (req, res, next) => {
   const id = String(req.params.id).toLowerCase();

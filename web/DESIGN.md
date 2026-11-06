@@ -34,6 +34,14 @@ Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines B
 - **Ring (Startseite, Abschluss):** `<div class="lq" data-off aria-hidden="true"></div>` in einem `position:relative`-Element; der Router ruft `LIQUID.mount()` (in `fx()`) auf. WebGL-Shader `js/13-liquid.js`: fließender Chrom-Ring, Glanzlicht folgt dem Zeiger, pausiert unsichtbar, auf Touch halbe Auflösung und 30 Bilder/s, bei reduzierter Bewegung Standbild, ohne WebGL CSS-Ring (`.nogl`). Höchstens 2 pro Seite.
 - **Rahmen:** `<span class="lm" aria-hidden="true"></span>` als erstes Kind eines Elements mit `border-radius` (`metalMount(app)`), sparsam. Für kleine Ränder `.metal` (CSS).
 
+## Glas-Look (css/95-glass.css, kommt nach allen anderen Stilen)
+- Flächen sind durchscheinend, nie deckend weiß: `--g-fill` (Kacheln, Karten), `--g-fill-hi` (Kasse, Rechtstexte, Kaufbox), `--g-chip` (Badges, Chips). Dazu immer `--g-edge` (weiße Lichtkante) + `--g-line` (Haarlinie) + Schatten.
+- Buttons: Glas mit Glanzkuppe `--g-gloss`; Kauf/Absenden in dunklem Rauchglas `--g-ink` mit `--g-ink-edge`. Überfahren: Glanzstreifen, Drücken: Glas sinkt ein (Innenschatten).
+- Echtes Milchglas (`backdrop-filter`) nur am Rechner und nur auf wenigen großen Flächen. Auf `.lite` nie – dort tragen Verlauf und Lichtkante den Look.
+- Overlays (Menüs, Schubladen, Cookie-Hinweis) behalten ihre dichten `--ov-bg`-Flächen, damit Text lesbar bleibt.
+- Kategorien zeigen echte Markenzeichen statt Symbol-Kacheln: `kLogos(cat)` aus js/18-logos.js (runde Glasplaketten, nur kompakte Zeichen).
+- Zahlungszeichen kommen ausschließlich aus `payLogos()` (liest `CFG.methods`/`CFG.klarna`): oben in der Leiste (`payTop`), im Band über der Fußzeile (`payBand`), in Fußzeile, Kaufbox und Warenkorb. Klarna mit Einschränkung („nur für …“) nur dort, wo der Hinweis direkt daneben steht. Nichts zeigen, was die Kasse nicht anbietet.
+
 ## Leistung (Pflicht)
 - Animiert werden nur `transform`/`translate`/`scale`/`rotate` und `opacity`. Keine Daueranimation von `box-shadow`, `filter`, `background-position` großer Flächen.
 - Elemente mit Daueranimation bekommen `data-off` → `.off` außerhalb des Bildschirms → `animation-play-state:paused`.

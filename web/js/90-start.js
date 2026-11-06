@@ -24,12 +24,14 @@ if(!document.documentElement.classList.contains("lite"))LIQUID.mount(hdr);
 addEventListener("resize",()=>requestAnimationFrame(parUpdate),{passive:true});
 
 /* ---------- Vertrauensleiste: auf kleinen Bildschirmen nacheinander ---------- */
-(()=>{const li=$$("#trustbar li");let i=0;if(reduce||li.length<2)return;setInterval(()=>{if(innerWidth>=900||document.hidden)return;const a=li[i];i=(i+1)%li.length;a.classList.remove("on");a.classList.add("out");li[i].classList.remove("out");li[i].classList.add("on");setTimeout(()=>a.classList.remove("out"),600)},3600)})();
+/* Auf dem Handy zeigt die Leiste die Zahlungsarten fest (.tb-pm), die Texte wechseln nur ohne diese Zeile */
+(()=>{const li=$$("#trustbar li:not(.tb-pm)");let i=0;if(reduce||li.length<2||$("#trustbar .tb-pm"))return;setInterval(()=>{if(innerWidth>=900||document.hidden)return;const a=li[i];i=(i+1)%li.length;a.classList.remove("on");a.classList.add("out");li[i].classList.remove("out");li[i].classList.add("on");setTimeout(()=>a.classList.remove("out"),600)},3600)})();
 
 /* ---------- start ---------- */
 applyTheme();updBadges();renderAcc();renderFooter();boot();scrollFx();
 /* Bänder über der Fußzeile: echte Bewertungen und Markenlogos; nach jedem Seitenwechsel prüfen, ob die Seite eigene Bewertungen zeigt */
-setTimeout(()=>{reviewBand();logoStrip()},600);
+setTimeout(()=>{reviewBand();logoStrip();payBand()},600);
+payTop();{let w=innerWidth;addEventListener("resize",()=>{if((w<900)!==(innerWidth<900)){w=innerWidth;payTop()}},{passive:true})}
 new MutationObserver(()=>requestAnimationFrame(bandsVis)).observe(app,{childList:true});
 
 if(!S.cookie)setTimeout(cookieShow,1600);

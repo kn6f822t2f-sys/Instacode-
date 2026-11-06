@@ -239,10 +239,19 @@
 .ck-evok b{display:block;font-size:15.5px;font-weight:560;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ck-evok .btn-ghost{padding:0 12px}
 /* Kasse: dezente Passkey-Zeile unter der E-Mail */
-.ck-pk{display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;margin:12px 2px 0;font-size:13.5px;color:var(--ink-3)}
-.ck-pk>.ico{width:16px;height:16px;flex:none;color:var(--ink-2)}
-.ck-pk .more{min-height:32px;font-size:13.5px;color:var(--ink);text-decoration:underline;text-decoration-color:rgba(14,16,20,.25);text-underline-offset:3px}
-@media (hover:hover){.ck-pk .more:hover{text-decoration-color:currentColor}}
+/* „Schneller: mit Google / Apple / Passkey fortfahren“ (nur eingerichtete Wege) */
+.ck-pk{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:14px 2px 0}
+.ck-pk[hidden]{display:none}
+.ck-pk-t{font-size:13.5px;color:var(--ink-3)}
+.ck-g{display:inline-flex;align-items:center;min-height:36px}
+.ck-qa{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 15px;border-radius:var(--pill);font-size:13.5px;font-weight:500;letter-spacing:-.01em;color:var(--ink);text-decoration:none;background:#fff;
+  box-shadow:inset 0 0 0 1px rgba(14,16,20,.16),0 1px 2px rgba(14,16,20,.05);transition:transform .2s var(--spring),box-shadow .2s var(--ease)}
+.ck-qa[hidden]{display:none}
+.ck-qa img,.ck-qa .ico{width:16px;height:16px;flex:none}
+.ck-qa-apple{color:#fff;background:#000;box-shadow:0 8px 18px -12px rgba(0,0,0,.6)}
+.ck-qa-apple img{filter:invert(1)}
+@media (hover:hover){.ck-qa:hover{box-shadow:inset 0 0 0 1px rgba(14,16,20,.3),0 6px 14px -10px rgba(14,16,20,.35)}.ck-qa-apple:hover{background:#1D1D1F;box-shadow:0 8px 18px -12px rgba(0,0,0,.6)}}
+.ck-qa:active{transform:scale(.97)}
 /* Marke über dem Bezahlbereich (Kasse, Schnellkauf): Logo, Wortmarke, „Sichere Kasse“ – leicht, ohne Kasten */
 .ck-brand{display:flex;align-items:center;gap:8px;min-width:0;margin:0 2px 14px;color:var(--ink)}
 .ck-brand .lg-mark{flex:none;border-radius:30%}
@@ -344,8 +353,10 @@
 .xpay.wait .xpay-wait{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;padding:10px 12px;border-radius:var(--r-s);font-size:13px;line-height:1.45;color:var(--ink-2);background:#F6F7F9;box-shadow:inset 0 0 0 1px rgba(14,16,20,.08)}
 .xpay-wait .ico{width:15px;height:15px;flex:none;margin-top:1px;color:var(--ink-3)}
 .xpay-wait.shake{animation:shake .4s var(--ease);box-shadow:inset 0 0 0 1.5px var(--rose)}
-.xpay-mail,.xpay-none{display:flex;gap:8px;align-items:flex-start;margin:10px 2px 0;font-size:12.5px;line-height:1.45;color:var(--ink-3)}
-.xpay-mail .ico,.xpay-none .ico{width:15px;height:15px;flex:none;margin-top:1px}
+.xpay-mail,.xpay-none,.xpay-kl{display:flex;gap:8px;align-items:flex-start;margin:10px 2px 0;font-size:12.5px;line-height:1.45;color:var(--ink-3)}
+.xpay-mail .ico,.xpay-none .ico,.xpay-kl .ico{width:15px;height:15px;flex:none;margin-top:1px}
+.xpay-kl[hidden]{display:none}
+.xpay-kl{margin-top:6px}
 .xpay-mail b{font-weight:560;color:var(--ink-2);overflow-wrap:anywhere}
 .xpay-none{margin:0;padding:12px 14px;border-radius:var(--r-m);font-size:13.5px;color:var(--ink-2);background:#F6F7F9;box-shadow:inset 0 0 0 1px rgba(14,16,20,.08)}
 .xpay-err{font-size:13.5px;color:var(--rose)}
@@ -370,6 +381,30 @@
 .xdb[data-w="paypal"]{color:#003087;background:#FFC439}
 .xdb[data-w="paypal"] img,.xdb[data-w="amazon_pay"] img{filter:none}
 .xdb[data-w="amazon_pay"]{color:#131A22;background:#FF9900}
+.xdb[data-w="klarna"]{color:#0A0B09;background:#FFB3C7}
+.xdb[data-w="klarna"] img{height:15px;filter:none}
+/* Revolut Pay: eigener Knopf unter den Stripe-Knöpfen – schwarz auf hellem Grund, so hoch wie die anderen, Name nicht fett */
+.xpay-rv{margin-top:8px;transition:opacity .35s var(--ease),transform .45s var(--spring)}
+.xpay-rv[hidden]{display:none}
+.xpay[data-st="load"] .xpay-rv{opacity:0;transform:translateY(4px)}
+.xpay[data-st="busy"] .xpay-rv{opacity:.25;pointer-events:none}
+.xpay-rvonly .xpay-btns{display:none}
+.xpay-rvonly .xpay-rv{margin-top:0}
+.xdb.xrv{width:100%;gap:8px;background:#000}
+.xdb.xrv img{height:17px}
+.xdb.xrv em{font-style:normal;font-weight:500;letter-spacing:-.005em}
+/* „oder mit Karte bezahlen“ unter den Express-Knöpfen (in der Kasse ein Knopf zum Kartenfeld) */
+.xpay-cardor{margin:16px 0 0;padding:0;border:0;background:none;width:100%;font:inherit;font-size:13px;font-weight:550;color:var(--ink-3)}
+button.xpay-cardor{min-height:32px;cursor:pointer;border-radius:var(--pill)}
+@media (hover:hover){button.xpay-cardor:hover{color:var(--ink)}}
+button.xpay-cardor:focus-visible{outline:2px solid var(--focus,#7D5CF0);outline-offset:2px}
+.xpay[data-st="none"] .xpay-cardor{display:none}
+.xpay-c .xpay-cardor{margin-top:12px}
+/* Zahlungszeichen mit Namen: Revolut Pay (Revolut: nie nur das „R“), Krypto (USDC-Zeichen) */
+.pmk-tx{width:auto;min-width:58px;grid-auto-flow:column;gap:4px;padding:0 9px}
+.pmk-tx img{max-width:none;height:13px;width:auto}
+.pmk-tx b{display:block;font-size:10.5px;font-weight:600;letter-spacing:-.01em;color:#191C1F}
+.pmk-tx[data-k="crypto"] img{height:15px}
 @media (hover:hover){.xdb:hover{opacity:.88}}
 .xdb:active{transform:scale(.97)}
 /* Erfolg: Häkchen erscheint über dem Bereich (Schnellkauf, Seiten-Warenkorb, Übersicht) */
@@ -526,10 +561,6 @@
 .qb-sum .sumrow.tot{margin-top:8px;padding-top:12px}
 .qb-sum .sumrow.tot>span:last-child{font-size:30px}
 .qb .xpay{margin-top:16px}
-.qb-or{display:flex;align-items:center;gap:12px;margin:16px 0 0;font-size:13px;font-weight:550;color:var(--ink-3)}
-.qb-or::before,.qb-or::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(14,16,20,0),rgba(14,16,20,.14))}
-.qb-or::after{background:linear-gradient(90deg,rgba(14,16,20,.14),rgba(14,16,20,0))}
-.qb-or[hidden]{display:none}
 .qb-acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
 .qb-acts .btn{padding:0 16px}
 .qb .tbadges{margin-top:16px}
