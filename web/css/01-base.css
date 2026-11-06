@@ -26,7 +26,7 @@
   --ink-2:#474D59;
   --ink-3:#656B78;
   /* Stahl und Chrom: Überschriften dunkler Stahl, Flächen helles Silber, Auswahl Schwarzchrom */
-  --chrome-text:linear-gradient(180deg,#0E1014 0%,#2A2F38 55%,#4B525E 100%);
+  --chrome-text:linear-gradient(180deg,#14171C 0%,#2C313A 60%,#454C58 100%);
   --chrome-fill:linear-gradient(180deg,#FFFFFF 0%,#F1F2F5 40%,#D9DCE2 100%);
   --chrome-edge:linear-gradient(160deg,#FFFFFF,rgba(255,255,255,.6) 30%,rgba(14,16,20,.08) 60%,rgba(255,255,255,.9));
   --sel:linear-gradient(180deg,#3B3F48 0%,#1A1C21 52%,#0D0E11 100%);
@@ -128,9 +128,9 @@ img{max-width:100%}
 .lite .bgfx i{animation:none;will-change:auto}
 
 /* ---------- Typografie: elegant, mittelgroß, dunkler Stahl auf den Überschriften ---------- */
-.h1{margin:0;font-size:clamp(36px,4.5vw,62px);line-height:1.03;font-weight:600;letter-spacing:-.042em;text-wrap:balance}
-.h2{margin:0;font-size:clamp(27px,2.8vw,40px);line-height:1.1;font-weight:590;letter-spacing:-.034em;text-wrap:balance}
-.h3{margin:0;font-size:17.5px;line-height:1.3;font-weight:600;letter-spacing:-.018em}
+.h1{margin:0;font-size:clamp(34px,4.2vw,58px);line-height:1.05;font-weight:540;letter-spacing:-.038em;text-wrap:balance}
+.h2{margin:0;font-size:clamp(25px,2.6vw,36px);line-height:1.12;font-weight:520;letter-spacing:-.03em;text-wrap:balance}
+.h3{margin:0;font-size:17px;line-height:1.3;font-weight:560;letter-spacing:-.015em}
 /* Chromverlauf auf großen Überschriften (Symbole behalten ihre Farbe) */
 .h1,.h2{color:var(--ink);background:var(--chrome-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-bottom:.06em}
 .page-h1{font-size:clamp(32px,3.8vw,52px)}

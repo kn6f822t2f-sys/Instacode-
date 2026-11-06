@@ -16,6 +16,9 @@
   .card:hover::after,.catcard:hover::after,.qa:hover::after,.spot:hover::after,.card:hover::before,.catcard:hover::before,.qa:hover::before,.spot:hover::before{opacity:1}
 }
 .spot{position:relative;isolation:isolate}
+/* Zeiger-Licht: eigene Standardwerte, damit unitlose --mx/--my von [data-mouse]-Eltern (−1…1) die Verläufe nicht ungültig machen */
+.card,.catcard,.qa,.spot{--mx:50%;--my:50%}
+.btn,.chip,.icon-btn,.amt,.paymore{--mx:50%;--my:-30%}
 .si-ic,.cc-ic{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:13px;color:var(--c,var(--ink));
   background:linear-gradient(180deg,#fff,#F0F1F4);box-shadow:var(--rim-hi),0 8px 18px -12px rgba(14,16,20,.35)}
 .si-ic .ico,.cc-ic .ico{width:20px;height:20px}
@@ -28,46 +31,48 @@
   transition:transform .5s var(--spring),width .5s var(--spring),height .3s,opacity .25s}
 .lg-lens.on{opacity:1}
 
-/* ---------- Knöpfe ---------- */
-.btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:var(--pill);
-  font-size:15px;font-weight:580;letter-spacing:-.01em;white-space:nowrap;color:var(--ink);overflow:hidden;
-  transition:transform .35s var(--spring),box-shadow .3s var(--ease),background .3s var(--ease),color .2s,filter .2s}
-.btn .ico{width:18px;height:18px;transition:translate .35s var(--spring)}
-.btn-lg{min-height:54px;padding:0 28px;font-size:16px}
-.btn-sm{min-height:38px;padding:0 15px;font-size:14px}
+/* ---------- Knöpfe ----------
+   Schlank und ruhig: 40–46 px hoch, mittlere Schriftstärke, Glas statt Kasten.
+   Hauptknopf: dunkles, leicht durchscheinendes Glas; Nebenknopf: klares Glas mit Haarlinie.
+   Effekte: feiner Glanz beim Überfahren, Licht folgt dem Zeiger, leichtes Einsinken beim Drücken. */
+.btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 18px;border-radius:var(--pill);
+  font-size:14.5px;font-weight:500;letter-spacing:-.005em;white-space:nowrap;color:var(--ink);overflow:hidden;
+  transition:transform .3s var(--spring),box-shadow .3s var(--ease),background .3s var(--ease),color .2s,filter .2s}
+.btn .ico{width:16px;height:16px;transition:translate .35s var(--spring)}
+.btn-lg{min-height:46px;padding:0 22px;font-size:15px}
+.btn-sm{min-height:34px;padding:0 13px;font-size:13.5px}
 .btn-block{width:100%}
-.btn:active{transform:scale(.975)}
+.btn:active{transform:scale(.98)}
 .btn[disabled]{opacity:.4;pointer-events:none}
 /* Pfeil am Ende rückt beim Überfahren ein Stück nach */
 @media (hover:hover){.btn:hover .ico:last-child:not(:first-child){translate:3px 0}}
-/* Hauptknopf: Schwarzchrom mit weißer Schrift. Beim Überfahren hebt er sich leicht, ein feiner Glanz läuft durch,
-   ein Licht folgt dem Zeiger; beim Drücken sinkt er ein */
-.btn-primary{color:#fff;background:radial-gradient(160px circle at var(--mx,50%) var(--my,-30%),rgba(255,255,255,.22),rgba(255,255,255,0) 70%),var(--sel);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -1px 0 rgba(0,0,0,.4),0 0 0 1px #0E1014,0 1px 2px rgba(14,16,20,.3),0 12px 26px -12px rgba(14,16,20,.6)}
-.btn-primary::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:40%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.32),transparent);transform:skewX(-18deg);opacity:0;transition:left .9s var(--ease),opacity .3s}
+.btn-primary{color:#fff;background:radial-gradient(140px circle at var(--mx,50%) var(--my,-30%),rgba(255,255,255,.16),rgba(255,255,255,0) 70%),linear-gradient(180deg,rgba(38,41,48,.92),rgba(14,16,20,.94));
+  -webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 .5px rgba(255,255,255,.08),0 1px 2px rgba(14,16,20,.18),0 6px 16px -10px rgba(14,16,20,.55)}
+.btn-primary::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:40%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:skewX(-18deg);opacity:0;transition:left .9s var(--ease),opacity .3s}
 @media (hover:hover){
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(0,0,0,.4),0 0 0 1px #0E1014,0 2px 4px rgba(14,16,20,.3),0 18px 34px -14px rgba(14,16,20,.6),0 0 40px -14px rgba(125,92,240,.45)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 .5px rgba(255,255,255,.12),0 2px 4px rgba(14,16,20,.16),0 12px 24px -12px rgba(14,16,20,.55)}
   .btn-primary:hover::after{left:130%;opacity:1}
 }
-.btn-primary:active{transform:translateY(0) scale(.975);filter:brightness(1.15);box-shadow:inset 0 1px 3px rgba(0,0,0,.5),0 0 0 1px #0E1014,0 1px 1px rgba(14,16,20,.3)}
+.btn-primary:active{transform:translateY(0) scale(.98);filter:brightness(1.12)}
 .btn-primary .spin{border-color:rgba(255,255,255,.25);border-top-color:#fff}
 /* Großer Hauptknopf: beim Überfahren läuft ein feiner Perlmutt-Glanzpunkt um den Rand */
-.btn-primary.btn-lg::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;padding:1.5px;pointer-events:none;background:var(--ring);opacity:0;transition:opacity .4s;
+.btn-primary.btn-lg::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;padding:1px;pointer-events:none;background:var(--ring);opacity:0;transition:opacity .4s;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 4s linear infinite paused}
-@media (hover:hover){.btn-primary.btn-lg:hover::before{opacity:1;animation-play-state:running}}
+@media (hover:hover){.btn-primary.btn-lg:hover::before{opacity:.9;animation-play-state:running}}
 @keyframes metalSpin{to{--ang:360deg}}
-/* Nebenknopf: weißes Glas mit Haarlinie; beim Überfahren hebt er sich, die Linie wird kräftiger */
-.btn-soft,.btn-outline{color:var(--ink);background:linear-gradient(180deg,#fff,#F7F8FA);box-shadow:inset 0 0 0 1px rgba(14,16,20,.12),0 1px 2px rgba(14,16,20,.05),0 8px 18px -12px rgba(14,16,20,.22)}
-@media (hover:hover){.btn-soft:hover,.btn-outline:hover{transform:translateY(-1px);background:#fff;box-shadow:inset 0 0 0 1px rgba(14,16,20,.22),0 2px 4px rgba(14,16,20,.06),0 14px 26px -14px rgba(14,16,20,.3)}}
-.btn-soft:active,.btn-outline:active{transform:scale(.975);background:#F1F2F5}
-.btn-ghost{min-height:40px;padding:0 6px;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(14,16,20,.3);transition:text-decoration-color .2s}
+/* Nebenknopf: klares Glas mit Haarlinie, ohne Kasten-Wirkung */
+.btn-soft,.btn-outline{color:var(--ink);background:rgba(255,255,255,.42);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.12),inset 0 1px 0 rgba(255,255,255,.7)}
+@media (hover:hover){.btn-soft:hover,.btn-outline:hover{transform:translateY(-1px);background:rgba(255,255,255,.78);box-shadow:inset 0 0 0 1px rgba(14,16,20,.2),inset 0 1px 0 #fff,0 8px 18px -12px rgba(14,16,20,.3)}}
+.btn-soft:active,.btn-outline:active{transform:scale(.98);background:rgba(255,255,255,.6)}
+.btn-ghost{min-height:36px;padding:0 6px;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(14,16,20,.3);transition:text-decoration-color .2s}
 @media (hover:hover){.btn-ghost:hover{text-decoration-color:currentColor}}
 /* Lichtpunkt beim Antippen */
 .rip{position:absolute;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(157,133,255,.3),rgba(95,201,245,.1) 45%,rgba(255,255,255,0) 66%);transform:scale(0);animation:rip .65s var(--ease) forwards}
 @keyframes rip{to{transform:scale(1);opacity:0}}
 .shine::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);transform:skewX(-14deg);animation:btnshine 6s ease-in-out infinite}
 @keyframes btnshine{0%,64%{left:-60%}100%{left:130%}}
-.icon-btn{position:relative;width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:50%;color:var(--ink);
+.icon-btn{position:relative;width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:50%;color:var(--ink);
   background:rgba(14,16,20,.04);box-shadow:inset 0 0 0 1px rgba(14,16,20,.06);transition:transform .25s var(--spring),background .2s}
 @media (hover:hover){.icon-btn:hover{background:rgba(14,16,20,.08)}}
 .icon-btn:active{transform:scale(.92)}
@@ -82,31 +87,31 @@
 /* ---------- Auswahl-Chips ---------- */
 .chips{display:flex;gap:8px;overflow-x:auto;margin:0 calc(var(--gut)*-1) 6px;padding:4px var(--gut) 10px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:var(--pill);font-size:14.5px;font-weight:550;white-space:nowrap;color:var(--ink-2);
-  background:#fff;box-shadow:var(--rim),0 1px 2px rgba(14,16,20,.04);transition:transform .2s var(--spring),background .25s,color .2s,box-shadow .25s}
-.chip .ico{width:18px;height:18px}
-@media (hover:hover){.chip:hover{color:var(--ink);box-shadow:var(--rim-hi),0 4px 12px -6px rgba(14,16,20,.2)}}
+.chip{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 14px;border-radius:var(--pill);font-size:13.5px;font-weight:500;white-space:nowrap;color:var(--ink-2);
+  background:rgba(255,255,255,.42);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.1);transition:transform .2s var(--spring),background .25s,color .2s,box-shadow .25s}
+.chip .ico{width:16px;height:16px}
+@media (hover:hover){.chip:hover{color:var(--ink);background:rgba(255,255,255,.8);box-shadow:inset 0 0 0 1px rgba(14,16,20,.18)}}
 .chip:active{transform:scale(.96)}
-.chip[aria-pressed="true"],.chip[aria-current="page"]{color:var(--sel-ink);background:var(--sel);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 1px #0E1014,0 8px 18px -10px rgba(14,16,20,.5)}
+.chip[aria-pressed="true"],.chip[aria-current="page"]{color:#fff;background:linear-gradient(180deg,rgba(38,41,48,.92),rgba(14,16,20,.94));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 4px 12px -8px rgba(14,16,20,.5)}
 
 /* ---------- Beträge ---------- */
 .amounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.amt{position:relative;isolation:isolate;min-height:58px;padding:6px 8px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;
-  font-size:16px;font-weight:600;color:var(--ink);background:#fff;box-shadow:var(--rim),0 1px 2px rgba(14,16,20,.04);
+.amt{position:relative;isolation:isolate;min-height:50px;padding:6px 8px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;
+  font-size:15px;font-weight:550;color:var(--ink);background:rgba(255,255,255,.5);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s);box-shadow:inset 0 0 0 1px rgba(14,16,20,.1);
   transition:transform .2s var(--spring),box-shadow .25s,background .25s,color .2s}
 .amt small{font-size:12px;font-weight:550;color:var(--mint)}
-@media (hover:hover){.amt:hover{box-shadow:var(--rim-hi),0 6px 14px -8px rgba(14,16,20,.25)}}
+@media (hover:hover){.amt:hover{background:rgba(255,255,255,.85);box-shadow:inset 0 0 0 1px rgba(14,16,20,.18)}}
 .amt:active{transform:scale(.96)}
-.amt[aria-pressed="true"]{color:var(--sel-ink);background:var(--sel);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 0 0 1px #0E1014,0 12px 26px -12px rgba(14,16,20,.55)}
+.amt[aria-pressed="true"]{color:#fff;background:linear-gradient(180deg,rgba(38,41,48,.92),rgba(14,16,20,.94));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 8px 18px -12px rgba(14,16,20,.5)}
 .amt[aria-pressed="true"] small{color:#7FF0C6}
-.amt[aria-pressed="true"]::before{content:"";position:absolute;inset:-3px;z-index:-1;border-radius:19px;padding:1.5px;background:var(--ring);
+.amt[aria-pressed="true"]::before{content:"";position:absolute;inset:-3px;z-index:-1;border-radius:17px;padding:1px;background:var(--ring);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 6s linear infinite}
 .amt[disabled]{opacity:.4;pointer-events:none}
 .amt[disabled] small{color:var(--ink-3)}
 
 /* ---------- Formulare ---------- */
 .lbl{display:block;margin:16px 0 7px;font-size:13.5px;font-weight:550;color:var(--ink-2)}
-.inp,.phone,.field input,textarea.inp,.sel{width:100%;min-height:52px;border:0;border-radius:15px;background:var(--field);box-shadow:var(--well);font-size:16px;color:var(--ink);transition:box-shadow .2s,background .2s}
+.inp,.phone,.field input,textarea.inp,.sel{width:100%;min-height:48px;border:0;border-radius:14px;background:var(--field);box-shadow:var(--well);font-size:16px;color:var(--ink);transition:box-shadow .2s,background .2s}
 .inp,.field input{padding:0 16px}
 textarea.inp{min-height:96px;padding:14px 16px;resize:vertical}
 .inp::placeholder,.field input::placeholder,.phone input::placeholder,textarea.inp::placeholder{color:#8A909B}
@@ -136,7 +141,7 @@ select.sel option{background:#fff;color:var(--ink)}
 .chk input:checked{background:var(--sel);box-shadow:0 0 0 1px #0E1014,0 4px 10px -4px rgba(14,16,20,.4)}
 .chk input:checked::after{transform:rotate(45deg) scale(1)}
 .qty{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:var(--pill);background:#fff;box-shadow:var(--rim)}
-.qty button{width:40px;height:40px;border-radius:50%;font-size:20px;font-weight:500;line-height:1;transition:background .2s,transform .2s var(--spring)}
+.qty button{width:36px;height:36px;border-radius:50%;font-size:18px;font-weight:400;line-height:1;transition:background .2s,transform .2s var(--spring)}
 @media (hover:hover){.qty button:hover{background:rgba(14,16,20,.06)}}
 .qty button:active{transform:scale(.9)}
 .qty span{min-width:26px;text-align:center;font-weight:650}
@@ -150,7 +155,7 @@ select.sel option{background:#fff;color:var(--ink)}
 /* ---------- Reiter als Glas-Segment ---------- */
 .tabs{display:flex;gap:2px;width:max-content;max-width:100%;margin-top:26px;padding:4px;border-radius:var(--pill);overflow-x:auto;scrollbar-width:none;background:rgba(14,16,20,.05);box-shadow:inset 0 0 0 1px rgba(14,16,20,.05)}
 .tabs::-webkit-scrollbar{display:none}
-.tabs button{min-height:38px;padding:0 16px;border-radius:var(--pill);font-size:14.5px;font-weight:550;color:var(--ink-3);white-space:nowrap;transition:background .25s,color .2s,box-shadow .25s}
+.tabs button{min-height:34px;padding:0 14px;border-radius:var(--pill);font-size:13.5px;font-weight:500;color:var(--ink-3);white-space:nowrap;transition:background .25s,color .2s,box-shadow .25s}
 @media (hover:hover){.tabs button:hover{color:var(--ink)}}
 .tabs button[aria-selected="true"]{color:var(--ink);background:#fff;box-shadow:var(--rim-hi),0 2px 8px -3px rgba(14,16,20,.2)}
 
@@ -280,7 +285,7 @@ select.sel option{background:#fff;color:var(--ink)}
 .rail-track .tile{flex:0 0 min(46vw,236px);scroll-snap-align:start}
 .rail-nav{display:none;gap:8px}
 @media (min-width:900px){.rail-nav{display:flex}}
-.rail-nav button{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:#fff;box-shadow:var(--rim-hi),0 2px 6px -2px rgba(14,16,20,.15);transition:opacity .2s,transform .2s var(--spring),background .2s}
+.rail-nav button{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:#fff;box-shadow:var(--rim-hi),0 2px 6px -2px rgba(14,16,20,.15);transition:opacity .2s,transform .2s var(--spring),background .2s}
 @media (hover:hover){.rail-nav button:hover{box-shadow:inset 0 0 0 1px rgba(14,16,20,.22),0 6px 14px -6px rgba(14,16,20,.3)}}
 .rail-nav button:active{transform:scale(.9)}
 .rail-nav button[disabled]{opacity:.3;pointer-events:none}
@@ -344,7 +349,7 @@ select.sel option{background:#fff;color:var(--ink)}
 .faq{display:grid;gap:10px}
 .qa{position:relative;isolation:isolate;border-radius:var(--r-m);background:var(--glass-lo);box-shadow:var(--rim);overflow:hidden;transition:box-shadow .3s,background .3s}
 .qa[data-open="true"]{background:var(--glass);box-shadow:var(--rim-hi),var(--lift)}
-.qa>button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:60px;padding:17px 20px;text-align:left;font-size:15.5px;font-weight:550}
+.qa>button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:56px;padding:15px 20px;text-align:left;font-size:15px;font-weight:500}
 .qa>button .ico{width:22px;height:22px;padding:3px;border-radius:50%;color:var(--ink-2);background:rgba(14,16,20,.05);transition:transform .35s var(--ease),background .25s,color .25s}
 .qa[data-open="true"]>button .ico{transform:rotate(180deg);color:#fff;background:var(--sel)}
 .qa-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease-out)}

@@ -179,7 +179,8 @@ function xpayMount(box,getItems,o={}){
     stripe=await loadStripe();if(dead)return;
     const kl=!!evMail()&&!!CFG.klarna&&items().every(i=>{const b=byId(i.id);return b&&CFG.klarna.includes(b.cat)});
     elements=stripe.elements({mode:"payment",amount:quote.total,currency:"eur",locale:"de",appearance:APPEAR({borderRadius:"24px"})});
-    ece=elements.create("expressCheckout",{emailRequired:true,buttonHeight:48,layout:{maxColumns:2,maxRows:2,overflow:"auto"},paymentMethodOrder:["apple_pay","google_pay","link","paypal","amazon_pay"],
+    const cmp=box.classList.contains("xpay-c");
+    ece=elements.create("expressCheckout",{emailRequired:true,buttonHeight:44,layout:cmp?{maxColumns:3,maxRows:1,overflow:"auto"}:{maxColumns:2,maxRows:2,overflow:"auto"},paymentMethodOrder:["apple_pay","google_pay","link","paypal","amazon_pay"],
       paymentMethods:{klarna:kl?"auto":"never"},buttonType:{applePay:"buy",googlePay:"buy",paypal:"buynow"},buttonTheme:{applePay:"black",googlePay:"black",paypal:"gold"}});
     const avail=m=>!!m&&Object.values(m).some(Boolean);
     ece.on("ready",e=>{if(!dead)set(avail(e&&e.availablePaymentMethods)?"ready":"none")});
