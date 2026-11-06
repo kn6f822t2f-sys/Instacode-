@@ -28,6 +28,9 @@ addEventListener("resize",()=>requestAnimationFrame(parUpdate),{passive:true});
 
 /* ---------- start ---------- */
 applyTheme();updBadges();renderAcc();renderFooter();boot();scrollFx();
+/* Bänder über der Fußzeile: echte Bewertungen und Markenlogos; nach jedem Seitenwechsel prüfen, ob die Seite eigene Bewertungen zeigt */
+setTimeout(()=>{reviewBand();logoStrip()},600);
+new MutationObserver(()=>requestAnimationFrame(bandsVis)).observe(app,{childList:true});
 
 if(!S.cookie)setTimeout(cookieShow,1600);
 setTimeout(nudgeShow,12000);

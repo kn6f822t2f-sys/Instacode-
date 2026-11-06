@@ -50,7 +50,7 @@ function home(){
     <div class="hro-trust rv" style="--d:360ms">${payLogos()}<p><span>${ic("i-lock")}TLS-verschlüsselt</span><span>${ic("i-shield")}3&#8209;D Secure</span><span class="ft-stripe">Zahlung über <img src="/pay/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></p></div>
   </div>
 </section>
-${trustBand({n:16})}
+${trustBand({n:28})}
 ${cardWall()}
 <section class="sec hm-best">${head("Bestseller","Was gerade am häufigsten gekauft wird.",`<a class="more" href="/angebote">Alle${ic("i-chev")}</a>${railNav("bestRail")}`)}${rail("bestRail",best)}</section>
 <section class="hm-story" data-scrub aria-label="So kaufst du bei instantcodes">

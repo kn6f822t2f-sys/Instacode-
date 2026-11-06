@@ -117,12 +117,12 @@ img{max-width:100%}
 /* weiche Lichtquelle oben rechts */
 .bgfx i:nth-child(1){right:-18vmax;top:-34vmax;width:78vmax;height:78vmax;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,.4) 55%,rgba(255,255,255,0))}
 /* Perlmutt links (Lavendel/Rosa) */
-.bgfx i:nth-child(2){left:-24vmax;top:6vh;width:66vmax;height:66vmax;background:radial-gradient(closest-side,rgba(167,139,250,.42),rgba(244,114,182,.16) 58%,rgba(244,114,182,0));animation-duration:64s;animation-delay:-22s}
+.bgfx i:nth-child(2){left:-24vmax;top:6vh;width:66vmax;height:66vmax;background:radial-gradient(closest-side,rgba(167,139,250,.34),rgba(244,114,182,.12) 58%,rgba(244,114,182,0));animation-duration:64s;animation-delay:-22s}
 /* Perlmutt unten (Mint/Himmel) */
-.bgfx i:nth-child(3){left:18vmax;bottom:-54vmax;width:88vmax;height:88vmax;background:radial-gradient(closest-side,rgba(52,211,153,.32),rgba(56,189,248,.14) 60%,rgba(56,189,248,0));animation-duration:74s;animation-delay:-38s}
+.bgfx i:nth-child(3){left:18vmax;bottom:-54vmax;width:88vmax;height:88vmax;background:radial-gradient(closest-side,rgba(52,211,153,.25),rgba(56,189,248,.11) 60%,rgba(56,189,248,0));animation-duration:74s;animation-delay:-38s}
 /* Pfirsich oben links und Himmelblau rechts: mehr Farbe im Glas */
-.bgfx i:nth-child(4){left:-10vmax;top:-30vmax;width:56vmax;height:56vmax;background:radial-gradient(closest-side,rgba(251,146,60,.26),rgba(251,191,36,.1) 58%,rgba(251,191,36,0));animation-duration:58s;animation-delay:-12s}
-.bgfx i:nth-child(5){right:-22vmax;top:46vh;width:62vmax;height:62vmax;background:radial-gradient(closest-side,rgba(56,189,248,.3),rgba(129,140,248,.12) 60%,rgba(129,140,248,0));animation-duration:68s;animation-delay:-30s}
+.bgfx i:nth-child(4){left:-10vmax;top:-30vmax;width:56vmax;height:56vmax;background:radial-gradient(closest-side,rgba(251,146,60,.2),rgba(251,191,36,.08) 58%,rgba(251,191,36,0));animation-duration:58s;animation-delay:-12s}
+.bgfx i:nth-child(5){right:-22vmax;top:46vh;width:62vmax;height:62vmax;background:radial-gradient(closest-side,rgba(56,189,248,.24),rgba(129,140,248,.1) 60%,rgba(129,140,248,0));animation-duration:68s;animation-delay:-30s}
 @keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(5vmax,4vmax,0) scale(1.06)}100%{transform:translate3d(-4vmax,7vmax,0) scale(.96)}}
 /* Lichtstreifen wie von einem Softbox-Fenster */
 .bgfx b{position:absolute;right:8vw;top:-20vh;width:38vw;height:120vh;rotate:-24deg;opacity:.6;
@@ -151,18 +151,25 @@ img{max-width:100%}
 .bgc.c6{--w:130px;--o:.5;--v:.48;--off:10vh;--y0:120vh;--r0:-6deg;--rv:.03;right:-1vw;--g:linear-gradient(135deg,#111827,#4B5563)}
 .lite .bgc.c4,.lite .bgc.c5,.lite .bgc.c6{display:none}
 @media (max-width:767px){.bgc{--w:84px!important;opacity:calc(var(--o) * .6)}.bgc.c5,.bgc.c6{display:none}}
-@media (prefers-reduced-motion:reduce){.bgc{display:none}}
+@media (prefers-reduced-motion:reduce){.bgc{display:none}.bgr,.bgfx em{animation:none}}
 .bgr{position:absolute;top:0;display:block;width:var(--s);aspect-ratio:1;background:url(/bg-ring.webp) center/contain no-repeat;opacity:var(--o);will-change:transform;
   transform:translate3d(0,calc(var(--y0) - mod(var(--sy) * var(--v) * 1px + var(--off), 170vh)),0) rotate(calc(var(--r0) + var(--sy) * var(--rv) * 1deg))}
-.bgr.r1{--s:min(48vmax,640px);--o:.27;--v:.16;--off:50vh;--y0:115vh;--r0:-18deg;--rv:.018;left:-16vmax}
-.bgr.r2{--s:min(30vmax,420px);--o:.24;--v:.3;--off:125vh;--y0:115vh;--r0:24deg;--rv:-.03;right:-9vmax}
+.bgr.r1{--s:min(48vmax,640px);--o:.2;--v:.16;--off:50vh;--y0:115vh;--r0:-18deg;--rv:.018;left:-16vmax}
+.bgr.r2{--s:min(30vmax,420px);--o:.15;--v:.3;--off:125vh;--y0:115vh;--r0:24deg;--rv:-.03;right:-9vmax}
 .bgr.r3{--s:min(20vmax,280px);--o:.2;--v:.46;--off:20vh;--y0:115vh;--r0:64deg;--rv:.05;left:46vw}
 .bgfx em{position:absolute;left:-30vw;top:0;display:block;width:160vw;height:46vh;opacity:.75;will-change:transform;
   background:linear-gradient(90deg,rgba(255,156,203,0) 8%,rgba(255,156,203,.13) 32%,rgba(157,133,255,.15) 50%,rgba(95,201,245,.13) 68%,rgba(95,201,245,0) 92%);
   -webkit-mask:linear-gradient(180deg,transparent,#000 45%,#000 55%,transparent);mask:linear-gradient(180deg,transparent,#000 45%,#000 55%,transparent);
   transform:translate3d(0,calc(110vh - mod(var(--sy) * .22px + 40vh, 160vh)),0) rotate(-11deg)}
 /* Touch-Geräte (.lite): nur zwei ruhende Farbschleier und ein Ring – große bewegte Ebenen kosten auf dem iPhone zu viel Grafikspeicher */
+/* Ruhige Live-Effekte: die Ringe drehen sich sehr langsam von selbst, das Lichtband atmet */
+.bgr{animation:ringTurn 140s linear infinite}
+.bgr.r2{animation-duration:110s;animation-direction:reverse}
+@keyframes ringTurn{to{rotate:360deg}}
+.bgfx em{animation:beamBreath 12s ease-in-out infinite alternate}
+@keyframes beamBreath{from{opacity:.35}to{opacity:.8}}
 .lite .bgfx i:nth-child(n+4),.lite .bgc,.lite .bgr.r2,.lite .bgr.r3,.lite .bgfx em,.lite .bgfx b{display:none}
+.lite .bgr{animation:none}
 .lite .bgr{will-change:auto}
 @media (max-width:767px){.bgr.r1{--o:.22}.bgr.r2{--o:.18}.bgr.r3{display:none}}
 
