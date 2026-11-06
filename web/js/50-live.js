@@ -199,7 +199,7 @@ function apiAccount(tab){
    <button class="setrow" data-a="country"><span class="si-ic">${flag(ctry().c,22)}</span><div class="mid"><b>Land für Aufladungen</b><small>${esc(ctry().n)}</small></div>${ic("i-chev")}</button></div>
    <div class="acc-out"><button class="btn btn-soft btn-block btn-lg" data-a="logout">${ic("i-logout")}Abmelden</button><button class="btn btn-ghost btn-block acc-del" data-a="delAcc">Konto löschen</button></div>`;
   return {title:"Mein Konto",html:`<div class="acc sec">
-<header class="acc-head rv"><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instacode</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span><div><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Favoriten und Einstellungen.</p></div></header>
+<header class="acc-head rv"><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span><div><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Favoriten und Einstellungen.</p></div></header>
 <nav class="acc-tabs" aria-label="Kontobereiche">${T.map(t=>`<a href="/konto/${t[0]}"${t[0]===tab?' aria-current="page"':""}>${ic(t[2])}<span>${t[1]}</span></a>`).join("")}</nav>
 <div class="acc-body">${body}</div></div>`,
   after(){
@@ -222,7 +222,7 @@ const SUP=()=>(CFG.support)||"support@instacode.store";
 const LEGAL={
  agb:["Allgemeine Geschäftsbedingungen",()=>`
 <h2>1. Geltungsbereich und Anbieter</h2>
-<p>Diese AGB gelten für alle Bestellungen über den Onlineshop ${esc(CFG.site||"instacode")}. Anbieter und Vertragspartner ist der im <a href="${IMP}" target="_blank" rel="noopener">Impressum</a> genannte Betreiber. Abweichende Bedingungen des Kunden gelten nicht.</p>
+<p>Diese AGB gelten für alle Bestellungen über den Onlineshop ${esc(CFG.site||"instantcodes")}. Anbieter und Vertragspartner ist der im <a href="${IMP}" target="_blank" rel="noopener">Impressum</a> genannte Betreiber. Abweichende Bedingungen des Kunden gelten nicht.</p>
 <h2>2. Angebot</h2>
 <p>Wir verkaufen digitale Produkte: Guthaben- und Geschenkkarten-Codes, Spiele-Keys sowie Handy-Guthaben (Aufladungen). Die Codes stammen von autorisierten Distributoren. Die Einlösung erfolgt ausschließlich beim jeweiligen Herausgeber (z.&nbsp;B. Apple, Google, Sony, Valve, Netzbetreiber) nach dessen Bedingungen. Regionale Beschränkungen sind in der Produktbeschreibung angegeben.</p>
 <h2>3. Vertragsschluss</h2>

@@ -1,13 +1,15 @@
 /* =========================================================
-   instacode · Design „Nachtglas“
-   - Fast schwarzer Grund, darüber ein langsames Polarlicht aus Violett und Blau.
-   - Flächen sind dunkles Glas: kaum sichtbare Füllung, feine Lichtkante oben,
-     Lichtpunkt unter dem Zeiger. Keine harten Umrisse.
-   - Akzent: leuchtender Verlauf Violett → Blau. Leuchten nur am Wichtigsten.
-   - Die Gutscheinkarte bleibt das Objekt: sie neigt sich, fängt Licht, wirft Farbe.
-   - Bewegung: Einblenden beim Scrollen, Seitenwechsel, federnde Rückmeldung.
-     Daueranimationen pausieren außerhalb des Bildschirms (.off) und entfallen
-     bei reduzierter Bewegung.
+   instantcodes · Design „Chrome & Glas“
+   - Graphit statt Schwarz, darüber Licht wie in einem Fotostudio: eine große weiche
+     Lichtquelle oben rechts, Perlmutt-Reflexe (Rosa, Lavendel, Mint) am Rand.
+   - Flächen sind Milchglas mit Chromkante: helle Kante oben, feine Linie rundum,
+     Lichtpunkt unter dem Zeiger.
+   - Knöpfe aus flüssigem Chrom (hell, gespiegelt), Nebenknöpfe aus Glas.
+   - Flüssigmetall (WebGL) ist das Herzstück der Startseite; Gutscheinkarten schweben
+     wie Glasobjekte und werfen Licht.
+   - Bewegung: Einblenden mit Unschärfe, Glanz, der über Chrom läuft, federnde Rückmeldung.
+     Daueranimationen pausieren außerhalb des Bildschirms (.off) und entfallen bei
+     reduzierter Bewegung.
    Regeln für Erweiterungen: web/DESIGN.md
    ========================================================= */
 @font-face{font-family:"Geist";src:url(/fonts/geist.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
@@ -15,78 +17,77 @@
 @property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
 :root{
   color-scheme:dark;
-  /* Grund: neutrales Schwarz (wie das Framer-Template), keine Blaustich-Flächen */
-  --bg:#050506;
-  --bg-2:#0C0C0E;
-  --bg-3:#161618;
+  /* Grund: Graphit */
+  --bg:#0E0F12;
+  --bg-2:#141519;
+  --bg-3:#1B1D22;
   --frost:var(--bg);
   /* Text */
-  --ink:#F5F5F5;
-  --ink-2:#A8A8AD;
-  --ink-3:#8C8C92;
-  /* Akzent: Pastell (Rosa · Lavendel · Periwinkel · Himmelblau) */
-  --pink:#FFCCFD;
-  --lav:#C9AAFF;
-  --peri:#8399FF;
-  --sky:#B3E1FF;
-  --lime:#FDFFBC;
-  --pastel:linear-gradient(90deg,#FFCCFD 0%,#C9AAFF 34%,#8399FF 68%,#B3E1FF 100%);
-  --iris:#8F9BFF;
-  --iris-2:#C3B6FF;
-  --volt:#5C8DFF;
-  --cyan:#8AD2FF;
-  --mint:#5EE0A6;
+  --ink:#F2F3F5;
+  --ink-2:#AAAEB8;
+  --ink-3:#8D919C;
+  /* Chrom und Perlmutt */
+  --chrome-text:linear-gradient(180deg,#FFFFFF 0%,#F3F4F6 36%,#A7ACB6 55%,#ECEEF1 74%,#C5C9D0 100%);
+  --chrome-fill:linear-gradient(180deg,#FFFFFF 0%,#E9EBEE 26%,#B5BAC3 50%,#F4F5F7 68%,#CDD1D7 100%);
+  --chrome-edge:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.1) 34%,rgba(255,255,255,.04) 62%,rgba(255,255,255,.28));
+  --pearl:linear-gradient(115deg,#FFE0F0 0%,#E4E9FF 34%,#D3FBF2 66%,#F6E7FF 100%);
+  --pink:#FFD6EC;--lav:#DCCBFF;--mint:#9FF0D2;--sky:#C9E6FF;
+  --iris:#C9B8FF;
+  --iris-2:#DCCFFF;
+  --volt:#9DB8FF;
+  --cyan:#A9E8FF;
   --rose:#FF7A86;
-  --amber:#FFC266;
-  --line:rgba(255,255,255,.08);
-  --line-2:rgba(255,255,255,.14);
-  --tint:rgba(201,170,255,.12);
-  --brand-grad:linear-gradient(135deg,#9A88FF 0%,#6C63FF 48%,#4F8BFF 100%);
-  --text-grad:linear-gradient(180deg,#FFFFFF 30%,#BDBDC2 100%);
-  /* Dunkles Glas (neutral) */
-  --glass:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
-  --glass-hi:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));
-  --glass-lo:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
-  --glass-solid:linear-gradient(180deg,#18181B,#101012);
-  --blur:blur(22px) saturate(1.4);
-  --blur-s:blur(12px) saturate(1.3);
-  --rim:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.065);
-  --rim-hi:inset 0 1px 0 rgba(255,255,255,.15),inset 0 0 0 1px rgba(255,255,255,.1);
-  --lift:0 1px 1px rgba(0,0,0,.5),0 24px 48px -28px rgba(0,0,0,1);
-  --lift-2:0 2px 2px rgba(0,0,0,.5),0 40px 80px -36px rgba(0,0,0,1),0 0 80px -40px rgba(201,170,255,.4);
-  --glow:0 0 0 1px rgba(201,170,255,.4),0 14px 44px -14px rgba(160,140,255,.7),0 0 60px -24px rgba(131,153,255,.5);
-  --well:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 2px 4px rgba(0,0,0,.35);
-  --field:rgba(255,255,255,.04);
-  --field-hi:rgba(255,255,255,.07);
-  --focus:0 0 0 2px var(--bg),0 0 0 4px #C9AAFF;
-  /* Lichtkante schwebender Glasflächen (Kopfzeile, Overlays): oben links und unten rechts hell */
-  --edge:linear-gradient(115deg,rgba(255,255,255,.42),rgba(255,255,255,.06) 28%,rgba(255,255,255,0) 50%,rgba(201,170,255,.24) 74%,rgba(255,255,255,.3));
-  /* Lichtring: ein Pastell-Glanzpunkt läuft um den Rand (mit --ang animierbar) */
-  --ring:conic-gradient(from var(--ang),rgba(255,255,255,.06) 0deg,rgba(255,255,255,.06) 196deg,#FFCCFD 248deg,#fff 280deg,#8399FF 312deg,#B3E1FF 330deg,rgba(255,255,255,.06) 360deg);
-  /* Flüssigmetall: dunkles Titan */
-  --chrome:conic-gradient(from var(--ang),#f4f5fa 0deg,#8b91a6 40deg,#2b2f3d 85deg,#c9ccd8 125deg,#fff 150deg,#6b7187 200deg,#20232d 246deg,#aeb3c4 292deg,#f4f5fa 332deg,#8b91a6 360deg);
-  --chrome-flat:linear-gradient(135deg,#dfe2ea 0%,#80869b 24%,#2a2e3b 45%,#bcc0cd 62%,#4b5062 80%,#e6e8ef 100%);
+  --amber:#FFCB7A;
+  --line:rgba(255,255,255,.085);
+  --line-2:rgba(255,255,255,.15);
+  --tint:rgba(220,203,255,.1);
+  --brand-grad:linear-gradient(135deg,#FFE0F0,#DCCBFF 45%,#A9E8FF);
+  --text-grad:var(--chrome-text);
+  /* Milchglas */
+  --glass:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.028));
+  --glass-hi:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));
+  --glass-lo:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.018));
+  --glass-solid:linear-gradient(180deg,#1E2025,#15161A);
+  --blur:blur(24px) saturate(1.5);
+  --blur-s:blur(14px) saturate(1.4);
+  /* Chromkante innen: oben hell, rundum fein, unten ein Hauch Reflex */
+  --rim:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.04),inset 0 0 0 1px rgba(255,255,255,.075);
+  --rim-hi:inset 0 1px 0 rgba(255,255,255,.34),inset 0 -1px 0 rgba(255,255,255,.07),inset 0 0 0 1px rgba(255,255,255,.12);
+  --lift:0 1px 1px rgba(0,0,0,.35),0 24px 50px -28px rgba(0,0,0,.9);
+  --lift-2:0 2px 2px rgba(0,0,0,.4),0 40px 80px -36px rgba(0,0,0,.95),0 0 80px -40px rgba(220,203,255,.28);
+  --glow:0 0 0 1px rgba(255,255,255,.4),0 14px 44px -14px rgba(220,203,255,.55);
+  --well:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 2px 6px rgba(0,0,0,.35);
+  --field:rgba(255,255,255,.045);
+  --field-hi:rgba(255,255,255,.075);
+  --focus:0 0 0 2px var(--bg),0 0 0 4px #DCCBFF;
+  /* Lichtkante schwebender Glasflächen (Kopfzeile, Overlays) */
+  --edge:linear-gradient(120deg,rgba(255,255,255,.7),rgba(255,255,255,.12) 24%,rgba(255,255,255,.02) 50%,rgba(220,203,255,.3) 76%,rgba(255,255,255,.45));
+  /* Lichtring: ein Perlmutt-Glanzpunkt läuft um den Rand (mit --ang animierbar) */
+  --ring:conic-gradient(from var(--ang),rgba(255,255,255,.1) 0deg,rgba(255,255,255,.1) 190deg,#FFE0F0 240deg,#fff 275deg,#D3FBF2 305deg,#E4E9FF 330deg,rgba(255,255,255,.1) 360deg);
+  /* Flüssigmetall */
+  --chrome:conic-gradient(from var(--ang),#f7f8fa 0deg,#9aa0ab 40deg,#3a3d45 85deg,#d6d9df 125deg,#fff 150deg,#7d838f 200deg,#2c2f36 246deg,#bfc3cb 292deg,#f7f8fa 332deg,#9aa0ab 360deg);
+  --chrome-flat:linear-gradient(135deg,#eceef1 0%,#8f949e 24%,#3a3d45 45%,#cfd2d8 62%,#5d626c 80%,#f1f2f4 100%);
   /* Form und Raum */
   --r-xs:10px;--r-s:14px;--r-m:18px;--r-l:24px;--r-xl:32px;--pill:999px;
-  --gut:max(16px,calc((100vw - 1200px)/2));
-  --sec:clamp(64px,8vw,104px);
+  --gut:max(16px,calc((100vw - 1240px)/2));
+  --sec:clamp(72px,9vw,128px);
   /* Bewegung */
   --ease:cubic-bezier(.2,.75,.2,1);--ease-out:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.25,1.4,.45,1);
-  /* Schrift: Geist (SIL OFL, selbst gehostet), Rückfall Systemschrift */
+  /* Schrift */
   --font:"Geist",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --mono:"Geist Mono",ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
   /* Namen aus älteren Vorlagen, die im Markup stehen */
   --text:var(--ink);--muted:var(--ink-3);--danger:var(--rose);--success:var(--mint);--surface-2:rgba(255,255,255,.06);
-  --foil:linear-gradient(120deg,#5E6BFF,#9A7BFF 50%,#DB7BFF);
+  --foil:var(--pearl);
   padding-top:env(safe-area-inset-top,0px);
 }
 /* ---------- Grundlagen ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-padding-top:96px;-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip;scrollbar-color:#2A2A2E var(--bg)}
-body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:var(--font);font-size:16px;line-height:1.55;letter-spacing:-.006em;
+html{scroll-padding-top:100px;-webkit-text-size-adjust:100%;background:var(--bg);overflow-x:clip;scrollbar-color:#33363D var(--bg)}
+body{margin:0;min-height:100vh;color:var(--ink);background:var(--bg);font-family:var(--font);font-size:16px;line-height:1.55;letter-spacing:-.008em;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip;padding-bottom:env(safe-area-inset-bottom,0px)}
 body.lock{overflow:hidden}
-::selection{background:rgba(201,170,255,.45);color:#fff}
+::selection{background:rgba(220,203,255,.42);color:#fff}
 button{font:inherit;letter-spacing:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent}
 input,select,textarea{font:inherit;color:inherit}
 a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
@@ -95,7 +96,7 @@ img,svg{display:block}
 img{max-width:100%}
 .ico{width:20px;height:20px;flex:none}
 /* Fokusring als Umriss: bleibt sichtbar, auch wenn ein Bauteil eigene Schatten hat */
-:focus-visible{outline:2px solid #C9AAFF;outline-offset:2px}
+:focus-visible{outline:2px solid #DCCBFF;outline-offset:2px}
 .qa>button:focus-visible{outline-offset:-3px;border-radius:var(--r-m)}
 #app:focus{outline:none}
 [hidden]{display:none!important}
@@ -107,41 +108,46 @@ img{max-width:100%}
 @media (max-width:767px){.d-only{display:none!important}}
 @media (min-width:768px){.m-only{display:none!important}}
 
-/* ---------- Umgebung: Polarlicht, Lichtkegel, feines Korn ---------- */
-.bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:var(--bg)}
-.bgfx i{position:absolute;display:block;border-radius:50%;will-change:transform;animation:aurora 48s ease-in-out infinite alternate}
-.bgfx i:nth-child(1){left:-22vmax;top:-40vmax;width:74vmax;height:74vmax;background:radial-gradient(closest-side,rgba(201,170,255,.17),rgba(201,170,255,.04) 55%,rgba(201,170,255,0))}
-.bgfx i:nth-child(2){right:-28vmax;top:-24vmax;width:62vmax;height:62vmax;background:radial-gradient(closest-side,rgba(131,153,255,.15),rgba(131,153,255,.03) 58%,rgba(131,153,255,0));animation-duration:60s;animation-delay:-22s}
-.bgfx i:nth-child(3){left:16vmax;bottom:-60vmax;width:84vmax;height:84vmax;background:radial-gradient(closest-side,rgba(255,204,253,.07),rgba(255,204,253,0));animation-duration:70s;animation-delay:-38s}
-@keyframes aurora{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(7vmax,5vmax,0) scale(1.08)}100%{transform:translate3d(-5vmax,9vmax,0) scale(.95)}}
-/* Lichtkegel von oben */
-.bgfx b{position:absolute;left:50%;top:-12vh;width:min(1100px,140vw);height:70vh;translate:-50% 0;
-  background:radial-gradient(50% 60% at 50% 0%,rgba(255,255,255,.07),rgba(255,255,255,0) 70%)}
-/* Korn gegen Farbstufen im Verlauf */
-.bgfx u{position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* ---------- Umgebung: Studiolicht, Perlmutt-Reflexe, feines Korn ---------- */
+.bgfx{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:radial-gradient(120% 80% at 50% -10%,#1A1C21 0%,var(--bg) 60%)}
+.bgfx i{position:absolute;display:block;border-radius:50%;will-change:transform;animation:drift 52s ease-in-out infinite alternate}
+/* große weiche Lichtquelle oben rechts */
+.bgfx i:nth-child(1){right:-18vmax;top:-34vmax;width:78vmax;height:78vmax;background:radial-gradient(closest-side,rgba(255,255,255,.11),rgba(255,255,255,.03) 55%,rgba(255,255,255,0))}
+/* Perlmutt links (Lavendel/Rosa) */
+.bgfx i:nth-child(2){left:-26vmax;top:10vh;width:64vmax;height:64vmax;background:radial-gradient(closest-side,rgba(232,206,255,.10),rgba(255,214,236,.03) 58%,rgba(255,214,236,0));animation-duration:64s;animation-delay:-22s}
+/* Perlmutt unten (Mint/Himmel) */
+.bgfx i:nth-child(3){left:20vmax;bottom:-58vmax;width:86vmax;height:86vmax;background:radial-gradient(closest-side,rgba(170,240,222,.07),rgba(169,232,255,.02) 60%,rgba(169,232,255,0));animation-duration:74s;animation-delay:-38s}
+@keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(5vmax,4vmax,0) scale(1.06)}100%{transform:translate3d(-4vmax,7vmax,0) scale(.96)}}
+/* Lichtstreifen wie von einem Softbox-Fenster */
+.bgfx b{position:absolute;right:8vw;top:-20vh;width:38vw;height:120vh;rotate:-24deg;opacity:.5;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.035) 40%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.035) 60%,rgba(255,255,255,0))}
+/* Korn gegen Farbstufen */
+.bgfx u{position:absolute;inset:0;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .lite .bgfx i{animation:none;will-change:auto}
 
-/* ---------- Typografie ---------- */
-.h1{margin:0;font-size:clamp(36px,5.4vw,68px);line-height:1.02;font-weight:640;letter-spacing:-.045em;text-wrap:balance}
-.h2{margin:0;font-size:clamp(27px,3.1vw,42px);line-height:1.06;font-weight:620;letter-spacing:-.04em;text-wrap:balance}
-.h3{margin:0;font-size:18px;line-height:1.28;font-weight:600;letter-spacing:-.02em}
-/* Überschriften glänzen leicht von oben nach unten (Symbole behalten ihre Farbe) */
-.h1,.h2{color:var(--ink);background:var(--text-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.page-h1{font-size:clamp(32px,4vw,52px)}
-.lead{margin:14px 0 0;max-width:34em;font-size:clamp(16px,1.3vw,18px);line-height:1.6;color:var(--ink-2);text-wrap:pretty}
+/* ---------- Typografie: elegant, mittelgroß, Chrom auf den Überschriften ---------- */
+.h1{margin:0;font-size:clamp(40px,5.6vw,76px);line-height:1;font-weight:560;letter-spacing:-.05em;text-wrap:balance}
+.h2{margin:0;font-size:clamp(30px,3.4vw,48px);line-height:1.04;font-weight:540;letter-spacing:-.045em;text-wrap:balance}
+.h3{margin:0;font-size:18px;line-height:1.28;font-weight:580;letter-spacing:-.02em}
+/* Chromverlauf auf großen Überschriften (Symbole behalten ihre Farbe) */
+.h1,.h2{color:var(--ink);background:var(--chrome-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-bottom:.06em}
+.page-h1{font-size:clamp(34px,4.4vw,58px)}
+.lead{margin:16px 0 0;max-width:34em;font-size:clamp(16px,1.35vw,19px);line-height:1.6;color:var(--ink-2);text-wrap:pretty}
 .gt,.gtw{color:inherit}
 .fine{margin-top:14px;font-size:13px;line-height:1.5;color:var(--ink-3);text-align:center}
 .fine .ico{display:inline-block;width:14px;height:14px;vertical-align:-2px}
 .code{font-family:var(--mono);font-weight:600;letter-spacing:.06em}
+/* Perlmutt-Text für einzelne Hervorhebungen (z. B. Preis im Abo) */
+.pearl-t{background:var(--pearl);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 
 /* ---------- Bewegung ---------- */
 /* Einblenden beim Scrollen: steigt auf, wird scharf (translate statt transform, damit eigene Transformationen erhalten bleiben) */
-.js .rv{opacity:0;translate:0 24px;filter:blur(8px);transition:opacity .8s var(--ease-out) var(--d,0ms),translate .95s var(--ease-out) var(--d,0ms),filter .8s var(--ease-out) var(--d,0ms)}
+.js .rv{opacity:0;translate:0 26px;filter:blur(10px);transition:opacity .9s var(--ease-out) var(--d,0ms),translate 1s var(--ease-out) var(--d,0ms),filter .9s var(--ease-out) var(--d,0ms)}
 .js .rv.in{opacity:1;translate:none;filter:none}
 .lite.js .rv{filter:none}
 /* Seitenwechsel: neue Ansicht blendet weich ein */
-.view:not(.k){animation:viewIn .55s var(--ease-out) backwards}
-@keyframes viewIn{from{opacity:0;translate:0 12px}}
+.view:not(.k){animation:viewIn .6s var(--ease-out) backwards}
+@keyframes viewIn{from{opacity:0;translate:0 14px}}
 /* Kleine Rückmeldungen */
 .bump{animation:bump .45s var(--spring)}
 @keyframes bump{40%{transform:scale(1.28)}}
@@ -149,13 +155,17 @@ img{max-width:100%}
 @keyframes tick{40%{transform:scale(1.1)}}
 .shake{animation:shake .4s var(--ease)}
 @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-.spin{width:40px;height:40px;margin:0 auto 16px;border-radius:50%;border:3px solid rgba(255,255,255,.1);border-top-color:#C9AAFF;animation:spin .8s linear infinite}
+.spin{width:40px;height:40px;margin:0 auto 16px;border-radius:50%;border:3px solid rgba(255,255,255,.1);border-top-color:#DCCBFF;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* Leuchtender Lichtring um ein Element (sparsam: ein Element pro Ansicht) */
+/* Perlmutt-Lichtring um ein Element (sparsam: ein Element pro Ansicht) */
 .ring{position:relative;isolation:isolate}
 .ring::before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;pointer-events:none;background:var(--ring);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 6s linear infinite}
 .off .ring::before,.ring.off::before{animation-play-state:paused}
+/* Chromkante als echter Verlauf rundum (für hervorgehobene Glasflächen; belegt ::before) */
+.chrome-rim{position:relative;isolation:isolate}
+.chrome-rim::before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1px;pointer-events:none;background:var(--chrome-edge);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}

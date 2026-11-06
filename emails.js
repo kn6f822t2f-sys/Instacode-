@@ -4,9 +4,9 @@
    Absender: MAIL_FROM (Standard hallo@instacode.store). Antworten der Kunden gehen an SUPPORT_EMAIL (Strato-Postfach).
    Ohne RESEND_API_KEY werden Mails nur im Log ausgegeben. */
 const BASE = (process.env.BASE_URL || "http://localhost:3000").replace(/\/$/, "");
-/* Absendername ist immer „Instacode“, egal was in MAIL_FROM als Name steht */
+/* Absendername ist immer „instantcodes“, egal was in MAIL_FROM als Name steht */
 const FROM_ADDR = ((process.env.MAIL_FROM || "").match(/<([^>]+)>/) || [])[1] || (/@/.test(process.env.MAIL_FROM || "") ? process.env.MAIL_FROM.trim() : "hallo@instacode.store");
-const FROM = `Instacode <${FROM_ADDR}>`;
+const FROM = `instantcodes <${FROM_ADDR}>`;
 const REPLY = process.env.SUPPORT_EMAIL || "support@instacode.store";
 const KEY = process.env.RESEND_API_KEY;
 const FOOT = process.env.MAIL_FOOTER || "instacode.store";
@@ -141,7 +141,7 @@ const helpCard = () => `<table role="presentation" width="100%" cellpadding="0" 
 </td></tr></table>`;
 
 /* ---------- Grundgerüst ---------- */
-const wordmark = () => `<a href="${BASE}/" style="text-decoration:none;display:inline-block"><table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td valign="middle"><img src="${BASE}/icon-512.png" width="40" height="40" alt="" style="display:block;width:40px;height:40px;border-radius:12px;border:0"></td><td valign="middle" style="padding-left:10px;${T()}font-size:26px;font-weight:800;letter-spacing:-1px;color:#0A0C1A">instacode</td></tr></table></a>`;
+const wordmark = () => `<a href="${BASE}/" style="text-decoration:none;display:inline-block"><table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td valign="middle"><img src="${BASE}/icon-512.png" width="40" height="40" alt="" style="display:block;width:40px;height:40px;border-radius:12px;border:0"></td><td valign="middle" style="padding-left:10px;${T()}font-size:26px;letter-spacing:-1px;color:#0A0C1A"><span style="font-weight:800">instant</span><span style="font-weight:400">codes</span></td></tr></table></a>`;
 const layout = m => `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="x-apple-disable-message-reformatting"><meta name="format-detection" content="telephone=no,date=no,address=no,email=no"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><title>${esc(m.subject)}</title>
 <style>body{margin:0;padding:0}a[x-apple-data-detectors]{color:inherit!important;text-decoration:none!important}
 @media (max-width:599px){.wrap{width:100%!important}.px{padding-left:20px!important;padding-right:20px!important}.h1{font-size:26px!important}}
@@ -151,7 +151,7 @@ const layout = m => `<!doctype html><html lang="de"><head><meta charset="utf-8">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${C.page}" style="background:${C.page}"><tr><td align="center">
 <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="width:600px;max-width:600px;background:#FFFFFF;border-radius:28px;overflow:hidden;border:1px solid #ECE9FA;margin:24px 0">
   <tr><td align="center" bgcolor="#FFFFFF" style="background:#FFFFFF;background-image:linear-gradient(180deg,#EEE9FF 0%,#F7F5FF 35%,#FFFFFF 70%);padding:30px 24px 0">
-    <div style="${T()}font-size:14px;font-weight:700;color:${C.label};margin-bottom:6px">${esc(m.label || "instacode")}</div>
+    <div style="${T()}font-size:14px;font-weight:700;color:${C.label};margin-bottom:6px">${esc(m.label || "instantcodes")}</div>
     ${wordmark()}
   </td></tr>
   ${m.hero ? hero(m.hero) : gap(20)}
@@ -163,7 +163,7 @@ const layout = m => `<!doctype html><html lang="de"><head><meta charset="utf-8">
   <tr><td align="center" style="padding:40px 24px 0">${wordmark()}</td></tr>
   <tr><td class="px" align="center" style="padding:14px 30px 6px"><table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr>${[["Visa","#1A1F71","#FFFFFF","#D6D9E6"],["Mastercard","#1A1A1A","#FFFFFF","#D6D9E6"],["Amex","#2E77BC","#FFFFFF","#D6D9E6"],["Apple Pay","#000000","#FFFFFF","#000000"],["Link","#00A34A","#FFFFFF","#D6D9E6"],["Klarna.","#0A0B09","#FFB3C7","#F59AB4"]].map(([n, c, bg, bd]) => `<td style="padding:3px"><span style="display:inline-block;min-width:44px;text-align:center;padding:7px 9px;border-radius:7px;background:${bg};border:1px solid ${bd};${T()}font-size:12px;font-weight:900;color:${c}">${n}</span></td>`).join("")}</tr></table><div style="${T()}font-size:11px;color:#636A85;margin-top:4px">Klarna: Rechnung · Raten · Sofort</div><table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr></tr></table><div style="${T()}font-size:11.5px;color:#636A85;margin-top:6px">SSL-verschlüsselt · 3-D Secure · Zahlung über Stripe</div></td></tr>
   <tr><td class="px" align="center" bgcolor="#FFFFFF" style="background:#FFFFFF;background-image:linear-gradient(180deg,#FFFFFF 0%,#F1EDFF 100%);padding:18px 44px 36px">
-    <div style="${T()}font-size:12px;line-height:1.6;color:#636A85">${m.why || "Du erhältst diese E-Mail von instacode."}${m.unsub ? ` Produktempfehlungen kannst du jederzeit <a href="${m.unsub}" style="color:#636A85">abbestellen</a>.` : ""}</div>
+    <div style="${T()}font-size:12px;line-height:1.6;color:#636A85">${m.why || "Du erhältst diese E-Mail von instantcodes."}${m.unsub ? ` Produktempfehlungen kannst du jederzeit <a href="${m.unsub}" style="color:#636A85">abbestellen</a>.` : ""}</div>
     <div style="${T()}font-size:12px;line-height:1.6;margin:10px 0"><a href="${BASE}/hilfe" style="color:#2A2F45">Hilfe</a> &nbsp;·&nbsp; <a href="https://mein.online-impressum.de/instacode/" style="color:#2A2F45">Impressum</a> &nbsp;·&nbsp; <a href="${BASE}/agb" style="color:#2A2F45">AGB</a> &nbsp;·&nbsp; <a href="${BASE}/datenschutz" style="color:#2A2F45">Datenschutz</a></div>
     <div style="${T()}font-size:12px;line-height:1.6;color:#636A85">© ${new Date().getFullYear()} ${esc(FOOT)} · Zahlung sicher über Stripe</div>
   </td></tr>
@@ -196,31 +196,46 @@ async function deliver(m) {
 }
 
 /* ---------- Die einzelnen Mails ---------- */
-const WHY_ORDER = "Du erhältst diese E-Mail, weil du bei instacode bestellt hast.";
-const WHY_ACC = "Du erhältst diese E-Mail, weil es um dein instacode-Konto geht.";
+const WHY_ORDER = "Du erhältst diese E-Mail, weil du bei instantcodes bestellt hast.";
+const WHY_ACC = "Du erhältst diese E-Mail, weil es um dein instantcodes-Konto geht.";
+/* Abo-Bausteine */
+const WHY_ABO = "Du erhältst diese E-Mail, weil du ein Abo bei instantcodes hast.";
+const time = t => new Date(t || Date.now()).toLocaleTimeString("de-DE", { timeZone: "Europe/Berlin", hour: "2-digit", minute: "2-digit" });
+const dtime = t => `${day(t)}, ${time(t)} Uhr`;
+const aboTerm = n => n === 1 ? "pro Monat" : `für ${n} Monate`;
+const aboItems = list => darkCard(list.map((i, k) => { const P = prod(i.brand, i.name);
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="${k ? `border-top:1px solid ${C.line};` : ""}"><tr><td width="66" valign="middle" style="padding:8px 0">${thumb(P)}</td>
+    <td valign="middle" style="padding:8px 0 8px 14px;text-align:left"><div style="${T()}font-size:14.5px;line-height:1.3;font-weight:700;color:${C.white}">${esc(i.label || P.name)}</div>${i.note ? `<div style="${T()}font-size:12.5px;color:${C.muted};margin-top:2px">${esc(i.note)}</div>` : ""}</td>
+    <td align="right" valign="middle" style="${T()}font-size:14px;font-weight:700;color:${C.white};white-space:nowrap">${eur(i.face)}</td></tr></table>`; }).join(""));
+/* Laufzeit und Kündigung in einfachen Worten (gleiche Regeln wie in den AGB) */
+const aboRules = (v, firstEnd, renewed) => darkCard(`${label("Laufzeit und Kündigung")}<div style="${T()}font-size:14px;line-height:1.6;color:${C.text}">${v.months === 1
+  ? "Dein Abo verlängert sich jeden Monat automatisch. Du kannst jederzeit zum Ende des bezahlten Monats kündigen."
+  : renewed ? `Dein Abo hat sich um ${v.months} Monate verlängert. Du kannst jetzt jederzeit mit einer Frist von einem Monat kündigen. Monate, die danach nicht mehr geliefert werden, erstatten wir anteilig.`
+  : `Die erste Laufzeit geht ${v.months} Monate${firstEnd ? ` bis zum ${day(firstEnd)}` : ""}. Kündigst du bis dahin nicht, verlängert sich das Abo um jeweils ${v.months} Monate – dann kannst du jederzeit mit einer Frist von einem Monat kündigen und bekommst nicht mehr gelieferte Monate anteilig zurück.`}
+  Kündigen geht ohne Anmeldung unter <a href="${v.cancelLink}" style="color:${C.label};font-weight:700">Verträge hier kündigen</a>.</div>`);
 const M = {
   verify: (to, name, code) => ({ kind: "konto", to, label: "Dein Bestätigungscode", hero: "verify", why: WHY_ACC,
     subject: `${code} ist dein Bestätigungscode`, pre: "Gib den Code im Shop ein. Er ist 15 Minuten gültig.",
     body: h1(`Fast geschafft${name ? ", " + first(name) : ""}!`) + lead("Gib diesen Code im Shop ein, um deine E-Mail-Adresse zu bestätigen.") + bigCode(code) +
       small("Der Code ist 15 Minuten gültig. Wenn du kein Konto erstellt hast, kannst du diese E-Mail einfach ignorieren.", "text-align:center") }),
 
-  orderCode: (to, code) => ({ kind: "bestellung", to, label: "Dein Bestellcode", hero: "verify", why: "Du erhältst diese E-Mail, weil diese Adresse bei einer Bestellung auf instacode angegeben wurde.",
+  orderCode: (to, code) => ({ kind: "bestellung", to, label: "Dein Bestellcode", hero: "verify", why: "Du erhältst diese E-Mail, weil diese Adresse bei einer Bestellung auf instantcodes angegeben wurde.",
     subject: `${code} ist dein Code für deine Bestellung`, pre: "Bestätige deine E-Mail, dann kannst du bezahlen. Der Code ist 15 Minuten gültig.",
     body: h1("Bestätige deine E-Mail") + lead("Gib diesen Code im Warenkorb ein. Danach kannst du bezahlen, und deine Codes kommen sicher an diese Adresse.") + bigCode(code) +
       small("Der Code ist 15 Minuten gültig. Wenn du nichts bestellen wolltest, kannst du diese E-Mail ignorieren.", "text-align:center") }),
 
   test: to => ({ kind: "konto", to, label: "Testmail", hero: "welcome", why: WHY_ACC,
-    subject: "Testmail: Der E-Mail-Versand von instacode funktioniert", pre: "Wenn du das liest, kommen Bestellmails bei deinen Kunden an.",
+    subject: "Testmail: Der E-Mail-Versand von instantcodes funktioniert", pre: "Wenn du das liest, kommen Bestellmails bei deinen Kunden an.",
     body: h1("E-Mail-Versand funktioniert") + lead("Diese Testmail kommt aus deinem Admin-Bereich. Bestellbestätigungen, Codes und Konto-E-Mails werden genauso zugestellt.") }),
 
   welcome: (to, name) => ({ kind: "konto", to, label: "Willkommen bei", hero: "welcome", why: WHY_ACC,
-    subject: `Willkommen bei instacode${name ? ", " + String(name).split(" ")[0] : ""}`, pre: "Dein Konto ist bereit – und 10 % Rabatt warten auf dich.",
+    subject: `Willkommen bei instantcodes${name ? ", " + String(name).split(" ")[0] : ""}`, pre: "Dein Konto ist bereit – und 10 % Rabatt warten auf dich.",
     body: h1(`Schön, dass du da bist${name ? ", " + first(name) : ""}!`) + lead("Gutscheine, Spiele-Keys und Guthaben – bezahlt mit einem Klick, der Code kommt in Sekunden.") +
       btn(`${BASE}/`, "Jetzt stöbern") + h2("So einfach geht’s") + steps(["Produkt und Betrag wählen", "Mit einem Klick sicher bezahlen", "Code sofort per E-Mail erhalten"]) +
       h2("Dein Willkommensgeschenk") + p("10 % Rabatt auf deine erste Bestellung. Einfach an der Kasse eingeben:", "text-align:center") + codeBox("WILLKOMMEN10", "Dein Rabattcode") }),
 
   loginAlert: (to, name, ua) => ({ kind: "sicherheit", to, label: "Neue Anmeldung", hero: "security", why: WHY_ACC,
-    subject: "Neue Anmeldung bei deinem instacode-Konto", pre: "Warst du das? Dann musst du nichts tun.",
+    subject: "Neue Anmeldung bei deinem instantcodes-Konto", pre: "Warst du das? Dann musst du nichts tun.",
     body: h1("Neue Anmeldung") + lead(`Hallo ${first(name)}, gerade wurde dein Konto angemeldet.`) +
       darkCard(rows([["Zeitpunkt", new Date().toLocaleString("de-DE", { timeZone: "Europe/Berlin" })], ["Gerät", esc(String(ua || "").slice(0, 60) || "unbekannt")]], "0")) +
       p("Warst du das? Dann musst du nichts tun. Falls nicht, setze sofort dein Passwort zurück.", "text-align:center;margin-top:12px") + btn(`${BASE}/login`, "Passwort zurücksetzen") }),
@@ -236,7 +251,7 @@ const M = {
       btn(`${BASE}/login`, "Anmelden") + small("Warst du das nicht? Dann antworte sofort auf diese E-Mail.", "text-align:center") }),
 
   deleted: (to, name) => ({ kind: "konto", to, label: "Konto gelöscht", hero: "refund", why: WHY_ACC,
-    subject: "Dein instacode-Konto wurde gelöscht", pre: "Schade, dass du gehst.",
+    subject: "Dein instantcodes-Konto wurde gelöscht", pre: "Schade, dass du gehst.",
     body: h1("Dein Konto ist gelöscht") + lead(`Hallo ${first(name)}, dein Konto wurde gelöscht. Rechnungsdaten bewahren wir nur so lange auf, wie es gesetzlich vorgeschrieben ist.`) +
       btn(`${BASE}/`, "Ohne Konto weiter einkaufen") }),
 
@@ -253,7 +268,7 @@ const M = {
       small(`Bestellnummer ${esc(o.id)} · Digitale Inhalte: Mit der sofortigen Lieferung ist dein Widerrufsrecht erloschen, da du dem beim Kauf ausdrücklich zugestimmt hast.`, "text-align:center;margin-top:18px") }; },
 
   gift: (o, i) => { const P = prod(i.brand, i.name);
-    return { kind: "geschenk", to: i.gift_to, label: "Ein Geschenk für dich", hero: "gift", once: `gift-${o.id}-${i.id}`, why: `Diese E-Mail hat dir ${esc(i.gift_from || "jemand")} über instacode geschenkt.`,
+    return { kind: "geschenk", to: i.gift_to, label: "Ein Geschenk für dich", hero: "gift", once: `gift-${o.id}-${i.id}`, why: `Diese E-Mail hat dir ${esc(i.gift_from || "jemand")} über instantcodes geschenkt.`,
       subject: `${i.gift_from || "Jemand"} hat dir einen ${P.name}-Gutschein geschenkt`, pre: i.gift_msg || "Ein Geschenk für dich",
       body: (isTest(i.codes) ? testNote() : "") + h1(`${esc(i.gift_from || "Jemand")} hat an dich gedacht`) +
         (i.gift_msg ? `<p style="margin:0 0 24px;${T()}font-size:19px;line-height:1.45;font-style:italic;font-weight:600;color:${C.white};text-align:center">„${esc(i.gift_msg)}“</p>` : "") +
@@ -280,11 +295,85 @@ const M = {
     body: pill("Nicht bezahlt", C.bad) + h1("Die Zahlung hat nicht geklappt") + lead("Deine Zahlung konnte leider nicht abgeschlossen werden, die Bestellung wurde storniert. Es wurde nichts abgebucht.") +
       btn(`${BASE}/warenkorb`, "Erneut versuchen") + itemList(o, false) }),
 
-  adminNew: (to, o) => ({ kind: "admin", to, label: "Admin · Prüfung nötig", hero: "received", reply: false, help: false, once: `admin-${o.id}-${to}`, why: "Interne Benachrichtigung für das instacode-Team.",
+  adminNew: (to, o) => ({ kind: "admin", to, label: "Admin · Prüfung nötig", hero: "received", reply: false, help: false, once: `admin-${o.id}-${to}`, why: "Interne Benachrichtigung für das instantcodes-Team.",
     subject: `Prüfung nötig: ${o.id} (${eur(o.total)})`, pre: o.hold_reason || "Bitte manuell bearbeiten.",
     body: pill("Prüfung nötig", C.warn) + h1("Bestellung wartet auf dich") + lead(`${esc(o.email)} hat bezahlt. Die Bestellung wurde nicht automatisch ausgeliefert.`) +
       (o.hold_reason ? darkCard(`<div style="${T()}font-size:15px;line-height:1.5;color:${C.warn}"><b>Grund:</b> ${esc(o.hold_reason)}</div>`, "border-color:#5A3A12") : "") +
-      itemList(o, false) + totals(o) + btn(`${BASE}/admin`, "Im Admin-Bereich öffnen") })
+      itemList(o, false) + totals(o) + btn(`${BASE}/admin`, "Im Admin-Bereich öffnen") }),
+
+  /* ---------- Abo ---------- */
+  aboStarted: (v, per, plan) => ({ kind: "abo", to: v.email, label: `Abo ${v.planName}`, hero: "received", once: `abo-start-${v.id}`, why: WHY_ABO,
+    subject: `Dein Abo ${v.planName} ist aktiv – ${v.id}`, pre: "Danke! Wir bereiten dein erstes Code-Paket vor.",
+    body: pill("Abo aktiv", C.label) + h1(`Willkommen im Abo ${esc(v.planName)}`) +
+      lead(`Danke${v.name ? ", " + first(v.name) : ""}! Deine Zahlung ist da. Ab jetzt bekommst du jeden Monat ein Paket mit Codes – das erste bereiten wir gerade vor.`) +
+      darkCard(rows([["Vertragsnummer", esc(v.id)], ["Plan", `${esc(v.planName)} · ${eur(v.price)} ${aboTerm(v.months)}`], ["Bezahlt für", `${day(per.start)} – ${day(per.end)}`],
+        ["Nächste Abbuchung", `${day(per.end)} · ${eur(v.price)}`], ["Kündbar zum", day(per.end)]], "0")) +
+      (plan && plan.items && plan.items.length ? h2("Das steckt in deinem Abo") + aboItems(plan.items.map(i => ({ brand: i.brand, name: i.name, label: i.label, face: i.face, note: i.every > 1 ? `alle ${i.every} Monate` : "jeden Monat" }))) : "") +
+      p("Jede Lieferung prüfen wir kurz von Hand, damit niemand dein Abo missbrauchen kann. Das dauert meist nur wenige Stunden. Danach kommen die Codes per E-Mail und liegen in deinem Abo.", "text-align:center;margin-top:8px") +
+      btn(v.link, "Abo ansehen") + aboRules(v, per.end) +
+      small(`Du hast zugestimmt, dass wir vor Ablauf der Widerrufsfrist mit der Lieferung beginnen. Dein Widerrufsrecht erlischt mit der ersten Lieferung der Codes. Es gelten unsere <a href="${BASE}/agb" style="color:${C.label}">AGB</a>.`, "text-align:center;margin-top:14px") }),
+
+  aboRenewed: (v, per) => ({ kind: "abo", to: v.email, label: `Abo ${v.planName}`, hero: "invoice", once: `abo-renew-${v.id}-${per.no}`, why: WHY_ABO,
+    subject: `Zahlung erhalten – dein Abo ${v.planName} läuft weiter`, pre: `${eur(per.amount)} für ${day(per.start)} – ${day(per.end)}`,
+    body: pill("Zahlung erhalten", C.label) + h1("Dein Abo läuft weiter") +
+      lead(`Wir haben ${eur(per.amount)} für ${v.months === 1 ? "den nächsten Monat" : `die nächsten ${v.months} Monate`} abgebucht. Deine Code-Pakete kommen weiter jeden Monat.`) +
+      darkCard(rows([["Vertragsnummer", esc(v.id)], ["Zeitraum", `${day(per.start)} – ${day(per.end)}`], ["Betrag", eur(per.amount)], ["Nächste Abbuchung", v.cancel_at && v.cancel_at <= per.end + 6e4 ? "keine, Abo ist gekündigt" : day(per.end)]], "0")) +
+      btn(v.link, "Abo ansehen") + aboRules(v, null, true) +
+      (per.invoice ? small(`Den Beleg von Stripe findest du <a href="${esc(per.invoice)}" style="color:${C.label}">hier</a>.`, "text-align:center") : "") }),
+
+  aboDelivery: (v, d) => { const all = d.items.flatMap(i => i.codes || []);
+    return { kind: "abo", to: v.email, label: `Abo ${v.planName} · Monat ${d.month}`, hero: "delivered", once: `abo-del-${v.id}-${d.month}`, why: WHY_ABO,
+      subject: `Deine Codes für Monat ${d.month} sind da – Abo ${v.id}`, pre: d.items.map(i => i.name).slice(0, 4).join(", ") + " · jetzt einlösen",
+      body: (isTest(all) ? testNote() : "") + pill("Geliefert") + h1(`Dein Paket für Monat ${d.month}`) +
+        lead("Hier sind deine Codes. Sie liegen auch jederzeit in deinem Abo.") +
+        d.items.map(i => { const P = prod(i.brand, i.name);
+          return darkCard(`<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td width="66" valign="middle">${thumb(P)}</td>
+            <td valign="middle" style="padding-left:14px;text-align:left"><div style="${T()}font-size:15px;line-height:1.3;font-weight:700;color:${C.white}">${esc(i.label || P.name)}</div>
+            <div style="${T()}font-size:13px;line-height:1.4;color:${C.muted};margin-top:2px">Wert ${eur(i.face)}</div></td></tr></table>` +
+            (i.codes || []).map(c => codeBox(c, P.type === "key" ? "Dein Key" : "Dein Code")).join("") +
+            small(`Einlösen ${redeemWhere(P)} unter „Code einlösen“ oder im Konto unter „Guthaben“. <a href="${BASE}/marke/${esc(P.id)}" style="color:${C.label};font-weight:700">Anleitung</a>`, "margin:6px 0 0")); }).join("") +
+        btn(v.link, "Abo ansehen") + h2("So löst du ein") + steps(["Code antippen und kopieren", "Beim Dienst „Code einlösen“ wählen", "Einfügen – fertig"]) +
+        small(`Vertragsnummer ${esc(v.id)} · Kündigen kannst du jederzeit online: <a href="${v.cancelLink}" style="color:${C.label}">Verträge hier kündigen</a>`, "text-align:center;margin-top:18px") }; },
+
+  aboCanceled: (c, base) => { const B = base || BASE, res = c.results || [];
+    return { kind: "abo", to: c.email, label: "Kündigungsbestätigung", hero: "security", once: `abo-cancel-${c.id}-${res.length}`, why: "Du erhältst diese E-Mail, weil über instantcodes eine Kündigung mit dieser Adresse eingegangen ist.",
+      subject: `Kündigung erhalten – ${c.id}`, pre: res.length ? `Dein Vertrag endet am ${day(res[0].end)}.` : "Wir haben deine Kündigung erhalten und ordnen sie zu.",
+      body: pill("Kündigung erhalten", C.label) + h1("Deine Kündigung ist eingegangen") +
+        lead(`Hallo ${first(c.name)}, hiermit bestätigen wir den Eingang deiner Kündigung. Bitte bewahre diese E-Mail als Nachweis auf.`) +
+        darkCard(rows([["Eingegangen am", dtime(c.received_at)], ["Eingangsnummer", esc(c.id)], ["Name", esc(c.name)], ["E-Mail", esc(c.email)], ["Vertragsnummer", esc(c.ref || "nicht angegeben")],
+          ["Art", c.kind === "ausserordentlich" ? "Außerordentliche Kündigung" : "Ordentliche Kündigung"]].concat(c.reason ? [["Grund", esc(c.reason)]] : [],
+          [["Gewünschter Zeitpunkt", c.wish === "date" && c.wish_date ? `zum ${day(c.wish_date)}` : "zum nächstmöglichen Zeitpunkt"]]), "0")) +
+        (res.length ? h2(res.length > 1 ? "Deine Verträge" : "Dein Vertrag") + res.map(r => darkCard(`${label(`Abo ${esc(r.planName)} · ${esc(r.sub)}`)}
+          <div style="${T()}font-size:17px;font-weight:800;color:${C.white};margin:2px 0 6px">Endet am ${day(r.end)}${r.end - Date.now() < 36e5 && r.end <= (c.received_at || 0) + 36e5 ? ` um ${time(r.end)} Uhr` : ""}</div>
+          <div style="${T()}font-size:14px;line-height:1.55;color:${C.text}">${r.already ? "Dieser Vertrag war bereits zu diesem Termin gekündigt." : r.adjusted ? `Der gewünschte Termin liegt vor dem frühestmöglichen Ende. Wir haben die Kündigung deshalb zum ${day(r.end)} vorgemerkt.` : "Bis dahin bekommst du deine Code-Pakete wie gewohnt, danach buchen wir nichts mehr ab."}${r.refund > 0 ? ` Für Monate, die nicht mehr geliefert werden, erstatten wir dir anteilig <b>${eur(r.refund)}</b> über deine ursprüngliche Zahlungsart.` : ""}</div>`)).join("")
+          : darkCard(`<div style="${T()}font-size:15px;line-height:1.55;color:${C.text}">Zu diesen Angaben haben wir noch keinen laufenden Vertrag gefunden. Wir prüfen deine Kündigung von Hand und melden uns bei dir. Du musst nichts weiter tun.</div>`)) +
+        small(`Fragen? Antworte einfach auf diese E-Mail. Deine Kündigung kannst du jederzeit unter <a href="${B}/kuendigen" style="color:${C.label}">${esc(B.replace(/^https?:\/\//, ""))}/kuendigen</a> abgeben.`, "text-align:center;margin-top:14px") }; },
+
+  aboPaymentFailed: (v, f) => ({ kind: "abo", to: v.email, label: `Abo ${v.planName}`, hero: "failed", once: `abo-failed-${f.id}`, why: WHY_ABO,
+    subject: `Zahlung fehlgeschlagen – Abo ${v.id}`, pre: "Bitte prüfe deine Zahlungsart, damit dein Abo weiterläuft.",
+    body: pill("Zahlung offen", C.bad) + h1("Die Abbuchung hat nicht geklappt") +
+      lead(`Wir konnten ${eur(f.amount)} für dein Abo ${esc(v.planName)} nicht abbuchen. Bitte prüfe deine Karte oder wähle eine andere Zahlungsart.`) +
+      btn(f.url || v.link, f.url ? "Jetzt bezahlen" : "Abo ansehen") +
+      p(`Stripe versucht die Abbuchung in den nächsten Tagen automatisch erneut${f.next ? ` (nächster Versuch am ${day(f.next)})` : ""}. Solange die Zahlung offen ist, pausieren neue Lieferungen. Klappt die Zahlung nicht, endet das Abo automatisch.`, "text-align:center") +
+      small(`Du möchtest das Abo nicht fortsetzen? <a href="${v.cancelLink}" style="color:${C.label}">Hier kündigen</a>`, "text-align:center") }),
+
+  aboRefund: (v, amount, reason) => ({ kind: "abo", to: v.email, label: `Abo ${v.planName}`, hero: "refund", why: WHY_ABO,
+    subject: `Erstattung für dein Abo ${v.id}`, pre: `${eur(amount)} sind auf dem Weg zurück zu dir.`,
+    body: pill("Erstattet", C.label) + h1("Dein Geld ist unterwegs") + lead(`Wir haben dir ${eur(amount)} für dein Abo ${esc(v.planName)} erstattet.`) +
+      (reason ? darkCard(`${label("Grund")}<div style="${T()}font-size:15px;line-height:1.5;color:${C.white}">${esc(reason)}</div>`) : "") +
+      p("Je nach Zahlungsart ist das Geld in wenigen Werktagen wieder auf deinem Konto.", "text-align:center;margin-top:8px") + btn(v.link, "Abo ansehen") }),
+
+  aboAdmin: (to, v, d) => ({ kind: "admin", to, label: "Admin · Abo-Freigabe", hero: "received", reply: false, help: false, once: `abo-admin-${v.id}-${d.month}-${to}`, why: "Interne Benachrichtigung für das instantcodes-Team.",
+    subject: `Abo-Lieferung freigeben: ${v.id} Monat ${d.month} (${eur(d.value)})`, pre: `${v.email} · ${v.planName}`,
+    body: pill("Freigabe nötig", C.warn) + h1("Abo-Lieferung wartet") + lead(`${esc(v.email)} · Abo ${esc(v.id)} (${esc(v.planName)}) · Monat ${d.month}`) +
+      aboItems(d.items) + darkCard(rows([["Code-Wert", eur(d.value)], ["Abo-Preis", `${eur(v.price)} ${aboTerm(v.months)}`]], "0")) + btn(`${BASE}/admin`, "Im Admin freigeben") }),
+
+  aboAdminCancel: (to, c) => ({ kind: "admin", to, label: "Admin · Kündigung", hero: "security", reply: false, help: false, once: `abo-admcancel-${c.id}-${to}`, why: "Interne Benachrichtigung für das instantcodes-Team.",
+    subject: `${c.results && c.results.length ? "Kündigung" : "Kündigung ohne Zuordnung"}: ${c.id} (${c.email})`, pre: c.kind === "ausserordentlich" ? "Außerordentlich – Grund prüfen" : "Ordentliche Kündigung",
+    body: pill(c.results && c.results.length ? "Kündigung" : "Bitte zuordnen", c.results && c.results.length ? C.label : C.warn) + h1("Neue Kündigung") +
+      darkCard(rows([["Eingang", dtime(c.received_at)], ["Name", esc(c.name)], ["E-Mail", esc(c.email)], ["Vertragsnummer", esc(c.ref || "–")], ["Art", c.kind === "ausserordentlich" ? "außerordentlich" : "ordentlich"]]
+        .concat(c.reason ? [["Grund", esc(c.reason)]] : [], (c.results || []).map(r => [esc(r.sub), `endet ${day(r.end)}${r.refund ? ` · Erstattung ${eur(r.refund)}` : ""}`])), "0")) +
+      btn(`${BASE}/admin`, "Im Admin ansehen") })
 };
 
 module.exports = Object.fromEntries(Object.keys(M).map(k => [k, (...a) => deliver(M[k](...a))]));

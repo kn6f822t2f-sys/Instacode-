@@ -77,7 +77,7 @@ function match(brand, list) {
 async function buyCards({ productId, country, face, qty, ref, email }) {
   const o = await call("gift", "POST", "/orders", {
     productId: Number(productId), countryCode: country, quantity: qty, unitPrice: face, customIdentifier: ref,
-    senderName: "instacode", recipientEmail: email || undefined,
+    senderName: "instantcodes", recipientEmail: email || undefined,
   });
   const id = o.transactionId;
   if (!id) throw new Error("Reloadly hat keine Transaktions-ID geliefert");

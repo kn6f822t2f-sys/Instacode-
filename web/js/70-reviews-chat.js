@@ -24,17 +24,17 @@ function renderAcc(){const a=$("#hacc");a.innerHTML=S.user?`<span class="avatar"
 function renderFooter(){
   const cats=CATSV();
   $("#ftr").innerHTML=`<div class="ft">
-  <div class="ft-top"><a class="ft-logo" href="/" aria-label="instacode Startseite">${LOGO(40)}<span class="wordmark">instacode</span></a>
-   <p>Gutscheine, Guthabenkarten und Handy-Guthaben von ${BRANDS.length.toLocaleString("de-DE")} Produkten. Bezahlt in Sekunden, Code direkt per E-Mail.</p>
+  <div class="ft-top"><a class="ft-logo" href="/" aria-label="instantcodes Startseite">${LOGO(40)}<span class="wordmark"><b>instant</b>codes</span></a>
+   <p>Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von ${BRANDS.length.toLocaleString("de-DE")} Produkten. Bezahlt in Sekunden, Code direkt per E-Mail.</p>
    ${payLogos()}</div>
   <div class="ft-cols">
    <div><h5>Sortiment</h5><ul>${cats.slice(0,7).map(c=>`<li><a href="/kategorie/${c.id}">${esc(c.name)}</a></li>`).join("")}</ul></div>
-   <div><h5>Service</h5><ul><li><a href="/angebote">Angebote</a></li><li><a href="/hilfe">Hilfe und FAQ</a></li><li><a href="/konto">Mein Konto</a></li><li><button class="lnk" data-a="chatOpen">Assistentin Mia</button></li></ul></div>
-   <div><h5>Rechtliches</h5><ul><li><a href="https://mein.online-impressum.de/instacode/" target="_blank" rel="noopener">Impressum</a></li><li><a href="/agb">AGB</a></li><li><a href="/widerruf">Widerrufsbelehrung</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><button class="lnk" data-a="cookieOpen">Cookie-Einstellungen</button></li></ul></div>
+   <div><h5>Service</h5><ul><li><a href="/abo">instantcodes Abo</a></li><li><a href="/angebote">Angebote</a></li><li><a href="/hilfe">Hilfe und FAQ</a></li><li><a href="/konto">Mein Konto</a></li><li><button class="lnk" data-a="chatOpen">Assistentin Mia</button></li></ul></div>
+   <div><h5>Rechtliches</h5><ul><li><a href="https://mein.online-impressum.de/instacode/" target="_blank" rel="noopener">Impressum</a></li><li><a href="/agb">AGB</a></li><li><a href="/widerruf">Widerrufsbelehrung</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><button class="lnk" data-a="cookieOpen">Cookie-Einstellungen</button></li><li><a href="/kuendigen">Verträge hier kündigen</a></li></ul></div>
    <div><h5>Kontakt</h5><ul><li><a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></li><li><a href="/hilfe">Hilfe und Kontakt</a></li></ul></div>
   </div>
-  <div class="ft-giant" aria-hidden="true">instacode</div>
-  <div class="ft-bottom"><span>© ${new Date().getFullYear()} ${esc(CFG.site||"instacode")}</span><span class="ft-stripe">Zahlungsabwicklung durch <img src="/img/mark/logos/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></div>
+  <div class="ft-giant" aria-hidden="true"><b>instant</b>codes</div>
+  <div class="ft-bottom"><span>© ${new Date().getFullYear()} ${esc(CFG.site||"instantcodes")}</span><span class="ft-stripe">Zahlungsabwicklung durch <img src="/img/mark/logos/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></div>
   </div>`;
 }
 function applyTheme(){document.documentElement.setAttribute("data-theme","dark")}
@@ -68,7 +68,7 @@ A.chatOpen=(v,el)=>{
   closeMenu(true);palClose(true);qaClose();nudgeHide();
   const ch=$("#chat");underHdr(ch);const o=originAt(ch,$("#hai"),true);if(o)ch.style.setProperty("--ox",o[0]);const hd=$("#hai .hai-dot");hd&&hd.remove();chat.open=true;$("#chat").classList.add("open");chatBtns().forEach(b=>b.setAttribute("aria-expanded","true"));
   const b=$("#chatBadge");b.dataset.n="0";b.textContent="";
-  if(!chat.started){chat.started=true;bot(`Hi${S.user?" "+esc(S.user.name.split(" ")[0]):""}, ich bin Mia, die digitale Assistentin von instacode. Ich helfe dir bei Aufladung, Gutscheinen und Bezahlung. Für persönliche Hilfe leite ich dich an unser Support-Team weiter.`);setTimeout(()=>bot("Wobei kann ich helfen?"),reduce?0:1300);qr()}
+  if(!chat.started){chat.started=true;bot(`Hi${S.user?" "+esc(S.user.name.split(" ")[0]):""}, ich bin Mia, die digitale Assistentin von instantcodes. Ich helfe dir bei Aufladung, Gutscheinen und Bezahlung. Für persönliche Hilfe leite ich dich an unser Support-Team weiter.`);setTimeout(()=>bot("Wobei kann ich helfen?"),reduce?0:1300);qr()}
   if(matchMedia("(pointer:fine)").matches)setTimeout(()=>$("#chatIn").focus({preventScroll:true}),100);
 };
 function chatClose(silent){if(!chat.open)return;chat.open=false;$("#chat").classList.remove("open");chatBtns().forEach(b=>b.setAttribute("aria-expanded","false"));const f=chat.from||$("#hai");if(silent!==true&&f&&document.contains(f))f.focus({preventScroll:true})}
@@ -87,7 +87,7 @@ function nudgeHide(){$("#nudge").classList.remove("show")}
 A.nudgeClose=()=>nudgeHide();
 /* Cookie-Hinweis: kurz, ehrlich, beide Wahlmöglichkeiten gleich gewichtet */
 function cookieShow(){const tp=!!CFG.trustpilot,c=$("#cookie");
-  c.innerHTML=`<div class="ck-h">${LOGO(26)}<h2>Cookies bei instacode</h2></div><p>Wir verwenden ${tp?"":"nur "}technisch notwendige Cookies und Speicher: für Anmeldung, Warenkorb und die sichere Zahlung über Stripe.${tp?" Mit „Alle erlauben“ laden wir zusätzlich Bewertungen von Trustpilot, dabei verarbeitet Trustpilot Daten deines Browsers.":" Kein Tracking, keine Werbung."} <a href="/datenschutz">Mehr erfahren</a></p><div class="ck-b">${tp?`<button class="btn btn-soft" data-a="cookie" data-v="min">Nur notwendige</button><button class="btn btn-soft" data-a="cookie" data-v="all">Alle erlauben</button>`:`<button class="btn btn-primary" data-a="cookie" data-v="min">Verstanden</button>`}</div>`;
+  c.innerHTML=`<div class="ck-h">${LOGO(26)}<h2>Cookies bei instantcodes</h2></div><p>Wir verwenden ${tp?"":"nur "}technisch notwendige Cookies und Speicher: für Anmeldung, Warenkorb und die sichere Zahlung über Stripe.${tp?" Mit „Alle erlauben“ laden wir zusätzlich Bewertungen von Trustpilot, dabei verarbeitet Trustpilot Daten deines Browsers.":" Kein Tracking, keine Werbung."} <a href="/datenschutz">Mehr erfahren</a></p><div class="ck-b">${tp?`<button class="btn btn-soft" data-a="cookie" data-v="min">Nur notwendige</button><button class="btn btn-soft" data-a="cookie" data-v="all">Alle erlauben</button>`:`<button class="btn btn-primary" data-a="cookie" data-v="min">Verstanden</button>`}</div>`;
   c.classList.add("show")}
 A.cookie=v=>{S.cookie=v;save();$("#cookie").classList.remove("show");if(v==="all"&&$("#revSec"))loadReviews("#revSec")};
 A.cookieOpen=()=>cookieShow();

@@ -1,6 +1,6 @@
 /* ---------- shared components ---------- */
 /* Gutscheinkarte: das zentrale Bauteil */
-/* Leuchtfarbe der Karte: Markenfarbe, sonst instacode-Lila */
+/* Leuchtfarbe der Karte: Markenfarbe, sonst instantcodes-Lila */
 const glowOf=b=>{const m=String(b.bg||"").match(/#[0-9a-fA-F]{6}/g);return m?m[m.length>1?1:0]:"#6A55FF"};
 const PLATSI={steam:"steam",ps5:"playstation",ea:"ea",ubi:"ubisoft",bnet:"battledotnet",rockstar:"rockstargames"};
 const gc=(b,o={})=>{const k=isKey(b);return `<span class="gc${o.tilt===false?"":" tilt"}${k?" key":""}${o.cover&&k?" cover":""}${o.cls?" "+o.cls:""}" style="--b:${b.bg};--f:${b.fg};--g:${glowOf(b)}${o.style?";"+o.style:""}">${b.img?`<img class="gc-img" src="${b.img}" alt="" loading="lazy" decoding="async">`:b.logo?`<span class="art art-logo" aria-hidden="true"><img class="gc-logo" src="${b.logo}" alt="" loading="lazy" decoding="async"></span>`:`<span class="art" aria-hidden="true">${b.art}</span>`}${o.extra||""}${k&&b.plat&&o.plat!==false?`<em class="gc-plat">${PLATSI[b.plat]?siI(PLATSI[b.plat]):""}${PLAT[b.plat]||b.plat}</em>`:""}${o.amt!=null?`<span class="gc-amt"${o.amtId?` id="${o.amtId}"`:""}>${o.amt}</span>`:""}${b.disc&&o.badge!==false&&price(b,b.from)<b.from?`<em class="gc-badge">−${Math.round(b.disc*100)} %</em>`:""}<i class="holo" aria-hidden="true"></i><i class="gc-glare" aria-hidden="true"></i><i class="rim" aria-hidden="true"></i></span>`};

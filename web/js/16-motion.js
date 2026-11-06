@@ -1,8 +1,6 @@
-/* ---------- Bewegung (Framer-Stil) ----------
+/* ---------- Bewegung ----------
    [data-words]  Satz hellt sich beim Scrollen Wort für Wort auf (--p 0…1 am Element, Wörter rechnen in CSS selbst)
    [data-count]  Zahl zählt beim Erscheinen hoch (Endwert steht schon im HTML)
-   #bslTrack     Bestseller-Karussell: Karten drehen sich je nach Abstand zur Mitte (--cf/--cfa)
-   [data-crows]  Kategorie-Zeilen: Kartenfächer folgt dem Zeiger (--px/--py)
    Alles nur transform/opacity, pausiert ohne Sichtbarkeit, entfällt bei reduzierter Bewegung. */
 const MOTION=(()=>{
   const words=new Set();let wRaf=0;
@@ -16,17 +14,8 @@ const MOTION=(()=>{
   const fmt=n=>Math.round(n).toLocaleString("de-DE");
   const cIO="IntersectionObserver" in window?new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const el=en.target;cIO.unobserve(el);
     const to=+el.dataset.count,t0=performance.now(),D=1500;const step=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(2,-10*k);el.textContent=fmt(to*(k>=1?1:e));if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}),{threshold:.6}):null;
-  /* Karussell */
-  const cover=t=>{if(t.dataset.cf)return;t.dataset.cf=1;let raf=0;const cards=()=>$$(".bs",t);
-    const upd=()=>{raf=0;const tr=t.getBoundingClientRect(),mid=tr.left+tr.width/2;cards().forEach(c=>{const r=c.getBoundingClientRect(),d=Math.max(-2,Math.min(2,(r.left+r.width/2-mid)/(r.width+16)));c.style.setProperty("--cf",d.toFixed(3));c.style.setProperty("--cfa",Math.abs(d).toFixed(3))})};
-    const k=()=>{if(!raf)raf=requestAnimationFrame(upd)};t.addEventListener("scroll",k,{passive:true});addEventListener("resize",k,{passive:true});upd()};
-  /* Kategorie-Zeilen: Fächer folgt dem Zeiger */
-  const crows=el=>{if(el.dataset.cr)return;el.dataset.cr=1;let raf=0,ev=null;
-    el.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;ev=e;if(raf)return;raf=requestAnimationFrame(()=>{raf=0;const r=el.getBoundingClientRect();el.style.setProperty("--px",(ev.clientX-r.left).toFixed(0)+"px");el.style.setProperty("--py",(ev.clientY-r.top).toFixed(0)+"px")})},{passive:true})};
   return {mount(root){
     $$("[data-words]",root).forEach(el=>{split(el);if(reduce)el.style.setProperty("--p",1);else words.add(el)});wKick();
     $$("[data-count]",root).forEach(el=>{if(reduce||!cIO)return;el.textContent="0";cIO.observe(el)});
-    if(!reduce){const t=$("#bslTrack",root);t&&cover(t)}
-    $$("[data-crows]",root).forEach(crows);
   }};
 })();

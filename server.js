@@ -1,5 +1,5 @@
 "use strict";
-/* instacode – Shop-Server (instacode.store)
+/* instantcodes – Shop-Server (instacode.store)
    Konten, Bestätigungs-E-Mails, Stripe Checkout und Expresszahlung (Apple Pay, Google Pay, PayPal …),
    automatische Code-Auslieferung, Bewertungen nach dem Kauf, Produktbilder, Admin-Bereich. */
 const express = require("express");
@@ -31,6 +31,8 @@ const gross = net => Math.round(net * (100 + VAT) / 100);
 const vatOf = g => VAT ? Math.round(g - g * 100 / (100 + VAT)) : 0;
 const PK = E.STRIPE_PUBLISHABLE_KEY || "";
 const DEVPAY = /_attrappe$/.test(E.STRIPE_SECRET_KEY || "");   // nur Vorschau-Umgebung ohne echtes Stripe
+/* Uhr für die Abo-Logik. In der Vorschau (Stripe-Attrappe) kann eine Test-Uhr sie vorstellen, wie Stripe-Test-Clocks; live immer die echte Zeit. */
+const clock = () => Date.now() + (DEVPAY ? (+globalThis.__icClock || 0) : 0);
 const SUPPORT = E.SUPPORT_EMAIL || "support@instacode.store";
 /* Neuere Stripe-API-Version nur für Checkout und PaymentIntents (Branding, ausgeschlossene Zahlungsarten) */
 const STRIPE_V = "2025-09-30.clover";
@@ -374,11 +376,17 @@ app.disable("x-powered-by");
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false, crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" } }));
 
 /* Stripe-Webhook braucht den unveränderten Body, deshalb vor express.json() */
-app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), (req, res) => {
+let ABO = null; // Abo-Modul (abo.js), wird weiter unten eingerichtet
+app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   if (!stripe) return res.status(503).end();
   let ev;
   try { ev = stripe.webhooks.constructEvent(req.body, req.get("stripe-signature"), E.STRIPE_WEBHOOK_SECRET); }
   catch (err) { return res.status(400).send("Ungültige Signatur"); }
+  /* Abo-Ereignisse (Checkout im Abo-Modus, Rechnungen, Abo-Änderungen): bei Fehlern 500, dann wiederholt Stripe die Zustellung */
+  if (ABO && ABO.isEvent(ev)) {
+    try { await ABO.webhook(ev); return res.json({ received: true }); }
+    catch (err) { console.error("Abo-Webhook", ev.type, err); return res.status(500).send("Fehler"); }
+  }
   const s = ev.data.object, id = s.metadata && s.metadata.order_id;
   const o = id && db.prepare("SELECT * FROM orders WHERE id=?").get(id);
   if (o) {
@@ -782,19 +790,19 @@ app.post("/api/checkout", wrap(async (req, res) => {
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // 30 Minuten, danach wird die reservierte Bestellung storniert
     billing_address_collection: "auto",
     metadata: { order_id: id },
-    payment_intent_data: { metadata: { order_id: id }, description: `instacode Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE" },
+    payment_intent_data: { metadata: { order_id: id }, description: `instantcodes Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE" },
     line_items: P.lines.map(l => ({ quantity: l.q, price_data: { currency: "eur", unit_amount: l.pay,
       product_data: { name: checkoutName(l), description: checkoutDesc(l), images: [checkoutImage(l)], metadata: { product_id: l.b.id } } } }))
       .concat(P.fee ? [{ quantity: 1, price_data: { currency: "eur", unit_amount: P.fee, product_data: { name: "Servicegebühr", description: "Pro Bestellung, inkl. MwSt." } } }] : []),
     custom_text: {
       submit: { message: "Nach der Zahlung erscheinen deine Codes sofort auf dem Bildschirm und kommen zusätzlich per E-Mail." },
-      after_submit: { message: "Zahlung wird bestätigt – du wirst gleich zurück zu instacode geleitet." }
+      after_submit: { message: "Zahlung wird bestätigt – du wirst gleich zurück zu instantcodes geleitet." }
     },
     success_url: `${BASE}/r/${id}?k=${key}`,
     cancel_url: `${BASE}/warenkorb?abgebrochen=1`
   }, {
     excluded_payment_method_types: klarnaOk(P.lines) ? [] : EXCLUDED_PM,
-    branding_settings: { display_name: "instacode", button_color: "#1700D2", background_color: "#FFFFFF", border_style: "rounded", font_family: "inter",
+    branding_settings: { display_name: "instantcodes", button_color: "#1700D2", background_color: "#FFFFFF", border_style: "rounded", font_family: "inter",
       icon: { type: "url", url: `${BASE}/icon-512.png` }, logo: { type: "url", url: `${BASE}/brand/checkout-logo.png` } }
   }, { idempotencyKey: "cs-" + id });
   db.prepare("UPDATE orders SET stripe_session=? WHERE id=?").run(s.id, id);
@@ -821,7 +829,7 @@ app.post("/api/express/intent", expressLim, wrap(async (req, res) => {
   const { id, key } = createOrder(req, e, P, "express");
   const pi = await stripeCall((p, o) => stripe.paymentIntents.create(p, o), {
     amount: P.total, currency: "eur", automatic_payment_methods: { enabled: true },
-    metadata: { order_id: id }, description: `instacode Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
+    metadata: { order_id: id }, description: `instantcodes Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
   }, { excluded_payment_method_types: EXCLUDED_PM }, { idempotencyKey: "pi-" + id });
   db.prepare("UPDATE orders SET payment_intent=? WHERE id=?").run(pi.id, id);
   res.json({ client_secret: pi.client_secret, id, key, total: P.total });
@@ -839,7 +847,7 @@ app.post("/api/pay/intent", expressLim, wrap(async (req, res) => {
   const { id, key } = createOrder(req, e, P, "inline");
   const pi = await stripe.paymentIntents.create({
     amount: P.total, currency: "eur", payment_method_types: inlineTypes().concat(klarnaOk(P.lines) ? ["klarna"] : []),
-    metadata: { order_id: id }, description: `instacode Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
+    metadata: { order_id: id }, description: `instantcodes Bestellung ${id}`, statement_descriptor_suffix: "INSTACODE"
   }, { idempotencyKey: "pi-" + id });
   db.prepare("UPDATE orders SET payment_intent=? WHERE id=?").run(pi.id, id);
   res.json({ client_secret: pi.client_secret, id, key, total: P.total, return_url: `${BASE}/r/${id}?k=${encodeURIComponent(key)}` });
@@ -1398,6 +1406,13 @@ app.post("/api/admin/reviews/:id", admin, (req, res) => {
   res.json({ ok: true });
 });
 
+/* ---------- Abos (abo.js): Pläne, Stripe-Abos, monatliche Lieferungen mit Freigabe, Kündigung nach § 312k BGB ---------- */
+/* Kartendaten eines Produkts für die Abo-Seite (auch für Produkte, die im Shop gerade nicht sichtbar sind) */
+const cardOf = id => { const b = CATALOG[id]; if (!b) return null; const r = prodRows()[id] || {}; const { redeem, brand, px, ...x } = b;
+  if (r.img) x.img = `/img/p/${id}.${r.img}?v=${r.img_v}`; if (r.logo) x.logo = `/img/p/${id}.logo.${r.logo}?v=${r.logo_v}`; return x; };
+ABO = require("./abo")({ app, db, stripe, stripeCall, STRIPE_V, mail, CATALOG, E, BASE, ADMINS, TESTMODE, TEST_GEN, clock, now, rnd, enc, dec, norm, emailOk, bad, wrap, need, admin, rateLimit,
+  verifiedEmail, EV_MSG, isAdmin, safe, takeCodes, codeHash, supply, Stockout, RL_USE: () => RL_USE, rlHas, freeCount, optLabel, fc, isCodeBrand, cardOf, kvGet, kvSet });
+
 /* Rückkehr nach Zahlungen mit Weiterleitung (z. B. PayPal, Klarna) */
 app.get("/r/:id", (req, res) => res.redirect(302, `/bestellung/${encodeURIComponent(req.params.id)}?k=${encodeURIComponent(String(req.query.k || ""))}`));
 
@@ -1469,7 +1484,7 @@ const kwFor = b => b.cat === "topup" ? "aufladen" : /gutschein|guthaben|gift ?ca
 function seoTitle(b) {
   const head = `${b.name} ${kwFor(b)}`;
   const tail = b.cat === "topup" ? " – Guthaben online" : " – Code sofort per E-Mail";
-  return (head + tail + " | instacode").length <= 66 ? head + tail + " | instacode" : (head + " | instacode").length <= 66 ? head + " | instacode" : head;
+  return (head + tail + " | instantcodes").length <= 66 ? head + tail + " | instantcodes" : (head + " | instantcodes").length <= 66 ? head + " | instantcodes" : head;
 }
 const crumbs = l => ({ "@type": "BreadcrumbList", itemListElement: l.map(([n, u], i) => ({ "@type": "ListItem", position: i + 1, name: n, item: BASE + u })) });
 const xesc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -1487,7 +1502,7 @@ function seoMeta(p) {
     for (const extra of [b.regionName && b.cat !== "topup" ? ` Gültig in ${b.regionName}.` : "", ` ${pay}.`, b.cat === "topup" ? "" : " Ohne Versandkosten."])
       if (extra && (d + extra).length <= 158) d += extra;
     const offer = { "@type": "AggregateOffer", priceCurrency: "EUR", lowPrice: Math.min(...b.amts.map(a => unitPrice(b, a))) / 100, highPrice: Math.max(...b.amts.map(a => unitPrice(b, a))) / 100, offerCount: b.amts.length,
-      availability: "https://schema.org/InStock", url: `${BASE}/marke/${b.id}`, seller: { "@type": "Organization", name: "instacode" } };
+      availability: "https://schema.org/InStock", url: `${BASE}/marke/${b.id}`, seller: { "@type": "Organization", name: "instantcodes" } };
     const ld = { "@context": "https://schema.org", "@graph": [
       { "@type": "Product", name: b.name, image: img, description: d, category: CAT_NAME[b.cat] || "Gutscheine", brand: { "@type": "Brand", name: b.brand || b.name }, sku: b.id, offers: offer },
       crumbs([["Start", "/"], [CAT_NAME[b.cat] || "Kategorien", `/kategorie/${b.cat}`], [b.name, `/marke/${b.id}`]]) ] };
@@ -1499,11 +1514,13 @@ function seoMeta(p) {
     const ld = { "@context": "https://schema.org", "@graph": [
       { "@type": "CollectionPage", name: n, description: d, url, inLanguage: "de-DE", mainEntity: { "@type": "ItemList", itemListElement: items.map((b, i) => ({ "@type": "ListItem", position: i + 1, name: b.name, url: `${BASE}/marke/${b.id}` })) } },
       crumbs([["Start", "/"], ["Kategorien", "/kategorien"], [n, `/kategorie/${id}`]]) ] };
-    return { t: id === "topup" ? "Handy aufladen – Prepaid-Guthaben online | instacode" : `${n} online kaufen – sofort per E-Mail | instacode`, d, h1: n, url, ld };
+    return { t: id === "topup" ? "Handy aufladen – Prepaid-Guthaben online | instantcodes" : `${n} online kaufen – sofort per E-Mail | instantcodes`, d, h1: n, url, ld };
   }
-  const P = { "/kategorien": ["Gutscheine & Geschenkkarten – alle Kategorien", "Alle Gutscheine, Geschenkkarten, Guthabenkarten, Spiele-Keys und Handy-Guthaben bei instacode im Überblick – digital und sofort per E-Mail."], "/aufladen": ["Handy aufladen – Prepaid-Guthaben online", CAT_SEO.topup[1]], "/angebote": ["Gutschein-Angebote", "Reduzierte Gutscheine, Geschenkkarten und Guthabenkarten bei instacode – Code sofort per E-Mail."],
-    "/hilfe": ["Hilfe und FAQ", "Antworten zu Bestellung, Lieferung, Einlösen, Zahlung und Rechnung bei instacode – schnell und verständlich erklärt."], "/agb": ["AGB", "Allgemeine Geschäftsbedingungen von instacode."], "/datenschutz": ["Datenschutz", "Datenschutzerklärung von instacode."], "/widerruf": ["Widerrufsbelehrung", "Widerrufsbelehrung für digitale Inhalte bei instacode."] }[p];
-  return P ? { t: `${P[0]} | instacode`, d: P[1], h1: P[0], url: BASE + p } : null;
+  const P = { "/kategorien": ["Gutscheine & Geschenkkarten – alle Kategorien", "Alle Gutscheine, Geschenkkarten, Guthabenkarten, Spiele-Keys und Handy-Guthaben bei instantcodes im Überblick – digital und sofort per E-Mail."], "/aufladen": ["Handy aufladen – Prepaid-Guthaben online", CAT_SEO.topup[1]], "/angebote": ["Gutschein-Angebote", "Reduzierte Gutscheine, Geschenkkarten und Guthabenkarten bei instantcodes – Code sofort per E-Mail."],
+    "/hilfe": ["Hilfe und FAQ", "Antworten zu Bestellung, Lieferung, Einlösen, Zahlung und Rechnung bei instantcodes – schnell und verständlich erklärt."],
+    "/abo": ["Abo: jeden Monat Codes für Netflix, Disney+, Spotify und mehr", "Das instantcodes Abo: jeden Monat Codes für Netflix, Disney+, Spotify, DAZN, Xbox Game Pass und mehr. Pro, Premium oder Max – online kündbar."],
+    "/kuendigen": ["Verträge hier kündigen", "Kündige dein instantcodes Abo ohne Anmeldung. Die Bestätigung bekommst du sofort auf dem Bildschirm und per E-Mail."], "/agb": ["AGB", "Allgemeine Geschäftsbedingungen von instantcodes."], "/datenschutz": ["Datenschutz", "Datenschutzerklärung von instantcodes."], "/widerruf": ["Widerrufsbelehrung", "Widerrufsbelehrung für digitale Inhalte bei instantcodes."] }[p];
+  return P ? { t: `${P[0]} | instantcodes`, d: P[1], h1: P[0], url: BASE + p } : null;
 }
 function sendSeo(req, res, next) {
   const meta = seoMeta(req.path); if (!meta) return next();
@@ -1531,16 +1548,16 @@ function sendSeo(req, res, next) {
     res.send(out.raw);
   } });
 }
-app.get(["/marke/:id", "/kategorie/:id", "/kategorien", "/aufladen", "/angebote", "/hilfe", "/agb", "/datenschutz", "/widerruf"], sendSeo);
+app.get(["/marke/:id", "/kategorie/:id", "/kategorien", "/aufladen", "/angebote", "/hilfe", "/agb", "/datenschutz", "/widerruf", "/abo", "/kuendigen"], sendSeo);
 app.get("/abmelden", (req, res) => {
   const e = norm(req.query.e), ok = e && req.query.s === unsubSig(e);
   if (ok) db.prepare("INSERT OR IGNORE INTO optout(email,at) VALUES(?,?)").run(e, now());
-  res.type("html").send(`<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Abgemeldet · instacode</title><body style="margin:0;font-family:system-ui,-apple-system,sans-serif;background:#F3F2FA;display:grid;place-items:center;min-height:100vh"><div style="background:#fff;border:1px solid #E7E3FA;border-radius:24px;padding:32px;max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 8px">${ok ? "Du bist abgemeldet" : "Link ungültig"}</h1><p style="color:#636A85;margin:0 0 20px">${ok ? "Du bekommst keine Produktempfehlungen mehr. Bestell- und Lieferbestätigungen erhältst du weiterhin." : "Bitte nutze den Link aus deiner E-Mail."}</p><a href="${BASE}/" style="display:inline-block;padding:12px 24px;border-radius:999px;background:linear-gradient(135deg,#7C5CFF,#4F46E5);color:#fff;text-decoration:none;font-weight:700">Zum Shop</a></div></body></html>`);
+  res.type("html").send(`<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Abgemeldet · instantcodes</title><body style="margin:0;font-family:system-ui,-apple-system,sans-serif;background:#F3F2FA;display:grid;place-items:center;min-height:100vh"><div style="background:#fff;border:1px solid #E7E3FA;border-radius:24px;padding:32px;max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 8px">${ok ? "Du bist abgemeldet" : "Link ungültig"}</h1><p style="color:#636A85;margin:0 0 20px">${ok ? "Du bekommst keine Produktempfehlungen mehr. Bestell- und Lieferbestätigungen erhältst du weiterhin." : "Bitte nutze den Link aus deiner E-Mail."}</p><a href="${BASE}/" style="display:inline-block;padding:12px 24px;border-radius:999px;background:linear-gradient(135deg,#7C5CFF,#4F46E5);color:#fff;text-decoration:none;font-weight:700">Zum Shop</a></div></body></html>`);
 });
 app.get("/robots.txt", (req, res) => res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /r/\n\nSitemap: ${BASE}/sitemap.xml\n`));
 app.get("/sitemap.xml", (req, res) => {
   const day = new Date().toISOString().slice(0, 10);
-  const urls = ["/", "/kategorien", "/aufladen", "/angebote", "/hilfe", "/agb", "/datenschutz", "/widerruf"]
+  const urls = ["/", "/abo", "/kategorien", "/aufladen", "/angebote", "/hilfe", "/agb", "/datenschutz", "/widerruf", "/kuendigen"]
     .concat([...new Set(shopCatalog().map(b => b.cat))].map(c => `/kategorie/${c}`))
     .concat(shopCatalog().map(b => `/marke/${b.id}`));
   res.type("application/xml").send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(u => `<url><loc>${BASE}${u}</loc><lastmod>${day}</lastmod><changefreq>${u.startsWith("/marke") ? "weekly" : "daily"}</changefreq><priority>${u === "/" ? "1.0" : u.startsWith("/kategorie") ? "0.8" : "0.6"}</priority></url>`).join("")}</urlset>`);
@@ -1584,7 +1601,7 @@ app.listen(PORT, () => {
   }
   loadPayMethods(); setInterval(loadPayMethods, 6 * 3600e3).unref();
   setTimeout(maintenance, 60e3); setInterval(maintenance, 24 * 3600e3).unref();
-  console.log(`instacode läuft auf ${BASE} (Port ${PORT})${stripe ? "" : " – Zahlungen deaktiviert, STRIPE_SECRET_KEY fehlt"}${E.RESEND_API_KEY ? "" : " – E-Mails werden nur im Log ausgegeben"}`);
+  console.log(`instantcodes läuft auf ${BASE} (Port ${PORT})${stripe ? "" : " – Zahlungen deaktiviert, STRIPE_SECRET_KEY fehlt"}${E.RESEND_API_KEY ? "" : " – E-Mails werden nur im Log ausgegeben"}`);
   console.log(RL.ON ? `Reloadly: verbunden${RL.SANDBOX ? " (Sandbox)" : ""}${RL_USE ? "" : " – im Testmodus ohne RELOADLY_SANDBOX=1 deaktiviert"}` : "Reloadly: nicht eingerichtet (RELOADLY_CLIENT_ID fehlt)");
   console.log(LIVE ? "LIVE-Betrieb: Auslieferung nur aus dem Code-Lager, Testcode-Generator gesperrt."
     : `Testmodus: Testkäufe erhalten ${TEST_GEN ? "Testcodes (Generator aktiv)" : "nur Testcodes aus dem Lager"}.`);

@@ -26,6 +26,7 @@ function fx(root){
   if(offIO){if(root===app){offIO.disconnect();parVis.clear()}$$("[data-par],[data-off]",root).forEach(el=>offIO.observe(el))}
   rails(root);
   MOTION.mount(root);
+  LIQUID.mount(root);
   requestAnimationFrame(parUpdate);
 }
 /* Maus: Karte neigt sich und glänzt, Bühnen folgen leicht dem Zeiger */
@@ -50,7 +51,7 @@ document.addEventListener("pointerdown",e=>{if(reduce)return;const b=e.target.cl
 const prodUrl=id=>`${location.origin}/marke/${encodeURIComponent(id)}`;
 async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const a=document.createElement("textarea");a.value=t;a.style.cssText="position:fixed;opacity:0";document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(x){}a.remove();return ok}}
 A.copyLink=async id=>{if(await copyText(prodUrl(id)))toast("Link kopiert – jetzt einfügen und teilen");else toast(prodUrl(id))};
-A.share=id=>{const b=byId(id);if(!b)return;const url=prodUrl(id),text=`${b.name.replace(/ (Gift Card|Geschenkkarte)$/,"")} bei instacode – Code sofort per E-Mail`;
+A.share=id=>{const b=byId(id);if(!b)return;const url=prodUrl(id),text=`${b.name.replace(/ (Gift Card|Geschenkkarte)$/,"")} bei instantcodes – Code sofort per E-Mail`;
   const u=encodeURIComponent(url),t=encodeURIComponent(text),L=(k,f)=>`<img src="/img/mark/logos/${k}.svg" alt="" onerror="this.replaceWith(document.createTextNode('${f}'))">`;
   const opts=[["WhatsApp",`https://wa.me/?text=${t}%20${u}`,L("whatsapp-icon","W")],["Telegram",`https://t.me/share/url?url=${u}&text=${t}`,L("telegram","T")],["X",`https://twitter.com/intent/tweet?url=${u}&text=${t}`,L("x","X")],
     ["Facebook",`https://www.facebook.com/sharer/sharer.php?u=${u}`,L("facebook","f")],["Pinterest",`https://pinterest.com/pin/create/button/?url=${u}&description=${t}`,L("pinterest","P")],["Reddit",`https://www.reddit.com/submit?url=${u}&title=${t}`,L("reddit-icon","R")],
@@ -60,7 +61,7 @@ A.share=id=>{const b=byId(id);if(!b)return;const url=prodUrl(id),text=`${b.name.
    ${navigator.share?`<button class="btn btn-primary btn-block btn-lg" data-a="shareNative" data-v="${esc(id)}">${ic("i-share")}Teilen über …</button>`:""}
    <div class="sh-grid">${opts.map(([n,h,i])=>`<a class="sh-opt" href="${h}" target="_blank" rel="noopener">${`<span>${i}</span>`}<small>${n}</small></a>`).join("")}</div>
    <button class="btn btn-soft btn-block" data-a="copyLink" data-v="${esc(id)}">${ic("i-copy")}Link kopieren</button></div>`)};
-A.shareNative=id=>{const b=byId(id);navigator.share({title:`${b.name} – instacode`,text:`${b.name} bei instacode – Code sofort per E-Mail`,url:prodUrl(id)}).then(()=>closeSheet()).catch(()=>{})};
+A.shareNative=id=>{const b=byId(id);navigator.share({title:`${b.name} – instantcodes`,text:`${b.name} bei instantcodes – Code sofort per E-Mail`,url:prodUrl(id)}).then(()=>closeSheet()).catch(()=>{})};
 A.giftNow=()=>{const sw=$(".giftbox .switch");if(sw&&sw.getAttribute("aria-checked")!=="true")sw.click();const g=$(".giftbox");if(g)g.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>{const i=$("#gTo");i&&i.focus()},450)};
 
 /* ---------- Liquid Glass: Linse fließt zwischen den Knöpfen einer Gruppe (Morphing), Lichtpunkt folgt dem Finger ---------- */
@@ -77,9 +78,8 @@ A.giftNow=()=>{const sw=$(".giftbox .switch");if(sw&&sw.getAttribute("aria-check
 (function(){if(!("IntersectionObserver" in window))return;const io=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.preload==="none")v.preload="auto";const pr=v.play();pr&&pr.catch(()=>{})}else v.pause()}),{threshold:.25});
   const scan=()=>document.querySelectorAll("video.vf-vid:not([data-io])").forEach(v=>{v.dataset.io=1;io.observe(v)});new MutationObserver(scan).observe(document.getElementById("app")||document.body,{childList:true,subtree:true});scan()})();
 const keyList=pg=>pg==="all"?VIS().filter(isKey):dedupeGrp(BRANDS.filter(b=>isKey(b)&&PLATG[b.plat]===pg));
-A.keyPlat=(v,el)=>{$$("[data-a=keyPlat]").forEach(c=>c.setAttribute("aria-pressed",c===el));const t=$("#keyRail");t.innerHTML=keyList(v).map((b,i)=>tile(b,i,{cover:true})).join("");t.scrollLeft=0;$$(".rv",t).forEach(x=>x.classList.add("in"));rails(t.closest(".band-dark"))};
+A.keyPlat=(v,el)=>{$$("[data-a=keyPlat]").forEach(c=>c.setAttribute("aria-pressed",c===el));const t=$("#keyRail");t.innerHTML=keyList(v).map((b,i)=>tile(b,i,{cover:true})).join("");t.scrollLeft=0;$$(".rv",t).forEach(x=>x.classList.add("in"));rails(t.closest(".sec"))};
 A.twGo=()=>{const d=($("#twNum").value||"").replace(/\D/g,"").replace(/^0+/,"");if(d.length<6||d.length>12){$("#twErr").textContent="Bitte gib eine gültige Handynummer ein.";$("#twNum").focus();return}go("/aufladen?n="+d)};
-A.pop=(v,el)=>{$$(".chips [data-a=pop]").forEach(c=>c.setAttribute("aria-pressed",c===el));const l=v==="all"?POP.map(byId).filter(Boolean):VIS().filter(b=>b.cat===v).slice(0,8);const g=$("#popGrid");g.innerHTML=l.map(tile).join("");requestAnimationFrame(()=>requestAnimationFrame(()=>$$(".rv",g).forEach(x=>x.classList.add("in"))))};
 A.qa=(v,el)=>{const box=el.parentNode,o=box.dataset.open==="true";box.dataset.open=String(!o);el.setAttribute("aria-expanded",String(!o))};
 /* Touch: Karte neigt sich beim Antippen zum Finger und fängt Licht, beim Loslassen federt sie zurück */
 if(!reduce){

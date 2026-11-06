@@ -8,7 +8,7 @@ const litAt=(t,e)=>{const r=t.getBoundingClientRect();t.style.setProperty("--mx"
 let litE=null,litRaf=0;
 document.addEventListener("pointermove",e=>{litE=e;if(litRaf)return;litRaf=requestAnimationFrame(()=>{litRaf=0;const t=litE.target.closest&&litE.target.closest(LIT);if(t)litAt(t,litE)})},{passive:true});
 document.addEventListener("pointerdown",e=>{const t=e.target.closest&&e.target.closest(LIT);if(t)litAt(t,e)},{passive:true});
-try{history.scrollRestoration="manual"}catch(e){}var SSR_T=/^\/(marke\/|kategorie\/|kategorien|aufladen|angebote|hilfe|agb|datenschutz|widerruf|$)/.test(location.pathname)?document.title:null,SSR_P=location.pathname.replace(/\/index\.html$/,"/")||"/";const HOME_T="Gutscheine & Guthaben online kaufen – sofort per E-Mail | instacode";
+try{history.scrollRestoration="manual"}catch(e){}var SSR_T=/^\/(marke\/|kategorie\/|kategorien|aufladen|angebote|hilfe|agb|datenschutz|widerruf|$)/.test(location.pathname)?document.title:null,SSR_P=location.pathname.replace(/\/index\.html$/,"/")||"/";const HOME_T="Gutscheine & Guthaben online kaufen – sofort per E-Mail | instantcodes";
 function route(keep){
   if(/^#\//.test(location.hash)){try{history.replaceState(null,"",location.hash.slice(1))}catch(e){}}const pth=location.pathname.replace(/\/index\.html$/,"/");
   const h=(pth||"/")+location.search,qi=h.indexOf("?"),path=(qi>-1?h.slice(0,qi):h)||"/",qs=new URLSearchParams(qi>-1?h.slice(qi+1):"");
@@ -17,7 +17,7 @@ function route(keep){
   v=v||notFound();
   const y=scrollY;
   app.innerHTML=`<div class="view${keep?" k":""}">${v.html}</div>`;
-  if(SSR_T&&(path===SSR_P||(path==="/"&&SSR_P==="/"))){document.title=SSR_T;SSR_T=null}else document.title=path==="/"?HOME_T:(v.title?v.title+" · ":"")+"instacode";
+  if(SSR_T&&(path===SSR_P||(path==="/"&&SSR_P==="/"))){document.title=SSR_T;SSR_T=null}else document.title=path==="/"?HOME_T:(v.title?v.title+" · ":"")+"instantcodes";
   $$(".hnav a").forEach(a=>a.classList.toggle("on",path===a.getAttribute("href")));
   document.body.classList.toggle("has-buybar",!!v.buybar);
   closeMenu(true);closePanels();A.cartClose();if(!keep)closeSheet(true);

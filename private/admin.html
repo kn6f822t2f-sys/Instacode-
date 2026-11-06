@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Admin · instacode</title>
+<title>Admin · instantcodes</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.png">
 <style>
 :root{--bg:#FCFCFF;--s:rgba(255,255,255,.66);--b:rgba(22,24,60,.08);--t:#0E1122;--m:#636A85;--ok:#067647;--warn:#B54708;--v:#6D4BFF}
@@ -82,10 +82,20 @@ label.chk input{width:auto;margin:0}
 .drop.on{background:rgba(109,75,255,.1)}
 table.pv{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}table.pv td{padding:8px 6px;border-top:1px solid var(--b)}
 .warnbox{margin-top:10px;padding:10px 12px;border-radius:12px;background:#FFFAEB;color:#93370D;font-size:13.5px}
+/* Abos */
+.ahint{margin-top:10px;padding:10px 12px;border-radius:12px;background:#EEF4FF;color:#1D3A8A;font-size:14px}
+.ah{margin:24px 4px 0;font-size:17px;letter-spacing:-.01em}
+.ah small{font-weight:600;color:var(--m);font-size:13px;margin-left:6px}
+.aerow{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.4fr) minmax(0,1.2fr) minmax(0,1.6fr) auto;gap:8px;align-items:center;margin-top:8px}
+.aerow select,.aerow input{margin:0}
+@media(max-width:760px){.aerow{grid-template-columns:1fr 1fr;padding:10px 0;border-top:1px solid var(--b)}.aerow input{grid-column:1/-1}}
+details.adet{margin-top:10px}details.adet summary{cursor:pointer;font-weight:700;color:var(--m);font-size:14px}
+.alist{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}.alist td{padding:7px 6px;border-top:1px solid var(--b);vertical-align:top}
+.ok{color:var(--ok)}.bad{color:#B42318}
 </style>
 </head>
 <body>
-<header><img src="/logo.svg" alt=""><b>instacode Admin</b><span id="mode"></span><a href="/">Zum Shop</a></header>
+<header><img src="/logo.svg" alt=""><b>instantcodes Admin</b><span id="mode"></span><a href="/">Zum Shop</a></header>
 <main id="m"><p class="muted">Lade …</p></main>
 <div class="toast" id="toast" role="status"></div>
 <script>
@@ -94,14 +104,16 @@ const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const eur=c=>(c/100).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
 async function API(p,o={}){const r=await fetch("/api"+p,{method:o.method||"GET",headers:{"Content-Type":"application/json","X-IC":"1"},body:o.body?JSON.stringify(o.body):undefined,credentials:"same-origin"});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Fehler "+r.status);return j}
-const TABS=[["overview","Übersicht"],["processing","Prüfen"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"]];
+const TABS=[["overview","Übersicht"],["processing","Prüfen"],["abos","Abos"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"]];
 const STC={awaiting_payment:"#B54708",payment_pending:"#B54708",processing:"#3B5BDB",delivered:"#067647",canceled:"#6B7280",refunded:"#6B7280"};
 const STN={awaiting_payment:"Warte auf Zahlung",payment_pending:"Zahlung läuft",processing:"Prüfen",delivered:"Geliefert",canceled:"Storniert",refunded:"Erstattet"};
 let tab="overview",timer,tt,counts={},mode=null;
 const toast=t=>{const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>el.classList.remove("show"),2800)};
 const typing=()=>[...document.querySelectorAll("main input:not([type=checkbox]),main textarea")].some(i=>i.value);
 const setMode=j=>{if(j.testmode==null)return;mode=j;$("#mode").innerHTML=j.testmode?`<span class="mode test">Testmodus</span>`:`<span class="mode live">Live</span>`};
-const tabsHTML=()=>`<div class="tabs">${TABS.map(t=>`<button class="${t[0]===tab?"on":""}" data-tab="${t[0]}">${t[1]}${t[0]==="processing"&&counts.processing?`<span class="n">${counts.processing}</span>`:""}</button>`).join("")}</div>`;
+let aboN=0,aboU=0; /* Abo-Lieferungen zur Freigabe, Kündigungen ohne Zuordnung */
+const badgeN=k=>k==="processing"?(counts.processing||0)+aboN:k==="abos"?aboN+aboU:0;
+const tabsHTML=()=>`<div class="tabs">${TABS.map(t=>`<button class="${t[0]===tab?"on":""}" data-tab="${t[0]}">${t[1]}${badgeN(t[0])?`<span class="n">${badgeN(t[0])}</span>`:""}</button>`).join("")}</div>`;
 
 async function load(force){
   clearTimeout(timer);
@@ -110,13 +122,15 @@ async function load(force){
   if(tab==="reviews"){if(force)loadReviews();return}
   if(tab==="reloadly"){if(force)loadRL();return}
   if(tab==="overview"){if(force)loadOV();return}
+  if(tab==="abos"){if(force)loadAbos();return}
   timer=setTimeout(()=>load(),30000);
   if(!force&&typing())return;
-  try{const j=await API("/admin/orders?status="+tab);counts=j.counts||{};setMode(j);render(j)}catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
+  try{const [j,ap]=await Promise.all([API("/admin/orders?status="+tab),API("/admin/abos/pending").catch(()=>null)]);counts=j.counts||{};if(ap){aboN=ap.count;aboU=ap.unmatched}setMode(j);render(j)}catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
 }
 function render(j){
-  document.title=(counts.processing?`(${counts.processing}) `:"")+"Admin · instacode";
-  $("#m").innerHTML=tabsHTML()+(j.orders.length?j.orders.map(card).join(""):`<div class="empty">${tab==="processing"?"Nichts zu prüfen. Bezahlte Bestellungen werden automatisch ausgeliefert.":"Keine Bestellungen in dieser Ansicht."}</div>`);
+  document.title=(counts.processing?`(${counts.processing}) `:"")+"Admin · instantcodes";
+  $("#m").innerHTML=tabsHTML()+(tab==="processing"?`<div id="aboPend"></div>`:"")+(j.orders.length?j.orders.map(card).join(""):`<div class="empty">${tab==="processing"?"Nichts zu prüfen. Bezahlte Bestellungen werden automatisch ausgeliefert.":"Keine Bestellungen in dieser Ansicht."}</div>`);
+  if(tab==="processing"&&aboN)fillAboPend();
 }
 const fill=i=>i.stock==null?"leer lassen: Testcode wird erzeugt":i.stock>0?`leer lassen: aus Lager (${i.stock} frei)`:"Lager leer, bitte Code eintragen";
 function card(o){
@@ -359,6 +373,105 @@ document.addEventListener("click",async e=>{
     try{await API(`/admin/orders/${encodeURIComponent(t.dataset.refund)}/refund`,{method:"POST",body:{reason}});toast("Erstattet");load(true)}
     catch(x){alert(x.message);t.disabled=false}
   }
+});
+
+/* ---------- Abos: Freigabe, Kündigungen, Erstattung, Paket-Inhalt, Stripe-Abgleich ---------- */
+let AB=null,ABP="pro",ABE=null;
+const ASTN={active:"Aktiv",past_due:"Zahlung offen",ended:"Beendet",pending:"Wartet auf Zahlung",expired:"Abgebrochen"};
+const ASTC={active:"#067647",past_due:"#B54708",ended:"#6B7280",pending:"#B54708",expired:"#6B7280"};
+const DSTN={pending:"Freigabe offen",delivered:"Geliefert",skipped:"Nicht geliefert",empty:"Leer"};
+const EVN={1:"jeden Monat",2:"alle 2 Monate",3:"alle 3 Monate",6:"alle 6 Monate",12:"alle 12 Monate"};
+const dd=t=>t?new Date(t).toLocaleDateString("de-DE"):"–",dtt=t=>t?new Date(t).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"}):"–";
+const clone=o=>JSON.parse(JSON.stringify(o));
+async function loadAbos(){try{AB=await API("/admin/abos");aboN=AB.pending.length;aboU=AB.cancels.filter(c=>!c.matched).length;setMode(AB);if(!ABE)ABE=clone(AB.content);drawAbos()}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+async function fillAboPend(){try{AB=await API("/admin/abos");const el=$("#aboPend");if(!el||typing())return;el.innerHTML=AB.pending.length?`<h3 class="ah">Abo-Lieferungen zur Freigabe<small>${AB.pending.length} offen · jede Abo-Lieferung geht erst nach deiner Freigabe raus</small></h3>${AB.pending.map(aboDel).join("")}<h3 class="ah">Bestellungen</h3>`:""}catch(e){}}
+const afill=i=>i.free>0?`leer lassen: aus Lager (${i.free} frei)`:i.gen?"leer lassen: Testcode wird erzeugt":i.rl?"leer lassen: über Reloadly kaufen (Knopf unten)":"Lager leer: Code eintragen";
+function aboDel(d){const s=d.sub;
+  return `<div class="card" data-ad="${d.id}"><div class="row"><div><b>${esc(s.id)} · Monat ${d.month}</b><span class="st" style="color:#3B5BDB;background:#3B5BDB1a">Freigabe</span>
+   <div class="muted">${esc(s.email)} · ${esc(s.planName)} · fällig seit ${dtt(d.due_at)}</div></div><b>${eur(d.value)}</b></div>
+   <div class="ahint">Erst nach Prüfung freigeben. Bezahlt bisher ${eur(s.revenue)}, Code-Wert geliefert ${eur(s.value_delivered)}, Abo seit ${dd(s.started_at)}${s.cancel_at?` · gekündigt zum ${dd(s.cancel_at)}`:""}${s.status==="past_due"?" · <b>Zahlung offen</b>":""}.</div>
+   ${d.items.map((i,k)=>`<div class="it"><b>${esc(i.label)}</b> <span class="muted">${eur(i.face)}</span><input data-acode="${k}" placeholder="Code · ${afill(i)}" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>`).join("")}
+   <textarea data-anote placeholder="Interne Notiz (optional, sieht nur das Team)" rows="2"></textarea>
+   <div class="acts"><button class="btn p" data-adeliver="${d.id}">Freigeben und E-Mail senden</button>${AB&&AB.reloadly?`<button class="btn g" data-arl="${d.id}">Über Reloadly kaufen und freigeben</button>`:""}<button class="btn r" data-askip="${d.id}">Nicht liefern</button></div></div>`}
+function aboSub(s){
+  const st=s.status==="active"&&s.cancel_at?"Gekündigt":ASTN[s.status]||s.status,col=ASTC[s.status]||"#6B7280";
+  return `<div class="card" data-as="${esc(s.id)}"><div class="row"><div><b>${esc(s.id)}</b> · ${esc(s.planName)} · ${eur(s.price)}${s.months>1?` / ${s.months} Monate`:" / Monat"}<span class="st" style="color:${col};background:${col}1a">${st}</span>
+    <div class="muted">${esc(s.email)}${s.name?" · "+esc(s.name):""} · seit ${dd(s.started_at)}${s.stripe_sub?` · <a href="https://dashboard.stripe.com/subscriptions/${esc(s.stripe_sub)}" target="_blank" rel="noopener">Stripe</a>`:""}</div>
+    <div class="muted">${s.next_charge?`Nächste Abbuchung ${dd(s.next_charge)}`:""}${s.next_charge&&s.cancel_at?" · ":""}${s.cancel_at?`${s.status==="ended"?"Beendet":"Endet"} ${dd(s.ended_at||s.cancel_at)} (${s.cancel_kind==="ausserordentlich"?"außerordentlich":"ordentlich"}${s.cancel_via==="stripe"?", in Stripe gekündigt":""})${s.cancel_reason?` · Grund: „${esc(s.cancel_reason)}“`:""}${s.cancel_synced?"":` · <b class="bad">Kündigung noch nicht an Stripe übertragen, Abgleich starten</b>`}`:s.status==="ended"?`Beendet ${dd(s.ended_at)}`:""}</div></div>
+    <div style="text-align:right"><b>${eur(s.revenue)}</b><div class="muted">Einnahmen</div><div class="muted">Code-Wert ${eur(s.value_delivered)}${s.value_pending?` + ${eur(s.value_pending)} offen`:""}</div></div></div>
+   ${s.refund_due?`<div class="ahint">Anteilige Erstattung für nicht gelieferte Monate offen: <b>${eur(s.refund_due)}</b>${s.cancel_kind==="ausserordentlich"?" · außerordentliche Kündigung: bitte den Grund prüfen":""}</div>`:""}
+   <div class="acts">${s.refund_due?`<button class="btn p sm" data-arefund="${esc(s.id)}" data-amt="${s.refund_due}">${eur(s.refund_due)} erstatten</button>`:""}${s.paid-s.refunded>0?`<button class="btn g sm" data-arefund="${esc(s.id)}" data-amt="">Anderen Betrag erstatten</button>`:""}</div>
+   <details class="adet"><summary>${s.periods.length} Zahlung${s.periods.length===1?"":"en"} · ${s.deliveries.length} Lieferung${s.deliveries.length===1?"":"en"}</summary>
+    <table class="alist">${s.periods.map(p=>`<tr><td>Zahlung ${p.no}</td><td>${dd(p.start)} – ${dd(p.end)}</td><td style="text-align:right">${eur(p.amount)}${p.refunded?` <span class="bad">−${eur(p.refunded)}</span>`:""}</td></tr>`).join("")}</table>
+    <table class="alist">${s.deliveries.map(d=>`<tr><td>Monat ${d.month}<div class="muted">${dd(d.due_at)}</div></td><td><span class="${d.status==="delivered"?"ok":d.status==="skipped"?"bad":""}">${DSTN[d.status]||esc(d.status)}</span>${d.delivered_at?`<div class="muted">${dtt(d.delivered_at)}</div>`:""}${d.note?`<div class="muted">${esc(d.note)}</div>`:""}</td><td>${d.items.map(i=>`<div>${esc(i.label)}${i.codes&&i.codes.length?` <code>${esc(i.codes.join(", "))}</code>`:""}</div>`).join("")}</td><td style="text-align:right">${eur(d.value)}</td></tr>`).join("")}</table></details></div>`}
+function aboCancel(c){
+  return `<div class="card"><div class="row"><div><b>${esc(c.id)}</b>${c.matched?"":`<span class="st" style="color:#B54708;background:#B547081a">Ohne Zuordnung</span>`}
+    <div class="muted">${dtt(c.received_at)} · ${esc(c.name)} · ${esc(c.email)}${c.ref?" · "+esc(c.ref):""} · ${c.kind==="ausserordentlich"?"außerordentlich":"ordentlich"} · ${c.wish==="date"&&c.wish_date?"zum "+dd(c.wish_date):"nächstmöglich"}</div>${c.reason?`<div class="muted">Grund: ${esc(c.reason)}</div>`:""}</div>
+    <div class="muted" style="text-align:right">${c.results.map(r=>`${esc(r.sub)} endet ${dd(r.end)}${r.refund?` · Erstattung ${eur(r.refund)}`:""}`).join("<br>")}</div></div>
+   ${c.matched?"":`<div class="acts"><input data-acsub="${esc(c.id)}" placeholder="Vertragsnummer AB-…" style="max-width:220px;margin:0"><button class="btn g sm" data-acassign="${esc(c.id)}">Zuordnen und bestätigen</button></div>`}</div>`}
+const aeVal=list=>list.reduce((s,i)=>s+Math.round(i.a*100),0);
+function aeSum(){const items=ABE[ABP]||[],P=AB.plans.find(p=>p.id===ABP),avg=Math.round(items.reduce((s,i)=>s+i.a*100/(i.every||1),0)),first=aeVal(items);
+  return `Code-Wert im ersten Monat ${eur(first)} · im Schnitt ${eur(avg)} pro Monat · Einnahmen ${eur(P.perMonth)} pro Monat · Differenz <b class="${P.perMonth-avg<0?"bad":"ok"}">${eur(P.perMonth-avg)}</b> pro Monat`}
+function aboEditor(){
+  const items=ABE[ABP]||[],prods=AB.products,opt=id=>prods.map(p=>`<option value="${esc(p.id)}"${p.id===id?" selected":""}>${esc(p.name)}</option>`).join("");
+  const amts=(id,a)=>{const p=prods.find(x=>x.id===id);return p?p.amts.map((x,i)=>`<option value="${x}"${x===a?" selected":""}>${p.labels&&p.labels[i]?esc(p.labels[i])+" · ":""}${eur(Math.round(x*100))}</option>`).join(""):""};
+  const ev=e=>AB.every.map(x=>`<option value="${x}"${x===e?" selected":""}>${EVN[x]||x+" Monate"}</option>`).join("");
+  return `<div class="tabs" style="margin:0">${AB.plans.map(p=>`<button class="${p.id===ABP?"on":""}" data-aplan="${p.id}">${esc(p.name)}</button>`).join("")}</div>
+   <p class="muted" style="margin:10px 0 0">Gilt für Lieferungen, die ab jetzt angelegt werden; schon angelegte behalten ihren Inhalt. Der Abstand legt fest, wie oft ein Code kommt – Codes mit 3 Monaten Laufzeit also „alle 3 Monate“. Die Bezeichnung sehen Kunden auf der Abo-Seite und in den E-Mails.</p>
+   <div>${items.map((it,k)=>`<div class="aerow" data-k="${k}"><select data-ae="brand" aria-label="Produkt">${opt(it.brand)}</select><select data-ae="a" aria-label="Betrag">${amts(it.brand,it.a)}</select><select data-ae="every" aria-label="Abstand">${ev(it.every)}</select><input data-ae="label" aria-label="Bezeichnung" placeholder="Bezeichnung (optional)" value="${esc(it.label||"")}"><button class="btn r sm" data-aedel="${k}">Entfernen</button></div>`).join("")}</div>
+   <div class="acts"><button class="btn g" data-aeadd>Code hinzufügen</button></div>
+   <p class="muted" id="aesum">${aeSum()}</p>
+   <label class="chk"><input type="checkbox" id="aeall"> Für alle drei Pläne übernehmen</label>
+   <div class="acts"><button class="btn p" data-aesave>Paket speichern</button><button class="btn g" data-aereset>Änderungen verwerfen</button></div>`}
+function drawAbos(){
+  const a=AB,t=a.totals,net=t.paid-t.refunded,open=a.cancels.filter(c=>!c.matched);
+  document.title=(aboN?`(${aboN}) `:"")+"Admin · instantcodes";
+  $("#m").innerHTML=tabsHTML()+`
+  <div class="kpis">
+   <div class="kpi"><small>Laufende Abos</small><b>${t.running}</b><small>${a.plans.map(p=>`${esc(p.name)} ${p.running}`).join(" · ")}</small></div>
+   <div class="kpi"><small>Einnahmen nach Erstattungen</small><b>${eur(net)}</b><small>${eur(t.refunded)} erstattet${t.refund_due?` · <b class="bad">${eur(t.refund_due)} offen</b>`:""}</small></div>
+   <div class="kpi"><small>Code-Wert geliefert</small><b>${eur(t.delivered)}</b><small>Saldo <b class="${net-t.delivered<0?"bad":"ok"}">${eur(net-t.delivered)}</b></small></div>
+   <div class="kpi"><small>Wartet auf Freigabe</small><b style="color:${a.pending.length?"#B54708":"inherit"}">${a.pending.length}</b><small>Code-Wert ${eur(t.pending)}</small></div>
+  </div>
+  <div class="card"><b>Kosten gegenüber Einnahmen</b><p class="muted" style="margin:4px 0 0">Code-Wert = Nennwert der Codes im Paket. Dein Einkaufspreis (z. B. bei Reloadly) kann etwas darunter liegen.</p>
+   <table class="stock" style="margin-top:8px"><tr><td><b>Plan</b></td><td><b>Preis</b></td><td><b>Einnahmen pro Monat</b></td><td><b>Code-Wert pro Monat (Schnitt)</b></td><td><b>Differenz pro Monat</b></td><td><b>Code-Wert erste Laufzeit</b></td></tr>
+   ${a.plans.map(p=>`<tr><td>${esc(p.name)}</td><td>${eur(p.price)}${p.months>1?` / ${p.months} Monate`:" / Monat"}</td><td>${eur(p.perMonth)}</td><td>${eur(p.avgValue)}</td><td class="${p.perMonth-p.avgValue<0?"bad":"ok"}">${eur(p.perMonth-p.avgValue)}</td><td>${eur(p.termValue)}</td></tr>`).join("")}</table></div>
+  <div class="card"><b>Stripe-Abgleich</b><p class="muted" style="margin:4px 0 0">Holt verpasste Abo-Ereignisse aus Stripe nach: bezahlte Rechnungen (Verlängerungen), Kündigungen, beendete Abos und Kündigungen, die noch nicht an Stripe übertragen wurden. Läuft zusätzlich alle 6 Stunden automatisch.</p>
+   <div class="acts"><button class="btn g" data-async>Fehlende Ereignisse in Stripe ergänzen</button></div><div id="asyncOut"></div></div>
+  <h3 class="ah">Lieferungen zur Freigabe<small>${a.pending.length?`${a.pending.length} offen`:"alles erledigt"}</small></h3>${a.pending.length?a.pending.map(aboDel).join(""):`<div class="empty">Keine Abo-Lieferung wartet. Neue Monate legt der Shop automatisch an.</div>`}
+  <h3 class="ah">Kündigungen<small>${open.length?`${open.length} ohne Zuordnung`:"alle zugeordnet"}</small></h3>${a.cancels.length?a.cancels.slice(0,30).map(aboCancel).join(""):`<div class="empty">Noch keine Kündigungen.</div>`}
+  <h3 class="ah">Abos<small>${a.subs.length}</small></h3>${a.subs.length?a.subs.map(aboSub).join(""):`<div class="empty">Noch keine Abos.</div>`}
+  <h3 class="ah">Inhalt der Pakete</h3><div class="card" id="aeBox">${aboEditor()}</div>`;
+}
+const aeDraw=()=>{const b=$("#aeBox");if(b)b.innerHTML=aboEditor()};
+const aboReload=()=>tab==="abos"?loadAbos():load(true);
+document.addEventListener("change",e=>{const f=e.target.closest("[data-ae]");if(!f||!ABE)return;const k=+f.closest("[data-k]").dataset.k,it=ABE[ABP][k],key=f.dataset.ae;
+  if(key==="brand"){const p=AB.products.find(x=>x.id===f.value);it.brand=f.value;it.a=p?p.amts[0]:0;aeDraw();return}
+  if(key==="a"||key==="every")it[key]=+f.value;
+  const s=$("#aesum");if(s)s.innerHTML=aeSum()});
+document.addEventListener("input",e=>{const f=e.target.closest("[data-ae=label]");if(f&&ABE)ABE[ABP][+f.closest("[data-k]").dataset.k].label=f.value});
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-adeliver],[data-arl],[data-askip],[data-arefund],[data-async],[data-acassign],[data-aplan],[data-aeadd],[data-aedel],[data-aesave],[data-aereset]");if(!t)return;
+  const box=t.closest("[data-ad]");
+  if(t.dataset.adeliver||t.dataset.arl){const id=t.dataset.adeliver||t.dataset.arl,rl=!!t.dataset.arl;
+    const items=[...box.querySelectorAll("[data-acode]")].map(i=>({i:+i.dataset.acode,code:i.value.trim()})).filter(x=>x.code);
+    if(!confirm(rl?"Fehlende Codes jetzt bei Reloadly kaufen und die Lieferung freigeben? Das kostet Reloadly-Guthaben.":"Lieferung freigeben? Der Kunde bekommt die Codes sofort per E-Mail."))return;
+    t.disabled=true;try{await API(`/admin/abos/deliveries/${id}/deliver`,{method:"POST",body:{items,reloadly:rl,note:(box.querySelector("[data-anote]")||{}).value||""}});box.querySelectorAll("input,textarea").forEach(i=>i.value="");toast("Freigegeben, E-Mail ist raus");aboReload()}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.dataset.askip){const note=prompt("Warum wird dieser Monat nicht geliefert? (nur intern sichtbar)","Missbrauchsverdacht");if(note===null)return;
+    t.disabled=true;try{await API(`/admin/abos/deliveries/${t.dataset.askip}/skip`,{method:"POST",body:{note}});toast("Als nicht geliefert markiert. Denk an eine Erstattung, falls nötig.");aboReload()}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.dataset.arefund){const def=t.dataset.amt?(+t.dataset.amt/100).toFixed(2).replace(".",","):"";const v=prompt("Betrag in Euro, der über Stripe erstattet wird:",def);if(v===null)return;
+    const c=Math.round(parseFloat(String(v).replace(",","."))*100);if(!(c>0))return alert("Bitte einen Betrag eingeben.");
+    const reason=prompt("Grund (steht in der E-Mail an den Kunden):","Anteilige Erstattung für nicht gelieferte Monate nach deiner Kündigung");if(reason===null)return;
+    t.disabled=true;try{await API(`/admin/abos/${encodeURIComponent(t.dataset.arefund)}/refund`,{method:"POST",body:{amount:c,reason}});toast(`${eur(c)} erstattet`);aboReload()}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.hasAttribute("data-async")){t.disabled=true;t.textContent="Abgleich läuft …";try{const j=await API("/admin/abos/sync",{method:"POST",body:{}});toast("Abgleich fertig");await loadAbos();const o=$("#asyncOut");if(o)o.innerHTML=`<p class="muted" style="margin:10px 0 0">${j.checked} Abos geprüft · ${j.periods} fehlende Zahlungen ergänzt · ${j.changed} Status geändert · ${j.deliveries} neue Lieferungen${j.errors.length?`<br><span class="bad">${j.errors.map(esc).join("<br>")}</span>`:""}</p>`}catch(x){alert(x.message);t.disabled=false;t.textContent="Fehlende Ereignisse in Stripe ergänzen"}return}
+  if(t.dataset.acassign){const id=t.dataset.acassign,v=(document.querySelector(`[data-acsub="${id}"]`)||{}).value||"";if(!v.trim())return alert("Bitte die Vertragsnummer (AB-…) eintragen.");
+    t.disabled=true;try{await API(`/admin/abos/cancels/${encodeURIComponent(id)}/assign`,{method:"POST",body:{sub:v.trim()}});toast("Zugeordnet, Bestätigung ist raus");loadAbos()}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.dataset.aplan){ABP=t.dataset.aplan;aeDraw();return}
+  if(t.hasAttribute("data-aeadd")){const p=AB.products.find(x=>x.id==="netflix")||AB.products[0];ABE[ABP].push({brand:p.id,a:p.amts[0],every:1,label:null});aeDraw();return}
+  if(t.dataset.aedel){ABE[ABP].splice(+t.dataset.aedel,1);aeDraw();return}
+  if(t.hasAttribute("data-aereset")){ABE=clone(AB.content);aeDraw();return}
+  if(t.hasAttribute("data-aesave")){const all=$("#aeall")&&$("#aeall").checked;if(all&&!confirm("Dieses Paket für Pro, Premium und Max übernehmen?"))return;
+    t.disabled=true;try{const j=await API("/admin/abos/content",{method:"POST",body:{plan:ABP,items:ABE[ABP],all}});AB.plans=j.plans.map(p=>Object.assign(p,{running:(AB.plans.find(x=>x.id===p.id)||{}).running||0}));AB.content=j.content;ABE=clone(j.content);drawAbos();toast("Paket gespeichert")}catch(x){alert(x.message);t.disabled=false}return}
 });
 (async()=>{
   try{const me=(await API("/me")).user;

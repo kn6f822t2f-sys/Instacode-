@@ -9,14 +9,14 @@
 .lite .card{background:linear-gradient(180deg,#121214,#0D0D0F)}
 @media (hover:hover) and (pointer:fine){
   .card::after,.catcard::after,.qa::after,.spot::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
-    background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(201,170,255,.09),rgba(201,170,255,0) 62%)}
+    background:radial-gradient(460px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.075),rgba(220,203,255,.03) 40%,rgba(255,255,255,0) 64%)}
   .card::before,.catcard::before,.qa::before,.spot::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1px;pointer-events:none;opacity:0;transition:opacity .4s var(--ease);
-    background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.55),rgba(255,255,255,0) 70%);
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.7),rgba(220,203,255,.25) 40%,rgba(255,255,255,0) 72%);
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
   .card:hover::after,.catcard:hover::after,.qa:hover::after,.spot:hover::after,.card:hover::before,.catcard:hover::before,.qa:hover::before,.spot:hover::before{opacity:1}
 }
 .spot{position:relative;isolation:isolate}
-.si-ic,.cc-ic{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:13px;color:var(--c,var(--iris-2));
+.si-ic,.cc-ic{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:13px;color:var(--c,var(--ink));
   background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));box-shadow:var(--rim-hi),0 10px 22px -12px rgba(0,0,0,.9)}
 .si-ic .ico,.cc-ic .ico{width:20px;height:20px}
 
@@ -38,21 +38,23 @@
 .btn-block{width:100%}
 .btn:active{transform:scale(.97)}
 .btn[disabled]{opacity:.4;pointer-events:none}
-/* Hauptknopf: weiße Pille (wie im Framer-Template), Pastell-Schimmer folgt dem Zeiger */
-.btn-primary{color:#0A0A0B;background:radial-gradient(170px circle at var(--mx,50%) var(--my,0%),rgba(201,170,255,.55),rgba(255,204,253,.18) 45%,rgba(255,255,255,0) 70%),#fff;
-  box-shadow:inset 0 -2px 1px rgba(0,0,0,.14),inset 0 1px 0 #fff,0 0 0 1px rgba(255,255,255,.55),0 10px 34px -12px rgba(255,255,255,.4)}
-@media (hover:hover){.btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 -2px 1px rgba(0,0,0,.14),inset 0 1px 0 #fff,0 0 0 1px #fff,0 16px 44px -12px rgba(201,170,255,.75),0 0 60px -18px rgba(131,153,255,.6)}}
+/* Hauptknopf: flüssiges Chrom – gespiegelter Verlauf, Glanz läuft beim Überfahren durch, Perlmutt-Licht folgt dem Zeiger */
+.btn-primary{color:#0D0E11;background:radial-gradient(140px circle at var(--mx,50%) var(--my,0%),rgba(255,224,240,.55),rgba(211,251,242,.25) 40%,rgba(255,255,255,0) 70%),var(--chrome-fill);
+  box-shadow:inset 0 1px 0 #fff,inset 0 -1px 1px rgba(0,0,0,.28),0 0 0 1px rgba(255,255,255,.45),0 10px 30px -10px rgba(255,255,255,.3),0 2px 4px rgba(0,0,0,.4)}
+.btn-primary::after{content:"";position:absolute;inset:0 auto 0 -70%;z-index:-1;width:50%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),transparent);transform:skewX(-18deg);transition:left .7s var(--ease)}
+@media (hover:hover){.btn-primary:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 #fff,inset 0 -1px 1px rgba(0,0,0,.28),0 0 0 1px #fff,0 16px 40px -12px rgba(255,255,255,.45),0 0 50px -16px rgba(220,203,255,.6)}.btn-primary:hover::after{left:130%}}
 .btn-primary:active{transform:scale(.97)}
-.btn-primary .spin{border-color:rgba(0,0,0,.15);border-top-color:#0A0A0B}
-/* Großer Hauptknopf: ein Pastell-Glanzpunkt läuft um den Rand */
-.btn-primary.btn-lg::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;padding:1.5px;background:var(--ring);
+.btn-primary .spin{border-color:rgba(0,0,0,.15);border-top-color:#0D0E11}
+/* Großer Hauptknopf: ein Perlmutt-Glanzpunkt läuft um den Rand */
+.btn-primary.btn-lg::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;padding:1.5px;pointer-events:none;background:var(--ring);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 5s linear infinite}
 @keyframes metalSpin{to{--ang:360deg}}
-.btn-soft,.btn-outline{background:rgba(255,255,255,.06);box-shadow:var(--rim-hi),0 10px 24px -16px rgba(0,0,0,.9)}
-@media (hover:hover){.btn-soft:hover,.btn-outline:hover{background:rgba(255,255,255,.1)}}
+/* Nebenknopf: Glas mit Chromkante */
+.btn-soft,.btn-outline{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));box-shadow:var(--rim-hi),0 10px 24px -16px rgba(0,0,0,.9);-webkit-backdrop-filter:var(--blur-s);backdrop-filter:var(--blur-s)}
+@media (hover:hover){.btn-soft:hover,.btn-outline:hover{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.07))}}
 .btn-ghost{min-height:40px;padding:0 6px;color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,.3)}
 /* Lichtpunkt beim Antippen */
-.rip{position:absolute;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(201,170,255,.35),rgba(201,170,255,0) 65%);transform:scale(0);animation:rip .6s var(--ease) forwards}
+.rip{position:absolute;z-index:-1;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.4),rgba(220,203,255,.15) 40%,rgba(255,255,255,0) 66%);transform:scale(0);animation:rip .6s var(--ease) forwards}
 @keyframes rip{to{transform:scale(1);opacity:0}}
 .shine::after{content:"";position:absolute;inset:0 auto 0 -60%;z-index:-1;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.3),transparent);transform:skewX(-14deg);animation:btnshine 6s ease-in-out infinite}
 @keyframes btnshine{0%,64%{left:-60%}100%{left:130%}}
@@ -63,7 +65,7 @@
 .badge{position:absolute;top:-2px;right:-3px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;display:grid;place-items:center;
   background:linear-gradient(180deg,#FF5D78,#E5243B);color:#fff;font-size:11px;font-weight:650;box-shadow:0 0 0 2px var(--bg),0 4px 12px -2px rgba(229,36,59,.6)}
 .badge[data-n="0"]{display:none}
-.more{display:inline-flex;align-items:center;gap:2px;font-size:15px;font-weight:550;color:var(--iris-2);white-space:nowrap;transition:color .2s}
+.more{display:inline-flex;align-items:center;gap:2px;font-size:15px;font-weight:550;color:var(--ink-2);white-space:nowrap;transition:color .2s}
 .more .ico{width:18px;height:18px;transition:transform .25s var(--ease)}
 .more:hover{color:#fff}
 .more:hover .ico{transform:translateX(3px)}
@@ -76,7 +78,7 @@
 .chip .ico{width:18px;height:18px}
 @media (hover:hover){.chip:hover{color:var(--ink);background:rgba(255,255,255,.08)}}
 .chip:active{transform:scale(.96)}
-.chip[aria-pressed="true"],.chip[aria-current="page"]{color:#0A0A0B;background:#fff;box-shadow:inset 0 -2px 1px rgba(0,0,0,.1),0 0 0 1px rgba(255,255,255,.6),0 8px 24px -10px rgba(201,170,255,.6)}
+.chip[aria-pressed="true"],.chip[aria-current="page"]{color:#0D0E11;background:var(--chrome-fill);box-shadow:inset 0 1px 0 #fff,inset 0 -1px 1px rgba(0,0,0,.25),0 0 0 1px rgba(255,255,255,.5),0 8px 22px -10px rgba(255,255,255,.35)}
 
 /* ---------- Beträge ---------- */
 .amounts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -86,8 +88,8 @@
 .amt small{font-size:12px;font-weight:550;color:var(--mint)}
 @media (hover:hover){.amt:hover{background:rgba(255,255,255,.08)}}
 .amt:active{transform:scale(.96)}
-.amt[aria-pressed="true"]{color:#0A0A0B;background:#fff;box-shadow:inset 0 -2px 1px rgba(0,0,0,.12),0 0 0 1px #fff,0 12px 32px -12px rgba(201,170,255,.7)}
-.amt[aria-pressed="true"] small{color:#0B7A47}
+.amt[aria-pressed="true"]{color:#0D0E11;background:var(--chrome-fill);box-shadow:inset 0 1px 0 #fff,inset 0 -1px 1px rgba(0,0,0,.25),0 0 0 1px rgba(255,255,255,.55),0 12px 30px -12px rgba(255,255,255,.4)}
+.amt[aria-pressed="true"] small{color:#0B6E44}
 .amt[aria-pressed="true"]::before{content:"";position:absolute;inset:-3px;z-index:-1;border-radius:19px;padding:1.5px;background:var(--ring);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:metalSpin 6s linear infinite}
 .amt[disabled]{opacity:.4;pointer-events:none}
@@ -116,13 +118,13 @@ select.sel option{background:#161618;color:var(--ink)}
 .err{min-height:18px;margin-top:6px;font-size:13.5px;color:var(--rose)}
 .flag{flex:none;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 .switch{position:relative;flex:none;width:52px;height:32px;border-radius:16px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);transition:background .25s}
-.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.45);transition:transform .35s var(--spring)}
-.switch[aria-checked="true"]{background:var(--brand-grad);box-shadow:0 0 18px -4px rgba(131,153,255,.7)}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:linear-gradient(180deg,#fff,#D9DCE1);box-shadow:0 2px 6px rgba(0,0,0,.45);transition:transform .35s var(--spring)}
+.switch[aria-checked="true"]{background:var(--chrome-fill);box-shadow:inset 0 1px 0 #fff,0 0 18px -6px rgba(255,255,255,.6)}
 .switch[aria-checked="true"]::after{transform:translateX(20px)}
 .chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14px;line-height:1.45;color:var(--ink-2);cursor:pointer}
 .chk input{appearance:none;-webkit-appearance:none;position:relative;width:20px;height:20px;margin:1px 0 0;flex:none;border-radius:6px;background:var(--field);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.22);cursor:pointer;transition:background .2s,box-shadow .2s}
-.chk input::after{content:"";position:absolute;left:6.5px;top:3px;width:5px;height:10px;border:solid #0A0A0B;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .25s var(--spring)}
-.chk input:checked{background:#fff;box-shadow:0 0 0 1px #fff,0 4px 14px -4px rgba(201,170,255,.8)}
+.chk input::after{content:"";position:absolute;left:6.5px;top:3px;width:5px;height:10px;border:solid #0D0E11;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .25s var(--spring)}
+.chk input:checked{background:var(--chrome-fill);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(255,255,255,.6),0 4px 14px -4px rgba(255,255,255,.5)}
 .chk input:checked::after{transform:rotate(45deg) scale(1)}
 .qty{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:var(--pill);background:rgba(255,255,255,.05);box-shadow:var(--rim)}
 .qty button{width:40px;height:40px;border-radius:50%;font-size:20px;font-weight:500;line-height:1;transition:background .2s,transform .2s var(--spring)}
@@ -141,7 +143,7 @@ select.sel option{background:#161618;color:var(--ink)}
 .tabs::-webkit-scrollbar{display:none}
 .tabs button{min-height:38px;padding:0 16px;border-radius:var(--pill);font-size:14.5px;font-weight:550;color:var(--ink-3);white-space:nowrap;transition:background .25s,color .2s,box-shadow .25s}
 @media (hover:hover){.tabs button:hover{color:var(--ink)}}
-.tabs button[aria-selected="true"]{color:var(--ink);background:rgba(255,255,255,.1);box-shadow:var(--rim-hi)}
+.tabs button[aria-selected="true"]{color:var(--ink);background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.06));box-shadow:var(--rim-hi)}
 
 /* ---------- Abschnitte ---------- */
 .sec{padding:var(--sec) var(--gut) 0}
@@ -259,7 +261,7 @@ select.sel option{background:#161618;color:var(--ink)}
 .qadd .ico{width:17px;height:17px}
 .qadd::before{content:"";position:absolute;inset:-6px;border-radius:50%}
 .qadd:active{transform:scale(.9)}
-@media (hover:hover) and (pointer:fine){.qadd{opacity:0;transform:translateY(6px) scale(.9)}.tile:hover .qadd,.tile:focus-within .qadd{opacity:1;transform:none}.qadd:hover{color:#0A0A0B;background:#fff}}
+@media (hover:hover) and (pointer:fine){.qadd{opacity:0;transform:translateY(6px) scale(.9)}.tile:hover .qadd,.tile:focus-within .qadd{opacity:1;transform:none}.qadd:hover{color:#0D0E11;background:var(--chrome-fill)}}
 .more-wrap{display:flex;justify-content:center;margin-top:32px}
 
 /* ---------- Wischleisten ---------- */
@@ -335,7 +337,7 @@ select.sel option{background:#161618;color:var(--ink)}
 .qa[data-open="true"]{background:var(--glass);box-shadow:var(--rim-hi),var(--lift)}
 .qa>button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:60px;padding:17px 20px;text-align:left;font-size:15.5px;font-weight:550}
 .qa>button .ico{width:22px;height:22px;padding:3px;border-radius:50%;color:var(--ink-2);background:rgba(255,255,255,.06);transition:transform .35s var(--ease),background .25s,color .25s}
-.qa[data-open="true"]>button .ico{transform:rotate(180deg);color:#0A0A0B;background:#fff}
+.qa[data-open="true"]>button .ico{transform:rotate(180deg);color:#0D0E11;background:var(--chrome-fill)}
 .qa-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease-out)}
 .qa[data-open="true"] .qa-b{grid-template-rows:1fr}
 .qa-b>div{overflow:hidden;visibility:hidden;transition:visibility 0s .4s}
