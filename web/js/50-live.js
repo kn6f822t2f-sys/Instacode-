@@ -222,7 +222,7 @@ const SUP=()=>(CFG.support)||"support@instacode.store";
 const LEGAL={
  agb:["Allgemeine Geschäftsbedingungen",()=>`
 <h2>1. Geltungsbereich und Anbieter</h2>
-<p>Diese AGB gelten für alle Bestellungen über den Onlineshop instacode.store. Anbieter und Vertragspartner ist der im <a href="${IMP}" target="_blank" rel="noopener">Impressum</a> genannte Betreiber. Abweichende Bedingungen des Kunden gelten nicht.</p>
+<p>Diese AGB gelten für alle Bestellungen über den Onlineshop ${esc(CFG.site||"instacode")}. Anbieter und Vertragspartner ist der im <a href="${IMP}" target="_blank" rel="noopener">Impressum</a> genannte Betreiber. Abweichende Bedingungen des Kunden gelten nicht.</p>
 <h2>2. Angebot</h2>
 <p>Wir verkaufen digitale Produkte: Guthaben- und Geschenkkarten-Codes, Spiele-Keys sowie Handy-Guthaben (Aufladungen). Die Codes stammen von autorisierten Distributoren. Die Einlösung erfolgt ausschließlich beim jeweiligen Herausgeber (z.&nbsp;B. Apple, Google, Sony, Valve, Netzbetreiber) nach dessen Bedingungen. Regionale Beschränkungen sind in der Produktbeschreibung angegeben.</p>
 <h2>3. Vertragsschluss</h2>

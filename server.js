@@ -226,7 +226,7 @@ function soldoutMap() {
   }
   return soldout;
 }
-const publicConfig = () => ({ vat: VAT, fee: FEE, payments: !!stripe, express: !!stripe && !!(PK || DEVPAY), pk: PK || (DEVPAY ? "pk_test_attrappe" : null), devpay: DEVPAY,
+const publicConfig = () => ({ site: (BASE_HOST || "").replace(/^www\./, ""), vat: VAT, fee: FEE, payments: !!stripe, express: !!stripe && !!(PK || DEVPAY), pk: PK || (DEVPAY ? "pk_test_attrappe" : null), devpay: DEVPAY,
   google: E.GOOGLE_CLIENT_ID || null, auth: authMethods(), mail: !!E.RESEND_API_KEY, methods: PAY_METHODS, inline: inlineTypes(), paylogos: payLogos(), klarna: KLARNA_ON() ? KLARNA_CATS() : null, testmode: TESTMODE, support: SUPPORT, trustpilot: TP, base: BASE });
 
 /* Produktempfehlungen in Liefer-Mails: Abmeldung per signiertem Link */
@@ -1422,7 +1422,7 @@ const buildPage = () => {
   if (pageCache && pageCache.stamp === stamp) return pageCache;
   const read = p => fs.readFileSync(p, "utf8");
   const css = f.css.map(read).join("\n"), js = f.js.map(read).join("\n");
-  pageCache = { stamp, mtime: Date.now(), html: read(f.shell).replace("/*@CSS*/", () => css).replace("/*@JS*/", () => js) };
+  pageCache = { stamp, mtime: Date.now(), html: read(f.shell).replace(/https:\/\/www\.instacode\.store/g, BASE).replace("/*@CSS*/", () => css).replace("/*@JS*/", () => js) };
   return pageCache;
 };
 const sendIndex = (req, res) => {

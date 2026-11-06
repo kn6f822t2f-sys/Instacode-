@@ -34,7 +34,7 @@ function renderFooter(){
    <div><h5>Kontakt</h5><ul><li><a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></li><li><a href="/hilfe">Hilfe und Kontakt</a></li></ul></div>
   </div>
   <div class="ft-giant" aria-hidden="true">instacode</div>
-  <div class="ft-bottom"><span>© ${new Date().getFullYear()} instacode.store</span><span class="ft-stripe">Zahlungsabwicklung durch <img src="/img/mark/logos/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></div>
+  <div class="ft-bottom"><span>© ${new Date().getFullYear()} ${esc(CFG.site||"instacode")}</span><span class="ft-stripe">Zahlungsabwicklung durch <img src="/img/mark/logos/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></div>
   </div>`;
 }
 function applyTheme(){document.documentElement.setAttribute("data-theme","dark")}
