@@ -1879,8 +1879,8 @@ app.get("/:id", (req, res, next) => {
   if (!/^[\w-]{1,80}$/.test(id) || SHORT_SKIP.has(id)) return next();
   const cat = shopCatalog(); if (!shortIds || shortIds.cat !== cat) shortIds = { cat, ids: new Set(cat.map(b => b.id)) };
   if (!shortIds.ids.has(id)) return next();
-  const q = req.originalUrl.indexOf("?");
-  res.redirect(301, `/marke/${id}${q > -1 ? req.originalUrl.slice(q) : ""}`);
+  const u = String(req.originalUrl || req.url || ""), q = u.indexOf("?");
+  res.redirect(301, `/marke/${id}${q > -1 ? u.slice(q) : ""}`);
 });
 /* Alle Shop-Adressen (z. B. /marke/steam, /warenkorb, /bestellung/…) liefern die Seite aus; der Browser übernimmt das Routing */
 app.use((req, res, next) => (req.method === "GET" && /^\/(?!api\/|auth\/|img\/|mail\/|cards\/|admin|__)[^.]*$/.test(req.path)) ? sendIndex(req, res) : next());

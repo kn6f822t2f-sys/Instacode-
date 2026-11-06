@@ -804,3 +804,12 @@ html:not(.lite) .pd-card .pd-glass{-webkit-backdrop-filter:blur(14px) saturate(1
 .phone-mock.charged .pm-bar i{transform:scaleX(1)}
 .pm-ok{margin-top:9px;font-size:12.5px;font-weight:560;line-height:1.3;color:#5FE3AE;opacity:0;transform:translateY(4px);transition:opacity .4s var(--ease) .75s,transform .4s var(--ease) .75s}
 .phone-mock.charged .pm-ok{opacity:1;transform:none}
+
+/* Offizielle Einlöse-Seite (Reiter „Einlösen“): Glas-Knopf mit Ziel-Domain, darunter leiser Hinweis; öffnet einen neuen Tab */
+.pd-go{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.pd-go .btn{max-width:100%}
+.pd-go .btn>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pd-go small{font-size:13px;line-height:1.4;color:var(--ink-3)}
+/* Bestellseite: „Jetzt einlösen“ neben „Code kopieren“ (Handy: eigene Zeile über die volle Breite) */
+.od-code-a .od-go{grid-column:1/-1}
+@media (min-width:640px){.od-code-a:has(.od-go){grid-template-columns:auto auto auto}.od-code-a .od-go{grid-column:auto}}

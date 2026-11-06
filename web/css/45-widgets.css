@@ -154,7 +154,7 @@
 /* Hilfe: Mia-Hinweis mit Video */
 .wg-mia{display:grid;gap:30px;align-items:center}
 .wg-mia .wg-ph .iph{--w:min(212px,56vw)}
-@media (min-width:900px){.wg-mia{grid-template-columns:minmax(0,1fr) auto;gap:48px}.wg-mia .wg-ph .iph{--w:232px}}
+@media (min-width:900px){.wg-mia{grid-template-columns:minmax(0,1fr) auto;gap:56px}.wg-mia .wg-ph .iph{--w:232px}.wg-mia .hp-contact{padding:30px 26px 26px}.wg-mia .hp-contact .hq{grid-template-columns:minmax(0,1fr)}}
 
 @keyframes wgUp{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes wgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
