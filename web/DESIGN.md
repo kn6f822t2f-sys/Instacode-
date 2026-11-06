@@ -21,13 +21,20 @@ Stil: Graphit wie in einem Fotostudio, Milchglas mit Chromkante, Perlmutt-Reflex
 - Linien: `--line`, `--line-2`. Trennung per `box-shadow:0 -1px 0 var(--line)`, nie `border:1px solid`.
 - Form: `--r-xs 10`, `--r-s 14`, `--r-m 18`, `--r-l 24`, `--r-xl 32`, `--pill`. Raum: `--gut` (Seitenrand, Inhalt max. 1240 px), `--sec` (Abschnittsabstand 72–128 px).
 - Bewegung: `--ease`, `--ease-out`, `--spring`. Schrift: `--font` (Geist), `--mono`.
-- Typo: `.h1` (40–76 px, 560), `.h2` (30–48 px, 540), beide Chrom; `.h3 .page-h1 .lead .fine .muted .code .pearl-t`.
+- Typo: `.h1` (36–62 px, 600), `.h2` (27–40 px, 590), beide in ruhigem Silber; `.h3 .page-h1 .lead .fine .muted .code .pearl-t`.
 
 **Glas-Rezept für neue Flächen:** `background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02)); box-shadow:var(--rim),var(--lift); border-radius:var(--r-l);` (oder kurz `var(--glass)`). Weichzeichner (`backdrop-filter`) nur auf Flächen, die über Inhalt schweben. Auf `.lite` deckend mit `--glass-solid`/`--bg-2`. **Aktiver Zustand:** Chrom (`background:var(--chrome-fill);color:#0D0E11`), wie `.chip[aria-pressed=true]`.
 
 ## Fertige Bauteile (nicht neu erfinden, nicht global überschreiben)
 `.card .si-ic .cc-ic .lg-group/.lg-lens .btn(.btn-primary .btn-soft .btn-outline .btn-ghost .btn-lg .btn-sm .btn-block) .icon-btn .badge .more .chips/.chip .amounts/.amt .lbl .inp .field .phone .sel .err .flag .switch .chk .qty .otp .row .express .trust .tabs .sec .sec-head .crumb .gc (+ Varianten) .mini .mini-gc .tiles/.tile/.tile-media/.tile-meta/.qadd .rail/.rail-track/.rail-nav .catgrid/.catcard/.fan .stage/.fs/.float .phead/.phead-stage .faq/.qa .empty/.ghostfan .paylogos/.pmk/.pmk-kl/.kl-cap .spin .rv .bump .tick .shake .rip .shine .ring .spot .chrome-rim .lm .metal .lq`, Kopfzeile `.hdr …`, Fußzeile `.ftr .ft-*`, `.testbar .trustbar .bgfx`.
 Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines Bereichs scopen** (z. B. `.pd .amt{…}`), nie die Grundregel ändern. Klassen-Präfixe vorher suchen (`grep`), damit sie nicht mit anderen Bereichen kollidieren. `.card` belegt mit Maus `::before`/`::after`.
+
+## Knöpfe, iPhone, Seitenwechsel, Bilder
+- **Knöpfe:** Hauptknopf gebürstetes Silber (ruhig), beim Überfahren leichtes Anheben, feiner Glanz, Licht folgt dem Zeiger; großer Hauptknopf zeigt den Perlmutt-Lichtring nur beim Überfahren. Nebenknopf Glas, Kante wird beim Überfahren heller. Drücken: leicht einsinken (scale .975).
+- **iPhone:** `iphone(inhalt,{w,cls,id})` (js/10-components.js, CSS in 02-components.css) – Maße wie iPhone 16 Pro, Titanrahmen, Tasten, Dynamic Island, Statusleiste. Größe per CSS über `--w`. Für Videos: `.iph-stage[data-mouse] > .iph-float[data-off] > .iph-tilt > iphone(...)`. Videos im Format 402 × 828 pt aufnehmen (`/home/claude/devshim/vid/rec6.js kauf|aufladen`), als 540 × 1112 kodieren.
+- **Seitenwechsel:** View Transitions im Router (`route()` in 60-router-ui.js): Inhalt blendet über, Kopfzeile bleibt stehen, eine angetippte Karte fliegt in die Produktseite (`view-transition-name: ic-card`). Ohne API/bei reduzierter Bewegung direkt.
+- **Produktbilder:** Spiele-Keys zeigen offizielle Shop-Bilder (Steam, Nintendo, PlayStation, Minecraft). Nur die Adressen liegen in `covers.json` (erzeugt mit `node tools/covers.js`), der Server lädt die Bilder beim ersten Aufruf (`/img/cover/<id>/p|l`) und speichert sie im Datenordner. Gutscheinkarten: Originalbilder kommen automatisch, sobald Reloadly verbunden ist.
+- **Zahlungszeichen:** offizielle Logos liegen unter `public/pay/*.svg` (Apple Pay, Google Pay, Visa, Mastercard, American Express, PayPal, Klarna, Amazon Pay, SEPA, Maestro, Stripe). Angezeigt werden nur die Zahlungsarten, die in Stripe aktiv sind.
 
 ## Flüssigmetall
 - **Ring (Startseite, Abschluss):** `<div class="lq" data-off aria-hidden="true"></div>` in einem `position:relative`-Element; der Router ruft `LIQUID.mount()` (in `fx()`) auf. WebGL-Shader `js/13-liquid.js`: fließender Chrom-Ring, Glanzlicht folgt dem Zeiger, pausiert unsichtbar, auf Touch halbe Auflösung und 30 Bilder/s, bei reduzierter Bewegung Standbild, ohne WebGL CSS-Ring (`.nogl`). Höchstens 2 pro Seite.

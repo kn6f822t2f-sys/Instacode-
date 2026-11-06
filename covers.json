@@ -1,0 +1,270 @@
+{
+ "fc26-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/3e62e7456809a5cf182104711ed7465762d3b5fb/library_capsule_2x.jpg?t=1789751159",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/7a4a2467300194840eb2116c2126c2d2422b4e12/capsule_616x353.jpg?t=1789751159"
+ },
+ "fc26-xbox": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/3e62e7456809a5cf182104711ed7465762d3b5fb/library_capsule_2x.jpg?t=1789751159",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/7a4a2467300194840eb2116c2126c2d2422b4e12/capsule_616x353.jpg?t=1789751159"
+ },
+ "fc26-ea": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/3e62e7456809a5cf182104711ed7465762d3b5fb/library_capsule_2x.jpg?t=1789751159",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/7a4a2467300194840eb2116c2126c2d2422b4e12/capsule_616x353.jpg?t=1789751159"
+ },
+ "bo7-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3606480/52fdd54919080413c200435a5e777fa43b20ec6e/capsule_616x353.jpg?t=1789747703",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3606480/52fdd54919080413c200435a5e777fa43b20ec6e/capsule_616x353.jpg?t=1789747703"
+ },
+ "bo7-xbox": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3606480/52fdd54919080413c200435a5e777fa43b20ec6e/capsule_616x353.jpg?t=1789747703",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3606480/52fdd54919080413c200435a5e777fa43b20ec6e/capsule_616x353.jpg?t=1789747703"
+ },
+ "bo7-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3606480/52fdd54919080413c200435a5e777fa43b20ec6e/capsule_616x353.jpg?t=1789747703",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3606480/52fdd54919080413c200435a5e777fa43b20ec6e/capsule_616x353.jpg?t=1789747703"
+ },
+ "bf6-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/5efba891507f611d94ef6685cc2af7cd0640f55d/library_capsule_2x.jpg?t=1793314012",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/b0f1d6c5c6489a2aee500c5d151ca315aa78ef0a/capsule_616x353_alt_assets_24.jpg?t=1793314012"
+ },
+ "bf6-xbox": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/5efba891507f611d94ef6685cc2af7cd0640f55d/library_capsule_2x.jpg?t=1793314012",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/b0f1d6c5c6489a2aee500c5d151ca315aa78ef0a/capsule_616x353_alt_assets_24.jpg?t=1793314012"
+ },
+ "bf6-ea": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/5efba891507f611d94ef6685cc2af7cd0640f55d/library_capsule_2x.jpg?t=1793314012",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/b0f1d6c5c6489a2aee500c5d151ca315aa78ef0a/capsule_616x353_alt_assets_24.jpg?t=1793314012"
+ },
+ "gta5-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg?t=1765387725",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/capsule_616x353.jpg?t=1765387725"
+ },
+ "gta5-xbox": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg?t=1765387725",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/capsule_616x353.jpg?t=1765387725"
+ },
+ "gta5-rockstar": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/library_600x900_2x.jpg?t=1765387725",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/capsule_616x353.jpg?t=1765387725"
+ },
+ "rdr2-rockstar": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/library_600x900_2x.jpg?t=1759502961",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/capsule_616x353.jpg?t=1759502961"
+ },
+ "eldenring-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg?t=1790290043",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1790290043"
+ },
+ "eldenring-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg?t=1790290043",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1790290043"
+ },
+ "eldenring-xbox": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/library_600x900_2x.jpg?t=1790290043",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1790290043"
+ },
+ "minecraft-pc": {
+  "p": "https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/key-art/Hero-Image_Vanilla_Deluxe_1200x675.jpg",
+  "l": "https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/key-art/Hero-Image_Vanilla_Deluxe_1200x675.jpg"
+ },
+ "cp2077-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/6399de67cce3cecadce7900e03f6e09ff910a235/library_capsule_2x.jpg?t=1792682505",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/f5283a1d1a2a44b9b67a861cc2e047859557a872/capsule_616x353_alt_assets_9.jpg?t=1792682505"
+ },
+ "bg3-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900_2x.jpg?t=1777363040",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/59827b3d0abf2f29adacfe72fdfd11059d6974e2/capsule_616x353.jpg?t=1777363040"
+ },
+ "hogwarts-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/dca9bb926befe37ff9754e3336cd9fe4c969c1e9/library_capsule_2x.jpg?t=1790708992",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/3f795a6fba1a710110ad16aa80583ecdf42812f4/capsule_616x353.jpg?t=1790708992"
+ },
+ "hogwarts-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/dca9bb926befe37ff9754e3336cd9fe4c969c1e9/library_capsule_2x.jpg?t=1790708992",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/3f795a6fba1a710110ad16aa80583ecdf42812f4/capsule_616x353.jpg?t=1790708992"
+ },
+ "fh5-xpc": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/library_600x900_2x.jpg?t=1788546569",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1551360/capsule_616x353.jpg?t=1788546569"
+ },
+ "diablo4-bnet": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/94a971a57dbfc1a8d9ddcb3ec39cfd93e2418d23/library_capsule_2x.jpg?t=1789491624",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/2f4d94366b280084c0aed937a6b423d7803ebbbb/capsule_616x353.jpg?t=1789491624"
+ },
+ "mhwilds-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2246340/e3fc16c6bc498891e952500eda05fe6462ceb9f0/library_600x900_2x.jpg?t=1787549555",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2246340/a1df989a3b439e15171dc7144c1ce13c32abcae6/capsule_616x353.jpg?t=1787549555"
+ },
+ "mhwilds-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2246340/e3fc16c6bc498891e952500eda05fe6462ceb9f0/library_600x900_2x.jpg?t=1787549555",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2246340/a1df989a3b439e15171dc7144c1ce13c32abcae6/capsule_616x353.jpg?t=1787549555"
+ },
+ "acshadows-ubi": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3159330/bdab6ed673aea5877d76e8c99c696ced92cf0d12/library_capsule_2x.jpg?t=1792778493",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3159330/2d5536f7e9f72d7844c59c5dc1416f7b756d3ad4/capsule_616x353.jpg?t=1792778493"
+ },
+ "acshadows-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3159330/bdab6ed673aea5877d76e8c99c696ced92cf0d12/library_capsule_2x.jpg?t=1792778493",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3159330/2d5536f7e9f72d7844c59c5dc1416f7b756d3ad4/capsule_616x353.jpg?t=1792778493"
+ },
+ "kcd2-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1771300/library_600x900_2x.jpg?t=1777975568",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1771300/bcad55593058f54e54aee8b6714220e216cf9b0c/capsule_616x353.jpg?t=1777975568"
+ },
+ "splitfiction-ea": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2001120/f9b802097eff97ac7edcc92f864d4b9a91516b67/library_600x900_2x.jpg?t=1763484567",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2001120/5a3209f496e911ff2fa6dccd58c682c89632d09b/capsule_616x353.jpg?t=1763484567"
+ },
+ "splitfiction-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2001120/f9b802097eff97ac7edcc92f864d4b9a91516b67/library_600x900_2x.jpg?t=1763484567",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2001120/5a3209f496e911ff2fa6dccd58c682c89632d09b/capsule_616x353.jpg?t=1763484567"
+ },
+ "silksong-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1030300/93637c34351160eaa7d7ff0cce69cb4312abb819/library_capsule_2x.jpg?t=1776125736",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1030300/eb4f42b7595ecf3b9c9131aaadec283158c1019e/capsule_616x353.jpg?t=1776125736"
+ },
+ "stardew-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900_2x.jpg?t=1786554168",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/413150/capsule_616x353.jpg?t=1786554168"
+ },
+ "helldivers2-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/a79b4d13ce2b1e1379116085b4f97b45c14548ab/library_capsule_2x.jpg?t=1793395133",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/5dca2c120a87aeee02bbe8ed58711b4255c26228/capsule_616x353.jpg?t=1793395133"
+ },
+ "helldivers2-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/a79b4d13ce2b1e1379116085b4f97b45c14548ab/library_capsule_2x.jpg?t=1793395133",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/5dca2c120a87aeee02bbe8ed58711b4255c26228/capsule_616x353.jpg?t=1793395133"
+ },
+ "witcher3-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292030/dd1c19c4e41b120ddfa35734cc31f79254c25082/library_capsule_2x.jpg?t=1793900434",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292030/7abf00646609445b27a44cafaa11adb9f125fb43/capsule_616x353.jpg?t=1793900434"
+ },
+ "palworld-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/f85c38b444047c686d44eea5f649c9ae761fd06a/library_capsule_2x.jpg?t=1790336367",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/57df7aed61d65c9012a11d58e812aff275b7daed/capsule_616x353.jpg?t=1790336367"
+ },
+ "fs25-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2300320/15ffc99f19c01e22e872863e0f1608b6a8f71578/library_capsule_2x.jpg?t=1793106374",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2300320/5e70c9e0c96fd0bec13d1f25faa46bd709a19b8b/capsule_616x353.jpg?t=1793106374"
+ },
+ "ets2-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/227300/library_600x900_2x.jpg?t=1793285269",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/227300/5237101dc9efe4873c9be1804d4ed2619ad7bee4/capsule_616x353.jpg?t=1793285269"
+ },
+ "civ7-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1295660/library_600x900_2x.jpg?t=1792718077",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1295660/67d1e25be716706a00d1e0534882a11bb5ba973a/capsule_616x353.jpg?t=1792718077"
+ },
+ "seaofthieves-xpc": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1172620/library_600x900.jpg?t=1793617680",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1172620/1617656502fd33cb55deaff55fe1ffada0c51e18/capsule_616x353.jpg?t=1793617680"
+ },
+ "cs2-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/library_600x900_2x.jpg?t=1793054556",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/6328493f4cc4a8fb83e1149be1cac5a7823fe588/capsule_616x353.jpg?t=1793054556"
+ },
+ "mkworld-switch2": {
+  "p": "https://assets.nintendo.com/image/upload/c_fill,w_600,h_900,g_center/q_auto/f_jpg/store/software/switch2/70010000095431/0485f410193ca12f92a2f615ea608bb437540f321bd05e464593c33fefa09bf2",
+  "l": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto/f_jpg/dpr_1.0/store/software/switch2/70010000095431/0485f410193ca12f92a2f615ea608bb437540f321bd05e464593c33fefa09bf2"
+ },
+ "zeldatotk-switch": {
+  "p": "https://assets.nintendo.com/image/upload/c_fill,w_600,h_900,g_center/q_auto/f_jpg/store/software/switch/70010000063714/fb30eab428df3fc993b41c76e20f72e4d76d49734d17d31996b5ab61c414b117",
+  "l": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto/f_jpg/dpr_1.0/store/software/switch/70010000063714/fb30eab428df3fc993b41c76e20f72e4d76d49734d17d31996b5ab61c414b117"
+ },
+ "pokemonza-switch": {
+  "p": "https://assets.nintendo.com/image/upload/c_fill,w_600,h_900,g_center/q_auto/f_jpg/store/software/switch/70010000094234/357e68d5f1e168a213f3b2db2dda7da9e0ba2c0f0900360cc72c3f90649f7091",
+  "l": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto/f_jpg/dpr_1.0/store/software/switch/70010000094234/357e68d5f1e168a213f3b2db2dda7da9e0ba2c0f0900360cc72c3f90649f7091"
+ },
+ "acnh-switch": {
+  "p": "https://assets.nintendo.com/image/upload/c_fill,w_600,h_900,g_center/q_auto/f_jpg/store/software/switch/70010000027619/9989957eae3a6b545194c42fec2071675c34aadacd65e6b33fdfe7b3b6a86c3a",
+  "l": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto/f_jpg/dpr_1.0/store/software/switch/70010000027619/9989957eae3a6b545194c42fec2071675c34aadacd65e6b33fdfe7b3b6a86c3a"
+ },
+ "smbwonder-switch": {
+  "p": "https://assets.nintendo.com/image/upload/c_fill,w_600,h_900,g_center/q_auto/f_jpg/store/software/switch/70010000068688/87e8aa5f1fdc950b88eae7d7c62ed185c8a6373c845090bbdb2e2cf039b38da1",
+  "l": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto/f_jpg/dpr_1.0/store/software/switch/70010000068688/87e8aa5f1fdc950b88eae7d7c62ed185c8a6373c845090bbdb2e2cf039b38da1"
+ },
+ "ghostyotei-ps5": {
+  "p": "https://image.api.playstation.com/vulcan/ap/rnd/202607/2723/890df32c227f619c5bd80e9f34ba2be53d0fea4b1615adee.png",
+  "l": "https://image.api.playstation.com/vulcan/ap/rnd/202607/2723/890df32c227f619c5bd80e9f34ba2be53d0fea4b1615adee.png"
+ },
+ "re4-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/library_600x900_2x.jpg?t=1772502922",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/capsule_616x353.jpg?t=1772502922"
+ },
+ "sf6-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/68211efdd07a0e530070fe5a620cc8cab54cb17b/library_600x900_2x.jpg?t=1791866175",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/a98f033cbda5b71dbd8db735808aaf232cf587dd/capsule_616x353_alt_assets_21.jpg?t=1791866175"
+ },
+ "sf6-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/68211efdd07a0e530070fe5a620cc8cab54cb17b/library_600x900_2x.jpg?t=1791866175",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/a98f033cbda5b71dbd8db735808aaf232cf587dd/capsule_616x353_alt_assets_21.jpg?t=1791866175"
+ },
+ "tekken8-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900_2x.jpg?t=1787180720",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/capsule_616x353.jpg?t=1787180720"
+ },
+ "tekken8-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900_2x.jpg?t=1787180720",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/capsule_616x353.jpg?t=1787180720"
+ },
+ "doomtda-xpc": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3017860/e670b2a17acb4bfd60dfb8fb6d4d8cb5b1d5c07c/library_600x900_2x.jpg?t=1793834110",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3017860/83434b237ecb9fd536c1cb9f3fd5dfb93515c67f/capsule_616x353.jpg?t=1793834110"
+ },
+ "doomtda-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3017860/e670b2a17acb4bfd60dfb8fb6d4d8cb5b1d5c07c/library_600x900_2x.jpg?t=1793834110",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3017860/83434b237ecb9fd536c1cb9f3fd5dfb93515c67f/capsule_616x353.jpg?t=1793834110"
+ },
+ "indiana-xpc": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2677660/library_600x900_2x.jpg?t=1778168392",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2677660/c939ee590e5b9ccdd1af63240cd9d6df8177c2aa/capsule_616x353.jpg?t=1778168392"
+ },
+ "ds2-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3280350/9b523fd411eeaefe80f238489745325a1cd2317f/library_capsule_2x.jpg?t=1774022345",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3280350/4c0873ac29806d09215f16371dfde866bcd4caf1/capsule_616x353.jpg?t=1774022345"
+ },
+ "mgsdelta-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2417610/library_600x900_2x.jpg?t=1762249119",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2417610/9038732c9ed1efe365d102b1eb7d239f345ec791/capsule_616x353.jpg?t=1762249119"
+ },
+ "mgsdelta-ps5": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2417610/library_600x900_2x.jpg?t=1762249119",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2417610/9038732c9ed1efe365d102b1eb7d239f345ec791/capsule_616x353.jpg?t=1762249119"
+ },
+ "wukong-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2358720/library_600x900_2x.jpg?t=1760601605",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2358720/f40ef565c380c617020e559b4b4b089edd93ec09/capsule_616x353.jpg?t=1760601605"
+ },
+ "satisfactory-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/526870/8968499686cff74b539c70ca1b44d671562d63dc/library_capsule_2x.jpg?t=1791192059",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/526870/290c413f4075e43a5d2e106dcbbaa036b3271621/capsule_616x353.jpg?t=1791192059"
+ },
+ "valheim-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/892970/3dee2eb67bca0660c5ca3c9e1cfbdfc1063333ba/library_capsule_2x.jpg?t=1791544831",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/892970/22457bf860fd3e08b5aff23eef3afc7c97e2b9e7/capsule_616x353_alt_assets_6.jpg?t=1791544831"
+ },
+ "terraria-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900_2x.jpg?t=1792530636",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/capsule_616x353.jpg?t=1792530636"
+ },
+ "rust-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252490/library_600x900_2x.jpg?t=1781536981",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252490/c05e66e166b0fc5fc2a06711d7bfa1b4cb2f45f6/capsule_616x353.jpg?t=1781536981"
+ },
+ "dbd-steam": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/381210/1b6ff94b7c05c205fbcbd2628f862a1469882f23/library_capsule_2x.jpg?t=1793724618",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/381210/capsule_616x353.jpg?t=1793724618"
+ },
+ "ittakestwo-ea": {
+  "p": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1426210/library_600x900_2x.jpg?t=1777395376",
+  "l": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1426210/capsule_616x353.jpg?t=1777395376"
+ },
+ "mpjamboree-switch": {
+  "p": "https://assets.nintendo.com/image/upload/c_fill,w_600,h_900,g_center/q_auto/f_jpg/store/software/switch/70010000084608/ba0572bf9d840b03bf9958809943fb3c76c3adfd6d8f2704b0f1b766f8aa4027",
+  "l": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto/f_jpg/dpr_1.0/store/software/switch/70010000084608/ba0572bf9d840b03bf9958809943fb3c76c3adfd6d8f2704b0f1b766f8aa4027"
+ },
+ "dkbananza-switch2": {
+  "p": "https://assets.nintendo.com/image/upload/c_fill,w_600,h_900,g_center/q_auto/f_jpg/store/software/switch2/70010000096809/3c8219fbdcd3bdd0ebd6239cf32c651fe10f2157aa7730fcc6a7d96cd27460e5",
+  "l": "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto/f_jpg/dpr_1.0/store/software/switch2/70010000096809/3c8219fbdcd3bdd0ebd6239cf32c651fe10f2157aa7730fcc6a7d96cd27460e5"
+ }
+}

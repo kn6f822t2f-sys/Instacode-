@@ -15,6 +15,8 @@ const Stripe = require("stripe");
 const mail = require("./emails");
 const RL = require("./reloadly");
 const CATALOG = require("./catalog.json");
+/* Offizielle Shop-Bilder der Spiele (Steam, Nintendo, PlayStation, Minecraft) – nur die Adressen, siehe tools/covers.js */
+const COVERS = (() => { try { return require("./covers.json"); } catch (e) { return {}; } })();
 
 const E = process.env;
 const PROD = E.NODE_ENV === "production";
@@ -41,7 +43,7 @@ const EXCLUDED_PM = ["klarna"];
 /* Welche Zahlungsarten im Shop beschriftet werden: live aus der Stripe-Zahlungsarten-Einstellung gelesen */
 const PM_SHOW = ["apple_pay", "google_pay", "paypal", "amazon_pay", "link", "card", "eps", "bancontact"];
 let KLARNA_AVAIL = E.KLARNA_AVAILABLE === "1";
-let PAY_METHODS = (E.PAY_METHODS || "apple_pay,card,link").split(",").map(s => s.trim()).filter(m => PM_SHOW.includes(m));
+let PAY_METHODS = (E.PAY_METHODS || "apple_pay,google_pay,card,link").split(",").map(s => s.trim()).filter(m => PM_SHOW.includes(m));
 async function loadPayMethods() {
   if (!stripe || /_attrappe$/.test(E.STRIPE_SECRET_KEY || "") || E.PAY_METHODS) return;
   try {
@@ -210,6 +212,7 @@ function shopCatalog() {
     if (!x.rl && !x.grp && x.cat !== "topup") x.grp = "g:" + grpKey(x.name);
     if (r.img) x.img = `/img/p/${b.id}.${r.img}?v=${r.img_v}`;
     if (r.logo) x.logo = `/img/p/${b.id}.logo.${r.logo}?v=${r.logo_v}`;
+    if (COVERS[b.id] && !x.img) x.cov = 1;
     out.push(x);
   }
   shopCache = { rows, n, out };
@@ -1253,6 +1256,32 @@ app.get("/img/mark/:set/:name", wrap(async (req, res) => {
     catch (e) { markMiss.set(key, now()); return res.status(404).end(); }
   }
   res.set("Cache-Control", "public, max-age=2592000, immutable").type("image/svg+xml").sendFile(file);
+}));
+/* Spiele-Bilder: beim ersten Aufruf vom offiziellen Shop geladen, danach lokal zwischengespeichert (nicht im Repo) */
+const COVER_DIR = path.join(DATA, "img", "cover"), coverMiss = new Map(), coverLoad = new Map();
+fs.mkdirSync(COVER_DIR, { recursive: true });
+const COVER_HOSTS = /^https:\/\/(shared\.akamai\.steamstatic\.com|shared\.cloudflare\.steamstatic\.com|cdn\.cloudflare\.steamstatic\.com|assets\.nintendo\.com|image\.api\.playstation\.com|www\.minecraft\.net)\//;
+const coverKey = u => crypto.createHash("sha1").update(u).digest("hex").slice(0, 24);
+app.get("/img/cover/:id/:v", wrap(async (req, res) => {
+  const c = COVERS[String(req.params.id)], v = String(req.params.v).replace(/\.jpg$/, "");
+  const src = c && (v === "p" || v === "l") ? c[v] : null;
+  if (!src || !COVER_HOSTS.test(src)) return res.status(404).end();
+  const key = coverKey(src), file = path.join(COVER_DIR, key);
+  if (!fs.existsSync(file)) {
+    if (coverMiss.get(key) > now() - 36e5) return res.status(404).end();
+    if (!coverLoad.has(key)) coverLoad.set(key, (async () => {
+      const r = await fetch(src, { headers: { "user-agent": "Mozilla/5.0 (instantcodes)" }, signal: AbortSignal.timeout(15000) });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const buf = Buffer.from(await r.arrayBuffer());
+      if (buf.length < 2000 || buf.length > 6e6) throw new Error("Größe");
+      fs.writeFileSync(file + ".tmp", buf); fs.renameSync(file + ".tmp", file);
+    })().finally(() => coverLoad.delete(key)));
+    try { await coverLoad.get(key); } catch (e) { coverMiss.set(key, now()); return res.status(404).end(); }
+  }
+  const head = Buffer.alloc(12), fd = fs.openSync(file, "r"); fs.readSync(fd, head, 0, 12, 0); fs.closeSync(fd);
+  const type = head[0] === 0x89 && head[1] === 0x50 ? "image/png" : head.toString("ascii", 8, 12) === "WEBP" ? "image/webp" : "image/jpeg";
+  res.setHeader("Content-Type", type); res.setHeader("Cache-Control", "public, max-age=2592000, immutable"); res.setHeader("Content-Length", fs.statSync(file).size);
+  fs.createReadStream(file).on("error", () => res.end()).pipe(res);
 }));
 app.post("/api/admin/testmail", admin, wrap(async (req, res) => {
   if (!E.RESEND_API_KEY) return bad(res, "RESEND_API_KEY fehlt.");

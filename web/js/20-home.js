@@ -7,6 +7,8 @@ const shortName=b=>b.name.replace(/ (Gift Card|Geschenkkarte)$/,"").replace("Xbo
 /* Glaskarte, die schwebt: Lage (--x/--y in %), Breite, Tiefe (--d: Stärke der Parallax), Drehung, Takt */
 const fcard=(b,o)=>`<span class="fc" style="--x:${o[0]}%;--y:${o[1]}%;--w:${o[2]}px;--d:${o[3]};--r:${o[4]}deg;--t:${o[5]}s"><i class="fc-b">${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`;
 const cloud=(list,slots)=>list.slice(0,slots.length).map((b,i)=>fcard(b,slots[i])).join("");
+/* Kurzvideo im iPhone: lädt erst, wenn es sichtbar wird (15-effects.js), Standbild bis dahin */
+const hvid=n=>`<video class="vf-vid" poster="/vid/${n}.jpg?v=5" muted loop playsinline preload="none"><source src="/vid/${n}.mp4?v=5" type="video/mp4"><source src="/vid/${n}.webm?v=5" type="video/webm"></video>`;
 /* Markenzeichen in Chrom (Simple-Icons-Dateien, nur Marken mit echtem Zeichen) */
 const chromeLogos=()=>{const seen=new Set();return VIS().filter(b=>b.si&&!seen.has(b.si)&&seen.add(b.si)).slice(0,28)};
 const blogo=b=>`<a class="bl" href="/marke/${b.id}" aria-label="${esc(b.name)}"><i style="--si:url(/logo/${b.si}.svg);--a:${SIA[b.si]||1}"></i></a>`;
@@ -32,7 +34,7 @@ function home(){
     <p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${VIS().length}">${VIS().length}</b> Marken – sicher bezahlt, dein Code kommt meist direkt per E-Mail.</p>
     <button class="hro-search rv" style="--d:240ms" data-a="palOpen" aria-label="Suche öffnen">${ic("i-search")}<span>Marke oder Gutschein suchen</span><kbd class="kbdk">Strg K</kbd></button>
     <div class="hro-quick rv" style="--d:300ms">${quick.map(([id,t])=>`<a class="chip" href="/marke/${id}">${esc(t)}</a>`).join("")}<a class="chip" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></div>
-    <div class="hro-trust rv" style="--d:360ms">${payLogos()}<p><span>${ic("i-lock")}SSL-verschlüsselt</span><span>3&#8209;D Secure</span><span class="ft-stripe">Zahlung über <img src="/img/mark/logos/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></p></div>
+    <div class="hro-trust rv" style="--d:360ms">${payLogos()}<p><span>${ic("i-lock")}SSL-verschlüsselt</span><span>3&#8209;D Secure</span><span class="ft-stripe">Zahlung über <img src="/pay/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></p></div>
   </div>
 </section>
 ${logos.length>7?`<section class="hm-brands" aria-label="Marken bei instantcodes"><div class="bl-band" data-off><div class="bl-row">${logos.slice(0,half).concat(logos.slice(0,half)).map(blogo).join("")}</div><div class="bl-row rev">${logos.slice(half).concat(logos.slice(half)).map(blogo).join("")}</div></div></section>`:""}
@@ -53,9 +55,14 @@ ${logos.length>7?`<section class="hm-brands" aria-label="Marken bei instantcodes
       <li class="how-st spot rv" style="--d:90ms"><span class="how-n">2</span><b>Sicher bezahlen</b><span>${payNames()} – verschlüsselt über Stripe.</span></li>
       <li class="how-st spot rv" style="--d:180ms"><span class="how-n">3</span><b>Code erhalten</b><span>Meist Sekunden nach der Zahlung, auf dem Bildschirm und per E-Mail.</span></li>
     </ol>
-    <div class="how-vid rv"><div class="vf-phone"><div class="vf-scr"><div class="vf-stat" aria-hidden="true"><b>9:41</b><span class="vf-isl"></span><i></i></div><video class="vf-vid" poster="/vid/ablauf.jpg?v=4" muted loop playsinline preload="none" aria-label="Kurzvideo: Kauf bei instantcodes in 10 Sekunden"><source src="/vid/ablauf.mp4?v=4" type="video/mp4"><source src="/vid/ablauf.webm?v=4" type="video/webm"></video></div></div></div>
+    <div class="how-vid rv"><div class="iph-stage" data-mouse><div class="iph-float" data-off><div class="iph-tilt">${iphone(hvid("ablauf"))}</div></div></div></div>
   </div>
 </section>
+<section class="sec hm-pay"><div class="payband rv">
+  <div class="payband-copy"><h2 class="h2">Bezahlen, wie du willst</h2><p>${payNames()}. Die Zahlung läuft verschlüsselt über Stripe – deine Kartendaten sehen wir nie.</p></div>
+  <div class="payband-logos">${payLogos()}</div>
+  <ul class="payband-sec"><li><img src="/pay/stripe.svg" alt="Stripe" loading="lazy"><span>Zahlungsabwicklung</span></li><li>${ic("i-lock")}<span>TLS-verschlüsselt</span></li><li>${ic("i-shield")}<span>3&#8209;D Secure</span></li><li>${ic("i-mail")}<span>Bestätigung per E-Mail</span></li></ul>
+</div></section>
 <section class="sec"><div class="tusec spot">
   <div class="tu-copy"><h2 class="h2">Handy aufladen</h2><p>Nummer eingeben, der Anbieter wird erkannt, Betrag wählen. Für ${nTop} Anbieter.</p>
     <div class="tu-form">
@@ -68,7 +75,7 @@ ${logos.length>7?`<section class="hm-brands" aria-label="Marken bei instantcodes
     </div></div>
   <div class="tu-visual" aria-hidden="true">
     <div class="tu-stage" data-par>${["vodafone","o2","lyca"].map((id,i)=>`<span class="fs">${gc(pk(id,i+3),{tilt:false,badge:false})}</span>`).join("")}</div>
-    <div class="phone-mock charged"><div class="pm-screen"><div class="pm-card">${gc(pk("telekom"),{tilt:false,badge:false})}</div><div class="pm-op"><i style="background:#E20074"></i><span>Telekom</span></div><div class="pm-num">+49 151 2345678</div><div class="pm-amt"><small>Neues Guthaben</small><span>+ 15,00 €</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div></div>
+    <div class="iph-stage tu-iph" data-mouse><div class="iph-float" data-off><div class="iph-tilt">${iphone(hvid("aufladen"))}</div></div></div>
   </div>
 </div></section>
 ${keys.length?`<section class="sec hm-keys">${head("Spiele-Keys",`${keys.length} Spiele für PC, PlayStation, Xbox und Nintendo`,`<a class="more" href="/kategorie/keys">Alle${ic("i-chev")}</a>${railNav("keyRail")}`)}
@@ -106,7 +113,7 @@ A.seoMore=(v,el)=>{const s=el.closest(".seo");if(!s)return;const o=s.classList.t
 /* Ratgebertext der Startseite: echte Links zu Marken und Kategorien, nur was es im Shop gibt */
 /* echte Pfad-Links (für Google) im Shop ohne Neuladen öffnen */
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest('a[href^="/"]');if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button||a.target==="_blank"||a.hasAttribute("download"))return;
-  const h=a.getAttribute("href");if(/^\/(api|auth|img|anim|mail|cards|admin|abmelden|r\/)|\.[a-z0-9]{2,5}($|\?)/i.test(h)||h.startsWith("//"))return;e.preventDefault();go(h)});
+  const h=a.getAttribute("href");if(/^\/(api|auth|img|anim|mail|cards|admin|abmelden|r\/)|\.[a-z0-9]{2,5}($|\?)/i.test(h)||h.startsWith("//"))return;e.preventDefault();navFrom=a;go(h)});
 function seoBlock(){
   const ids=new Set(VIS().map(b=>b.id)),L=(l)=>{const x=l.filter(([id])=>ids.has(id)).map(([id,t])=>`<a href="/marke/${id}">${esc(t)}</a>`);return x.length>1?x.slice(0,-1).join(", ")+" und "+x[x.length-1]:x[0]||""};
   const C=(id,t)=>`<a href="/kategorie/${id}">${esc(t)}</a>`;

@@ -9,14 +9,37 @@ let litE=null,litRaf=0;
 document.addEventListener("pointermove",e=>{litE=e;if(litRaf)return;litRaf=requestAnimationFrame(()=>{litRaf=0;const t=litE.target.closest&&litE.target.closest(LIT);if(t)litAt(t,litE)})},{passive:true});
 document.addEventListener("pointerdown",e=>{const t=e.target.closest&&e.target.closest(LIT);if(t)litAt(t,e)},{passive:true});
 try{history.scrollRestoration="manual"}catch(e){}var SSR_T=/^\/(marke\/|kategorie\/|kategorien|aufladen|angebote|hilfe|agb|datenschutz|widerruf|abo$|kuendigen$|$)/.test(location.pathname)?document.title:null,SSR_P=location.pathname.replace(/\/index\.html$/,"/")||"/";const HOME_T="Gutscheine & Guthaben online kaufen – sofort per E-Mail | instantcodes";
+/* Seitenwechsel mit View Transitions: alte Ansicht gleitet weg, neue steigt auf; eine angetippte Karte fliegt in die Produktseite (und zurück).
+   Ohne API, beim ersten Aufbau, bei reduzierter Bewegung oder ausgeblendetem Tab: direkt umschalten. */
+var navFrom=null,routed=false;
+const VT_NAME="ic-card",inView=el=>{if(!el)return false;const r=el.getBoundingClientRect();return r.width>0&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth};
+const vtClear=()=>$$(".vt-card").forEach(e=>{e.style.viewTransitionName="";e.classList.remove("vt-card")});
+const vtTag=el=>{if(!el)return;vtClear();el.style.viewTransitionName=VT_NAME;el.classList.add("vt-card")};
 function route(keep){
+  const from=navFrom;navFrom=null;
+  const anim=routed&&!keep&&!reduce&&!document.hidden&&typeof document.startViewTransition==="function";routed=true;
+  if(!anim)return routeNow(keep);
+  /* Karte der alten Ansicht markieren: angetippte Kachel, sonst (zurück) die Karte der Produktseite */
+  const oldCard=from&&from.closest?(from.closest(".tile,.tile-media,.fc,.bc,.pal-item,a")||from).querySelector(".gc"):$(".pd-card .gc",app);
+  const fromId=(cur.path.match(/^\/marke\/([\w-]+)/)||[])[1];
+  vtClear();const hadOld=inView(oldCard);if(hadOld)vtTag(oldCard);
+  document.documentElement.classList.add("vt-on");
+  try{const t=document.startViewTransition(()=>{routeNow(keep,true);
+      if(!hadOld)return;
+      let nc=$(".pd-card .gc",app);
+      if(!nc&&fromId){const a=$(`.tile-media a[href="/marke/${fromId}"]`,app);nc=a&&a.querySelector(".gc")}
+      if(nc&&inView(nc))vtTag(nc)});
+    t.finished.finally(()=>{vtClear();document.documentElement.classList.remove("vt-on")});
+  }catch(e){vtClear();document.documentElement.classList.remove("vt-on");routeNow(keep)}
+}
+function routeNow(keep,vt){
   if(/^#\//.test(location.hash)){try{history.replaceState(null,"",location.hash.slice(1))}catch(e){}}const pth=location.pathname.replace(/\/index\.html$/,"/");
   const h=(pth||"/")+location.search,qi=h.indexOf("?"),path=(qi>-1?h.slice(0,qi):h)||"/",qs=new URLSearchParams(qi>-1?h.slice(qi+1):"");
   cur={path,qs};curKey=location.pathname+location.search;
   let v=null;for(const [re,fn] of R){const m=path.match(re);if(m){v=fn(m[1],qs);break}}
   v=v||notFound();
   const y=scrollY;
-  app.innerHTML=`<div class="view${keep?" k":""}">${v.html}</div>`;
+  app.innerHTML=`<div class="view${keep||vt?" k":""}">${v.html}</div>`;
   if(SSR_T&&(path===SSR_P||(path==="/"&&SSR_P==="/"))){document.title=SSR_T;SSR_T=null}else document.title=path==="/"?HOME_T:(v.title?v.title+" · ":"")+"instantcodes";
   $$(".hnav a").forEach(a=>a.classList.toggle("on",path===a.getAttribute("href")));
   document.body.classList.toggle("has-buybar",!!v.buybar);

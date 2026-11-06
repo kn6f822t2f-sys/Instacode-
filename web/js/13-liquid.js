@@ -10,8 +10,8 @@ float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}
 float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
 float sh(vec2 p){float a=atan(p.y,p.x),d=length(p);
-  float w=.024*sin(a*3.+t*.55)+.016*sin(a*5.-t*.75)+.04*(fbm(p*2.1+vec2(t*.12,-t*.09))-.5);
-  float R=.31+w,th=.115+.025*sin(a*2.+t*.45)+.02*(fbm(p*3.+t*.2)-.5);
+  float w=.011*sin(a*3.+t*.32)+.006*sin(a*5.-t*.41)+.018*(fbm(p*2.1+vec2(t*.07,-t*.05))-.5);
+  float R=.31+w,th=.108+.01*sin(a*2.+t*.27)+.008*(fbm(p*3.+t*.12)-.5);
   return abs(d-R)-th;}
 void main(){
   vec2 uv=(gl_FragCoord.xy-.5*r)/min(r.x,r.y);
@@ -21,7 +21,7 @@ void main(){
   vec2 e=vec2(.0025,0.);vec2 g=vec2(sh(uv+e.xy)-sh(uv-e.xy),sh(uv+e.yx)-sh(uv-e.yx))/(2.*e.x);
   float dp=clamp(-s/.13,0.,1.);float z=sqrt(max(1.-(1.-dp)*(1.-dp),0.));
   vec3 N=normalize(vec3(g*(1.-z)*1.35,z+.08));
-  N.xy+=.22*vec2(fbm(uv*3.6+vec2(t*.18,0.))-.5,fbm(uv*3.6-vec2(0.,t*.16)+3.1)-.5);N=normalize(N);
+  N.xy+=.1*vec2(fbm(uv*3.2+vec2(t*.1,0.))-.5,fbm(uv*3.2-vec2(0.,t*.09)+3.1)-.5);N=normalize(N);
   vec3 R=reflect(vec3(0.,0.,-1.),N);
   float y=R.y+.18*m.y;
   /* Umgebung: Himmel hell, Horizont scharf, Boden dunkel – klassischer Chrom-Look */

@@ -35,7 +35,7 @@ function topup(_,qs){
   <aside class="tu-aside" aria-label="Zusammenfassung">
     <div class="tu-prev" id="tuPrev">
       <span class="tu-halo" aria-hidden="true"></span>
-      <div class="phone-mock" id="pMock" aria-hidden="true"><div class="pm-screen"><div class="pm-card" id="pmCard"><span class="gc ghost"></span></div><div class="pm-op"><i id="pmOpC"></i><span id="pmOp">Anbieter wählen</span></div><div class="pm-num" id="pmNum">${c.dial} …</div><div class="pm-amt" id="pmAmt"><small>Aufladung</small><span>–</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div></div>
+      ${iphone(`<div class="pm-screen"><div class="pm-card" id="pmCard"><span class="gc ghost"></span></div><div class="pm-op"><i id="pmOpC"></i><span id="pmOp">Anbieter wählen</span></div><div class="pm-num" id="pmNum">${c.dial} …</div><div class="pm-amt" id="pmAmt"><small>Aufladung</small><span>–</span></div><div class="pm-bar"><i></i></div><div class="pm-ok">Wird nach der Zahlung gebucht</div></div>`,{cls:"phone-mock",id:"pMock"})}
       <span class="tu-base" aria-hidden="true"></span>
     </div>
     <div class="tu-sum">
