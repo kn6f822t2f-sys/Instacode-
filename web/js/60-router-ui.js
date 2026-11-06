@@ -1,14 +1,14 @@
 /* ---------- router ---------- */
 let cur={path:"/"},curKey="";
 const app=$("#app");
-const R=[[/^\/$/,home],[/^\/kategorien$/,cats],[/^\/kategorie\/([\w-]+)$/,category],[/^\/marke\/([\w-]+)$/,brandPage],[/^\/aufladen$/,topup],[/^\/suche$/,searchPage],[/^\/angebote$/,deals],[/^\/warenkorb$/,cartPage],[/^\/kasse$/,cartPage],[/^\/bestellung\/([\w-]+)$/,apiOrder],[/^\/login$/,apiLogin],[/^\/konto(?:\/(\w+))?$/,apiAccount],[/^\/hilfe$/,help],[/^\/verifizieren$/,apiVerify],[/^\/passwort$/,apiReset],[/^\/(agb|datenschutz|widerruf)$/,legalPage]];
+const R=[[/^\/$/,home],[/^\/kategorien$/,cats],[/^\/kategorie\/([\w-]+)$/,category],[/^\/marke\/([\w-]+)$/,brandPage],[/^\/aufladen$/,topup],[/^\/suche$/,searchPage],[/^\/angebote$/,deals],[/^\/warenkorb$/,cartPage],[/^\/kasse$/,cartPage],[/^\/bestellung\/([\w-]+)$/,apiOrder],[/^\/login$/,apiLogin],[/^\/konto(?:\/(\w+))?$/,apiAccount],[/^\/hilfe$/,help],[/^\/abo$/,aboPage],[/^\/abo\/(AB-[A-Z0-9]+)$/,aboDetail],[/^\/kuendigen$/,cancelPage],[/^\/verifizieren$/,apiVerify],[/^\/passwort$/,apiReset],[/^\/(agb|datenschutz|widerruf)$/,legalPage]];
 /* Lichtpunkt im Hauptknopf folgt Zeiger/Finger (--mx/--my, siehe .btn-primary) */
 const LIT=".btn,.chip,.icon-btn,.amt,.qnav button,.paymore";
 const litAt=(t,e)=>{const r=t.getBoundingClientRect();t.style.setProperty("--mx",(e.clientX-r.left)+"px");t.style.setProperty("--my",(e.clientY-r.top)+"px")};
 let litE=null,litRaf=0;
 document.addEventListener("pointermove",e=>{litE=e;if(litRaf)return;litRaf=requestAnimationFrame(()=>{litRaf=0;const t=litE.target.closest&&litE.target.closest(LIT);if(t)litAt(t,litE)})},{passive:true});
 document.addEventListener("pointerdown",e=>{const t=e.target.closest&&e.target.closest(LIT);if(t)litAt(t,e)},{passive:true});
-try{history.scrollRestoration="manual"}catch(e){}var SSR_T=/^\/(marke\/|kategorie\/|kategorien|aufladen|angebote|hilfe|agb|datenschutz|widerruf|$)/.test(location.pathname)?document.title:null,SSR_P=location.pathname.replace(/\/index\.html$/,"/")||"/";const HOME_T="Gutscheine & Guthaben online kaufen – sofort per E-Mail | instantcodes";
+try{history.scrollRestoration="manual"}catch(e){}var SSR_T=/^\/(marke\/|kategorie\/|kategorien|aufladen|angebote|hilfe|agb|datenschutz|widerruf|abo$|kuendigen$|$)/.test(location.pathname)?document.title:null,SSR_P=location.pathname.replace(/\/index\.html$/,"/")||"/";const HOME_T="Gutscheine & Guthaben online kaufen – sofort per E-Mail | instantcodes";
 function route(keep){
   if(/^#\//.test(location.hash)){try{history.replaceState(null,"",location.hash.slice(1))}catch(e){}}const pth=location.pathname.replace(/\/index\.html$/,"/");
   const h=(pth||"/")+location.search,qi=h.indexOf("?"),path=(qi>-1?h.slice(0,qi):h)||"/",qs=new URLSearchParams(qi>-1?h.slice(qi+1):"");

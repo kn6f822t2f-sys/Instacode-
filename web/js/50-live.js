@@ -187,7 +187,7 @@ A.reorderLive=id=>{const o=ordCache[id];if(!o)return;let n=0;o.items.forEach(i=>
 A.numDel=i=>{S.numbers.splice(+i,1);save();route(true);toast("Nummer gelöscht")};
 function apiAccount(tab){
   if(!S.user)return apiLogin(null,new URLSearchParams("r=/konto"+(tab?"/"+tab:"")));
-  const u=S.user,T=[["bestellungen","Bestellungen","i-receipt"],["favoriten","Favoriten","i-heart"],["nummern","Nummern","i-phone-f"],["einstellungen","Einstellungen","i-gear"]];
+  const u=S.user,T=[["bestellungen","Bestellungen","i-receipt"],["abos","Abos","i-repeat"],["favoriten","Favoriten","i-heart"],["nummern","Nummern","i-phone-f"],["einstellungen","Einstellungen","i-gear"]];
   if(!T.some(t=>t[0]===tab))tab="bestellungen";
   let body=`<div id="accBody" class="acc-wait"><div class="spin"></div></div>`;
   if(tab==="favoriten"){const f=S.favs.map(byId).filter(Boolean);body=f.length?`<div class="tiles">${f.map(tile).join("")}</div>`:`<div class="card acc-none">${empty("Noch keine Favoriten","Tippe auf einer Produktseite auf das Herz, um eine Marke hier zu speichern.",["/kategorien","Marken entdecken"])}</div>`}
@@ -199,10 +199,11 @@ function apiAccount(tab){
    <button class="setrow" data-a="country"><span class="si-ic">${flag(ctry().c,22)}</span><div class="mid"><b>Land für Aufladungen</b><small>${esc(ctry().n)}</small></div>${ic("i-chev")}</button></div>
    <div class="acc-out"><button class="btn btn-soft btn-block btn-lg" data-a="logout">${ic("i-logout")}Abmelden</button><button class="btn btn-ghost btn-block acc-del" data-a="delAcc">Konto löschen</button></div>`;
   return {title:"Mein Konto",html:`<div class="acc sec">
-<header class="acc-head rv"><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span><div><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Favoriten und Einstellungen.</p></div></header>
+<header class="acc-head rv"><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span><div><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Abos, Favoriten und Einstellungen.</p></div></header>
 <nav class="acc-tabs" aria-label="Kontobereiche">${T.map(t=>`<a href="/konto/${t[0]}"${t[0]===tab?' aria-current="page"':""}>${ic(t[2])}<span>${t[1]}</span></a>`).join("")}</nav>
 <div class="acc-body">${body}</div></div>`,
   after(){
+    if(tab==="abos")return aboAccount();
     if(tab!=="bestellungen")return;
     API("/orders").then(j=>{const el=$("#accBody");if(!el)return;j.orders.forEach(o=>ordCache[o.id]=o);el.classList.remove("acc-wait");
       el.innerHTML=j.orders.length?`<div class="acc-list">${j.orders.map(o=>{const n=o.items.reduce((s,i)=>s+(i.qty||1),0);return `<a class="card acc-ord" href="/bestellung/${o.id}"><span class="acc-fan" aria-hidden="true">${o.items.slice(0,3).map(i=>mini(brandOr(i.brand))).join("")}</span><span class="acc-om"><b>${new Date(o.created_at).toLocaleDateString("de-DE",{dateStyle:"medium"})}</b><small>${n} Artikel · ${esc(o.id)}</small>${stBadge(o.status)}</span><b class="acc-or">${eurc(o.total)}</b>${ic("i-chev")}</a>`}).join("")}</div>`
@@ -216,7 +217,7 @@ A.delAcc=()=>openSheet(`<div class="sheet-h"><h3>Konto löschen?</h3><button cla
 A.delAccGo=async(_,el)=>{busy(el,true);try{await API("/me",{method:"DELETE"});setUser(null);closeSheet(true);toast("Konto gelöscht");go("/")}catch(e){busy(el,false);toast(e.message)}};
 
 /* Rechtstexte – bei inhaltlichen Änderungen auch LEGAL_STAND anpassen */
-const LEGAL_STAND="Oktober 2026";
+const LEGAL_STAND="November 2026";
 const IMP="https://mein.online-impressum.de/instacode/";
 const SUP=()=>(CFG.support)||"support@instacode.store";
 const LEGAL={
@@ -231,17 +232,28 @@ const LEGAL={
 <p>Alle Preise sind Endpreise in Euro inklusive der gesetzlichen Mehrwertsteuer. Pro Bestellung fällt zusätzlich eine Servicegebühr an (derzeit ${feeTxt()||"keine"}), die im Warenkorb und vor Abschluss der Bestellung ausgewiesen und im Gesamtpreis enthalten ist. Versandkosten fallen nicht an. Die Zahlung erfolgt über unseren Zahlungsdienstleister Stripe mit den im Bestellvorgang angezeigten Zahlungsarten (z.&nbsp;B. Kreditkarte, Apple Pay, Google Pay). Der Betrag wird bei der Bestellung belastet.</p>
 <h2>5. Lieferung</h2>
 <p>Codes werden nach Zahlungseingang per E-Mail und in deinem Kundenkonto bereitgestellt, in der Regel innerhalb weniger Minuten. Aufladungen werden direkt auf die angegebene Rufnummer gebucht. Zum Schutz vor Betrug können einzelne Bestellungen manuell geprüft werden. Das kann bis zu 24 Stunden dauern. Ist eine Lieferung nicht möglich, erstatten wir den vollen Betrag.</p>
-<h2>6. Pflichten des Kunden</h2>
+<h2>6. Abos (Pro, Premium, Max)</h2>
+<p><b>6.1 Leistung.</b> Mit einem Abo bekommst du jeden Abo-Monat ein Paket mit digitalen Codes (Guthaben- und Abo-Codes für die auf der <a href="/abo">Abo-Seite</a> genannten Dienste). Welche Codes mit welchem Nennwert enthalten sind, steht auf der Abo-Seite und in der Bestätigung nach dem Abschluss. Codes, die länger als einen Monat gelten, liefern wir in passenden Abständen, zum Beispiel alle drei Monate. Ist ein Code dauerhaft nicht lieferbar, dürfen wir ihn durch einen gleichwertigen Code ersetzen; der Nennwert des Monatspakets sinkt dadurch nicht. Über Änderungen am Paket informieren wir dich vorab per E-Mail.</p>
+<p><b>6.2 Preise und Abbuchung.</b> Pro kostet 30&nbsp;€ pro Monat, Premium 50&nbsp;€ für drei Monate und Max 80&nbsp;€ für sechs Monate. Das sind Endpreise; eine Servicegebühr fällt bei Abos nicht an. Der Preis wird zu Beginn jeder Laufzeit im Voraus über Stripe von der beim Abschluss gewählten Zahlungsart abgebucht. Die erste Laufzeit beginnt mit der Zahlung.</p>
+<p><b>6.3 Laufzeit und Verlängerung.</b> Die erste Laufzeit beträgt bei Pro einen Monat, bei Premium drei Monate und bei Max sechs Monate. Kündigst du nicht, verlängert sich das Abo automatisch um die gleiche Laufzeit. Der Preis der neuen Laufzeit wird zu deren Beginn abgebucht.</p>
+<p><b>6.4 Kündigung.</b> Pro kannst du jederzeit zum Ende des bezahlten Monats kündigen. Premium und Max kannst du frühestens zum Ende der ersten Laufzeit kündigen. Nach einer Verlängerung kannst du jederzeit mit einer Frist von einem Monat kündigen; spätestens endet das Abo dann mit Ablauf der bezahlten Laufzeit. Du kannst auch einen späteren Termin wählen. Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt. Kündigen kannst du ohne Anmeldung über <a href="/kuendigen">Verträge hier kündigen</a>, in deinem Kundenkonto unter Abos oder per E-Mail an <a href="mailto:${SUP()}">${SUP()}</a>. Du bekommst sofort eine Bestätigung mit Eingangszeitpunkt und Vertragsende.</p>
+<p><b>6.5 Anteilige Erstattung.</b> Endet ein Abo vor dem Ende der bezahlten Laufzeit, zum Beispiel nach einer Verlängerung oder aus wichtigem Grund, erstatten wir für jeden Abo-Monat, der erst nach dem Vertragsende beginnen würde und deshalb nicht mehr geliefert wird, den entsprechenden Anteil des Preises über deine ursprüngliche Zahlungsart. Bereits begonnene und gelieferte Monate werden nicht erstattet.</p>
+<p><b>6.6 Lieferung.</b> Ein Abo-Monat beginnt jeweils am Kalendertag des Abschlusses. Zu Beginn jedes Abo-Monats stellen wir das Paket zusammen und prüfen es zum Schutz vor Missbrauch vor dem Versand. Das dauert in der Regel wenige Stunden, an Wochenenden und Feiertagen auch länger. Die Codes bekommst du per E-Mail; sie stehen außerdem in deiner Abo-Übersicht. Solange eine fällige Zahlung offen ist, pausieren die Lieferungen.</p>
+<p><b>6.7 Persönliche Nutzung.</b> Die Codes sind für deinen persönlichen Gebrauch bestimmt; ein gewerblicher Weiterverkauf ist nicht erlaubt. Bei konkreten Anhaltspunkten für Missbrauch, etwa Weiterverkauf oder Zahlungsbetrug, dürfen wir einzelne Lieferungen zurückhalten und das Abo aus wichtigem Grund kündigen. Bezahlte, nicht gelieferte Monate erstatten wir dann.</p>
+<p><b>6.8 Einlösung.</b> Du löst die Codes in deinem eigenen Konto beim jeweiligen Dienst nach dessen Bedingungen ein. Wie lange ein Code dein Abo beim Dienst abdeckt, hängt von deinem dortigen Tarif ab; Restguthaben bleibt beim Dienst. Amazon-Guthaben gilt für Einkäufe auf Amazon.de, nicht für die Prime-Mitgliedschaft.</p>
+<p><b>6.9 Zahlungsprobleme.</b> Schlägt eine Abbuchung fehl, versucht unser Zahlungsdienstleister sie in den folgenden Tagen erneut, und du bekommst eine E-Mail mit einem Link zum Bezahlen. Bleibt die Zahlung aus, endet das Abo.</p>
+<p><b>6.10 Widerruf.</b> Es gilt Abschnitt 8 und die <a href="/widerruf">Widerrufsbelehrung</a>. Beim Abo erlischt das Widerrufsrecht mit der ersten Lieferung von Codes, wenn du beim Abschluss ausdrücklich zugestimmt hast, dass wir vor Ablauf der Widerrufsfrist liefern, und bestätigt hast, dass du damit dein Widerrufsrecht verlierst. Bis zur ersten Lieferung kannst du widerrufen und bekommst den vollen Betrag zurück.</p>
+<h2>7. Pflichten des Kunden</h2>
 <p>Du bist für die Richtigkeit der E-Mail-Adresse und Rufnummer verantwortlich. Für Aufladungen auf eine falsch angegebene Nummer können wir keinen Ersatz leisten, wenn die Buchung bereits erfolgt ist. Codes sind wie Bargeld zu behandeln und nicht an Dritte weiterzugeben, die du nicht kennst.</p>
-<h2>7. Widerrufsrecht</h2>
+<h2>8. Widerrufsrecht</h2>
 <p>Verbrauchern steht ein Widerrufsrecht nach Maßgabe der <a href="/widerruf">Widerrufsbelehrung</a> zu. Bei digitalen Inhalten erlischt es, wenn du der sofortigen Ausführung ausdrücklich zugestimmt und deine Kenntnis vom Verlust des Widerrufsrechts bestätigt hast.</p>
-<h2>8. Gewährleistung</h2>
+<h2>9. Gewährleistung</h2>
 <p>Es gilt das gesetzliche Mängelhaftungsrecht. Ist ein gelieferter Code nicht einlösbar, melde dich bitte unter <a href="mailto:${SUP()}">${SUP()}</a> mit Bestellnummer und, wenn möglich, einem Screenshot der Fehlermeldung. Wir prüfen den Fall beim Distributor und liefern Ersatz oder erstatten den Kaufpreis.</p>
-<h2>9. Haftung</h2>
+<h2>10. Haftung</h2>
 <p>Wir haften unbeschränkt bei Vorsatz, grober Fahrlässigkeit und bei Verletzung von Leben, Körper oder Gesundheit. Bei leicht fahrlässiger Verletzung wesentlicher Vertragspflichten ist die Haftung auf den vorhersehbaren, vertragstypischen Schaden begrenzt. Im Übrigen ist die Haftung ausgeschlossen.</p>
-<h2>10. Streitbeilegung</h2>
+<h2>11. Streitbeilegung</h2>
 <p>Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-<h2>11. Schlussbestimmungen</h2>
+<h2>12. Schlussbestimmungen</h2>
 <p>Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts. Bei Verbrauchern gilt diese Rechtswahl nur, soweit dadurch nicht der Schutz zwingender Bestimmungen des Staates entzogen wird, in dem der Verbraucher seinen gewöhnlichen Aufenthalt hat.</p>`],
  widerruf:["Widerrufsbelehrung",()=>`
 <h2>Widerrufsrecht</h2>
@@ -251,6 +263,7 @@ const LEGAL={
 <p>Wenn du diesen Vertrag widerrufst, haben wir dir alle Zahlungen, die wir von dir erhalten haben, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über deinen Widerruf bei uns eingegangen ist. Für diese Rückzahlung verwenden wir dasselbe Zahlungsmittel, das du bei der ursprünglichen Transaktion eingesetzt hast, es sei denn, mit dir wurde ausdrücklich etwas anderes vereinbart. In keinem Fall werden dir wegen dieser Rückzahlung Entgelte berechnet.</p>
 <h2>Vorzeitiges Erlöschen des Widerrufsrechts</h2>
 <p>Das Widerrufsrecht erlischt bei Verträgen über die Bereitstellung von nicht auf einem körperlichen Datenträger befindlichen digitalen Inhalten (z.&nbsp;B. Codes und Keys), wenn wir mit der Ausführung des Vertrags begonnen haben, nachdem du ausdrücklich zugestimmt hast, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung beginnen, du deine Kenntnis davon bestätigt hast, dass du durch deine Zustimmung mit Beginn der Ausführung dein Widerrufsrecht verlierst, und wir dir eine Bestätigung des Vertrags zur Verfügung gestellt haben (§ 356 Abs. 5 BGB). Bei Dienstleistungen wie Handy-Aufladungen erlischt das Widerrufsrecht, wenn die Leistung vollständig erbracht wurde und du vorher ausdrücklich zugestimmt hast (§ 356 Abs. 4 BGB).</p>
+<p>Bei Abos beginnt die Ausführung mit der ersten Lieferung von Codes. Hast du beim Abschluss zugestimmt, dass wir vor Ablauf der Widerrufsfrist liefern, und bestätigt, dass du dadurch dein Widerrufsrecht verlierst, erlischt es mit dieser ersten Lieferung. Bis dahin kannst du widerrufen; wir erstatten dann den vollen Betrag. Kündigen kannst du das Abo unabhängig davon jederzeit nach den AGB über <a href="/kuendigen">Verträge hier kündigen</a>.</p>
 <h2>Muster-Widerrufsformular</h2>
 <p class="muted">(Wenn du den Vertrag widerrufen willst, fülle bitte dieses Formular aus und sende es zurück.)</p>
 <p class="lgl-form">An: Betreiber laut Impressum, E-Mail: ${SUP()}<br>Hiermit widerrufe(n) ich/wir den von mir/uns abgeschlossenen Vertrag über den Kauf der folgenden Waren / die Erbringung der folgenden Dienstleistung:<br>Bestellnummer: ____________<br>Bestellt am: ____________<br>Name des/der Verbraucher(s): ____________<br>Anschrift des/der Verbraucher(s): ____________<br>Unterschrift (nur bei Mitteilung auf Papier)<br>Datum</p>`],
@@ -265,6 +278,7 @@ const LEGAL={
 <li><b>Betrugsprüfung:</b> Zahlungs- und Risikodaten von Stripe, um Missbrauch zu verhindern. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</li>
 <li><b>Produktempfehlungen:</b> Nach einem Kauf schicken wir dir in der Liefer-E-Mail Empfehlungen zu ähnlichen Produkten (§ 7 Abs. 3 UWG). Du kannst dem jederzeit über den Link in jeder E-Mail oder per Nachricht an uns widersprechen. Rechtsgrundlage: berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).</li>
 <li><b>Bewertungen:</b> Name, Sterne und Text, die du freiwillig nach einer Bestellung abgibst. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO).</li>
+<li><b>Abos:</b> Name, E-Mail-Adresse, gewählter Plan, Zahlungs- und Laufzeitdaten von Stripe, gelieferte Codes sowie Kündigungserklärungen mit Eingangszeitpunkt. Rechtsgrundlage: Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) und gesetzliche Nachweispflichten (Art. 6 Abs. 1 lit. c DSGVO).</li>
 </ul>
 <h2>3. Dienstleister</h2>
 <ul>

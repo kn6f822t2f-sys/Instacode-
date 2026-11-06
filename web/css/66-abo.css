@@ -1,0 +1,189 @@
+/* =========================================================
+   Abo: /abo (Pläne, Inhalt, Abschluss), /abo/AB-… und Konto › Abos, /kuendigen
+   Nur Grundbauteile (.card .btn .chip .inp .lbl .field .chk .faq …) und Tokens aus 01-base.css,
+   eigene Regeln mit Präfix ab- / kd-. Bewegung nur über transform/translate/opacity.
+   ========================================================= */
+.ab [id],.kd [id]{scroll-margin-top:96px}
+.ab-wait{padding-top:clamp(90px,14vw,160px);text-align:center}
+
+/* ---------- Bühne ---------- */
+.ab-hero{display:grid;gap:clamp(28px,5vw,56px);align-items:center;padding-top:clamp(28px,5vw,72px)}
+.ab-hero .lead{max-width:32em}
+.ab-hero-a{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.ab-pts{display:flex;flex-wrap:wrap;gap:8px 20px;margin:24px 0 0;padding:0;list-style:none;font-size:14.5px;color:var(--ink-2)}
+.ab-pts li{display:flex;align-items:center;gap:8px}
+.ab-pts .ico{width:18px;height:18px;padding:3px;border-radius:50%;color:#0D0E11;background:var(--chrome-fill);box-shadow:inset 0 1px 0 #fff}
+/* Kartenfächer: Glaskarten liegen gestaffelt, schweben leicht (nur translate) */
+.ab-fan{position:relative;height:clamp(230px,30vw,380px);isolation:isolate}
+.ab-fan::before{content:"";position:absolute;left:50%;top:52%;z-index:-1;width:min(560px,92vw);height:70%;translate:-50% -50%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(220,203,255,.16),rgba(169,232,255,.05) 60%,rgba(255,255,255,0))}
+.ab-fc{position:absolute;left:50%;top:50%;width:clamp(150px,19vw,250px);
+  transform:translate(-50%,-50%) translate(calc(var(--i)*clamp(34px,5.4vw,78px)),calc(var(--a)*clamp(6px,1vw,14px))) rotate(calc(var(--i)*6deg))}
+.ab-fc>.gc{width:100%;animation:abFloat 7s ease-in-out calc(var(--k)*-1.1s) infinite alternate}
+.ab-fan.off .ab-fc>.gc{animation-play-state:paused}
+@keyframes abFloat{from{translate:0 -6px}to{translate:0 8px}}
+@media (min-width:900px){.ab-hero{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}}
+@media (max-width:899px){.ab-fan{order:-1;margin:0 calc(var(--gut)*-1)}}
+
+/* ---------- Pläne ---------- */
+.ab-plans{display:grid;gap:14px}
+@media (min-width:860px){.ab-plans{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}}
+.ab-plan{display:flex;flex-direction:column;padding:clamp(20px,2.4vw,28px);transition:translate .5s var(--spring)}
+.ab-plan.on{background:var(--glass-hi);box-shadow:var(--rim-hi),var(--lift-2),0 0 0 1px rgba(255,255,255,.28)}
+@media (hover:hover){.ab-plan:hover{translate:0 -3px}}
+.ab-plan-h{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:32px}
+.ab-plan-h .h3{font-size:20px}
+.ab-tag{min-height:28px;padding:0 11px;font-size:12.5px;color:var(--ink);background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));box-shadow:var(--rim-hi)}
+.ab-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin:18px 0 0}
+.ab-price b{font-size:clamp(42px,4.2vw,56px);line-height:1;font-weight:560;letter-spacing:-.045em;font-variant-numeric:tabular-nums;
+  background:var(--chrome-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-bottom:.04em}
+.ab-price span{font-size:15px;color:var(--ink-2)}
+.ab-eq{margin:6px 0 0;font-size:14.5px;color:var(--ink-2)}
+.ab-plan .ab-dl{margin:20px 0 24px}
+.ab-plan>.btn{margin-top:auto}
+.ab-note{max-width:62em;margin:18px 0 0;text-align:left}
+
+/* Zeilen mit Begriff und Wert (Pläne, Zusammenfassung, Abo, Kündigung) */
+.ab-dl{display:grid;margin:0}
+.ab-dl>div{display:grid;grid-template-columns:minmax(0,10em) minmax(0,1fr);gap:4px 14px;padding:11px 0;box-shadow:0 -1px 0 var(--line)}
+.ab-dl>div:first-child{box-shadow:none}
+.ab-dl dt{font-size:13.5px;line-height:1.45;color:var(--ink-3)}
+.ab-dl dd{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink);overflow-wrap:anywhere}
+@media (max-width:420px){.ab-dl>div{grid-template-columns:1fr}}
+
+/* ---------- Das steckt drin ---------- */
+.ab-items{display:grid;gap:10px;margin:0;padding:0;list-style:none;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.ab-item{display:flex;align-items:center;gap:14px;min-width:0;padding:12px 16px 12px 12px;border-radius:var(--r-m);background:var(--glass-lo);box-shadow:var(--rim)}
+.ab-item-c{width:92px;flex:none}
+.ab-item-c .gc{width:100%}
+.ab-item-t{min-width:0}
+.ab-item-t b{display:block;font-size:15px;font-weight:600;line-height:1.3;color:var(--ink)}
+.ab-item-t small{display:block;margin-top:3px;font-size:13px;color:var(--ink-3)}
+
+/* ---------- So läuft dein Abo ---------- */
+.ab-steps{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+@media (min-width:860px){.ab-steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ab-steps li{display:grid;gap:8px;align-content:start;padding:22px}
+.ab-steps li .si-ic{margin-bottom:6px}
+.ab-steps b{font-size:16.5px;font-weight:600;letter-spacing:-.015em}
+.ab-steps li>span:last-child{font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+
+/* ---------- Abschluss ---------- */
+.ab-co{display:grid;gap:clamp(24px,4vw,48px);padding:clamp(20px,3.4vw,40px)}
+@media (min-width:960px){.ab-co{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.ab-pick{flex-wrap:wrap;margin:20px 0 14px;padding:0;overflow:visible}
+.ab-sum{margin-top:6px}
+.ab-sum .ab-sum-tot{padding-top:16px}
+.ab-sum .ab-sum-tot dt,.ab-sum .ab-sum-tot dd{font-size:17px;font-weight:600;color:var(--ink)}
+.ab-co .fine{text-align:left}
+.ab-co-r>.h3{margin-bottom:12px}
+.ab-ok{margin:18px 0 6px}
+.ab-ok.shake{animation:shake .4s var(--ease)}
+.ab-co-r>.btn{margin-top:6px}
+.ab-co-r .err a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- Abo-Karte (Konto und /abo/AB-…) ---------- */
+.ab-acc{display:grid;gap:14px}
+.ab-sub{padding:clamp(18px,2.6vw,28px)}
+.ab-sub-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.ab-sub-h .h3{font-size:19px}
+.ab-sub-h small{display:block;margin-top:2px;font-size:13px;color:var(--ink-3)}
+.ab-sub-h .ostat{flex:none;max-width:60%;white-space:normal;text-align:right;line-height:1.3;padding-block:4px}
+.ab-warn{display:flex;align-items:flex-start;gap:10px;margin:4px 0 12px;padding:12px 14px;border-radius:var(--r-s);font-size:14px;line-height:1.5;color:var(--amber);
+  background:rgba(255,203,122,.07);box-shadow:inset 0 0 0 1px rgba(255,203,122,.24)}
+.ab-warn .ico{width:18px;height:18px;margin-top:1px}
+.ab-sub-t{margin:24px 0 10px;font-size:15px;font-weight:600;color:var(--ink-2)}
+.ab-months{display:grid;gap:10px}
+.ab-month{border-radius:var(--r-m);background:var(--glass-lo);box-shadow:var(--rim)}
+.ab-month[open]{background:var(--glass)}
+.ab-month>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:58px;padding:10px 16px;list-style:none;cursor:pointer;border-radius:inherit}
+.ab-month>summary::-webkit-details-marker{display:none}
+.ab-month>summary .ico{width:30px;height:30px;padding:6px;flex:none;border-radius:50%;color:var(--ink-2);background:rgba(255,255,255,.06);transition:transform .35s var(--spring)}
+.ab-month[open]>summary .ico{transform:rotate(180deg);color:#0D0E11;background:var(--chrome-fill)}
+.ab-month-t b{display:block;font-size:15px;font-weight:600}
+.ab-month-t small{display:block;margin-top:2px;font-size:13px;color:var(--ink-3)}
+.ab-month[data-s="delivered"] .ab-month-t small{color:var(--ink-2)}
+.ab-month>.fine{margin:0 16px 12px;text-align:left}
+.ab-mi{display:grid;gap:12px;margin:0;padding:0 16px 16px;list-style:none}
+.ab-mi li{padding-top:12px;box-shadow:0 -1px 0 var(--line)}
+.ab-mi-h{display:flex;align-items:center;gap:12px}
+.ab-mi-h .mini-gc,.ab-mi-h .mini{width:54px}
+.ab-mi-h b{display:block;font-size:15px;font-weight:600;line-height:1.3}
+.ab-mi-h small{display:block;font-size:13px;color:var(--ink-3)}
+.ab-mi .od-code{margin-top:12px}
+.ab-sub-a{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.ab-sub .ab-sub-n{text-align:left}
+
+/* /abo/AB-… */
+.ab-det{max-width:780px;margin:0 auto}
+.ab-det-h{margin-bottom:28px;text-align:center}
+.ab-det-h .h1{font-size:clamp(34px,4.6vw,56px)}
+.ab-det-h .lead{margin-left:auto;margin-right:auto}
+.ab-det-h .spin{margin-bottom:22px}
+.ab-det-h .od-medal,.kd-done-h .od-medal{position:relative;left:auto;bottom:auto;margin:0 auto 22px}
+.ab-cta{margin-top:14px;padding:22px}
+.ab-cta .fine{text-align:left;margin:6px 0 14px}
+
+/* Konto: fünf Bereiche (Bestellungen, Abos, Favoriten, Nummern, Einstellungen) */
+@media (max-width:767px){
+  .acc-tabs:has(a[href="/konto/abos"]){grid-template-columns:repeat(5,minmax(0,1fr))}
+  .acc-tabs:has(a[href="/konto/abos"]) a{font-size:11px;letter-spacing:-.01em;padding-inline:1px}
+}
+
+/* ---------- /kuendigen ---------- */
+.kd-head{max-width:780px;padding-top:clamp(12px,3vw,40px)}
+.kd-grid{display:grid;gap:16px;margin-top:clamp(24px,3vw,40px)}
+@media (min-width:960px){.kd-grid{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:start}.kd-side{position:sticky;top:96px}}
+.kd-form{padding:clamp(20px,3.2vw,36px)}
+.kd-fs{min-width:0;margin:0;padding:0;border:0}
+.kd-fs+.kd-fs{margin-top:28px;padding-top:24px;box-shadow:0 -1px 0 var(--line)}
+.kd-fs>legend{float:left;width:100%;margin:0 0 4px;padding:0}
+.kd-fs>legend+*{clear:both}
+.kd .field .fine{display:block;margin-top:7px;text-align:left}
+.kd .field+.field{margin-top:4px}
+.kd textarea.inp{min-height:110px;padding:14px 16px;line-height:1.5;resize:vertical}
+.kd-opt{display:flex;align-items:flex-start;gap:12px;margin-top:10px;padding:14px 16px;border-radius:var(--r-m);cursor:pointer;
+  background:var(--glass-lo);box-shadow:var(--rim);transition:background .25s,box-shadow .25s}
+.kd-opt:has(input:checked){background:var(--glass-hi);box-shadow:var(--rim-hi),var(--lift)}
+.kd-opt input{appearance:none;-webkit-appearance:none;position:relative;width:22px;height:22px;margin:0;flex:none;border-radius:50%;cursor:pointer;
+  background:var(--field);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.24);transition:background .2s,box-shadow .2s}
+.kd-opt input::after{content:"";position:absolute;inset:6px;border-radius:50%;background:#0D0E11;transform:scale(0);transition:transform .25s var(--spring)}
+.kd-opt input:checked{background:var(--chrome-fill);box-shadow:inset 0 1px 0 #fff,0 0 0 1px rgba(255,255,255,.6),0 4px 14px -4px rgba(255,255,255,.5)}
+.kd-opt input:checked::after{transform:scale(1)}
+.kd-opt>span{min-width:0}
+.kd-opt b{display:block;font-size:15px;font-weight:600;line-height:1.35}
+.kd-opt small{display:block;margin-top:2px;font-size:13.5px;line-height:1.45;color:var(--ink-3)}
+.kd-fs>.field{margin-top:6px}
+.kd-sum{margin-top:28px;padding:18px 18px 6px;border-radius:var(--r-m);background:rgba(255,255,255,.03);box-shadow:var(--rim)}
+.kd-sum .ab-dl{margin-top:8px}
+.kd-form .err{margin-top:14px}
+.kd-form>.btn{margin-top:8px}
+.kd-side{display:grid;gap:14px}
+.kd-info{padding:22px}
+.kd-info .fine{text-align:left}
+.kd-rules{display:grid;gap:14px;margin:14px 0 0;padding:0;list-style:none}
+.kd-rules b{display:block;font-size:14.5px;font-weight:600}
+.kd-rules span{display:block;margin-top:2px;font-size:14px;line-height:1.5;color:var(--ink-2)}
+/* Bestätigung */
+.kd-done{display:grid;gap:14px;max-width:720px;margin:0 auto}
+.kd-done-h{margin-bottom:14px;text-align:center}
+.kd-done-h .h1{font-size:clamp(32px,4.4vw,54px)}
+.kd-done-h .h1:focus{outline:none}
+.kd-done-h .lead{margin-left:auto;margin-right:auto}
+.kd-res{padding:20px 22px}
+.kd-res small{font-size:13px;color:var(--ink-3)}
+.kd-end{margin:4px 0 0;font-size:clamp(22px,2.6vw,30px);font-weight:560;line-height:1.15;letter-spacing:-.03em}
+.kd-res .fine,.kd-rec .fine{text-align:left}
+.kd-rec{padding:22px}
+.kd-rec .ab-dl{margin-top:10px}
+.kd-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.kd-foot{margin-top:4px}
+
+@media (prefers-reduced-motion:reduce){.ab-fc>.gc{animation:none}}
+/* Drucken der Kündigungsbestätigung: nur die Bestätigung, schwarz auf weiß */
+@media print{
+  body:has(.kd-done){background:#fff!important}
+  body:has(.kd-done) :is(.hdr,.ftr,.bgfx,.testbar,.trustbar,.chat,.nudge,.cookie,.toast,.drawer,.menu,.kd-acts){display:none!important}
+  .kd-done,.kd-done *{color:#000!important;-webkit-text-fill-color:#000!important;background:none!important;box-shadow:none!important;filter:none!important}
+  .kd-done .od-medal{display:none}
+}
