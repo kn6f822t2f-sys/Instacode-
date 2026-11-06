@@ -339,11 +339,12 @@ function legalPage(id){const x=LEGAL[id],toc=[];let n=0;
   after(){const t=$(".lgl-toc");if(!t)return;t.addEventListener("click",e=>{const a=e.target.closest("a[href^='#']"),h=a&&document.getElementById(a.hash.slice(1));if(!h)return;e.preventDefault();try{history.replaceState(null,"",a.hash)}catch(x){}
     $$(".lgl-doc h2.on").forEach(x=>x.classList.remove("on"));h.classList.add("on");h.setAttribute("tabindex","-1");h.focus({preventScroll:true});h.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})});
     /* Aktueller Abschnitt und Lesefortschritt; die Leiste auf dem Handy rollt den aktiven Eintrag in die Mitte */
-    const ul=$("ul",t),ls=$$("a",t),hs=$$(".lgl-doc h2"),doc=$(".lgl-doc");let on=-1,raf=0;
+    const ul=$("ul",t),ls=$$("a",t),hs=$$(".lgl-doc h2"),doc=$(".lgl-doc"),stT=parseFloat(getComputedStyle(t).top)||0;let on=-1,raf=0;
     if(lglSpy)removeEventListener("scroll",lglSpy);
     const upd=()=>{raf=0;if(!doc.isConnected){removeEventListener("scroll",lglSpy);lglSpy=null;return}
       const y=Math.min(innerHeight*.35,240);let k=0;hs.forEach((h,i)=>{if(h.getBoundingClientRect().top<y)k=i});
       if(k!==on){on=k;ls.forEach((a,i)=>i===k?a.setAttribute("aria-current","location"):a.removeAttribute("aria-current"));
         const li=ls[k]&&ls[k].parentNode;if(li&&ul.scrollWidth>ul.clientWidth+4)ul.scrollTo({left:Math.max(0,li.offsetLeft-(ul.clientWidth-li.offsetWidth)/2),behavior:reduce?"auto":"smooth"})}
+      t.classList.toggle("stuck",t.getBoundingClientRect().top<=stT+1);
       const r=doc.getBoundingClientRect();t.style.setProperty("--p",Math.max(0,Math.min(1,(innerHeight*.5-r.top)/Math.max(1,r.height-innerHeight*.3))).toFixed(3))};
     lglSpy=()=>{if(!raf)raf=requestAnimationFrame(upd)};addEventListener("scroll",lglSpy,{passive:true});upd()}}}

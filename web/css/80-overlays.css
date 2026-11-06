@@ -62,6 +62,7 @@
 .menu.open{opacity:1;visibility:visible;transform:none;transition:transform .6s var(--ease-out),opacity .28s var(--ease)}
 .menu:not(.open) .btn-primary.btn-lg::before{animation-play-state:paused}
 .menu-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:76px;padding:8px 12px 0 22px}
+.menu-top .brandmark{min-height:44px}
 .menu-top .lg-mark{width:32px;height:32px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
 .menu-top .wordmark{font-size:21px}
 .menu-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:6px 18px 30px;

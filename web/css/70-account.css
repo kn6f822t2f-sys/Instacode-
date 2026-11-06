@@ -441,6 +441,10 @@ html:not(.lite) .hp-search{-webkit-backdrop-filter:var(--blur);backdrop-filter:v
 
 /* Inhaltsverzeichnis – Handy: klebende Glas-Leiste unter der Kopfzeile */
 .lgl-toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);z-index:30;margin:0 calc(var(--gut) * -1);padding:0 calc(var(--gut) - 6px)}
+/* Angedockt: ruhiger Grund zwischen Kopfzeile und Leiste, damit der Text nicht durchscheint */
+.lgl-toc::before{content:"";position:absolute;left:0;right:0;bottom:50%;z-index:-1;height:calc(76px + env(safe-area-inset-top,0px) + 30px);pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,var(--bg) 0,var(--bg) 78%,rgba(14,15,18,0));transition:opacity .25s var(--ease)}
+.lgl-toc.stuck::before{opacity:1}
 .lgl-toc>b{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .lgl-toc ul{position:relative;display:flex;gap:4px;margin:0;padding:5px;list-style:none;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;border-radius:var(--pill);
   background:linear-gradient(180deg,rgba(40,42,48,.82),rgba(22,23,27,.8));box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 1px rgba(255,255,255,.07),0 16px 34px -16px rgba(0,0,0,.95)}
@@ -497,6 +501,7 @@ html:not(.lite) .lgl-toc ul{-webkit-backdrop-filter:blur(22px) saturate(1.6);bac
   .lgl-grid{grid-template-columns:264px minmax(0,1fr);gap:40px;align-items:start}
   .lgl-toc{top:100px;margin:0;padding:18px 12px 14px 14px;border-radius:var(--r-l);max-height:calc(100vh - 124px);overflow-y:auto;scrollbar-width:thin;
     background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));box-shadow:var(--rim),var(--lift)}
+  .lgl-toc::before{display:none}
   .lgl-toc>b{position:static!important;width:auto;height:auto;overflow:visible;clip:auto;display:block;margin:0 6px 12px;font-size:13px;font-weight:600;color:var(--ink-3)}
   .lgl-toc ul{display:grid;gap:2px;padding:0 0 0 12px;overflow:visible;border-radius:0;background:none;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
   .lite .lgl-toc ul{background:none}

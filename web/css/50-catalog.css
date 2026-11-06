@@ -166,6 +166,7 @@ html:not(.lite) .kf-p{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10
 .az-nav a{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;font-size:15px;font-weight:600;color:var(--ink-2);transition:color .2s,background .25s,transform .25s var(--spring)}
 @media (hover:hover){.az-nav a:hover{color:#0D0E11;background:var(--chrome-fill)}}
 .az-nav a:active{transform:scale(.9)}
+@media (max-width:899px){.az-nav-in{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 24px),transparent)}}
 @media (min-width:900px){.az-nav{top:calc(env(safe-area-inset-top,0px) + 84px)}.az-nav-in{justify-content:space-between;gap:0}}
 .az{column-gap:16px}
 @media (min-width:640px){.az{columns:2}}
