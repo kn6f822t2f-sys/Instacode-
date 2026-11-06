@@ -30,6 +30,8 @@ const kWall=list=>{const l=list.filter(b=>b&&b.cov).slice(0,12),V=[150,-110,190,
 const kOrbit=cs=>`<div class="ko" data-off aria-hidden="true">${cs.slice(0,8).map((c,i)=>`<span class="ko-i" style="--c:${CCOL[c.id]};--k:${i}"><span>${ic(c.icon)}</span></span>`).join("")}</div>`;
 /* Je Markenzeichen nur eine Marke (PlayStation Plus, EA … kommen sonst mehrfach) */
 const uniqSi=l=>{const s=new Set();return l.filter(b=>b&&b.si&&!s.has(b.si)&&s.add(b.si))};
+/* Markenwand: alle Marken mit offiziellem Logo oder Markenzeichen, jede nur einmal */
+const uniqMark=l=>{const s=new Set();return l.filter(b=>b&&!isKey(b)&&hasMark(b)&&!s.has(b.logo||b.si)&&s.add(b.logo||b.si))};
 /* Seitenkopf: links Chrom-Überschrift, Text, Chips und echte Markenzeichen, rechts (Handy: oben) die Bildwelt der Seite
    (Kartenfächer, o.art ersetzt ihn, o.art2 kommt dazu) */
 const kHead=o=>`<div class="kh${o.cls?" "+o.cls:""}" data-mouse style="--c:${o.c||"#7D5CF0"}">
@@ -72,13 +74,13 @@ function cats(){
   const sub=b=>esc(catById(b.cat).name)+(isKey(b)?" · "+variants(b).map(v=>PLAT[v.plat]).join(", "):"");
   const cards=["netflix","steam","psn","fortnite","amazon","spotify","apple"].map(byId).filter(Boolean);
   /* Markenwand: bekannte Marken zuerst, Mobilfunk am Ende */
-  const bw=uniqSi(SKY0.map(byId).concat(VIS().filter(b=>b.cat!=="topup"),VIS()));
+  const bw=uniqMark(SKY0.map(byId).concat(VIS().filter(b=>b.cat!=="topup"),VIS()));
   return {tab:"cats",title:"Kategorien",html:`${crumb([["Kategorien"]])}
 ${kHead({cls:"kh-cats",c:"#7D5CF0",title:"Kategorien",text:"Vom Spiele-Key bis zum Handy-Guthaben. Codes kommen nach der Zahlung per E&#8209;Mail, Handy-Guthaben geht direkt auf die Nummer.",
   meta:[["i-grid-f",`${cs.length} Kategorien`],["i-box",`${BRANDS.length} Produkte`],["i-mail","Code per E&#8209;Mail"]],cards:cards.length>=3?cards:IMGB().slice(0,5),art2:kOrbit(cs)})}
 ${trustBand()}
 <section class="sec kb-sec" aria-label="Alle Kategorien"><div class="kb-grid">${cs.map((c,i)=>kbCard(c,i,sp[i])).join("")}</div></section>
-${bw.length>=6?`<section class="sec kbw-sec" aria-labelledby="bwH"><div class="sec-head"><div><h2 class="h2" id="bwH">Marken im Sortiment</h2><p>Echte Markenzeichen, ein Tipp führt direkt zum Produkt.</p></div></div>${brandWall(bw,{n:24})}</section>`:""}
+${bw.length>=6?`<section class="sec kbw-sec" aria-labelledby="bwH"><div class="sec-head"><div><h2 class="h2" id="bwH">Marken im Sortiment</h2><p>Echte Markenzeichen, ein Tipp führt direkt zum Produkt.</p></div></div>${brandWall(bw,{n:42})}</section>`:""}
 <section class="sec az-sec" aria-labelledby="azH"><div class="sec-head"><div><h2 class="h2" id="azH">Alle Produkte von A bis Z</h2><p>${VIS().length} Marken und Spiele, alphabetisch sortiert.</p></div></div>
   <nav class="az-nav" aria-label="Nach Anfangsbuchstabe springen"><div class="az-nav-in">${groups.map(g=>`<a href="#${azId(g.k)}" aria-label="Buchstabe ${g.k==="#"?"Ziffern":g.k}">${g.k}</a>`).join("")}</div></nav>
   <div class="az">${groups.map(g=>`<div class="az-g spot" id="${azId(g.k)}"><h3 class="az-k">${g.k}</h3><ul>${g.l.map(b=>`<li><a href="/marke/${b.id}">${mini(b)}<span class="az-t"><b>${esc(b.name)}</b><small>${sub(b)}</small></span>${ic("i-chev")}</a></li>`).join("")}</ul></div>`).join("")}</div>

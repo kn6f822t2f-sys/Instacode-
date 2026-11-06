@@ -35,5 +35,10 @@
   "gplay": { "url": "https://play.google.com/redeem", "label": "Google-Play-Code einlösen" },
   "netflix": { "url": "https://www.netflix.com/redeem", "label": "Netflix-Geschenkkarte einlösen" },
   "spotify": { "url": "https://www.spotify.com/account/redeem/", "label": "Spotify-Geschenkkarte einlösen" },
-  "amazon": { "url": "https://www.amazon.de/gc/redeem", "label": "Amazon.de-Geschenkkarte einlösen" }
+  "amazon": { "url": "https://www.amazon.de/gc/redeem", "label": "Amazon.de-Geschenkkarte einlösen" },
+
+  "brawlstars": { "url": "https://store.supercell.com/giftcard", "label": "Geschenkkarte im Supercell Store einlösen" },
+  "wolt": { "url": "https://wolt.com/me/redeem-code", "label": "Wolt-Gutscheincode einlösen" },
+  "jochenschweizer": { "url": "https://einloesen.jochen-schweizer.de/", "label": "Jochen-Schweizer-Gutschein einlösen" },
+  "lastminute": { "url": "https://getmygift.lastminute.com/", "label": "lastminute-Geschenkkarte aktivieren" }
 }

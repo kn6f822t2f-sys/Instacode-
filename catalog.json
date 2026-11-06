@@ -673,6 +673,36 @@
   "region": "DE",
   "si": "razer"
  },
+ "metaquest": {
+  "id": "metaquest",
+  "name": "Meta Quest",
+  "cat": "gaming",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50,
+   75,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0081FB",
+  "fg": "#fff",
+  "mark": {
+   "t": "Meta Quest",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "vr",
+   "oculus",
+   "quest 3",
+   "meta"
+  ],
+  "region": "DE",
+  "si": "meta"
+ },
  "fortnite": {
   "id": "fortnite",
   "name": "Fortnite V-Bucks",
@@ -1215,6 +1245,84 @@
    "world of warcraft",
    "game time",
    "blizzard"
+  ],
+  "region": "DE"
+ },
+ "brawlstars": {
+  "id": "brawlstars",
+  "name": "Brawl Stars",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   5,
+   15,
+   25,
+   60
+  ],
+  "disc": 0,
+  "bg": "#1670E6",
+  "fg": "#fff",
+  "mark": {
+   "t": "BRAWL STARS",
+   "s": 26,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "supercell",
+   "gems",
+   "juwelen",
+   "brawl pass"
+  ],
+  "region": "DE",
+  "si": "supercell"
+ },
+ "candycrush": {
+  "id": "candycrush",
+  "name": "Candy Crush",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   25
+  ],
+  "disc": 0,
+  "bg": "#3DB2E9",
+  "fg": "#fff",
+  "mark": {
+   "t": "Candy Crush",
+   "s": 28,
+   "w": 800,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "king",
+   "candy crush saga",
+   "soda saga"
+  ],
+  "region": "DE"
+ },
+ "hearthstone": {
+  "id": "hearthstone",
+  "name": "Hearthstone",
+  "cat": "currency",
+  "type": "card",
+  "amts": [
+   20,
+   50
+  ],
+  "disc": 0,
+  "bg": "#103748",
+  "fg": "#fff",
+  "mark": {
+   "t": "HEARTHSTONE",
+   "s": 24,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "blizzard",
+   "battle.net",
+   "kartenspiel"
   ],
   "region": "DE"
  },
@@ -3316,6 +3424,64 @@
   "region": "DE",
   "si": "discord"
  },
+ "tinderplus": {
+  "id": "tinderplus",
+  "name": "Tinder Plus",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   14
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#FD267A,#FF6036)",
+  "fg": "#fff",
+  "mark": {
+   "t": "tinder",
+   "s": 40,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "PLUS"
+  },
+  "labels": [
+   "1 Monat"
+  ],
+  "tags": [
+   "dating",
+   "tinder"
+  ],
+  "region": "DE",
+  "si": "tinder",
+  "grp": "tinder"
+ },
+ "tindergold": {
+  "id": "tindergold",
+  "name": "Tinder Gold",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   25
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#FD267A,#FF6036)",
+  "fg": "#fff",
+  "mark": {
+   "t": "tinder",
+   "s": 40,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "GOLD"
+  },
+  "labels": [
+   "1 Monat"
+  ],
+  "tags": [
+   "dating",
+   "tinder"
+  ],
+  "region": "DE",
+  "si": "tinder",
+  "grp": "tinder"
+ },
  "netflix": {
   "id": "netflix",
   "name": "Netflix",
@@ -3579,6 +3745,166 @@
   ],
   "region": "DE",
   "si": "audible"
+ },
+ "cineplex": {
+  "id": "cineplex",
+  "name": "Cineplex",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10,
+   15,
+   20,
+   25
+  ],
+  "disc": 0,
+  "bg": "#DC1C16",
+  "fg": "#fff",
+  "mark": {
+   "t": "CINEPLEX",
+   "s": 30,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "kino",
+   "kinogutschein",
+   "film"
+  ],
+  "region": "DE"
+ },
+ "eventim": {
+  "id": "eventim",
+  "name": "Eventim",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   25
+  ],
+  "disc": 0,
+  "bg": "#202867",
+  "fg": "#fff",
+  "mark": {
+   "t": "EVENTIM",
+   "s": 32,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "tickets",
+   "konzert",
+   "events",
+   "musical"
+  ],
+  "region": "DE"
+ },
+ "ticketmaster": {
+  "id": "ticketmaster",
+  "name": "Ticketmaster",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   30,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#026CDF",
+  "fg": "#fff",
+  "mark": {
+   "t": "ticketmaster",
+   "s": 26,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "tickets",
+   "konzert",
+   "events"
+  ],
+  "region": "DE",
+  "si": "ticketmaster"
+ },
+ "jochenschweizer": {
+  "id": "jochenschweizer",
+  "name": "Jochen Schweizer",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#007BA5",
+  "fg": "#fff",
+  "mark": {
+   "t": "JOCHEN",
+   "s": 34,
+   "w": 800,
+   "ls": ".02em",
+   "two": "SCHWEIZER"
+  },
+  "tags": [
+   "erlebnis",
+   "erlebnisgeschenk",
+   "geschenk"
+  ],
+  "region": "DE"
+ },
+ "kobo": {
+  "id": "kobo",
+  "name": "Rakuten Kobo",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10
+  ],
+  "disc": 0,
+  "bg": "#BF0000",
+  "fg": "#fff",
+  "mark": {
+   "t": "kobo",
+   "s": 46,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "ebook",
+   "bücher",
+   "rakuten"
+  ],
+  "region": "DE",
+  "si": "rakutenkobo"
+ },
+ "tiktok": {
+  "id": "tiktok",
+  "name": "TikTok Coins",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   20,
+   40,
+   100
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#25F4EE,#FE2C55)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TikTok",
+   "s": 40,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "coins",
+   "tiktok",
+   "live"
+  ],
+  "region": "DE",
+  "si": "tiktok"
  },
  "m365p": {
   "id": "m365p",
@@ -4200,6 +4526,397 @@
   "region": "DE",
   "si": "rossmann"
  },
+ "c-und-a": {
+  "id": "c-und-a",
+  "name": "C&A",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#1A1A1A",
+  "fg": "#fff",
+  "mark": {
+   "t": "C&A",
+   "s": 46,
+   "w": 800,
+   "ls": "0"
+  },
+  "tags": [
+   "mode",
+   "c und a",
+   "kleidung"
+  ],
+  "region": "DE"
+ },
+ "fiveguys": {
+  "id": "fiveguys",
+  "name": "Five Guys",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   30,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#CF0A2C",
+  "fg": "#fff",
+  "mark": {
+   "t": "FIVE GUYS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "essen",
+   "burger",
+   "restaurant"
+  ],
+  "region": "DE"
+ },
+ "footlocker": {
+  "id": "footlocker",
+  "name": "Foot Locker",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   30,
+   50,
+   70,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0E1111",
+  "fg": "#fff",
+  "mark": {
+   "t": "Foot Locker",
+   "s": 28,
+   "w": 800,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "sneaker",
+   "schuhe",
+   "sport"
+  ],
+  "region": "DE"
+ },
+ "lego": {
+  "id": "lego",
+  "name": "LEGO",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   30,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#E3000B",
+  "fg": "#FFED00",
+  "mark": {
+   "t": "LEGO",
+   "s": 46,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "spielzeug",
+   "lego store"
+  ],
+  "region": "DE"
+ },
+ "lush": {
+  "id": "lush",
+  "name": "LUSH",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   15,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#000000",
+  "fg": "#fff",
+  "mark": {
+   "t": "LUSH",
+   "s": 46,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "kosmetik",
+   "beauty",
+   "seife"
+  ],
+  "region": "DE"
+ },
+ "rewe": {
+  "id": "rewe",
+  "name": "REWE",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   5,
+   30,
+   35,
+   40,
+   50
+  ],
+  "disc": 0,
+  "bg": "#CC071E",
+  "fg": "#fff",
+  "mark": {
+   "t": "REWE",
+   "s": 46,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "supermarkt",
+   "lebensmittel",
+   "einkaufen"
+  ],
+  "region": "DE",
+  "si": "rewe"
+ },
+ "tchibo": {
+  "id": "tchibo",
+  "name": "Tchibo",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#C0A468",
+  "fg": "#fff",
+  "mark": {
+   "t": "Tchibo",
+   "s": 38,
+   "w": 800,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "kaffee",
+   "haushalt",
+   "mode"
+  ],
+  "region": "DE"
+ },
+ "tkmaxx": {
+  "id": "tkmaxx",
+  "name": "TK Maxx",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#ED1F31",
+  "fg": "#fff",
+  "mark": {
+   "t": "TK Maxx",
+   "s": 36,
+   "w": 800,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "mode",
+   "marken",
+   "schnäppchen"
+  ],
+  "region": "DE"
+ },
+ "treatwell": {
+  "id": "treatwell",
+  "name": "Treatwell",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   75,
+   100,
+   125,
+   150
+  ],
+  "disc": 0,
+  "bg": "#FF7375",
+  "fg": "#fff",
+  "mark": {
+   "t": "Treatwell",
+   "s": 32,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "friseur",
+   "beauty",
+   "wellness",
+   "kosmetik"
+  ],
+  "region": "DE"
+ },
+ "wolt": {
+  "id": "wolt",
+  "name": "Wolt",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   30,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#009DE0",
+  "fg": "#fff",
+  "mark": {
+   "t": "Wolt",
+   "s": 46,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "essen",
+   "lieferung",
+   "lieferdienst"
+  ],
+  "region": "DE"
+ },
+ "flixbus": {
+  "id": "flixbus",
+  "name": "FlixBus & FlixTrain",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#73D700",
+  "fg": "#fff",
+  "mark": {
+   "t": "FLIXBUS",
+   "s": 34,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "reisen",
+   "fernbus",
+   "flixtrain",
+   "zug",
+   "bus"
+  ],
+  "region": "DE"
+ },
+ "kaufland": {
+  "id": "kaufland",
+  "name": "Kaufland",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   5,
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#E10915",
+  "fg": "#fff",
+  "mark": {
+   "t": "Kaufland",
+   "s": 32,
+   "w": 800,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "supermarkt",
+   "lebensmittel",
+   "filiale"
+  ],
+  "region": "DE",
+  "si": "kaufland"
+ },
+ "aral": {
+  "id": "aral",
+  "name": "Aral",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0063CB",
+  "fg": "#fff",
+  "mark": {
+   "t": "ARAL",
+   "s": 46,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "tanken",
+   "tankstelle",
+   "benzin",
+   "supercard",
+   "mobilität"
+  ],
+  "region": "DE",
+  "si": "aral"
+ },
+ "lastminute": {
+  "id": "lastminute",
+  "name": "lastminute.de",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   50,
+   100,
+   150,
+   200,
+   250
+  ],
+  "disc": 0,
+  "bg": "#EC028D",
+  "fg": "#fff",
+  "mark": {
+   "t": "lastminute.de",
+   "s": 24,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "reisen",
+   "urlaub",
+   "flug",
+   "hotel",
+   "lastminute.com"
+  ],
+  "region": "DE"
+ },
  "paysafe": {
   "id": "paysafe",
   "name": "paysafecard",
@@ -4346,6 +5063,263 @@
    "w": 800,
    "ls": ".04em"
   },
+  "region": "DE"
+ },
+ "toneo": {
+  "id": "toneo",
+  "name": "Toneo First",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   7.5,
+   15,
+   30,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#F58254",
+  "fg": "#fff",
+  "mark": {
+   "t": "Toneo First",
+   "s": 26,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "labels": [
+   "7,50 €",
+   "15,00 €",
+   "30,00 €",
+   "50,00 €",
+   "100,00 €",
+   "150,00 €"
+  ],
+  "tags": [
+   "prepaid",
+   "mastercard",
+   "online bezahlen"
+  ],
+  "region": "DE"
+ },
+ "bitsa": {
+  "id": "bitsa",
+  "name": "Bitsa",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#6684D5",
+  "fg": "#fff",
+  "mark": {
+   "t": "BITSA",
+   "s": 44,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "prepaid",
+   "visa",
+   "kreditkarte",
+   "online bezahlen"
+  ],
+  "region": "DE"
+ },
+ "cashlib": {
+  "id": "cashlib",
+  "name": "CASHlib",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   5,
+   10,
+   20,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#11466B",
+  "fg": "#fff",
+  "mark": {
+   "t": "CASHlib",
+   "s": 34,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "prepaid",
+   "online bezahlen"
+  ],
+  "region": "DE"
+ },
+ "pcs": {
+  "id": "pcs",
+  "name": "PCS Mastercard",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   20,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#E8495A",
+  "fg": "#fff",
+  "mark": {
+   "t": "PCS",
+   "s": 46,
+   "w": 800,
+   "ls": ".06em"
+  },
+  "tags": [
+   "prepaid",
+   "mastercard",
+   "kreditkarte"
+  ],
+  "region": "DE"
+ },
+ "transcash": {
+  "id": "transcash",
+  "name": "Transcash",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   20,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#D71816",
+  "fg": "#fff",
+  "mark": {
+   "t": "transcash",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "prepaid",
+   "mastercard",
+   "ticket"
+  ],
+  "region": "DE"
+ },
+ "mifinity": {
+  "id": "mifinity",
+  "name": "MiFinity",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#2E9DD3",
+  "fg": "#fff",
+  "mark": {
+   "t": "MiFinity",
+   "s": 34,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "e-wallet",
+   "prepaid",
+   "online bezahlen"
+  ],
+  "region": "DE"
+ },
+ "muchbetter": {
+  "id": "muchbetter",
+  "name": "MuchBetter",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   30,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#F57E20",
+  "fg": "#fff",
+  "mark": {
+   "t": "MuchBetter",
+   "s": 28,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "e-wallet",
+   "prepaid",
+   "online bezahlen"
+  ],
+  "region": "DE"
+ },
+ "aplauz": {
+  "id": "aplauz",
+  "name": "Aplauz",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#5F259F",
+  "fg": "#fff",
+  "mark": {
+   "t": "aplauz",
+   "s": 38,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "prepaid",
+   "online bezahlen"
+  ],
+  "region": "DE"
+ },
+ "abon": {
+  "id": "abon",
+  "name": "Aircash A-Bon",
+  "cat": "payment",
+  "type": "card",
+  "amts": [
+   5,
+   10,
+   20,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#E40000",
+  "fg": "#fff",
+  "mark": {
+   "t": "A-Bon",
+   "s": 40,
+   "w": 800,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "aircash",
+   "abon",
+   "prepaid",
+   "e-wallet"
+  ],
   "region": "DE"
  }
 }

@@ -11,12 +11,15 @@ const cloud=(list,slots)=>list.slice(0,slots.length).map((b,i)=>fcard(b,slots[i]
 const hvid=n=>`<video class="vf-vid" poster="/vid/${n}.jpg?v=8" muted loop playsinline preload="none"><source src="/vid/${n}.mp4?v=8" type="video/mp4"><source src="/vid/${n}.webm?v=8" type="video/webm"></video>`;
 /* Video, das mit dem Scrollen läuft (16-motion.js, [data-scrub]) */
 const svid=n=>`<video class="scrub-vid" poster="/vid/${n}.jpg?v=8" muted playsinline preload="none" data-src="/vid/${n}-scrub.mp4?v=8"></video>`;
-const uniqLogos=n=>{const seen=new Set();return VIS().filter(b=>b.si&&!seen.has(b.si)&&seen.add(b.si)).slice(0,n)};
+const uniqLogos=n=>{const seen=new Set();return VIS().filter(b=>!isKey(b)&&hasMark(b)&&!seen.has(b.logo||b.si)&&seen.add(b.logo||b.si)).slice(0,n)};
 /* Kartenwand: echte Gutscheinkarten mit offiziellen Logos in drei Reihen, die gegeneinander laufen (Bilder, Farbe, Bewegung).
    Zweite Hälfte jeder Reihe ist die Kopie für die Endlosschleife (für Screenreader und Tastatur ausgeblendet). */
-const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=="topup"&&(b.logo||b.si)&&!seen.has(b.name)&&seen.add(b.name));
+const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=="topup"&&(b.logo||b.si)&&!seen.has(b.logo||b.si)&&seen.add(b.logo||b.si));
   if(list.length<12)return"";
-  const rows=[0,1,2].map(r=>list.filter((b,i)=>i%3===r).slice(0,14));
+  /* Kategorien im Wechsel (Gaming, Shopping, Prepaid, Streaming …), damit jede Reihe bunt gemischt ist */
+  const by={};list.forEach(b=>(by[b.cat]=by[b.cat]||[]).push(b));const cs=Object.keys(by),mix=[];
+  for(let i=0;mix.length<list.length;i++)cs.forEach(c=>{if(by[c][i])mix.push(by[c][i])});
+  const rows=[0,1,2].map(r=>mix.filter((b,i)=>i%3===r).slice(0,16));
   const card=(b,dup,i)=>`<a class="cw-c" href="/marke/${b.id}" style="--i:${i}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}<i class="cw-sh" aria-hidden="true"></i></a>`;
   return `<section class="cwall" data-off aria-label="Marken im Sortiment"><div class="sec cw-head"><div class="sec-head"><div><h2 class="h2">Alle Marken. Ein Shop.</h2><p>Gutscheine, Prepaid-Karten und Guthaben – offizielle Codes, meist in Sekunden per E-Mail.</p></div><div class="sh-r"><a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a></div></div></div>
 <div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map((b,j)=>card(b,0,j+i*3)).join("")}${r.map((b,j)=>card(b,1,j+i*3)).join("")}</div></div>`).join("")}</div></div></section>`};
@@ -105,7 +108,7 @@ ${keys.length?`<section class="sec hm-keys">${head("Spiele-Keys",`${keys.length}
 </section>`:""}
 ${deals.length?`<section class="sec">${head("Jetzt reduziert",`Bis zu ${off} % Rabatt auf ausgewählte Gutscheine.`,`<a class="more" href="/angebote">Alle${ic("i-chev")}</a>${railNav("dealRail")}`)}${rail("dealRail",deals)}</section>`:""}
 ${recent.length?`<section class="sec">${head("Zuletzt angesehen","",railNav("recentRail"))}${rail("recentRail",recent)}</section>`:""}
-<section class="sec hm-brandwall">${head("Marken im Sortiment","Offizielle Codes bekannter Marken – sofort per E-Mail.",`<a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a>`)}${brandWall(uniqLogos(18),{n:18})}</section>
+<section class="sec hm-brandwall">${head("Marken im Sortiment","Offizielle Codes bekannter Marken – sofort per E-Mail.",`<a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a>`)}${brandWall(uniqLogos(24),{n:18})}</section>
 <section class="sec hm-why">
   <p class="say" data-words>Offizielle Codes von autorisierten Distributoren, sicher bezahlt über Stripe und meist in Sekunden bei dir. Ohne Umwege, ohne Wartezeit.</p>
   <ul class="why">

@@ -1,4 +1,11 @@
 {
+ "abon": {
+  "src": "/brand/aircash.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 6.55,
+  "tint": true
+ },
  "airbnb": {
   "src": "/brand/airbnb.svg",
   "card": "brand",
@@ -18,11 +25,29 @@
   "scale": 0.9,
   "ar": 0.814
  },
+ "aral": {
+  "src": "/brand/aral.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 1
+ },
  "ayyildiz": {
   "src": "/brand/ay-yildiz.svg",
   "card": "light",
   "scale": 1,
   "ar": 3.012
+ },
+ "c-und-a": {
+  "src": "/brand/c-und-a.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 1.925
+ },
+ "cashlib": {
+  "src": "/brand/cashlib.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.143
  },
  "codpoints": {
   "src": "/brand/call-of-duty.svg",
@@ -74,6 +99,25 @@
   "scale": 1,
   "ar": 2.015
  },
+ "fiveguys": {
+  "src": "/brand/five-guys.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 7.878
+ },
+ "flixbus": {
+  "src": "/brand/flixbus.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 5.606,
+  "tint": true
+ },
+ "footlocker": {
+  "src": "/brand/foot-locker.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 6.41
+ },
  "fortnite": {
   "src": "/brand/fortnite.svg",
   "card": "brand",
@@ -94,12 +138,42 @@
   "ar": 1.39,
   "tint": true
  },
+ "hearthstone": {
+  "src": "/brand/hearthstone.svg",
+  "card": "brand",
+  "scale": 1.35,
+  "ar": 2.309
+ },
  "hm": {
   "src": "/brand/h-and-m.svg",
   "card": "brand",
   "scale": 0.8,
   "ar": 1.515,
   "tint": true
+ },
+ "jochenschweizer": {
+  "src": "/brand/jochen-schweizer.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 2.841
+ },
+ "kaufland": {
+  "src": "/brand/kaufland.svg",
+  "card": "light",
+  "scale": 1.1,
+  "ar": 1
+ },
+ "kobo": {
+  "src": "/brand/rakuten-kobo.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 1.788
+ },
+ "lego": {
+  "src": "/brand/lego.svg",
+  "card": "light",
+  "scale": 1.2,
+  "ar": 1
  },
  "lidlconnect": {
   "src": "/brand/lidl.svg",
@@ -144,11 +218,23 @@
   "scale": 0.9,
   "ar": 1.289
  },
+ "metaquest": {
+  "src": "/brand/meta.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.964
+ },
  "microsoft": {
   "src": "/brand/microsoft.svg",
   "card": "light",
   "scale": 1,
   "ar": 4.682
+ },
+ "mifinity": {
+  "src": "/brand/mifinity.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 7.294
  },
  "minecoins": {
   "src": "/brand/minecraft.svg",
@@ -161,6 +247,12 @@
   "card": "brand",
   "scale": 0.9,
   "ar": 0.981
+ },
+ "muchbetter": {
+  "src": "/brand/muchbetter.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.359
  },
  "netflix": {
   "src": "/brand/netflix.svg",
@@ -231,6 +323,12 @@
   "ar": 3.425,
   "tint": true
  },
+ "pcs": {
+  "src": "/brand/pcs.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.604
+ },
  "pennymobil": {
   "src": "/brand/penny-mobil.svg",
   "card": "light",
@@ -242,6 +340,13 @@
   "card": "brand",
   "scale": 1,
   "ar": 5.517,
+  "tint": true
+ },
+ "rewe": {
+  "src": "/brand/rewe.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.738,
   "tint": true
  },
  "roblox": {
@@ -264,12 +369,43 @@
   "ar": 3.316,
   "tint": true
  },
+ "tchibo": {
+  "src": "/brand/tchibo.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 3.333
+ },
  "telekom": {
   "src": "/brand/telekom.svg",
   "card": "brand",
   "scale": 1,
   "ar": 0.838,
   "tint": true
+ },
+ "ticketmaster": {
+  "src": "/brand/ticketmaster.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 7.477,
+  "tint": true
+ },
+ "tiktok": {
+  "src": "/brand/tiktok.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 3.428
+ },
+ "toneo": {
+  "src": "/brand/toneo-first.svg",
+  "card": "light",
+  "scale": 1.05,
+  "ar": 6.557
+ },
+ "transcash": {
+  "src": "/brand/transcash.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 7.42
  },
  "valorant": {
   "src": "/brand/valorant.svg",
@@ -289,6 +425,13 @@
   "card": "light",
   "scale": 1,
   "ar": 4.034
+ },
+ "wolt": {
+  "src": "/brand/wolt.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.749,
+  "tint": true
  },
  "xbox": {
   "src": "/brand/xbox.svg",
