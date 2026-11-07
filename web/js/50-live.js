@@ -331,7 +331,7 @@ const LEGAL={
 <li><b>Zahlung:</b> Stripe Payments Europe Ltd., Irland. Stripe verarbeitet deine Zahlungsdaten (z.&nbsp;B. Karte, Apple Pay, Google Pay) selbst; wir erhalten keine vollständigen Kartendaten. Stripe kann zur Betrugsprävention Daten an Stripe Inc., USA übermitteln (EU-U.S. Data Privacy Framework). Datenschutz: stripe.com/de/privacy.</li>
 <li><b>E-Mail-Versand:</b> Resend (Plus Five Five, Inc.), USA, für Bestellbestätigungen, Codes und Konto-E-Mails. Grundlage: EU-Standardvertragsklauseln.</li>
 <li><b>Bezug von Codes und Aufladungen:</b> Reloadly Inc., USA. Für Handy-Aufladungen übermitteln wir die Rufnummer und den Betrag, für Codes nur Produkt und Menge, keine Kundendaten. Grundlage: Art. 6 Abs. 1 lit. b DSGVO und EU-Standardvertragsklauseln.</li>
-<li><b>Domain und E-Mail-Postfach:</b> STRATO GmbH, Deutschland.</li>
+<li><b>Domain und E-Mail-Postfach:</b> IONOS SE, Deutschland.</li>
 ${CFG.google?`<li><b>Anmeldung mit Google:</b> Google Ireland Ltd. Nur wenn du diese Anmeldung wählst, erhalten wir Name und E-Mail von Google.</li>`:""}
 ${CFG.trustpilot&&CFG.trustpilot.widget?`<li><b>Trustpilot:</b> Trustpilot A/S, Dänemark. Das Bewertungs-Widget lädt nur nach deiner Einwilligung im Cookie-Banner.</li>`:""}
 </ul>
@@ -341,16 +341,17 @@ ${CFG.trustpilot&&CFG.trustpilot.widget?`<li><b>Trustpilot:</b> Trustpilot A/S, 
 <li><b>Welche Daten:</b> deine Chat-Nachrichten und die Shop-Daten, die für die Beratung nötig sind: zuletzt angesehene Produkte, der Inhalt deines Warenkorbs und die gewählten Beträge. Zahlungsdaten übermitteln wir nicht. Bitte gib im Chat keine Codes, Passwörter oder Zahlungsdaten ein.</li>
 <li><b>Zweck und Rechtsgrundlage:</b> Beantwortung deiner Fragen und Hilfe bei der Auswahl, also Durchführung vorvertraglicher Maßnahmen und Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO), sowie unser berechtigtes Interesse an einer schnellen und hilfreichen Beratung (Art. 6 Abs. 1 lit. f DSGVO).</li>
 <li><b>Übermittlung in die USA:</b> Anthropic verarbeitet die Daten in den USA. Grundlage ist der Angemessenheitsbeschluss der EU-Kommission zum EU-U.S. Data Privacy Framework, soweit Anthropic danach zertifiziert ist, im Übrigen EU-Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).</li>
-<li><b>Widerspruch:</b> Du kannst den Shop vollständig ohne Chat nutzen. Einer Verarbeitung auf Grundlage berechtigter Interessen kannst du jederzeit widersprechen (siehe Abschnitt 7).</li>
+<li><b>Widerspruch:</b> Du kannst den Shop vollständig ohne Chat nutzen. Einer Verarbeitung auf Grundlage berechtigter Interessen kannst du jederzeit widersprechen (siehe Abschnitt ${7+PHN()}).</li>
 </ul>
 ${/* VOM INHABER ZU PRÜFEN: Zertifizierung von Anthropic unter dem EU-U.S. Data Privacy Framework (dataprivacyframework.gov) bzw. abgeschlossene Standardvertragsklauseln (Anthropic Data Processing Addendum) bestätigen und den Abschnitt danach anpassen. Der Hinweis erscheint nur im Testmodus. */""}${CFG.testmode?`<p class="lgl-check">Nur in der Vorschau sichtbar – vom Inhaber zu prüfen: Ist Anthropic unter dem EU-U.S. Data Privacy Framework zertifiziert, und sind die Standardvertragsklauseln (Data Processing Addendum) abgeschlossen? Abschnitt danach anpassen.</p>`:""}
-<h2>5. Cookies und lokaler Speicher</h2>
+${voicePrivacy()/* KI-Telefonassistent, nur wenn eingerichtet (77-voice.js) */}
+<h2>${5+PHN()}. Cookies und lokaler Speicher</h2>
 <p>Wir verwenden nur technisch notwendige Cookies und lokalen Speicher für Anmeldung, Warenkorb, Spracheinstellungen und die sichere Zahlung (§ 25 Abs. 2 TDDDG). Es gibt kein Tracking und keine Werbung. Die Stripe-Zahlungsfelder setzen eigene, für die Betrugsprävention notwendige Cookies.</p>
-<h2>6. Speicherdauer</h2>
+<h2>${6+PHN()}. Speicherdauer</h2>
 <p>Bestell- und Rechnungsdaten bewahren wir wegen gesetzlicher Aufbewahrungspflichten bis zu 10 Jahre auf (§ 147 AO, § 257 HGB). Kontodaten löschen wir, wenn du dein Konto löschst, soweit keine Aufbewahrungspflicht besteht.</p>
-<h2>7. Deine Rechte</h2>
+<h2>${7+PHN()}. Deine Rechte</h2>
 <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 15–21 DSGVO). Eine Einwilligung kannst du jederzeit widerrufen. Schreib uns dazu an <a href="mailto:${SUP()}">${SUP()}</a>. Du kannst dich außerdem bei einer Datenschutz-Aufsichtsbehörde beschweren.</p>
-<h2>8. Sicherheit</h2>
+<h2>${8+PHN()}. Sicherheit</h2>
 <p>Alle Verbindungen sind per TLS verschlüsselt. Gekaufte Codes speichern wir verschlüsselt. Passwörter werden nur als sicherer Hash gespeichert.</p>`]
 };
 /* Lesbare Langform: Inhaltsverzeichnis als Glas-Leiste (Handy: klebend oben, Desktop: links) mit Lesefortschritt, Textspalte mit höchstens 68 Zeichen */
