@@ -1,84 +1,79 @@
-# instantcodes – Design „Chrome & Glas – hell“
+# instantcodes – Design „Silberstreifen“
 
-Shop für digitale Gutscheine, Spiele-Keys, Abos und Handy-Aufladungen (Deutschland, Du-Form, überwiegend iPhone-Nutzer).
-Hauptaufgabe jeder Seite: Marke finden → Betrag wählen → bezahlen → Code sofort bekommen.
-Stil: **hell, offen, vertrauenswürdig**. Porzellan-Grund mit weichem Studiolicht, weißes Glas mit Haarlinie, Chrom als Akzent (Metall-Ring, Kanten), schlanke Glas-Knöpfe. Viel Luft, klare Ordnung, leichte Schrift. Viel Bewegung, aber ruhig und schnell.
+Shop für digitale Codes (Gutscheine, Spiele-Keys, Spielguthaben, Handy-Guthaben), Lieferung per E-Mail in Sekunden. Deutsch, Du-Form, überwiegend iPhone.
+Gegenstand ist die **Gutscheinkarte selbst**: ID-1-Format (1,586 : 1), Markenfarbe und Logo, Hologramm-Folie, Silberstreifen über dem Code.
+Der eine besondere Moment: der Code erscheint. Alles andere ist ruhig, hell und klar.
 
-## Leitidee
-1. **Hell und klar.** Grund `--bg #F3F4F6`, Flächen weiß (`#fff` bzw. `--glass`) mit Haarlinie (`--rim`) und weichem Schatten (`--lift`). Keine weißen Halbtransparenzen als Fläche (unsichtbar auf Hell) – Flächen sind weiß, Linien/Mulden dunkel-transparent (`rgba(14,16,20,.04–.14)`).
-2. **Glas für Handlungen, Rauchglas für Kauf.** `.btn-primary` = klares Glas mit dunkler Schrift und Haarlinie. Kauf- und Absendeknöpfe (Kaufen, Bezahlen, Aufladen, Abo abschließen, Anmelden) bekommen zusätzlich `.btn-ink` = dunkles Rauchglas mit weißer Schrift – pro Ansicht höchstens einer davon im Blick. Gewählte Zustände (Chip, Betrag, Haken, Schalter, Reiter-Knopf) = dunkles Rauchglas. Nebenknopf `.btn-soft`/`.btn-outline` = nur Haarlinie auf fast unsichtbarem Glas.
-3. **Vertrauen sichtbar.** Echte Zahlungszeichen (`payLogos()`, `/pay/*.svg`), echte Markenzeichen in Markenfarbe (`brandWall()`, `brandInk(b)`), Laufband `trustBand()`, Abzeichen `trustBadges(b)`. Nur wahre Aussagen: keine erfundenen Bewertungen, Zahlen, Siegel, keine „Partner“-Behauptungen (Marken heißen „im Sortiment“).
-4. **Karten schweben.** Gutscheinkarten (`.gc`, farbig) und offizielle Spielebilder wirken auf Hell besonders; weicher farbiger Schatten (`--g`).
-5. **Bewegung macht es wertig, aber schnell.** Einblenden (`.rv`), Seitenwechsel per View Transitions, Lichtpunkt unter dem Zeiger (`.card .spot …`), federnde Rückmeldung. Nur transform/opacity, `data-off` für Dauerschleifen, `.lite` sparsam, `prefers-reduced-motion` respektieren.
-6. **Klarheit vor Deko.** Keine Labels über Überschriften, keine Großbuchstaben-Eyebrows, keine Emoji, keine Pfeile „→“ in Knopftexten.
+Stilschicht: `css/95-silber.css` (kommt nach allen anderen Stilen, überschreibt die Grundstile über Tokens und gezielte Regeln).
 
-## Tokens (in `css/01-base.css`)
-- Grund `--bg #F3F4F6`, `--bg-2 #fff`, `--bg-3 #E9EBEF`. Text `--ink #0E1014`, `--ink-2 #474D59`, `--ink-3 #656B78` (dunkelste erlaubte Hinweisfarbe ist ink-3).
-- Auswahl/Handlung: `--sel` (Schwarzchrom), `--sel-ink #fff`. Silber: `--chrome-fill` (nur für helle Metallflächen mit dunkler Schrift). Überschriften `--chrome-text` (dunkler Stahl).
-- Akzente (auf Hell kontraststark): `--lav #7D5CF0`, `--iris #6A4FE0`, `--mint/--ok #0E9F6E` (Erfolg), `--rose #D9364C` (Fehler), `--amber #B86E00`, `--sky #2F7FD9`, `--pink #E7438F`. `--pearl` (Perlmutt-Verlauf), `--brand-grad`.
-- Glas: `--glass` (weiß), `--glass-lo`, `--glass-solid`, `--rim`/`--rim-hi` (Haarlinie), `--lift`/`--lift-2`, `--well` + `--field` (Eingaben weiß mit Linie), `--focus` (Lavendel), `--blur`/`--blur-s`. Linien `--line`, `--line-2`.
-- Form/Raum/Bewegung/Schrift wie bisher: `--r-*`, `--pill`, `--gut`, `--sec`, `--ease`, `--ease-out`, `--spring`, `--font`, `--mono`.
+## Farben (Tokens in `:root` von 95-silber.css)
+| Name | Wert | Verwendung |
+|---|---|---|
+| Alu | `#EEF0F3` (`--bg`) | Seitengrund. Kühl, silbrig, nie cremig |
+| Kartenweiß | `#FFFFFF` | Flächen |
+| Gunmetal | `#1D2129` (`--ink`, `--sel`) | Text und die **eine** Hauptaktion |
+| Zinn | `#626A76` (`--ink-3`) | Nebentext (4,8 : 1 auf Alu). `--ink-2 #4A515C` für Beschriftungen |
+| Silberlinie | `rgba(29,33,41,.12)` (`--line`) | 1-px-Strukturlinien |
+| Folie | `--foil-g` (+ Holo `--holo-g`) | **nur** Rubbelstreifen im Hero, gewählter Betrag (Folienkante), Echos des Logo-Rings |
+| Status-Grün | `#1E8E5A` (`--ok`) | nur Lieferstatus |
+| Fußzeile | `#E6E9ED` | Grund der Fußzeile, Nebentext dort `#4E5561` |
 
-## Fertige Bauteile (nicht neu erfinden, nicht global überschreiben)
-`.card .si-ic .cc-ic .lg-group/.lg-lens .btn(.btn-primary .btn-soft .btn-outline .btn-ghost .btn-lg .btn-sm .btn-block) .icon-btn .badge .more .chips/.chip .amounts/.amt .lbl .inp .field .phone .sel .err .flag .switch .chk .qty .otp .row .express .trust .tabs .sec .sec-head .crumb .gc (+ Varianten) .mini .mini-gc .tiles/.tile/.tile-media/.tile-meta/.qadd .rail/.rail-track/.rail-nav .catgrid/.catcard/.fan .stage/.fs/.float .phead/.phead-stage .faq/.qa .empty/.ghostfan .paylogos/.pmk/.pmk-kl/.kl-cap .spin .rv .bump .tick .shake .rip .shine .ring .spot .chrome-rim .lm .metal .lq .iph .tband .tbadges .bwall`, Kopfzeile `.hdr …`, Fußzeile `.ftr .ft-*`, `.testbar .trustbar .bgfx`.
-Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines Bereichs scopen** (z. B. `.pd .amt{…}`), nie die Grundregel ändern. Klassen-Präfixe vorher suchen (`grep`), damit sie nicht mit anderen Bereichen kollidieren. `.card` belegt mit Maus `::before`/`::after`.
+## Schrift: nur Geist
+- Display (genau eine pro Seite: Hero-Überschrift oder Seitentitel): 500, −0,045em, Zeilenhöhe .98, `clamp(44px,8vw,92px)`.
+- H2: 600, −0,03em, `clamp(28px,3.4vw,40px)`, 1,08. Karten- und Abschnittstitel: 600, 17–19 px, −0,012em.
+- Text: 400, 16 px (ab 900 px 17 px), 1,55, höchstens 66ch. Klein/Meta: 14 px, 450, Zinn. Preise: 600, `tabular-nums`. Knöpfe: 15 px, 550.
+- Keine Stärke unter 400 bei Text unter 24 px. Keine Eyebrows, keine Großbuchstaben-Labels, keine Pfeile in Knopftexten, keine „A · B · C“-Ketten in neuen Texten.
 
-## Knöpfe, iPhone, Seitenwechsel, Bilder
-- **Knöpfe:** schlanke Pillen – 38 px (`.btn-lg` 44 px, `.btn-sm` 32 px), 14 px Schrift in Stärke 500, keine Kästen, keine fetten Schriftzüge. Beim Überfahren: leichtes Anheben, ein Glanz zieht einmal durch, ein Perlmutt-Lichtpunkt läuft um die Haarlinie, Licht folgt dem Zeiger. Drücken: leicht einsinken (scale .98). Volle Breite (`.btn-block`) nur in schmalen Formularen und Kaufboxen.
-- **iPhone:** `iphone(inhalt,{w,cls,id})` (js/10-components.js, CSS in 02-components.css) – Maße wie iPhone 16 Pro, Titanrahmen, Tasten, Dynamic Island, Statusleiste. Größe per CSS über `--w`. Für Videos: `.iph-stage[data-mouse] > .iph-float[data-off] > .iph-tilt > iphone(...)`. Videos im Format 402 × 828 pt aufnehmen (`/home/claude/devshim/vid/rec6.js kauf|aufladen`), als 540 × 1112 kodieren.
-- **Seitenwechsel:** View Transitions im Router (`route()` in 60-router-ui.js): Inhalt blendet über, Kopfzeile bleibt stehen, eine angetippte Karte fliegt in die Produktseite (`view-transition-name: ic-card`). Ohne API/bei reduzierter Bewegung direkt.
-- **Produktbilder:** Spiele-Keys zeigen offizielle Shop-Bilder (Steam, Nintendo, PlayStation, Minecraft). Nur die Adressen liegen in `covers.json` (erzeugt mit `node tools/covers.js`), der Server lädt die Bilder beim ersten Aufruf (`/img/cover/<id>/p|l`) und speichert sie im Datenordner. Gutscheinkarten: Originalbilder kommen automatisch, sobald Reloadly verbunden ist.
-- **Zahlungszeichen:** offizielle Logos liegen unter `public/pay/*.svg` (Apple Pay, Google Pay, Visa, Mastercard, American Express, PayPal, Klarna, Amazon Pay, SEPA, Maestro, Stripe). Angezeigt werden nur die Zahlungsarten, die in Stripe aktiv sind.
+## Formen und Schatten
+- Ecken: 12 px Karten und Produktbilder (`.gc` mit `min(12px,…)`, wächst mit kleinen Karten mit), 10 px Knöpfe und Eingaben, 8 px Chips, 22 px Flächen und Blätter. Keine Pillen außer winzigen Statuspunkten.
+- Schatten nur für Gegenstände (Karten, Cover): `--obj` = `0 1px 1px rgba(29,33,41,.08),0 12px 26px -16px rgba(29,33,41,.38)`.
+- Flächen: weiß mit 1-px-Silberlinie (`--rim`), ohne Schlagschatten (`--lift` ist leer).
 
-## Flüssigmetall
-- **Ring (Startseite, Abschluss):** `<div class="lq" data-off aria-hidden="true"></div>` in einem `position:relative`-Element; der Router ruft `LIQUID.mount()` (in `fx()`) auf. WebGL-Shader `js/13-liquid.js`: fließender Chrom-Ring, Glanzlicht folgt dem Zeiger, pausiert unsichtbar, auf Touch halbe Auflösung und 30 Bilder/s, bei reduzierter Bewegung Standbild, ohne WebGL CSS-Ring (`.nogl`). Höchstens 2 pro Seite.
-- **Rahmen:** `<span class="lm" aria-hidden="true"></span>` als erstes Kind eines Elements mit `border-radius` (`metalMount(app)`), sparsam. Für kleine Ränder `.metal` (CSS).
+## Glas
+Nur Kopfzeile, klebende Kaufleiste (`.pd-bar-in`) und Blätter/Schubladen (`.sheet .drawer .menu .pal-box .qpanel .mia`): `rgba(255,255,255,.78)` mit `blur(16px) saturate(1.6)`.
+`-webkit-backdrop-filter` zuerst, mit festen Werten, nie mit Variablen. Eine globale Regel setzt `backdrop-filter` und `mix-blend-mode` überall zurück; Glas wird nur dort ausdrücklich eingeschaltet.
+Auf `.lite` behält nur die Kopfzeile den Weichzeichner, alles andere ist `.96` Weiß (das Vollbild-Menü auf dem Handy deckend). Bei `prefers-reduced-transparency` deckend weiß. Alles andere ist deckend.
 
-## Glas-Look (css/95-glass.css, kommt nach allen anderen Stilen)
-- Flächen sind durchscheinend, nie deckend weiß: `--g-fill` (Kacheln, Karten), `--g-fill-hi` (Kasse, Rechtstexte, Kaufbox), `--g-chip` (Badges, Chips). Dazu immer `--g-edge` (weiße Lichtkante) + `--g-line` (Haarlinie) + Schatten.
-- Buttons: Glas mit Glanzkuppe `--g-gloss`; Kauf/Absenden in dunklem Rauchglas `--g-ink` mit `--g-ink-edge`. Überfahren: Glanzstreifen, Drücken: Glas sinkt ein (Innenschatten).
-- Echtes Milchglas (`backdrop-filter`) nur am Rechner und nur auf wenigen großen Flächen. Auf `.lite` nie – dort tragen Verlauf und Lichtkante den Look.
-- Overlays (Menüs, Schubladen, Cookie-Hinweis) behalten ihre dichten `--ov-bg`-Flächen, damit Text lesbar bleibt.
-- Kategorien zeigen echte Markenzeichen statt Symbol-Kacheln: `kLogos(cat)` aus js/18-logos.js (runde Glasplaketten, nur kompakte Zeichen).
-- Zahlungszeichen kommen ausschließlich aus `payLogos()` (liest `CFG.methods`/`CFG.klarna`): oben in der Leiste (`payTop`), im Band über der Fußzeile (`payBand`), in Fußzeile, Kaufbox und Warenkorb. Klarna mit Einschränkung („nur für …“) nur dort, wo der Hinweis direkt daneben steht. Nichts zeigen, was die Kasse nicht anbietet.
+## Bewegung
+- Eine inszenierte Szene, im Hero: Code-Karte (`js/19-codecard.js`) gleitet aus dem Chrom-Ring (~700 ms, nur transform/opacity), dann wird die Folie im Zickzack weggerubbelt (~1,1 s, eine Canvas, rAF nur während der Animation, Zeit der Dokument-Zeitleiste) und ein **Beispielcode** erscheint, immer mit Beschriftung „Beispielcode“. Maus: Klick legt die Folie wieder auf, Zeiger rubbelt frei. Touch: Tippen spielt erneut ab, `touch-action:pan-y`.
+- `.rv`-Einblenden ist abgeschaltet, Inhalte stehen einfach da. Seitenwechsel nur als kurzes Überblenden.
+- Hover nur mit Maus; auf Karten nur der Holo-Lichtschwenk (`.gc::after`) plus 2 px Anheben auf Kacheln.
+- Bänder: Kartenwand (`.cwall`) und Markenlogos laufen langsam; Bewertungsband ruhig. Keine Daueranimationen auf vielen kleinen Elementen.
+- `prefers-reduced-motion`: Endzustand sofort.
 
-## Fein & schlicht (css/96-fine.css, kommt nach 95-glass.css)
-- Schrift leichter: Überschriften 370–390, Kacheltitel 460, Buttons 460. Symbole mit 1,4–1,5 px Strich (Regeln direkt auf den `<symbol>`-Elementen).
-- Linien 0,5 px statt 1 px, Schatten flach und kurz; Chips 30 px, Buttons 36/42 px, Kopfzeile 48/52 px, Pfeil-Knöpfe 30 px.
-- Zahlungszeichen: Original-Zeichen unverändert auf weißer Plakette mit Haarlinie, ohne Schlagschatten; überall gleiche Höhe.
-- Klarna-Werbung für späteres Bezahlen immer mit `KL_WARN` („Achtung! Kreditaufnahme kostet Geld.“) direkt darunter, gleich groß.
-- Hintergrund ruhiger: Farbflächen 70 %, Ringe 0,12/0,09.
-
-## Leistung (Pflicht)
-- Animiert werden nur `transform`/`translate`/`scale`/`rotate` und `opacity`. Keine Daueranimation von `box-shadow`, `filter`, `background-position` großer Flächen.
-- Elemente mit Daueranimation bekommen `data-off` → `.off` außerhalb des Bildschirms → `animation-play-state:paused`.
-- `.lite` auf `<html>` = Touch oder schmal: kein Blur auf Karten, keine `.holo`, weniger Ebenen.
-- `prefers-reduced-motion` wird global respektiert.
-
-## Barrierefreiheit
-Echte `<button>`/`<a href>`; sichtbarer Fokus (`:focus-visible`, Lavendel); Touch-Ziele ≥ 32 px (WCAG 2.2 verlangt 24 px), Hauptaktionen 44 px; Text ≥ 4.5:1 (`--ink-3` ist die dunkelste erlaubte Textfarbe); `aria-label` an Icon-Knöpfen; dekorative Bühnen `aria-hidden`.
-
-## Inhalt & Sprache
-Deutsch, Du-Form, Satzanfang groß, kurze klare Verben („Jetzt kaufen“, „In den Warenkorb“). Fehlermeldungen sagen, was passiert ist und was zu tun ist.
-**Verboten:** erfundene Bewertungen, Zahlen, Käufe, „X Personen sehen gerade“, Zertifikate/Siegel, Countdown-Druck. Bewertungen nur echte (`/api/reviews`, Anzeige ab 3 Bewertungen). Marken-Logos nicht selbst zeichnen: nur Reloadly-Kartenbilder (`b.img`), Simple-Icons-Dateien in `public/logo/` (`siI()`, Seitenverhältnis `SIA`) oder Proxy `/img/mark/<set>/<name>.svg`.
-
-## Marke
-- Name **instantcodes** (Wortmarke `<b>instant</b>codes`: „instant“ kräftig, „codes“ leicht). Zeichen `#logo`: **Ring aus flüssigem Chrom** – derselbe Ring wie auf der Startseite, in der Logo-Fassung (rundere Form, kräftigeres Chrom, Perlmutt am Rand). Bilddateien: `public/logo-ring.webp` (Symbol `#logo`, `LOGO()`), `logo.png`/`logo.svg`, `favicon.png/.svg`, `apple-touch-icon.png`, `icon-512.png` (auch Mail-Logo und Stripe-Symbol), `brand/checkout-logo.png` (Stripe-Kasse), `og.png`. In der Kopfzeile läuft der Ring live (WebGL, `.lq-mini`, Uniform `k=1`), das Bild ist der Platzhalter.
-- Interne Namen bleiben: Speicher-Schlüssel `instacode_v1`, Datenbank `instacode.db`, Adressen `@instacode.store`.
+## Bauteile
+- **Knöpfe:** `.btn-primary`/`.btn-ink` = Gunmetal mit 1-px-Innenlicht oben, 48 px Handy / 44 px Desktop, eine pro Ansicht. `.btn-soft`/`.btn-outline` = Weiß mit Silberlinie. `.btn-ghost` = Textlink (Unterstrich, Abstand 3 px). „Anmelden“ in der Kopfzeile ist Nebenknopf.
+- **Chips:** 34 px, 8 px Ecken, weiß mit Linie; gewählt Gunmetal mit weißer Schrift. **Beträge** (`.amt`): gewählt Gunmetal mit statischer Folienkante.
+- **Eingaben:** weiß, Linie, 10 px, 16 px Schrift. Fokus überall: 2 px Gunmetal-Umriss mit 2 px Abstand.
+- **Kacheln** (`tile()` in js/10-components.js): kein Kasten; die Karte bzw. das Cover ist das Objekt. Darunter Name (15/600), Preis (14, tabular), eine Meta-Zeile (13, Zinn: Plattformen bzw. Land). Schnellkauf `.qadd` (`data-a="qb"`) als 34-px-Scheibe unten rechts.
+- **Kategorien** (`kbCard` in js/30-catalog.js): Index-Liste statt Bento – Zeile ≥ 76 px, Linien statt Kästen, links der Stapel echter Markenzeichen (`kLogosL` in js/18-marks.js: nur Zeichen, die in der Plakette ≥ ~14 px lesbar sind; Plakette 34 px Handy, 38 px Desktop, Zeichen ~54 %, Überlappung −9 px), dann Name und Anzahl („235 Spiele“, „47 Marken“, „19 Anbieter“), rechts ein Pfeil. Desktop zweispaltig. Hover: weiße Zeile.
+- **Abschnittsköpfe:** H2 links, rechts höchstens ein Textlink („Alle anzeigen“) bzw. Wischleisten-Knöpfe.
+- **Kopfzeile:** volle Breite, 56 px, Glas; die Silberlinie unten erscheint erst nach dem Scrollen (`.hdr.scrolled`, gesetzt in `scrollFx()` in js/90-start.js). Darüber eine 32-px-Leiste nur mit Zahlungszeichen.
+- **Produktseite:** weiße Bildfläche (22 px), Spielbild und offizielles Logo bleiben (`.pd-hero`, `.pd-glogo`); Kaufbox weiße Fläche mit Linie; „Jetzt kaufen“ Hauptaktion, „In den Warenkorb“ Nebenknopf; Stripe-Express-Knöpfe unverändert.
+- **Fußzeile:** `#E6E9ED`, Gunmetal, echte Zahlungszeichen.
 
 ## Startseite (Aufbau)
-Bühne (Überschrift „Digitale Codes. In Sekunden bei dir.“, große Suche öffnet die Palette, Schnellwahl, Zahlungs-Badges; rechts der Metall-Ring mit schwebenden Glaskarten) · Markenband in Chrom · Bestseller · Kategorien-Bento · Abo-Teaser · So einfach geht's (Video `/vid/ablauf.*`) · Handy aufladen · Spiele-Keys · Angebote · Zuletzt angesehen · Aussage + Zusagen · Bewertungen · Ratgeber · Fragen · Abschluss.
+Bühne (Überschrift, Satz, Suche 52 px, Schnellwahl-Chips; Ring mit Code-Karte; ein ruhiger Vertrauenssatz mit Live-Zahl der Marken und `payLogos()`) · Kategorien (Index-Liste) · Bestseller · Kartenwand („Regal“) · Spiele-Keys · Geschenk-Finder · So einfach geht's (drei Schritte, Ablauf-Video) · Abo · Handy aufladen · Angebote · Zuletzt angesehen · Warum instantcodes · Bewertungen · Ratgeber · Fragen · Abschluss.
+Hintergrund: keine Farbschleier, keine schwebenden Ringe; nur ein statischer Holo-Schein hinter dem Hero-Ring.
 
 ## Muss erhalten bleiben
-- Kopfzeile: schmale, fast durchsichtige Glas-Pille (52 px, Desktop 56 px). Effekte im Balken: lebendiger Chrom-Ring, Lichtkante folgt dem Zeiger (`--hx`), Glanz zieht alle 10 s durch, Perlmutt-Linie zeigt den Lesefortschritt (`--sp`), Glas-Linse hinter der Navigation. Wortmarke mit Polier-Glanz, Suche (Strg K), KI-Beraterin (Funkel-Symbol), Warenkorb, Konto.
-- Hintergrund (`.bgfx`, liegt hinter allem, deshalb hat `body` keinen eigenen Hintergrund): Farbschleier, drei unscharfe Chrom-Ringe und ein Perlmutt-Lichtband bewegen sich beim Scrollen mit eigener Geschwindigkeit (`--sy`, nur an `.bgfx` gesetzt). Große Flächen gleiten scroll-gekoppelt herein (`animation-timeline:view()`, sonst `.rv`).
-- Überschriften in klarer Tinte ohne Verlauf (`.h1` 470, `.h2` 460), Flächen als helles Glas (60–65 % Weiß), damit der bewegte Hintergrund durchscheint.
-- Zahlungs-Badges im Stil echter Akzeptanzlogos (`.pmk`), Klarna-Badge wo verfügbar (`klarnaBadge()`, nicht bei Abos).
-- Produktseiten mit echter URL, Aktionen Teilen/Merken/Link kopieren/Verschenken.
-- Servicegebühr 4,99 € transparent; Preise = Nennwert.
-- Fußzeile: „Verträge hier kündigen“ → `/kuendigen`.
+- Alle ids, Klassen und data-Attribute, die JS oder Tests nutzen. Im Zweifel umgestalten statt entfernen.
+- **Zahlungszeichen unverändert:** Original-Zeichen auf weißer Plakette, gleiche Höhe; Revolut Pay immer Zeichen plus Name; `.kl-warn` („Achtung! Kreditaufnahme kostet Geld.“) direkt unter jeder Klarna-Werbung für späteres Bezahlen; Logik von `payTop()`/`payBand()` unverändert. Nur zeigen, was die Kasse anbietet.
+- Echte Markenzeichen (`kLogos`/`kLogosL`), keine Emoji oder Ersatzsymbole.
+- **Ehrlichkeit:** keine erfundenen Bewertungen, Zahlen, Rabatte, keine Dringlichkeit; Bewertungen nur echte (Anzeige ab 3); Widerrufs-Zustimmung nie vorausgewählt; der Hero-Code ist sichtbar als „Beispielcode“ beschriftet und zeigt einen Betrag, den die Marke wirklich anbietet.
+- Servicegebühr 4,99 € transparent; „Verträge hier kündigen“ in der Fußzeile.
+
+## Leistung (iPhone-Grafikspeicher)
+Kein `backdrop-filter` auf `.lite` außer Kopfzeile; kein `mix-blend-mode`; keine Daueranimationen auf vielen kleinen Elementen; animiert wird nur transform/opacity.
+Messung `layers2.js` (iPhone): Startseite ≤ 90 Ebenen, andere Seiten ≤ 70.
+
+## Barrierefreiheit
+Text ≥ 4,5 : 1; Hauptaktionen ≥ 44 px Trefferfläche (Pseudo-Element erlaubt); Eingaben ≥ 16 px; sichtbarer Fokus; Deko `aria-hidden`.
+
+## Marke
+Name **instantcodes** (Wortmarke `<b>instant</b>codes`), Zeichen: Ring aus flüssigem Chrom (`#logo`, live als WebGL in der Kopfzeile `.lq-mini`, groß im Hero, js/13-liquid.js). Interne Namen bleiben (`instacode_v1`, `instacode.db`).
 
 ## Aufbau
-- `web/index.html` ist das Gerüst; der Server fügt alle Dateien aus `web/css/` und `web/js/` in Namensreihenfolge ein (JS teilt einen Gültigkeitsbereich). Live einmal beim Start, in der Entwicklung bei jeder Dateiänderung.
-- Bereiche: `01–03` Fundament, `40` Startseite, `50` Katalog/Produkt/Aufladen, `60` Warenkorb/Kasse/Bestellung, `66` Abo, `70` Anmeldung/Konto/Hilfe/Rechtliches, `80` Menü/Suche/Sheets/Chat/Bewertungen.
-- Neue Regeln in die Datei des Bereichs, Grundbauteile nur im Fundament ändern.
+`web/index.html` ist das Gerüst; der Server fügt alle Dateien aus `web/css/` und `web/js/` in Namensreihenfolge ein (JS teilt einen Gültigkeitsbereich).
+Bereiche: `01–03` Fundament, `40` Startseite, `50` Katalog/Produkt/Aufladen, `60` Warenkorb/Kasse/Bestellung, `66` Abo, `70` Anmeldung/Konto/Hilfe/Rechtliches, `80` Menü/Suche/Blätter/Chat, `95-silber` Gestaltung.
+Handy-Videos (`/vid/*`): aufgenommen mit `rec6.js`/`rec7.js` in /home/claude/devshim/vid, kodiert wie `enc7.sh`; nach neuer Aufnahme `?v=` erhöhen.

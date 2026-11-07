@@ -28,21 +28,22 @@ const kWall=list=>{const l=list.filter(b=>b&&b.cov).slice(0,12),V=[150,-110,190,
   return `<div class="kw" data-par data-off aria-hidden="true"><div class="kw-in">${[0,1,2,3].map(k=>`<div class="kw-col" style="--k:${k};--v:${V[k]};--o0:${O[k]}">${l.filter((_,i)=>i%4===k).map(b=>gc(b,{tilt:false,badge:false,plat:false,cover:true})).join("")}</div>`).join("")}</div></div>`};
 /* Offizielle Markenzeichen schweben um den Fächer (/kategorien) */
 const kOrbit=cs=>{const seen=new Set(),l=ORBLOGO.map(byId).filter(b=>kMarkOk(b)&&!seen.has(b.si||b.logo)&&seen.add(b.si||b.logo)).slice(0,8);
-  return `<div class="ko" data-off aria-hidden="true">${l.map((b,i)=>`<span class="ko-i" style="--c:${brandInk(b)};--k:${i}"><span>${kMark(b,52)}</span></span>`).join("")}</div>`};
+  return `<div class="ko" aria-hidden="true">${l.map((b,i)=>`<span class="ko-i" style="--c:${brandInk(b)};--k:${i}"><span>${kMark(b,52)}</span></span>`).join("")}</div>`};
 /* Je Markenzeichen nur eine Marke (PlayStation Plus, EA … kommen sonst mehrfach) */
 const uniqSi=l=>{const s=new Set();return l.filter(b=>b&&b.si&&!s.has(b.si)&&s.add(b.si))};
 /* Markenwand: alle Marken mit offiziellem Logo oder Markenzeichen, jede nur einmal */
 const uniqMark=l=>{const s=new Set();return l.filter(b=>b&&!isKey(b)&&hasMark(b)&&!s.has(b.logo||b.si)&&s.add(b.logo||b.si))};
 /* Seitenkopf: links Chrom-Überschrift, Text, Chips und echte Markenzeichen, rechts (Handy: oben) die Bildwelt der Seite
    (Kartenfächer, o.art ersetzt ihn, o.art2 kommt dazu) */
-const kHead=o=>`<div class="kh${o.cls?" "+o.cls:""}" data-mouse style="--c:${o.c||"#7D5CF0"}">
-  <div class="kh-art">${o.art||kFan(imgFirst(o.cards).slice(0,5),{badge:o.badge})}${o.art2||""}</div>
+/* Ruhig (Konzept „Silberstreifen“): Titel, ein Satz, eine Zeile Fakten; die Bildwelt steht still (kein Zeiger-Parallax, kein Einblenden) */
+const kHead=o=>`<div class="kh${o.cls?" "+o.cls:""}" style="--c:${o.c||"#7D5CF0"}">
+  <div class="kh-art">${o.art||kFan(imgFirst(o.cards).slice(0,5),{badge:o.badge,par:false})}${o.art2||""}</div>
   <div class="kh-copy">
-    <h1 class="h1 kh-t rv">${o.title}</h1>
-    <p class="kh-l rv" style="--d:80ms">${o.text}</p>
-    ${o.meta&&o.meta.length?`<ul class="kh-m rv" style="--d:150ms">${o.meta.map(m=>`<li>${ic(m[0])}<span>${m[1]}</span></li>`).join("")}</ul>`:""}
-    ${o.extra?`<div class="kh-x rv" style="--d:200ms">${o.extra}</div>`:""}
-    ${o.logos&&o.logos.length>=3?`<div class="kh-lg rv" style="--d:240ms"><small>Marken im Sortiment</small>${brandWall(o.logos,{cls:"kh-bw",n:8})}</div>`:""}
+    <h1 class="h1 kh-t">${o.title}</h1>
+    <p class="kh-l">${o.text}</p>
+    ${o.meta&&o.meta.length?`<ul class="kh-m">${o.meta.map(m=>`<li>${ic(m[0])}<span>${m[1]}</span></li>`).join("")}</ul>`:""}
+    ${o.extra?`<div class="kh-x">${o.extra}</div>`:""}
+    ${o.logos&&o.logos.length>=3?`<div class="kh-lg"><small>Marken im Sortiment</small>${brandWall(o.logos,{cls:"kh-bw",n:8})}</div>`:""}
   </div>
 </div>`;
 /* Leises Abzeichen auf Produktkacheln im Katalog (nur wahre Aussagen) */
@@ -59,15 +60,11 @@ const kbSpans=n=>{const d=[];let r=0;
   while(d.length<n){const left=n-d.length;const row=left===4||left===2?(r%2?[5,7]:[7,5]):left===1?[12]:(r%2?[3,4,5]:[5,4,3]);row.forEach(x=>d.push(x));r++}
   const m=d.map((_,i)=>i%3===0?2:1);if(n>1&&m[n-1]===1&&m[n-2]===2)m[n-1]=2;
   return d.map((x,i)=>[x,m[i]])};
-const kbCard=(c,i,sp)=>{const l=VIS().filter(b=>b.cat===c.id),n=catCount(c.id),unit=c.id==="keys"?"Spiele":c.id==="topup"?"Anbieter":"Produkte";
-  return `<a class="kb spot rv" href="/kategorie/${c.id}" style="--c:${CCOL[c.id]};--d:${(i%6)*60}ms${sp?`;--sp:${sp[0]};--spm:${sp[1]}`:""}"${sp&&sp[0]>=5?' data-big':""}>
-  <span class="kb-l" aria-hidden="true"></span>
-  ${kLogos(c.id,3,"kb-lg")||`<span class="kb-ic" aria-hidden="true">${ic(c.icon)}</span>`}
-  <span class="kb-t"><b>${esc(c.name)}</b><small>${n} ${unit}</small></span>
-  <span class="kb-d">${esc(c.desc)}</span>
-  <span class="kb-go" aria-hidden="true">${ic("i-arrow")}</span>
-  <span class="kb-fan" aria-hidden="true">${fanOrder(imgFirst(l).slice(0,3)).map(b=>`<i>${gc(b,{tilt:false,badge:false,plat:false})}</i>`).join("")}</span>
-</a>`};
+/* Kategorie als Zeile einer Index-Liste (Startseite, /kategorien) bzw. als kleine Fläche in der Wischleiste „Andere Kategorien“:
+   links der Stapel echter Markenzeichen (kLogos), dann Name und Anzahl (Spiele, Anbieter oder Marken), rechts ein kleiner Pfeil */
+const kbCard=(c,i,sp)=>{const k=c.id==="keys",t=c.id==="topup",n=k?catCount(c.id):VIS().filter(b=>b.cat===c.id).length;
+  const unit=k?(n===1?"Spiel":"Spiele"):t?"Anbieter":(n===1?"Marke":"Marken");
+  return `<a class="kb" href="/kategorie/${c.id}">${kLogosL(c.id,3,"kb-lg")||'<span class="klg kb-lg" aria-hidden="true"></span>'}<span class="kb-t"><b>${esc(c.name)}</b><small>${n} ${unit}</small></span><span class="kb-go" aria-hidden="true">${ic("i-chev")}</span></a>`};
 
 function cats(){
   const az=VIS().slice().sort((a,b)=>a.name.localeCompare(b.name,"de")), cs=CATSV(), groups=[], sp=kbSpans(cs.length);

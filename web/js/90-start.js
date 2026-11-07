@@ -11,14 +11,11 @@ document.addEventListener("keydown",e=>{
   if(e.key==="/"&&!typing){e.preventDefault();A.palOpen();return}
   if(e.key!=="Escape")return;
   if($("#pal").classList.contains("open"))palClose();else if($("#drawer").classList.contains("open"))A.cartClose();else if($("#scrim").classList.contains("open"))closeSheet();else if($("#menu").classList.contains("open"))closeMenu();else if(chat.open)chatClose()});
-const hdr=$("#hdr"),bgfx=$("#bgfx");let tk=false;
-/* Kopfzeile: Lesefortschritt (--sp) und Hintergrund-Ebene (--sy, Parallax beim Scrollen) – nur an diesen zwei Elementen gesetzt, damit nicht die ganze Seite neu berechnet wird */
-const scrollFx=()=>{const y=scrollY,max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
-  hdr.style.setProperty("--sp",Math.min(1,y/max).toFixed(4));if(bgfx&&!reduce)bgfx.style.setProperty("--sy",Math.round(y))};
-addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{hdr.classList.toggle("scrolled",scrollY>8);scrollFx();if(!reduce)parUpdate();tk=false})},{passive:true});
-/* Lichtkante der Kopfzeile folgt dem Zeiger */
-hdr.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const r=hdr.getBoundingClientRect();hdr.style.setProperty("--hx",Math.round(e.clientX-r.left)+"px")},{passive:true});
-hdr.addEventListener("pointerleave",()=>hdr.style.removeProperty("--hx"));
+const hdr=$("#hdr");let tk=false;
+/* Kopfzeile: Kante am Scrollrand – die feine Silberlinie unter der Glasleiste erscheint erst, wenn Inhalt darunter liegt (.scrolled).
+   Auch beim Start gesetzt, falls die Seite schon gescrollt geladen wird. */
+const scrollFx=()=>{hdr.classList.toggle("scrolled",scrollY>4)};
+addEventListener("scroll",()=>{if(tk)return;tk=true;requestAnimationFrame(()=>{scrollFx();if(!reduce)parUpdate();tk=false})},{passive:true});
 /* Logo in der Kopfzeile: lebendiger Chrom-Ring (auf Touch-Geräten das Standbild – spart einen WebGL-Kontext) */
 if(!document.documentElement.classList.contains("lite"))LIQUID.mount(hdr);
 addEventListener("resize",()=>requestAnimationFrame(parUpdate),{passive:true});
