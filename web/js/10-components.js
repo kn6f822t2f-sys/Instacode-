@@ -12,7 +12,9 @@ const gc=(b,o={})=>{const k=isKey(b);return `<span class="gc${o.tilt===false?"":
 const priceTxt=b=>allSold(b)?"Derzeit ausverkauft":`${b.amts.length>1?"ab ":""}${money(price(b,b.from))}`;
 /* ---------- Vertrauen: Band quer über die Seite, Abzeichen am Produkt, Markenwand ----------
    Nur wahre Aussagen (keine erfundenen Zahlen, Siegel oder Partnerschaften). */
-const TRUST=()=>[["i-shield","Offizielle Codes"],["i-zap","Meist in Sekunden per E-Mail"],["i-lock","Sicher bezahlt über Stripe"],["i-mail","Persönlicher Support"],["i-check",`${VIS().length} Marken im Sortiment`]];
+/* Marken zählen ohne Spiele: ein Spiel ist keine Marke */
+const brandN=()=>VIS().filter(b=>!isKey(b)).length;
+const TRUST=()=>[["i-shield","Offizielle Codes"],["i-zap","Meist in Sekunden per E-Mail"],["i-lock","Sicher bezahlt über Stripe"],["i-mail","Persönlicher Support"],["i-check",`${brandN()} Marken und ${catCount("keys")} Spiele`]];
 /* Markenfarbe für Zeichen auf hellem Grund: zu helle Farben werden Graphit */
 const brandInk=b=>{const h=glowOf(b).replace("#","");const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),bl=parseInt(h.slice(4,6),16);return (r*.299+g*.587+bl*.114)>200?"#1B1E24":"#"+h};
 /* Laufband: Zusagen, echte Zahlungszeichen und Markenlogos im Wechsel (doppelt für die Endlosschleife) */

@@ -44,7 +44,7 @@ function home(){
   <div class="hro-copy">
     <a class="hro-pill rv" href="/abo"><span>Neu</span>instantcodes Abo – 9 Dienste, ein Preis${ic("i-chev")}</a>
     <h1 class="h1 rv" style="--d:80ms">Digitale Codes.<br>In Sekunden bei dir.</h1>
-    <p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${VIS().length}">${VIS().length}</b> Marken – sicher bezahlt, dein Code kommt meist direkt per E-Mail.</p>
+    <p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${brandN()}">${brandN()}</b> Marken – sicher bezahlt, dein Code kommt meist direkt per E-Mail.</p>
     <button class="hro-search rv" style="--d:240ms" data-a="palOpen" aria-label="Suche öffnen">${ic("i-search")}<span>Marke oder Gutschein suchen</span><kbd class="kbdk">Strg K</kbd></button>
     <div class="hro-quick rv" style="--d:300ms">${quick.map(([id,t])=>`<a class="chip" href="/marke/${id}">${esc(t)}</a>`).join("")}<a class="chip" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></div>
     <div class="hro-trust rv" style="--d:360ms">${payLogos()}<p><span>${ic("i-lock")}TLS-verschlüsselt</span><span>${ic("i-shield")}3&#8209;D Secure</span><span class="ft-stripe">Zahlung über <img src="/pay/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></p></div>
@@ -58,7 +58,7 @@ ${cardWall()}
     <div class="story-copy">
       <h2 class="h2">So einfach geht's</h2>
       <ol class="story-steps">
-        <li data-s="0"><span class="how-n">1</span><b>Marke und Betrag wählen</b><span>Gutschein, Spiele-Key, Abo oder Handy-Guthaben – über ${VIS().length} Marken.</span></li>
+        <li data-s="0"><span class="how-n">1</span><b>Marke und Betrag wählen</b><span>Gutschein, Spiele-Key, Abo oder Handy-Guthaben – über ${brandN()} Marken und ${catCount("keys")} Spiele.</span></li>
         <li data-s="1"><span class="how-n">2</span><b>Schnell und sicher bezahlen</b><span>${payNames()}. Abgewickelt über Stripe.</span></li>
         <li data-s="2"><span class="how-n">3</span><b>Code erhalten</b><span>Meist Sekunden nach der Zahlung – auf dem Bildschirm und per E-Mail.</span></li>
       </ol>
