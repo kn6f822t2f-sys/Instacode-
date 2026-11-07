@@ -13020,7 +13020,8 @@
    "betriebssystem",
    "lizenz"
   ],
-  "region": "DE"
+  "region": "DE",
+  "grp": "win11"
  },
  "win11pro": {
   "id": "win11pro",
@@ -13049,7 +13050,8 @@
    "betriebssystem",
    "lizenz"
   ],
-  "region": "DE"
+  "region": "DE",
+  "grp": "win11"
  },
  "office2024home": {
   "id": "office2024home",
@@ -13078,7 +13080,8 @@
    "excel",
    "microsoft"
   ],
-  "region": "DE"
+  "region": "DE",
+  "grp": "office2024"
  },
  "office2024hb": {
   "id": "office2024hb",
@@ -13107,7 +13110,8 @@
    "excel",
    "microsoft"
   ],
-  "region": "DE"
+  "region": "DE",
+  "grp": "office2024"
  },
  "avastps": {
   "id": "avastps",
@@ -13137,7 +13141,8 @@
    "virenschutz",
    "sicherheit"
   ],
-  "region": "DE"
+  "region": "DE",
+  "grp": "avast"
  },
  "avastult": {
   "id": "avastult",
@@ -13167,7 +13172,8 @@
    "vpn",
    "sicherheit"
   ],
-  "region": "DE"
+  "region": "DE",
+  "grp": "avast"
  },
  "trendmicro": {
   "id": "trendmicro",
@@ -13220,5 +13226,362 @@
   "region": "DE",
   "si": "kaufland",
   "sit": "mobil"
+ },
+ "mango": {
+  "id": "mango",
+  "name": "Mango",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100,
+   150,
+   200
+  ],
+  "disc": 0,
+  "bg": "#000000",
+  "fg": "#fff",
+  "mark": {
+   "t": "MANGO",
+   "s": 42,
+   "w": 700,
+   "ls": ".1em"
+  },
+  "tags": [
+   "mode",
+   "fashion",
+   "kleidung"
+  ],
+  "region": "DE"
+ },
+ "wunschgutschein": {
+  "id": "wunschgutschein",
+  "name": "Wunschgutschein",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   15,
+   25,
+   50,
+   75,
+   100
+  ],
+  "disc": 0,
+  "bg": "#CD1719",
+  "fg": "#fff",
+  "mark": {
+   "t": "WUNSCH",
+   "s": 36,
+   "w": 800,
+   "ls": ".02em",
+   "two": "GUTSCHEIN"
+  },
+  "tags": [
+   "gutschein",
+   "500 shops",
+   "geschenk",
+   "multi"
+  ],
+  "region": "DE"
+ },
+ "breuninger": {
+  "id": "breuninger",
+  "name": "Breuninger",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   50,
+   100,
+   150,
+   250
+  ],
+  "disc": 0,
+  "bg": "#BA0C2F",
+  "fg": "#fff",
+  "mark": {
+   "t": "breuninger",
+   "s": 30,
+   "w": 700,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "mode",
+   "luxus",
+   "kaufhaus",
+   "beauty"
+  ],
+  "region": "DE"
+ },
+ "hugendubel": {
+  "id": "hugendubel",
+  "name": "Hugendubel",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   20,
+   30,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#E20613",
+  "fg": "#fff",
+  "mark": {
+   "t": "Hugendubel",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "bücher",
+   "buchhandlung",
+   "ebook",
+   "tolino"
+  ],
+  "region": "DE"
+ },
+ "soliver": {
+  "id": "soliver",
+  "name": "s.Oliver",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#1A1A1A",
+  "fg": "#fff",
+  "mark": {
+   "t": "s.Oliver",
+   "s": 36,
+   "w": 700,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "mode",
+   "kleidung",
+   "fashion"
+  ],
+  "region": "DE"
+ },
+ "thomann": {
+  "id": "thomann",
+  "name": "Thomann",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#1E1E1E",
+  "fg": "#00B5BD",
+  "mark": {
+   "t": "thomann",
+   "s": 36,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "musik",
+   "instrumente",
+   "gitarre",
+   "studio"
+  ],
+  "region": "DE"
+ },
+ "cinestar": {
+  "id": "cinestar",
+  "name": "CineStar",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10,
+   15,
+   25,
+   50
+  ],
+  "disc": 0,
+  "bg": "#0C0C0C",
+  "fg": "#FFDB16",
+  "mark": {
+   "t": "CineStar",
+   "s": 34,
+   "w": 800,
+   "ls": "-.01em"
+  },
+  "tags": [
+   "kino",
+   "kinogutschein",
+   "film"
+  ],
+  "region": "DE"
+ },
+ "cinemaxx": {
+  "id": "cinemaxx",
+  "name": "CinemaxX",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   10,
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#000000",
+  "fg": "#F39200",
+  "mark": {
+   "t": "CinemaxX",
+   "s": 34,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "kino",
+   "kinogutschein",
+   "film"
+  ],
+  "region": "DE"
+ },
+ "mydays": {
+  "id": "mydays",
+  "name": "mydays",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   50,
+   75,
+   100,
+   150,
+   200
+  ],
+  "disc": 0,
+  "bg": "#D0033F",
+  "fg": "#fff",
+  "mark": {
+   "t": "mydays",
+   "s": 40,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "erlebnis",
+   "erlebnisgeschenk",
+   "geschenk",
+   "wertgutschein"
+  ],
+  "region": "DE"
+ },
+ "stage": {
+  "id": "stage",
+  "name": "Stage Entertainment",
+  "cat": "entertainment",
+  "type": "card",
+  "amts": [
+   30,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#171717",
+  "fg": "#fff",
+  "mark": {
+   "t": "STAGE",
+   "s": 40,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "musical",
+   "tickets",
+   "show",
+   "theater"
+  ],
+  "region": "DE"
+ },
+ "gdata": {
+  "id": "gdata",
+  "name": "G DATA Total Security",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   49.95,
+   65.95,
+   81.95
+  ],
+  "disc": 0,
+  "bg": "#E30613",
+  "fg": "#fff",
+  "mark": {
+   "t": "G DATA",
+   "s": 40,
+   "w": 800,
+   "ls": ".02em",
+   "two": "TOTAL SECURITY"
+  },
+  "labels": [
+   "1 Gerät · 1 Jahr",
+   "3 Geräte · 1 Jahr",
+   "5 Geräte · 1 Jahr"
+  ],
+  "tags": [
+   "antivirus",
+   "virenschutz",
+   "sicherheit"
+  ],
+  "region": "DE"
+ },
+ "jamobil": {
+  "id": "jamobil",
+  "name": "ja! mobil",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   15,
+   20,
+   25,
+   30,
+   50
+  ],
+  "disc": 0,
+  "bg": "#589B03",
+  "fg": "#fff",
+  "mark": {
+   "t": "ja!",
+   "s": 52,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "mobil"
+  },
+  "region": "DE"
+ },
+ "normaconnect": {
+  "id": "normaconnect",
+  "name": "NORMA connect",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   15,
+   30,
+   50
+  ],
+  "disc": 0,
+  "bg": "#D60F19",
+  "fg": "#fff",
+  "mark": {
+   "t": "NORMA",
+   "s": 38,
+   "w": 800,
+   "ls": ".02em",
+   "two": "connect"
+  },
+  "region": "DE"
  }
 }

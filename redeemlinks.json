@@ -142,5 +142,25 @@
   "uniqlo": {
     "url": "https://www.uniqlo.com/de/de/",
     "label": "Im UNIQLO Onlineshop an der Kasse einlösen"
+  },
+  "wunschgutschein": {
+    "url": "https://app.wunschgutschein.de/",
+    "label": "Wunschgutschein aktivieren und gegen Partnergutscheine einlösen"
+  },
+  "mydays": {
+    "url": "https://www.mydays.de/",
+    "label": "Erlebnis auf mydays.de wählen und Gutscheincode bei der Buchung eingeben"
+  },
+  "breuninger": {
+    "url": "https://www.breuninger.com/de/",
+    "label": "Auf breuninger.com, in der App oder in allen Häusern einlösen"
+  },
+  "soliver": {
+    "url": "https://www.soliver.de/",
+    "label": "Im s.Oliver Onlineshop oder in teilnehmenden Stores einlösen"
+  },
+  "thomann": {
+    "url": "https://www.thomann.de/",
+    "label": "Auf thomann.de oder im Musikhaus in Treppendorf einlösen"
   }
 }

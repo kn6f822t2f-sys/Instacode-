@@ -552,5 +552,90 @@
   "scale": 1,
   "ar": 1,
   "tint": true
+ },
+ "mango": {
+  "src": "/brand/mango.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 6,
+  "tint": true
+ },
+ "wunschgutschein": {
+  "src": "/brand/wunschgutschein.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 1
+ },
+ "breuninger": {
+  "src": "/brand/breuninger.svg",
+  "card": "brand",
+  "scale": 0.95,
+  "ar": 1.81,
+  "tint": true
+ },
+ "hugendubel": {
+  "src": "/brand/hugendubel.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.37
+ },
+ "soliver": {
+  "src": "/brand/s-oliver.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.563,
+  "tint": true
+ },
+ "thomann": {
+  "src": "/brand/thomann.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 5.594,
+  "tint": true
+ },
+ "cinestar": {
+  "src": "/brand/cinestar.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.536,
+  "tint": true
+ },
+ "cinemaxx": {
+  "src": "/brand/cinemaxx.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 3.347,
+  "tint": true
+ },
+ "mydays": {
+  "src": "/brand/mydays.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 3.304
+ },
+ "stage": {
+  "src": "/brand/stage-entertainment.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1.357,
+  "tint": true
+ },
+ "gdata": {
+  "src": "/brand/g-data.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.59
+ },
+ "jamobil": {
+  "src": "/brand/ja-mobil.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1.255
+ },
+ "normaconnect": {
+  "src": "/brand/norma-connect.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 2.166
  }
 }
