@@ -1,0 +1,112 @@
+/* ---------- Fein & schlicht ----------
+   Dünnere Schrift, feinere Linien (0,5 px), kleinere und flachere Bedienelemente, weniger Schatten, ruhigerer Hintergrund.
+   Nur Größen, Stärken, Kanten und Schatten – keine Logik, keine Farben der Marken. Kommt nach 95-glass.css. */
+:root{
+  --r-m:16px;--r-l:22px;--r-xl:28px;
+  --g-edge:inset 0 1px 0 rgba(255,255,255,.92),inset 0 0 0 .5px rgba(255,255,255,.6);
+  --g-line:0 0 0 .5px rgba(14,16,20,.09);
+  --g-drop:0 1px 1px rgba(14,16,20,.022),0 12px 32px -24px rgba(14,16,20,.22);
+  --g-drop-hi:0 1px 2px rgba(14,16,20,.03),0 22px 48px -30px rgba(14,16,20,.3),0 0 60px -40px rgba(125,92,240,.18);
+  --g-chip:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.32));
+  --lift:0 1px 1px rgba(14,16,20,.03),0 12px 30px -22px rgba(14,16,20,.22);
+  --rim:inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 0 .5px rgba(14,16,20,.1);
+  --rim-hi:inset 0 1px 0 #fff,inset 0 0 0 .5px rgba(14,16,20,.16);
+}
+
+/* ---------- Schrift: leichter, enger, ruhiger ---------- */
+.h1{font-weight:370;letter-spacing:-.04em}
+.h2{font-weight:390;letter-spacing:-.03em}
+.h3{font-weight:470}
+.lead{font-weight:400}
+.kb-t b,.bc-t b{font-weight:460;letter-spacing:-.024em}
+.kb-t small,.bc-t small,.tile-sub{font-weight:400}
+.tile-name{font-weight:460}
+.btn{font-weight:460;font-size:13.5px}
+.chip,.kh-m li,.hro-pill,.tbadges li,.ls-head span{font-weight:430}
+.trustbar{font-weight:440;font-size:12px}
+.tb-i{font-weight:460;font-size:12.5px}
+.wordmark{font-size:18.5px}
+
+/* ---------- Symbole: feinere Striche (gilt für alle Verwendungen der Symbole) ---------- */
+symbol[stroke-width="2"],symbol[stroke-width="2.2"]{stroke-width:1.5}
+symbol[stroke-width="1.8"],symbol[stroke-width="1.7"]{stroke-width:1.4}
+symbol[stroke-width="2.5"],symbol[stroke-width="2.6"]{stroke-width:1.9}
+
+/* ---------- Kopfzeile: schmaler ---------- */
+.hdr{height:48px}
+@media (min-width:900px){.hdr{height:52px}}
+.hlogo{width:30px;height:30px}
+.hgrp>.icon-btn{width:34px;height:34px}
+.hgrp>.icon-btn .ico,.hai-ic{width:19px;height:19px}
+@media (hover:none){.hgrp>.icon-btn:hover{background:transparent}}
+.hsearch{height:34px;box-shadow:inset 0 0 0 .5px rgba(14,16,20,.12)}
+.hdr{box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(14,16,20,.08),0 8px 26px -18px rgba(14,16,20,.22)}
+
+/* ---------- Buttons: flacher, Haarlinie statt Kante ---------- */
+.btn{min-height:36px;padding:0 15px}
+.btn-lg{min-height:42px;padding:0 19px;font-size:14px}
+.btn-sm{min-height:30px;font-size:12.5px}
+.btn-primary{box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 .5px rgba(14,16,20,.18),0 4px 12px -8px rgba(14,16,20,.26)}
+.btn-ink,.btn-primary.btn-ink{box-shadow:inset 0 1px 0 rgba(255,255,255,.26),inset 0 0 0 .5px rgba(255,255,255,.1),0 6px 14px -9px rgba(14,16,20,.5)}
+.btn-soft,.btn-outline{box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(14,16,20,.16)}
+
+/* ---------- Chips und Badges: dünne Haarlinie, kaum Fläche, kein Schatten ---------- */
+.chip,.kh-m li,.hro-pill,.tbadges li,.pd-tag,.story-tag,.wg-rb,.wg-n,.wg-reg-k a{box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 0 0 .5px rgba(14,16,20,.14)}
+.chip{min-height:30px;padding:0 12px;font-size:13px}
+.kbar-f .chip{min-height:38px;padding:0 14px}
+.kh-m li{min-height:30px;padding:0 12px 0 10px;font-size:13px}
+.kh-m .ico,.chip .ico{width:14px;height:14px}
+.hro-pill{min-height:32px;font-size:13px}
+.tbadges li{min-height:28px;font-size:12px}
+.tbadges .ico{width:13px;height:13px}
+
+/* ---------- Balken: dünner ---------- */
+.tband{padding:9px 0;box-shadow:inset 0 .5px 0 rgba(14,16,20,.08),inset 0 -.5px 0 rgba(14,16,20,.08)}
+.tb-set{gap:26px;padding-right:26px}
+.tb-i .ico{width:15px;height:15px}
+.kbar{min-height:52px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(14,16,20,.1),0 14px 34px -26px rgba(14,16,20,.3)}
+
+/* ---------- Kacheln ---------- */
+.tiles .tile{padding:8px 8px 12px;border-radius:18px}
+.qadd{width:30px;height:30px}
+.kb{min-height:176px}
+.kb-l{opacity:.6}
+.bc::before{opacity:.5}
+.kl{--s:30px}
+.bc-lg .kl{--s:28px}
+.m-lg .kl{--s:28px}
+@media (min-width:1100px){.kb-lg .kl{--s:34px}}
+.kl{box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 .5px rgba(14,16,20,.12),0 3px 8px -5px rgba(14,16,20,.25)}
+.kb-go,.bc-go,.rail-nav button{width:30px;height:30px;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 .5px rgba(14,16,20,.14),0 3px 8px -5px rgba(14,16,20,.22)}
+.kb-go .ico,.bc-go .ico,.rail-nav button .ico{width:14px;height:14px}
+.ko-i>span{box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 .5px rgba(14,16,20,.1),0 10px 22px -14px color-mix(in srgb,var(--c) 45%,rgba(14,16,20,.5))}
+
+/* ---------- Zahlungszeichen: flach, Haarlinie, einheitliche Höhe (Original-Zeichen bleiben unverändert) ---------- */
+.pmk{width:52px;height:34px;border-radius:7px;box-shadow:0 0 0 .5px rgba(14,16,20,.16)}
+.pmk img{max-width:40px;max-height:21px}
+.pmk[data-k="apple_pay"]{box-shadow:0 0 0 .5px rgba(14,16,20,.2)}
+.pmk-kl{box-shadow:none}
+.tb-pm .pmk{width:34px;height:21px;border-radius:4px;box-shadow:0 0 0 .5px rgba(14,16,20,.18)}
+.tb-pm .pmk img{max-width:27px;max-height:12px}
+.tb-pm .pmk-tx b{font-size:9px}
+.pband .pmk{width:58px;height:38px;border-radius:8px}
+.pband .pmk img{max-width:46px;max-height:24px}
+.tb-pay img,.tb-pay b{box-shadow:0 0 0 .5px rgba(14,16,20,.14)}
+
+/* ---------- Hintergrund: ruhiger ---------- */
+.bgfx i:nth-child(n+2){opacity:.7}
+.bgr.r1{--o:.12}
+.bgr.r2{--o:.09}
+
+/* Klarna: Hinweis zur Kreditaufnahme direkt unter der Werbung, gleich groß und gleich kräftig */
+.kl-cap{white-space:normal;text-align:inherit;line-height:1.35}
+.kl-cap .kl-warn{display:block;margin-top:2px;font:inherit;color:inherit}
+.tb-pm .kl-cap{display:none}
+/* Kategorie-Logos am Rechner etwas größer, Zeichen füllen die Plakette besser */
+.km:not(.bm){height:50%;width:calc(50% * var(--a,1))}
+@media (min-width:1100px){.bc-lg .kl{--s:32px}}
+.pd-tag .ico{color:var(--ink-2)}
+
+/* Tippflächen: Kopfzeilen-Knöpfe sehen schmal aus, treffen aber auf 44 px Höhe (Apple HIG) */
+.hgrp>.icon-btn{position:relative}
+.hgrp>.icon-btn::before{content:"";position:absolute;inset:-5px 0}

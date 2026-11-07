@@ -7,7 +7,7 @@
    wvid(n)     Handy-Video im iPhone: lädt und spielt erst bei Sichtbarkeit, bei reduzierter Bewegung nur das Standbild
    Klicks laufen über data-a (90-start.js), Regler/Suche/Pfeiltasten über eigene delegierte Hörer – kein Einhängen nötig.
    Nur echte Katalogdaten, keine erfundenen Zahlen. Alle Namen mit Präfix wg, CSS in css/45-widgets.css. */
-const wvid=n=>`<video class="wg-vid" poster="/vid/${n}.jpg?v=2" muted loop playsinline preload="none" aria-hidden="true"><source src="/vid/${n}.mp4?v=2" type="video/mp4"><source src="/vid/${n}.webm?v=2" type="video/webm"></video>`;
+const wvid=n=>`<video class="wg-vid" poster="/vid/${n}.jpg?v=1" muted loop playsinline preload="none" aria-hidden="true"><source src="/vid/${n}.mp4?v=1" type="video/mp4"><source src="/vid/${n}.webm?v=1" type="video/webm"></video>`;
 const wgPhone=(n,cls)=>`<div class="iph-stage wg-ph${cls?" "+cls:""}" data-mouse aria-hidden="true"><div class="iph-float" data-off><div class="iph-tilt">${iphone(wvid(n))}</div></div></div>`;
 /* Reihenfolge: Bestseller zuerst, dann beliebte Mobilfunkanbieter, dann Marken mit Bild oder Logo */
 const WG_PREF=["telekom","vodafone","o2","congstar","alditalk","lyca","lebara"];

@@ -1,13 +1,18 @@
 /* ---------- home ---------- */
-/* Aufbau (Konzept „Silberstreifen“, web/DESIGN.md): Bühne mit Überschrift, Suche und Schnellwahl, rechts (Handy: darunter) der Chrom-Ring
-   mit einer Code-Karte (19-codecard.js) · ein ruhiger Vertrauenssatz mit den echten Zahlungszeichen · Kategorien als Index-Liste ·
-   Bestseller · Kartenwand („Regal“ echter Karten) · Spiele-Keys · Geschenk-Finder · So einfach geht's · Abo · Handy aufladen ·
-   Angebote · Zuletzt angesehen · Warum instantcodes · Bewertungen · Ratgeber · Fragen · Abschluss.
-   Bewegung gibt es nur in der Bühne; alles andere steht einfach da. */
+/* Aufbau (Chrome & Glas – hell): Bühne mit Chrom-Ring, Überschrift und Suche, Karten schweben um den Ring ·
+   Vertrauens-Laufband · Bestseller · Scroll-Geschichte (Video läuft mit dem Scrollen im iPhone) · Kategorien als Bento ·
+   Bezahlen · instantcodes Abo · Handy aufladen · Spiele-Keys · Angebote · Zuletzt angesehen · Marken im Sortiment ·
+   Warum instantcodes · Bewertungen · Ratgeber · Fragen · Abschluss */
 const shortName=b=>b.name.replace(/ (Gift Card|Geschenkkarte)$/,"").replace("Xbox Game Pass Ultimate","Game Pass");
+/* Glaskarte, die schwebt: Lage (--x/--y in %), Breite, Tiefe (--d: Stärke der Parallax), Drehung, Takt */
+const fcard=(b,o)=>`<span class="fc" style="--x:${o[0]}%;--y:${o[1]}%;--w:${o[2]}px;--d:${o[3]};--r:${o[4]}deg;--t:${o[5]}s"><i class="fc-b">${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`;
+const cloud=(list,slots)=>list.slice(0,slots.length).map((b,i)=>fcard(b,slots[i])).join("");
 /* Kurzvideo im iPhone: lädt erst, wenn es sichtbar wird (15-effects.js), Standbild bis dahin */
-const hvid=n=>`<video class="vf-vid" poster="/vid/${n}.jpg?v=9" muted loop playsinline preload="none"><source src="/vid/${n}.mp4?v=9" type="video/mp4"><source src="/vid/${n}.webm?v=9" type="video/webm"></video>`;
-/* Kartenwand: echte Gutscheinkarten mit offiziellen Logos in Reihen, die gegeneinander laufen – das „Regal“ des Shops.
+const hvid=n=>`<video class="vf-vid" poster="/vid/${n}.jpg?v=8" muted loop playsinline preload="none"><source src="/vid/${n}.mp4?v=8" type="video/mp4"><source src="/vid/${n}.webm?v=8" type="video/webm"></video>`;
+/* Video, das mit dem Scrollen läuft (16-motion.js, [data-scrub]) */
+const svid=n=>`<video class="scrub-vid" poster="/vid/${n}.jpg?v=8" muted playsinline preload="none" data-src="/vid/${n}-scrub.mp4?v=8"></video>`;
+const uniqLogos=n=>{const seen=new Set();return VIS().filter(b=>!isKey(b)&&hasMark(b)&&!seen.has(b.logo||b.si)&&seen.add(b.logo||b.si)).slice(0,n)};
+/* Kartenwand: echte Gutscheinkarten mit offiziellen Logos in drei Reihen, die gegeneinander laufen (Bilder, Farbe, Bewegung).
    Zweite Hälfte jeder Reihe ist die Kopie für die Endlosschleife (für Screenreader und Tastatur ausgeblendet). */
 const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=="topup"&&(b.logo||b.si)&&!seen.has(b.logo||b.si)&&seen.add(b.logo||b.si));
   if(list.length<12)return"";
@@ -18,88 +23,116 @@ const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=
   const lite=document.documentElement.classList.contains("lite"),nr=lite?2:3,per=lite?9:16;
   const rows=Array.from({length:nr},(_,r)=>mix.filter((b,i)=>i%nr===r).slice(0,per));
   const card=(b,dup)=>`<a class="cw-c" href="/marke/${b.id}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}</a>`;
-  return `<section class="cwall" data-off aria-labelledby="cwH"><div class="sec cw-head"><div class="sec-head"><h2 class="h2" id="cwH">Alle Marken. Ein Shop.</h2><div class="sh-r"><a class="more" href="/kategorien">Alle anzeigen</a></div></div></div>
-<div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${84+i*16}s"><div class="cw-track">${r.map(b=>card(b)).join("")}${r.map(b=>card(b,1)).join("")}</div></div>`).join("")}</div></div></section>`};
+  return `<section class="cwall" data-off aria-label="Marken im Sortiment"><div class="sec cw-head"><div class="sec-head"><div><h2 class="h2">Alle Marken. Ein Shop.</h2><p>Gutscheine, Prepaid-Karten und Guthaben – offizielle Codes, meist in Sekunden per E-Mail.</p></div><div class="sh-r"><a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a></div></div></div>
+<div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map(b=>card(b)).join("")}${r.map(b=>card(b,1)).join("")}</div></div>`).join("")}</div></div></section>`};
 function home(){
   const recent=S.recent.map(byId).filter(Boolean).filter(isRep).slice(0,10), c=ctry();
   const keys=VIS().filter(isKey), deals=DEALS(), best=pick(BEST0,14).map(byId).filter(Boolean);
-  const off=deals.length?Math.round(Math.max.apply(null,deals.map(b=>b.disc))*100):0, nTop=VIS().filter(b=>b.cat==="topup").length;
-  /* Marken = alle Produkte außer Spielen (Länder-Varianten zählen einmal) */
-  const nBrands=VIS().filter(b=>!isKey(b)).length;
-  const head=(title,right,id,sub)=>`<div class="sec-head"><div><h2 class="h2"${id?` id="${id}"`:""}>${title}</h2>${sub?`<p>${sub}</p>`:""}</div>${right?`<div class="sh-r">${right}</div>`:""}</div>`;
-  const all=(href,t="Alle anzeigen")=>`<a class="more" href="${href}">${t}</a>`;
+  const off=deals.length?Math.round(Math.max.apply(null,deals.map(b=>b.disc))*100):0, nTop=BRANDS.filter(b=>b.cat==="topup").length;
+  const cats=CATS.filter(c=>c.id!=="topup"&&VIS().some(b=>b.cat===c.id));
+  const head=(title,sub,right)=>`<div class="sec-head"><div><h2 class="h2">${title}</h2>${sub?`<p>${sub}</p>`:""}</div>${right?`<div class="sh-r">${right}</div>`:""}</div>`;
+  const seen=new Set(),pool=FEAT.concat(POP,BEST0).map(byId).concat(IMGB()).filter(b=>b&&b.cat!=="topup"&&!isKey(b)&&!seen.has(b.id)&&seen.add(b.id));
   const aboSvc=["netflix","disney","spotify","dazn","gpu","psplus-essential","nso","crunchyroll","amazon"].map(byId).filter(Boolean);
   const quick=[["steam","Steam"],["psn","PlayStation"],["amazon","Amazon"],["netflix","Netflix"]].filter(([id])=>byId(id));
+  const storyCards=["steam","psn","netflix","spotify","amazon","apple"].map(byId).filter(Boolean);
   return {tab:"home",title:"Digitale Codes sofort per E-Mail",html:`<div class="home">
-<section class="hro" aria-labelledby="hroH">
-  <div class="hro-copy">
-    <h1 class="h1" id="hroH">Digitale Codes.<br>In Sekunden <span class="nw">bei dir.</span></h1>
-    <p class="lead">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben – von Steam bis Netflix, für dich oder zum Verschenken.</p>
-    <button class="hro-search" data-a="palOpen" aria-label="Suche öffnen">${ic("i-search")}<span>Marke oder Gutschein suchen</span><kbd class="kbdk">Strg K</kbd></button>
-    <nav class="hro-quick" aria-label="Beliebte Marken">${quick.map(([id,t])=>`<a class="chip" href="/marke/${id}">${esc(t)}</a>`).join("")}<a class="chip" href="/aufladen">Handy aufladen</a></nav>
+<section class="hero hro" data-mouse>
+  <div class="hro-stage" aria-hidden="true">
+    <div class="lq" data-off></div>
+    <div class="hro-sky" data-par>${cloud(pool.slice(0,7),[[30,16,150,1.5,-12,9],[84,24,132,1.1,12,10.5],[78,84,150,1.6,-8,9.5],[50,52,112,.9,10,11],[62,6,96,.7,-6,12],[92,60,90,.55,8,13],[26,90,84,.5,-12,12.5]])}</div>
   </div>
-  <div class="hro-art"><div class="hro-ring" aria-hidden="true"><div class="lq" data-off></div></div>${codeCard()}</div>
-  <div class="hro-trust"><p class="hro-say">Offizielle Codes von ${nBrands} Marken. Meist in Sekunden per E-Mail, sicher bezahlt über Stripe.</p>${payLogos()}</div>
+  <div class="hro-copy">
+    <a class="hro-pill rv" href="/abo"><span>Neu</span>instantcodes Abo – 9 Dienste, ein Preis${ic("i-chev")}</a>
+    <h1 class="h1 rv" style="--d:80ms">Digitale Codes.<br>In Sekunden bei dir.</h1>
+    <p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${VIS().length}">${VIS().length}</b> Marken – sicher bezahlt, dein Code kommt meist direkt per E-Mail.</p>
+    <button class="hro-search rv" style="--d:240ms" data-a="palOpen" aria-label="Suche öffnen">${ic("i-search")}<span>Marke oder Gutschein suchen</span><kbd class="kbdk">Strg K</kbd></button>
+    <div class="hro-quick rv" style="--d:300ms">${quick.map(([id,t])=>`<a class="chip" href="/marke/${id}">${esc(t)}</a>`).join("")}<a class="chip" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></div>
+    <div class="hro-trust rv" style="--d:360ms">${payLogos()}<p><span>${ic("i-lock")}TLS-verschlüsselt</span><span>${ic("i-shield")}3&#8209;D Secure</span><span class="ft-stripe">Zahlung über <img src="/pay/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></p></div>
+  </div>
 </section>
-<section class="sec hm-cats" aria-labelledby="hmCatsH">${head("Kategorien",all("/kategorien"),"hmCatsH")}
-  <div class="kb-grid cx">${CATSV().map((k,i)=>kbCard(k,i)).join("")}</div>
-</section>
-<section class="sec hm-best" aria-labelledby="hmBestH">${head("Bestseller",railNav("bestRail"),"hmBestH")}${rail("bestRail",best)}</section>
+${trustBand({n:28})}
 ${cardWall()}
-${keys.length?`<section class="sec hm-keys" aria-labelledby="hmKeysH">${head("Spiele-Keys",`${all("/kategorie/keys")}${railNav("keyRail")}`,"hmKeysH")}
+<section class="sec hm-best">${head("Bestseller","Was gerade am häufigsten gekauft wird.",`<a class="more" href="/angebote">Alle${ic("i-chev")}</a>${railNav("bestRail")}`)}${rail("bestRail",best)}</section>
+<section class="hm-story" data-scrub aria-label="So kaufst du bei instantcodes">
+  <div class="story-pin">
+    <div class="story-copy">
+      <h2 class="h2">So einfach geht's</h2>
+      <ol class="story-steps">
+        <li data-s="0"><span class="how-n">1</span><b>Marke und Betrag wählen</b><span>Gutschein, Spiele-Key, Abo oder Handy-Guthaben – über ${VIS().length} Marken.</span></li>
+        <li data-s="1"><span class="how-n">2</span><b>Schnell und sicher bezahlen</b><span>${payNames()}. Abgewickelt über Stripe.</span></li>
+        <li data-s="2"><span class="how-n">3</span><b>Code erhalten</b><span>Meist Sekunden nach der Zahlung – auf dem Bildschirm und per E-Mail.</span></li>
+      </ol>
+      <div class="story-bar" aria-hidden="true"><i></i></div>
+    </div>
+    <div class="story-stage" aria-hidden="true">
+      <div class="story-orbit">${storyCards.map((b,i)=>`<span class="sc" style="--i:${i}">${gc(b,{tilt:false,badge:false,plat:false})}</span>`).join("")}</div>
+      <div class="story-glow"></div>
+      <div class="story-phone">${iphone(svid("ablauf"))}</div>
+      <div class="story-tag t1">${ic("i-zap")}<span>Express-Zahlung</span></div>
+      <div class="story-tag t2">${ic("i-check")}<span>Code ist da</span></div>
+    </div>
+  </div>
+</section>
+<section class="sec hm-cats">${head("Kategorien","Vom Spiele-Key bis zum Streaming-Guthaben.",`<a class="more" href="/kategorien">Alle Kategorien${ic("i-chev")}</a>`)}
+  <div class="bento-cats">${cats.slice(0,6).map((k,i)=>{const l=VIS().filter(b=>b.cat===k.id),n=catCount(k.id);return `<a class="bc spot rv" href="/kategorie/${k.id}" style="--c:${CCOL[k.id]};--d:${i*70}ms">${kLogos(k.id,3,"bc-lg",32)}<span class="bc-t"><b>${esc(k.name)}</b><small>${n} ${k.id==="keys"?"Spiele":"Produkte"}</small></span><span class="bc-go">${ic("i-arrow")}</span><span class="bc-fan" aria-hidden="true">${l.slice(0,3).map(b=>gc(b,{tilt:false,badge:false,plat:false})).join("")}</span></a>`}).join("")}</div>
+</section>
+${wgHome()}
+<section class="sec hm-pay"><div class="payband rv">
+  <div class="payband-copy"><h2 class="h2">Bezahlen, wie du willst</h2><p>${payNames()}. Die Zahlung läuft verschlüsselt über Stripe – deine Kartendaten sehen wir nie.</p></div>
+  <div class="payband-logos">${payLogos()}</div>
+  <ul class="payband-sec"><li><img src="/pay/stripe.svg" alt="Stripe" loading="lazy"><span>Zahlungsabwicklung</span></li><li>${ic("i-lock")}<span>TLS-verschlüsselt</span></li><li>${ic("i-shield")}<span>3&#8209;D Secure</span></li><li>${ic("i-mail")}<span>Bestätigung per E-Mail</span></li></ul>
+</div></section>
+<section class="sec hm-abo"><div class="abo-tz rv">
+  <div class="abo-tz-copy"><h2 class="h2">instantcodes Abo</h2><p>Netflix, Disney+, Spotify, Game Pass, PlayStation Plus und mehr – als Code-Paket per E-Mail. Ein fester Preis, online kündbar.</p>
+    <ul class="abo-tz-plans"><li><b>Pro</b><span>30 €</span><small>pro Monat</small></li><li><b>Premium</b><span>50 €</span><small>für 3 Monate</small></li><li><b>Max</b><span>80 €</span><small>für 6 Monate</small></li></ul>
+    <a class="btn btn-primary btn-lg" href="/abo">Abo ansehen</a></div>
+  <div class="abo-tz-art" data-off aria-hidden="true"><div class="abo-tz-ring"></div><div class="abo-tz-orb">${aboSvc.map((b,i)=>`<span class="abo-tz-c" style="--a:${(i*360/aboSvc.length).toFixed(1)}deg"><i>${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`).join("")}</div><span class="abo-tz-core">${LOGO(56)}</span></div>
+</div></section>
+<section class="sec"><div class="tusec spot">
+  <div class="tu-copy"><h2 class="h2">Handy aufladen</h2><p>Nummer eingeben, der Anbieter wird erkannt, Betrag wählen. Für ${nTop} Anbieter.</p>
+    <div class="tu-form">
+      <label class="lbl" for="twCtry">Empfängerland</label>
+      <button class="sel" id="twCtry" data-a="country">${flag(c.c,24)}<span>${esc(c.n)}</span>${ic("i-down")}</button>
+      <label class="lbl" for="twNum">Handynummer</label>
+      <div class="phone"><span>${c.dial}</span><input id="twNum" inputmode="tel" placeholder="151 2345678" autocomplete="tel-national"></div>
+      <div class="err" id="twErr" role="alert"></div>
+      <button class="btn btn-primary btn-ink" data-a="twGo">Weiter zum Aufladen</button>
+    </div></div>
+  <div class="tu-visual" aria-hidden="true">
+    <div class="tu-waves"><i></i><i></i><i></i></div>
+    <div class="tu-stage" data-par>${["vodafone","o2","lyca"].map((id,i)=>`<span class="fs">${gc(pk(id,i+3),{tilt:false,badge:false})}</span>`).join("")}</div>
+    <div class="iph-stage tu-iph" data-mouse><div class="iph-float" data-off><div class="iph-tilt">${iphone(hvid("aufladen"))}</div></div></div>
+  </div>
+</div></section>
+${keys.length?`<section class="sec hm-keys">${head("Spiele-Keys",`${keys.length} Spiele für PC, PlayStation, Xbox und Nintendo`,`<a class="more" href="/kategorie/keys">Alle${ic("i-chev")}</a>${railNav("keyRail")}`)}
   <div class="chips" role="group" aria-label="Plattform">${[["all","Alle"],["pc","PC"],["ps","PlayStation"],["xbox","Xbox"],["nin","Nintendo"]].map((p,i)=>`<button class="chip" aria-pressed="${!i}" data-a="keyPlat" data-v="${p[0]}">${p[1]}</button>`).join("")}</div>
   ${rail("keyRail",keyList("all"),{cover:true})}
 </section>`:""}
-${wgHome()}
-<section class="sec hm-how" aria-labelledby="howH">
-  <div class="how-copy"><h2 class="h2" id="howH">So einfach geht's</h2>
-    <ol class="how">
-      <li><span class="how-n" aria-hidden="true">1</span><span class="how-t"><b>Marke und Betrag wählen</b><span>Gutschein, Spiele-Key, Abo oder Handy-Guthaben – über ${VIS().length.toLocaleString("de-DE")} Produkte im Sortiment.</span></span></li>
-      <li><span class="how-n" aria-hidden="true">2</span><span class="how-t"><b>Sicher bezahlen</b><span>${payNames()}. Abgewickelt über Stripe.</span></span></li>
-      <li><span class="how-n" aria-hidden="true">3</span><span class="how-t"><b>Code erhalten</b><span>Meist Sekunden nach der Zahlung – auf dem Bildschirm und per E-Mail.</span></span></li>
-    </ol>
-  </div>
-  <div class="how-phone" aria-hidden="true">${iphone(hvid("ablauf"))}</div>
-</section>
-<section class="sec hm-abo" aria-labelledby="aboTzH"><div class="abo-tz">
-  <div class="abo-tz-copy"><h2 class="h2" id="aboTzH">instantcodes Abo</h2><p>Netflix, Disney+, Spotify, Game Pass, PlayStation Plus und mehr – als Code-Paket per E-Mail. Ein fester Preis, online kündbar.</p>
-    <ul class="abo-tz-plans"><li><b>Pro</b><span>30 €</span><small>pro Monat</small></li><li><b>Premium</b><span>50 €</span><small>für 3 Monate</small></li><li><b>Max</b><span>80 €</span><small>für 6 Monate</small></li></ul>
-    <a class="btn btn-primary btn-lg" href="/abo">Abo ansehen</a></div>
-  <div class="abo-tz-art" aria-hidden="true">${aboSvc.map(b=>gc(b,{tilt:false,badge:false,plat:false})).join("")}</div>
-</div></section>
-<section class="sec hm-tu" aria-labelledby="tuH"><div class="tusec">
-  <div class="tu-copy"><h2 class="h2" id="tuH">Handy aufladen</h2><p>Nummer eingeben, der Anbieter wird erkannt, Betrag wählen. Für ${nTop} Anbieter, das Guthaben wird direkt gebucht.</p></div>
-  <div class="tu-form">
-    <label class="lbl" for="twCtry">Empfängerland</label>
-    <button class="sel" id="twCtry" data-a="country">${flag(c.c,24)}<span>${esc(c.n)}</span>${ic("i-down")}</button>
-    <label class="lbl" for="twNum">Handynummer</label>
-    <div class="phone"><span>${c.dial}</span><input id="twNum" inputmode="tel" placeholder="151 2345678" autocomplete="tel-national"></div>
-    <div class="err" id="twErr" role="alert"></div>
-    <button class="btn btn-primary btn-ink btn-block" data-a="twGo">Weiter zum Aufladen</button>
-  </div>
-</div></section>
-${deals.length?`<section class="sec">${head("Jetzt reduziert",`${all("/angebote")}${railNav("dealRail")}`,"",`Bis zu ${off} % unter Nennwert, solange der Preis hier steht.`)}${rail("dealRail",deals)}</section>`:""}
-${recent.length?`<section class="sec">${head("Zuletzt angesehen",railNav("recentRail"))}${rail("recentRail",recent)}</section>`:""}
-<section class="sec hm-why" aria-labelledby="whyH">${head("Warum instantcodes","","whyH")}
+${deals.length?`<section class="sec">${head("Jetzt reduziert",`Bis zu ${off} % Rabatt auf ausgewählte Gutscheine.`,`<a class="more" href="/angebote">Alle${ic("i-chev")}</a>${railNav("dealRail")}`)}${rail("dealRail",deals)}</section>`:""}
+${recent.length?`<section class="sec">${head("Zuletzt angesehen","",railNav("recentRail"))}${rail("recentRail",recent)}</section>`:""}
+<section class="sec hm-brandwall">${head("Marken im Sortiment","Offizielle Codes bekannter Marken – sofort per E-Mail.",`<a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a>`)}${brandWall(uniqLogos(24),{n:18})}</section>
+<section class="sec hm-why">
+  <p class="say" data-words>Offizielle Codes von autorisierten Distributoren, sicher bezahlt über Stripe und meist in Sekunden bei dir. Ohne Umwege, ohne Wartezeit.</p>
   <ul class="why">
-    <li><b>In Sekunden geliefert</b><small>Meist erscheint der Code direkt nach der Zahlung auf dem Bildschirm und kommt per E-Mail.</small></li>
-    <li><b>Offizielle Codes</b><small>Bezogen über autorisierte Distributoren. Auf jeder Produktseite steht, wo der Code gilt.</small></li>
-    <li><b>Sicher bezahlt</b><small>Zahlungsabwicklung über Stripe mit 3&#8209;D Secure. Kartendaten sehen wir nie.</small></li>
-    <li><b>Persönlicher Support</b><small>Fragen zu Bestellung oder Einlösung beantworten wir per E-Mail: <a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></small></li>
+    <li class="spot rv"><span class="si-ic">${ic("i-zap")}</span><b>In Sekunden geliefert</b><small>Meist erscheint der Code direkt nach der Zahlung auf dem Bildschirm und kommt per E-Mail.</small></li>
+    <li class="spot rv" style="--d:70ms"><span class="si-ic">${ic("i-shield")}</span><b>Offizielle Codes</b><small>Bezogen über autorisierte Distributoren. Auf jeder Produktseite steht, wo der Code gilt.</small></li>
+    <li class="spot rv" style="--d:140ms"><span class="si-ic">${ic("i-lock")}</span><b>Sicher bezahlt</b><small>Zahlungsabwicklung über Stripe mit 3&#8209;D Secure. Kartendaten sehen wir nie.</small></li>
+    <li class="spot rv" style="--d:210ms"><span class="si-ic">${ic("i-mail")}</span><b>Persönlicher Support</b><small>Fragen zu Bestellung oder Einlösung beantworten wir per E-Mail: <a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></small></li>
   </ul>
 </section>
 <section class="sec" id="revSec" hidden></section>
 ${seoBlock()}
 <section class="sec hm-faq"><div class="faq-side"><h2 class="h2">Häufige Fragen</h2><p>Alles Wichtige zu Bestellung, Bezahlung und Einlösung.</p><a class="btn btn-soft" href="/hilfe">Alle Fragen</a></div>${faqList(PALL.slice(0,6))}</section>
-<section class="sec hm-cta"><div class="cta-box">
-  <h2 class="h2">Dein nächster Code ist nur eine Suche entfernt.</h2>
-  <p>${BRANDS.length.toLocaleString("de-DE")} Produkte, sicher bezahlt mit ${payNames()}.</p>
-  <div class="cta-btns"><a class="btn btn-primary btn-lg" href="/kategorien">Sortiment ansehen</a><button class="btn btn-soft btn-lg" data-a="palOpen">Suchen</button></div>
+<section class="sec hm-cta"><div class="cta-box" data-mouse>
+  <div class="lq" data-off aria-hidden="true"></div>
+  <h2 class="h2 rv">Dein nächster Code ist nur eine Suche entfernt.</h2>
+  <p class="rv" style="--d:80ms">${BRANDS.length.toLocaleString("de-DE")} Produkte, sicher bezahlt mit ${payNames()}.</p>
+  <div class="cta-btns rv" style="--d:160ms"><a class="btn btn-primary btn-lg" href="/kategorien">Sortiment ansehen</a><button class="btn btn-soft btn-lg" data-a="palOpen">${ic("i-search")}Suchen</button></div>
 </div></section>
 </div>`,
   after(){
     const n=$("#twNum");n&&n.addEventListener("keydown",e=>{if(e.key==="Enter")A.twGo()});
-    loadReviews("#revSec");ccMount(app);
+    loadReviews("#revSec");
   }};
 }
 /* Ratgebertext auf dem Handy aufklappen */
