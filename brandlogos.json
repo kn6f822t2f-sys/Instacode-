@@ -439,5 +439,118 @@
   "scale": 1,
   "ar": 3.425,
   "tint": true
+ },
+ "lidl": {
+  "src": "/brand/lidl.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1
+ },
+ "kauflandmobil": {
+  "src": "/brand/kaufland.svg",
+  "card": "light",
+  "scale": 1.1,
+  "ar": 1
+ },
+ "db": {
+  "src": "/brand/deutsche-bahn.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1.429,
+  "tint": true
+ },
+ "zara": {
+  "src": "/brand/zara.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.4,
+  "tint": true
+ },
+ "ryanair": {
+  "src": "/brand/ryanair.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 0.998,
+  "tint": true
+ },
+ "thenorthface": {
+  "src": "/brand/the-north-face.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.128,
+  "tint": true
+ },
+ "newbalance": {
+  "src": "/brand/new-balance.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 2.08,
+  "tint": true
+ },
+ "dominos": {
+  "src": "/brand/dominos.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 4.777
+ },
+ "uniqlo": {
+  "src": "/brand/uniqlo.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 1
+ },
+ "puma": {
+  "src": "/brand/puma.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1.297,
+  "tint": true
+ },
+ "win11home": {
+  "src": "/brand/windows-11.svg",
+  "card": "brand",
+  "scale": 0.84,
+  "ar": 1.338,
+  "tint": true
+ },
+ "win11pro": {
+  "src": "/brand/windows-11.svg",
+  "card": "brand",
+  "scale": 0.84,
+  "ar": 1.338,
+  "tint": true
+ },
+ "office2024home": {
+  "src": "/brand/microsoft-office.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 0.821
+ },
+ "office2024hb": {
+  "src": "/brand/microsoft-office.svg",
+  "card": "light",
+  "scale": 1,
+  "ar": 0.821
+ },
+ "avastps": {
+  "src": "/brand/avast.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1,
+  "tint": true
+ },
+ "avastult": {
+  "src": "/brand/avast.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1,
+  "tint": true
+ },
+ "trendmicro": {
+  "src": "/brand/trend-micro.svg",
+  "card": "brand",
+  "scale": 1,
+  "ar": 1,
+  "tint": true
  }
 }

@@ -5321,5 +5321,7904 @@
    "e-wallet"
   ],
   "region": "DE"
+ },
+ "fc27-ea": {
+  "id": "fc27-ea",
+  "name": "EA SPORTS FC 27",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#161B1D,#373F2D,#7D94A0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EA SPORTS FC 27",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "fc27",
+  "region": "EU",
+  "tags": [
+   "fifa",
+   "fußball",
+   "football"
+  ]
+ },
+ "fc27-ps5": {
+  "id": "fc27-ps5",
+  "name": "EA SPORTS FC 27",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#161B1D,#373F2D,#7D94A0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EA SPORTS FC 27",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "fc27",
+  "region": "EU",
+  "tags": [
+   "fifa",
+   "fußball",
+   "football"
+  ]
+ },
+ "fc27-xbox": {
+  "id": "fc27-xbox",
+  "name": "EA SPORTS FC 27",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#161B1D,#373F2D,#7D94A0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EA SPORTS FC 27",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "fc27",
+  "region": "EU",
+  "tags": [
+   "fifa",
+   "fußball",
+   "football"
+  ]
+ },
+ "mw4-steam": {
+  "id": "mw4-steam",
+  "name": "Call of Duty: Modern Warfare 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#343026,#CFCEC7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: MODERN WARFARE 4",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mw4",
+  "region": "EU",
+  "tags": [
+   "cod",
+   "shooter",
+   "mw4"
+  ]
+ },
+ "mw4-ps5": {
+  "id": "mw4-ps5",
+  "name": "Call of Duty: Modern Warfare 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#343026,#CFCEC7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: MODERN WARFARE 4",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "mw4",
+  "region": "EU",
+  "tags": [
+   "cod",
+   "shooter",
+   "mw4"
+  ]
+ },
+ "mw4-xbox": {
+  "id": "mw4-xbox",
+  "name": "Call of Duty: Modern Warfare 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#343026,#CFCEC7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: MODERN WARFARE 4",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "mw4",
+  "region": "EU",
+  "tags": [
+   "cod",
+   "shooter",
+   "mw4"
+  ]
+ },
+ "bo6-steam": {
+  "id": "bo6-steam",
+  "name": "Call of Duty: Black Ops 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2C322B,#C49444)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: BLACK OPS 6",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "bo6",
+  "region": "EU",
+  "tags": [
+   "cod",
+   "shooter"
+  ]
+ },
+ "bo6-ps5": {
+  "id": "bo6-ps5",
+  "name": "Call of Duty: Black Ops 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2C322B,#C49444)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: BLACK OPS 6",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "bo6",
+  "region": "EU",
+  "tags": [
+   "cod",
+   "shooter"
+  ]
+ },
+ "bo6-xbox": {
+  "id": "bo6-xbox",
+  "name": "Call of Duty: Black Ops 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2C322B,#C49444)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CALL OF DUTY: BLACK OPS 6",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "bo6",
+  "region": "EU",
+  "tags": [
+   "cod",
+   "shooter"
+  ]
+ },
+ "rerequiem-steam": {
+  "id": "rerequiem-steam",
+  "name": "Resident Evil Requiem",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2B2222,#5D5D5F,#883530)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RESIDENT EVIL REQUIEM",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "rerequiem",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "horror",
+   "re9"
+  ]
+ },
+ "rerequiem-ps5": {
+  "id": "rerequiem-ps5",
+  "name": "Resident Evil Requiem",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2B2222,#5D5D5F,#883530)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RESIDENT EVIL REQUIEM",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "rerequiem",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "horror",
+   "re9"
+  ]
+ },
+ "rerequiem-xbox": {
+  "id": "rerequiem-xbox",
+  "name": "Resident Evil Requiem",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2B2222,#5D5D5F,#883530)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RESIDENT EVIL REQUIEM",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "rerequiem",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "horror",
+   "re9"
+  ]
+ },
+ "expedition33-steam": {
+  "id": "expedition33-steam",
+  "name": "Clair Obscur: Expedition 33",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#443E37,#8B816D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CLAIR OBSCUR: EXPEDITION 33",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "expedition33",
+  "region": "EU",
+  "tags": [
+   "rpg",
+   "rollenspiel",
+   "sandfall"
+  ]
+ },
+ "expedition33-ps5": {
+  "id": "expedition33-ps5",
+  "name": "Clair Obscur: Expedition 33",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#443E37,#8B816D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CLAIR OBSCUR: EXPEDITION 33",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "expedition33",
+  "region": "EU",
+  "tags": [
+   "rpg",
+   "rollenspiel",
+   "sandfall"
+  ]
+ },
+ "expedition33-xbox": {
+  "id": "expedition33-xbox",
+  "name": "Clair Obscur: Expedition 33",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#443E37,#8B816D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CLAIR OBSCUR: EXPEDITION 33",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "expedition33",
+  "region": "EU",
+  "tags": [
+   "rpg",
+   "rollenspiel",
+   "sandfall"
+  ]
+ },
+ "arcraiders-steam": {
+  "id": "arcraiders-steam",
+  "name": "ARC Raiders",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#11070E,#411F61,#8D2430)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ARC RAIDERS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "arcraiders",
+  "region": "EU",
+  "tags": [
+   "extraction shooter",
+   "koop",
+   "embark"
+  ]
+ },
+ "arcraiders-ps5": {
+  "id": "arcraiders-ps5",
+  "name": "ARC Raiders",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#11070E,#411F61,#8D2430)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ARC RAIDERS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "arcraiders",
+  "region": "EU",
+  "tags": [
+   "extraction shooter",
+   "koop",
+   "embark"
+  ]
+ },
+ "arcraiders-xbox": {
+  "id": "arcraiders-xbox",
+  "name": "ARC Raiders",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#11070E,#411F61,#8D2430)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ARC RAIDERS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "arcraiders",
+  "region": "EU",
+  "tags": [
+   "extraction shooter",
+   "koop",
+   "embark"
+  ]
+ },
+ "borderlands4-steam": {
+  "id": "borderlands4-steam",
+  "name": "Borderlands 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#360809,#452A2D,#F80315)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BORDERLANDS 4",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "borderlands4",
+  "region": "EU",
+  "tags": [
+   "looter shooter",
+   "koop",
+   "2k"
+  ]
+ },
+ "borderlands4-ps5": {
+  "id": "borderlands4-ps5",
+  "name": "Borderlands 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#360809,#452A2D,#F80315)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BORDERLANDS 4",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "borderlands4",
+  "region": "EU",
+  "tags": [
+   "looter shooter",
+   "koop",
+   "2k"
+  ]
+ },
+ "borderlands4-xbox": {
+  "id": "borderlands4-xbox",
+  "name": "Borderlands 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#360809,#452A2D,#F80315)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BORDERLANDS 4",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "borderlands4",
+  "region": "EU",
+  "tags": [
+   "looter shooter",
+   "koop",
+   "2k"
+  ]
+ },
+ "nightreign-steam": {
+  "id": "nightreign-steam",
+  "name": "Elden Ring Nightreign",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0C15,#3A3E68,#4D75BC)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ELDEN RING NIGHTREIGN",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "nightreign",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls",
+   "koop"
+  ]
+ },
+ "nightreign-ps5": {
+  "id": "nightreign-ps5",
+  "name": "Elden Ring Nightreign",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0C15,#3A3E68,#4D75BC)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ELDEN RING NIGHTREIGN",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "nightreign",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls",
+   "koop"
+  ]
+ },
+ "nightreign-xbox": {
+  "id": "nightreign-xbox",
+  "name": "Elden Ring Nightreign",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0C15,#3A3E68,#4D75BC)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ELDEN RING NIGHTREIGN",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "nightreign",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls",
+   "koop"
+  ]
+ },
+ "mafiatoc-steam": {
+  "id": "mafiatoc-steam",
+  "name": "Mafia: The Old Country",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#5E1609,#8E4C2C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MAFIA: THE OLD COUNTRY",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mafiatoc",
+  "region": "EU",
+  "tags": [
+   "action",
+   "sizilien",
+   "2k"
+  ]
+ },
+ "mafiatoc-ps5": {
+  "id": "mafiatoc-ps5",
+  "name": "Mafia: The Old Country",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#5E1609,#8E4C2C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MAFIA: THE OLD COUNTRY",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "mafiatoc",
+  "region": "EU",
+  "tags": [
+   "action",
+   "sizilien",
+   "2k"
+  ]
+ },
+ "mafiatoc-xbox": {
+  "id": "mafiatoc-xbox",
+  "name": "Mafia: The Old Country",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#5E1609,#8E4C2C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MAFIA: THE OLD COUNTRY",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "mafiatoc",
+  "region": "EU",
+  "tags": [
+   "action",
+   "sizilien",
+   "2k"
+  ]
+ },
+ "dlbeast-steam": {
+  "id": "dlbeast-steam",
+  "name": "Dying Light: The Beast",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#080906,#313125,#D8CE91)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DYING LIGHT: THE BEAST",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dlbeast",
+  "region": "EU",
+  "tags": [
+   "zombies",
+   "horror",
+   "parkour"
+  ]
+ },
+ "dlbeast-ps5": {
+  "id": "dlbeast-ps5",
+  "name": "Dying Light: The Beast",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#080906,#313125,#D8CE91)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DYING LIGHT: THE BEAST",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "dlbeast",
+  "region": "EU",
+  "tags": [
+   "zombies",
+   "horror",
+   "parkour"
+  ]
+ },
+ "dlbeast-xbox": {
+  "id": "dlbeast-xbox",
+  "name": "Dying Light: The Beast",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#080906,#313125,#D8CE91)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DYING LIGHT: THE BEAST",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "dlbeast",
+  "region": "EU",
+  "tags": [
+   "zombies",
+   "horror",
+   "parkour"
+  ]
+ },
+ "silenthillf-steam": {
+  "id": "silenthillf-steam",
+  "name": "Silent Hill f",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D1516,#555F61,#7E4D4F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SILENT HILL F",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "silenthillf",
+  "region": "EU",
+  "tags": [
+   "konami",
+   "horror"
+  ]
+ },
+ "silenthillf-ps5": {
+  "id": "silenthillf-ps5",
+  "name": "Silent Hill f",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D1516,#555F61,#7E4D4F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SILENT HILL F",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "silenthillf",
+  "region": "EU",
+  "tags": [
+   "konami",
+   "horror"
+  ]
+ },
+ "silenthillf-xbox": {
+  "id": "silenthillf-xbox",
+  "name": "Silent Hill f",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D1516,#555F61,#7E4D4F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SILENT HILL F",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "silenthillf",
+  "region": "EU",
+  "tags": [
+   "konami",
+   "horror"
+  ]
+ },
+ "spacemarine2-steam": {
+  "id": "spacemarine2-steam",
+  "name": "Warhammer 40,000: Space Marine 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F080A,#515E73,#8A3E23)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SPACE MARINE 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "spacemarine2",
+  "region": "EU",
+  "tags": [
+   "warhammer",
+   "action",
+   "koop"
+  ]
+ },
+ "spacemarine2-ps5": {
+  "id": "spacemarine2-ps5",
+  "name": "Warhammer 40,000: Space Marine 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F080A,#515E73,#8A3E23)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SPACE MARINE 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "spacemarine2",
+  "region": "EU",
+  "tags": [
+   "warhammer",
+   "action",
+   "koop"
+  ]
+ },
+ "spacemarine2-xbox": {
+  "id": "spacemarine2-xbox",
+  "name": "Warhammer 40,000: Space Marine 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F080A,#515E73,#8A3E23)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SPACE MARINE 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "spacemarine2",
+  "region": "EU",
+  "tags": [
+   "warhammer",
+   "action",
+   "koop"
+  ]
+ },
+ "nba2k27-steam": {
+  "id": "nba2k27-steam",
+  "name": "NBA 2K27",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A2447,#4C414F,#1281DD)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NBA 2K27",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "nba2k27",
+  "region": "EU",
+  "tags": [
+   "basketball",
+   "sport",
+   "2k"
+  ]
+ },
+ "nba2k27-ps5": {
+  "id": "nba2k27-ps5",
+  "name": "NBA 2K27",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A2447,#4C414F,#1281DD)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NBA 2K27",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "nba2k27",
+  "region": "EU",
+  "tags": [
+   "basketball",
+   "sport",
+   "2k"
+  ]
+ },
+ "nba2k27-xbox": {
+  "id": "nba2k27-xbox",
+  "name": "NBA 2K27",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A2447,#4C414F,#1281DD)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NBA 2K27",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "nba2k27",
+  "region": "EU",
+  "tags": [
+   "basketball",
+   "sport",
+   "2k"
+  ]
+ },
+ "f125-ea": {
+  "id": "f125-ea",
+  "name": "F1 25",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#3F2B29,#C9181C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "F1 25",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "f125",
+  "region": "EU",
+  "tags": [
+   "formel 1",
+   "rennspiel",
+   "racing"
+  ]
+ },
+ "f125-ps5": {
+  "id": "f125-ps5",
+  "name": "F1 25",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#3F2B29,#C9181C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "F1 25",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "f125",
+  "region": "EU",
+  "tags": [
+   "formel 1",
+   "rennspiel",
+   "racing"
+  ]
+ },
+ "f125-xbox": {
+  "id": "f125-xbox",
+  "name": "F1 25",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#3F2B29,#C9181C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "F1 25",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "f125",
+  "region": "EU",
+  "tags": [
+   "formel 1",
+   "rennspiel",
+   "racing"
+  ]
+ },
+ "crimsondesert-steam": {
+  "id": "crimsondesert-steam",
+  "name": "Crimson Desert Enhanced",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#231B1A,#3D2C2A,#AF9D8D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CRIMSON DESERT ENHANCED",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "crimsondesert",
+  "region": "EU",
+  "tags": [
+   "open world",
+   "action",
+   "pearl abyss"
+  ]
+ },
+ "crimsondesert-ps5": {
+  "id": "crimsondesert-ps5",
+  "name": "Crimson Desert Enhanced",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#231B1A,#3D2C2A,#AF9D8D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CRIMSON DESERT ENHANCED",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "crimsondesert",
+  "region": "EU",
+  "tags": [
+   "open world",
+   "action",
+   "pearl abyss"
+  ]
+ },
+ "crimsondesert-xbox": {
+  "id": "crimsondesert-xbox",
+  "name": "Crimson Desert Enhanced",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#231B1A,#3D2C2A,#AF9D8D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CRIMSON DESERT ENHANCED",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "crimsondesert",
+  "region": "EU",
+  "tags": [
+   "open world",
+   "action",
+   "pearl abyss"
+  ]
+ },
+ "phantomblade-steam": {
+  "id": "phantomblade-steam",
+  "name": "Phantom Blade Zero",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#060808,#2C322C,#615B45)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PHANTOM BLADE ZERO",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "phantomblade",
+  "region": "EU",
+  "tags": [
+   "action",
+   "kung fu",
+   "s-game"
+  ]
+ },
+ "phantomblade-ps5": {
+  "id": "phantomblade-ps5",
+  "name": "Phantom Blade Zero",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#060808,#2C322C,#615B45)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PHANTOM BLADE ZERO",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "phantomblade",
+  "region": "EU",
+  "tags": [
+   "action",
+   "kung fu",
+   "s-game"
+  ]
+ },
+ "mk1-steam": {
+  "id": "mk1-steam",
+  "name": "Mortal Kombat 1",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#312021,#5D5D5D,#85AFC5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MORTAL KOMBAT 1",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mk1",
+  "region": "EU",
+  "tags": [
+   "fighting",
+   "kampfspiel",
+   "mk"
+  ]
+ },
+ "mk1-ps5": {
+  "id": "mk1-ps5",
+  "name": "Mortal Kombat 1",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#312021,#5D5D5D,#85AFC5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MORTAL KOMBAT 1",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "mk1",
+  "region": "EU",
+  "tags": [
+   "fighting",
+   "kampfspiel",
+   "mk"
+  ]
+ },
+ "mk1-xbox": {
+  "id": "mk1-xbox",
+  "name": "Mortal Kombat 1",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#312021,#5D5D5D,#85AFC5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MORTAL KOMBAT 1",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "mk1",
+  "region": "EU",
+  "tags": [
+   "fighting",
+   "kampfspiel",
+   "mk"
+  ]
+ },
+ "dbsz-steam": {
+  "id": "dbsz-steam",
+  "name": "Dragon Ball: Sparking! ZERO",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#08004F,#1E1F85,#6D27A7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DRAGON BALL: SPARKING! ZERO",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dbsz",
+  "region": "EU",
+  "tags": [
+   "anime",
+   "fighting",
+   "dbz"
+  ]
+ },
+ "dbsz-ps5": {
+  "id": "dbsz-ps5",
+  "name": "Dragon Ball: Sparking! ZERO",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#08004F,#1E1F85,#6D27A7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DRAGON BALL: SPARKING! ZERO",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "dbsz",
+  "region": "EU",
+  "tags": [
+   "anime",
+   "fighting",
+   "dbz"
+  ]
+ },
+ "dbsz-xbox": {
+  "id": "dbsz-xbox",
+  "name": "Dragon Ball: Sparking! ZERO",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#08004F,#1E1F85,#6D27A7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DRAGON BALL: SPARKING! ZERO",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "dbsz",
+  "region": "EU",
+  "tags": [
+   "anime",
+   "fighting",
+   "dbz"
+  ]
+ },
+ "jedisurvivor-ea": {
+  "id": "jedisurvivor-ea",
+  "name": "Star Wars Jedi: Survivor",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#341E23,#6C5767,#D2674D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STAR WARS JEDI: SURVIVOR",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "jedisurvivor",
+  "region": "EU",
+  "tags": [
+   "star wars",
+   "action",
+   "jedi"
+  ]
+ },
+ "jedisurvivor-ps5": {
+  "id": "jedisurvivor-ps5",
+  "name": "Star Wars Jedi: Survivor",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#341E23,#6C5767,#D2674D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STAR WARS JEDI: SURVIVOR",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "jedisurvivor",
+  "region": "EU",
+  "tags": [
+   "star wars",
+   "action",
+   "jedi"
+  ]
+ },
+ "jedisurvivor-xbox": {
+  "id": "jedisurvivor-xbox",
+  "name": "Star Wars Jedi: Survivor",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#341E23,#6C5767,#D2674D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STAR WARS JEDI: SURVIVOR",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "jedisurvivor",
+  "region": "EU",
+  "tags": [
+   "star wars",
+   "action",
+   "jedi"
+  ]
+ },
+ "acmirage-ubi": {
+  "id": "acmirage-ubi",
+  "name": "Assassin's Creed Mirage",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#48352B,#797677)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASSASSIN'S CREED MIRAGE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "acmirage",
+  "region": "EU",
+  "tags": [
+   "ubisoft",
+   "bagdad",
+   "ac"
+  ]
+ },
+ "acmirage-ps5": {
+  "id": "acmirage-ps5",
+  "name": "Assassin's Creed Mirage",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#48352B,#797677)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASSASSIN'S CREED MIRAGE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "acmirage",
+  "region": "EU",
+  "tags": [
+   "ubisoft",
+   "bagdad",
+   "ac"
+  ]
+ },
+ "acmirage-xbox": {
+  "id": "acmirage-xbox",
+  "name": "Assassin's Creed Mirage",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#48352B,#797677)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASSASSIN'S CREED MIRAGE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "acmirage",
+  "region": "EU",
+  "tags": [
+   "ubisoft",
+   "bagdad",
+   "ac"
+  ]
+ },
+ "swoutlaws-ubi": {
+  "id": "swoutlaws-ubi",
+  "name": "Star Wars Outlaws",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120C0B,#41312E,#A2664B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STAR WARS OUTLAWS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "swoutlaws",
+  "region": "EU",
+  "tags": [
+   "star wars",
+   "ubisoft",
+   "open world"
+  ]
+ },
+ "swoutlaws-ps5": {
+  "id": "swoutlaws-ps5",
+  "name": "Star Wars Outlaws",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120C0B,#41312E,#A2664B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STAR WARS OUTLAWS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "swoutlaws",
+  "region": "EU",
+  "tags": [
+   "star wars",
+   "ubisoft",
+   "open world"
+  ]
+ },
+ "swoutlaws-xbox": {
+  "id": "swoutlaws-xbox",
+  "name": "Star Wars Outlaws",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120C0B,#41312E,#A2664B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STAR WARS OUTLAWS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "swoutlaws",
+  "region": "EU",
+  "tags": [
+   "star wars",
+   "ubisoft",
+   "open world"
+  ]
+ },
+ "motorfest-ubi": {
+  "id": "motorfest-ubi",
+  "name": "The Crew Motorfest",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E161B,#425F5A,#2092B5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE CREW MOTORFEST",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "motorfest",
+  "region": "EU",
+  "tags": [
+   "rennspiel",
+   "racing",
+   "ubisoft"
+  ]
+ },
+ "motorfest-ps5": {
+  "id": "motorfest-ps5",
+  "name": "The Crew Motorfest",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E161B,#425F5A,#2092B5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE CREW MOTORFEST",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "motorfest",
+  "region": "EU",
+  "tags": [
+   "rennspiel",
+   "racing",
+   "ubisoft"
+  ]
+ },
+ "motorfest-xbox": {
+  "id": "motorfest-xbox",
+  "name": "The Crew Motorfest",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E161B,#425F5A,#2092B5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE CREW MOTORFEST",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "motorfest",
+  "region": "EU",
+  "tags": [
+   "rennspiel",
+   "racing",
+   "ubisoft"
+  ]
+ },
+ "dd2-steam": {
+  "id": "dd2-steam",
+  "name": "Dragon's Dogma 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0705,#382E2B,#9F5437)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DRAGON'S DOGMA 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dd2",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "rpg",
+   "fantasy"
+  ]
+ },
+ "dd2-ps5": {
+  "id": "dd2-ps5",
+  "name": "Dragon's Dogma 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0705,#382E2B,#9F5437)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DRAGON'S DOGMA 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "dd2",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "rpg",
+   "fantasy"
+  ]
+ },
+ "dd2-xbox": {
+  "id": "dd2-xbox",
+  "name": "Dragon's Dogma 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0705,#382E2B,#9F5437)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DRAGON'S DOGMA 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "dd2",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "rpg",
+   "fantasy"
+  ]
+ },
+ "liesofp-steam": {
+  "id": "liesofp-steam",
+  "name": "Lies of P",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#080708,#2A303B,#3E5B74)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LIES OF P",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "liesofp",
+  "region": "EU",
+  "tags": [
+   "souls",
+   "pinocchio",
+   "action"
+  ]
+ },
+ "liesofp-ps5": {
+  "id": "liesofp-ps5",
+  "name": "Lies of P",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#080708,#2A303B,#3E5B74)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LIES OF P",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "liesofp",
+  "region": "EU",
+  "tags": [
+   "souls",
+   "pinocchio",
+   "action"
+  ]
+ },
+ "liesofp-xbox": {
+  "id": "liesofp-xbox",
+  "name": "Lies of P",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#080708,#2A303B,#3E5B74)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LIES OF P",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "liesofp",
+  "region": "EU",
+  "tags": [
+   "souls",
+   "pinocchio",
+   "action"
+  ]
+ },
+ "spiderman2-steam": {
+  "id": "spiderman2-steam",
+  "name": "Marvel's Spider-Man 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2A0201,#670402,#AD0505)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARVEL'S SPIDER-MAN 2",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "spiderman2",
+  "region": "EU",
+  "tags": [
+   "marvel",
+   "insomniac",
+   "playstation"
+  ]
+ },
+ "spiderman2-ps5": {
+  "id": "spiderman2-ps5",
+  "name": "Marvel's Spider-Man 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2A0201,#670402,#AD0505)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARVEL'S SPIDER-MAN 2",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "spiderman2",
+  "region": "EU",
+  "tags": [
+   "marvel",
+   "insomniac",
+   "playstation"
+  ]
+ },
+ "gowr-steam": {
+  "id": "gowr-steam",
+  "name": "God of War Ragnarök",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1E1D1E,#4F5E70,#7691B2)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GOD OF WAR RAGNARÖK",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "gowr",
+  "region": "EU",
+  "tags": [
+   "kratos",
+   "santa monica",
+   "playstation"
+  ]
+ },
+ "gowr-ps5": {
+  "id": "gowr-ps5",
+  "name": "God of War Ragnarök",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1E1D1E,#4F5E70,#7691B2)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GOD OF WAR RAGNARÖK",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "gowr",
+  "region": "EU",
+  "tags": [
+   "kratos",
+   "santa monica",
+   "playstation"
+  ]
+ },
+ "tlou2-steam": {
+  "id": "tlou2-steam",
+  "name": "The Last of Us Part II Remastered",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0D0C0F,#2D303A,#556A7D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE LAST OF US PART II",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "tlou2",
+  "region": "EU",
+  "tags": [
+   "naughty dog",
+   "tlou",
+   "playstation"
+  ]
+ },
+ "tlou2-ps5": {
+  "id": "tlou2-ps5",
+  "name": "The Last of Us Part II Remastered",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0D0C0F,#2D303A,#556A7D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE LAST OF US PART II",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "tlou2",
+  "region": "EU",
+  "tags": [
+   "naughty dog",
+   "tlou",
+   "playstation"
+  ]
+ },
+ "tsushima-steam": {
+  "id": "tsushima-steam",
+  "name": "Ghost of Tsushima Director's Cut",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#5E5D5A,#D7C799)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GHOST OF TSUSHIMA",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "tsushima",
+  "region": "EU",
+  "tags": [
+   "samurai",
+   "sucker punch",
+   "playstation"
+  ]
+ },
+ "tsushima-ps5": {
+  "id": "tsushima-ps5",
+  "name": "Ghost of Tsushima Director's Cut",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#5E5D5A,#D7C799)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GHOST OF TSUSHIMA",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "tsushima",
+  "region": "EU",
+  "tags": [
+   "samurai",
+   "sucker punch",
+   "playstation"
+  ]
+ },
+ "stellarblade-steam": {
+  "id": "stellarblade-steam",
+  "name": "Stellar Blade",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#000004,#88BADC)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STELLAR BLADE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "stellarblade",
+  "region": "EU",
+  "tags": [
+   "action",
+   "shift up",
+   "playstation"
+  ]
+ },
+ "stellarblade-ps5": {
+  "id": "stellarblade-ps5",
+  "name": "Stellar Blade",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#000004,#88BADC)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STELLAR BLADE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "stellarblade",
+  "region": "EU",
+  "tags": [
+   "action",
+   "shift up",
+   "playstation"
+  ]
+ },
+ "ff7rebirth-steam": {
+  "id": "ff7rebirth-steam",
+  "name": "Final Fantasy VII Rebirth",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#241217,#605C5B,#F5A563)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FINAL FANTASY VII REBIRTH",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ff7rebirth",
+  "region": "EU",
+  "tags": [
+   "square enix",
+   "rpg",
+   "ff7"
+  ]
+ },
+ "ff7rebirth-ps5": {
+  "id": "ff7rebirth-ps5",
+  "name": "Final Fantasy VII Rebirth",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#241217,#605C5B,#F5A563)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FINAL FANTASY VII REBIRTH",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "ff7rebirth",
+  "region": "EU",
+  "tags": [
+   "square enix",
+   "rpg",
+   "ff7"
+  ]
+ },
+ "outerworlds2-xpc": {
+  "id": "outerworlds2-xpc",
+  "name": "The Outer Worlds 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#082030,#575F5C,#A64C3A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE OUTER WORLDS 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "grp": "outerworlds2",
+  "region": "EU",
+  "tags": [
+   "obsidian",
+   "rpg",
+   "sci-fi"
+  ]
+ },
+ "outerworlds2-ps5": {
+  "id": "outerworlds2-ps5",
+  "name": "The Outer Worlds 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#082030,#575F5C,#A64C3A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE OUTER WORLDS 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "outerworlds2",
+  "region": "EU",
+  "tags": [
+   "obsidian",
+   "rpg",
+   "sci-fi"
+  ]
+ },
+ "oblivionr-steam": {
+  "id": "oblivionr-steam",
+  "name": "The Elder Scrolls IV: Oblivion Remastered",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   54.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#581008,#F2BC3B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "OBLIVION REMASTERED",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "oblivionr",
+  "region": "EU",
+  "tags": [
+   "bethesda",
+   "rpg",
+   "tes"
+  ]
+ },
+ "oblivionr-ps5": {
+  "id": "oblivionr-ps5",
+  "name": "The Elder Scrolls IV: Oblivion Remastered",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   54.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#581008,#F2BC3B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "OBLIVION REMASTERED",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "oblivionr",
+  "region": "EU",
+  "tags": [
+   "bethesda",
+   "rpg",
+   "tes"
+  ]
+ },
+ "oblivionr-xbox": {
+  "id": "oblivionr-xbox",
+  "name": "The Elder Scrolls IV: Oblivion Remastered",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   54.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#581008,#F2BC3B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "OBLIVION REMASTERED",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "oblivionr",
+  "region": "EU",
+  "tags": [
+   "bethesda",
+   "rpg",
+   "tes"
+  ]
+ },
+ "rematch-steam": {
+  "id": "rematch-steam",
+  "name": "Rematch",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2F1D3B,#506244,#86305B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "REMATCH",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "rematch",
+  "region": "EU",
+  "tags": [
+   "fußball",
+   "football",
+   "multiplayer"
+  ]
+ },
+ "rematch-ps5": {
+  "id": "rematch-ps5",
+  "name": "Rematch",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2F1D3B,#506244,#86305B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "REMATCH",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "rematch",
+  "region": "EU",
+  "tags": [
+   "fußball",
+   "football",
+   "multiplayer"
+  ]
+ },
+ "rematch-xbox": {
+  "id": "rematch-xbox",
+  "name": "Rematch",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2F1D3B,#506244,#86305B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "REMATCH",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "rematch",
+  "region": "EU",
+  "tags": [
+   "fußball",
+   "football",
+   "multiplayer"
+  ]
+ },
+ "nfsunbound-ea": {
+  "id": "nfsunbound-ea",
+  "name": "Need for Speed Unbound",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F0E10,#5D5D5D,#DAD344)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NEED FOR SPEED UNBOUND",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "nfsunbound",
+  "region": "EU",
+  "tags": [
+   "nfs",
+   "rennspiel",
+   "racing"
+  ]
+ },
+ "nfsunbound-ps5": {
+  "id": "nfsunbound-ps5",
+  "name": "Need for Speed Unbound",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F0E10,#5D5D5D,#DAD344)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NEED FOR SPEED UNBOUND",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "nfsunbound",
+  "region": "EU",
+  "tags": [
+   "nfs",
+   "rennspiel",
+   "racing"
+  ]
+ },
+ "nfsunbound-xbox": {
+  "id": "nfsunbound-xbox",
+  "name": "Need for Speed Unbound",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F0E10,#5D5D5D,#DAD344)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NEED FOR SPEED UNBOUND",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "nfsunbound",
+  "region": "EU",
+  "tags": [
+   "nfs",
+   "rennspiel",
+   "racing"
+  ]
+ },
+ "thps34-steam": {
+  "id": "thps34-steam",
+  "name": "Tony Hawk's Pro Skater 3 + 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#122730,#48616A,#21668B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TONY HAWK'S PRO SKATER 3 + 4",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "thps34",
+  "region": "EU",
+  "tags": [
+   "skateboard",
+   "sport",
+   "thps"
+  ]
+ },
+ "thps34-ps5": {
+  "id": "thps34-ps5",
+  "name": "Tony Hawk's Pro Skater 3 + 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#122730,#48616A,#21668B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TONY HAWK'S PRO SKATER 3 + 4",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "thps34",
+  "region": "EU",
+  "tags": [
+   "skateboard",
+   "sport",
+   "thps"
+  ]
+ },
+ "thps34-xbox": {
+  "id": "thps34-xbox",
+  "name": "Tony Hawk's Pro Skater 3 + 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#122730,#48616A,#21668B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TONY HAWK'S PRO SKATER 3 + 4",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "thps34",
+  "region": "EU",
+  "tags": [
+   "skateboard",
+   "sport",
+   "thps"
+  ]
+ },
+ "fh6-xpc": {
+  "id": "fh6-xpc",
+  "name": "Forza Horizon 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1F1F21,#5D5D5D,#852428)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FORZA HORIZON 6",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "grp": "fh6",
+  "region": "EU",
+  "tags": [
+   "rennspiel",
+   "racing",
+   "japan"
+  ]
+ },
+ "pragmata-steam": {
+  "id": "pragmata-steam",
+  "name": "Pragmata",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#05071E,#5D5D5D,#A1A5A9)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PRAGMATA",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "pragmata",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "sci-fi",
+   "action"
+  ]
+ },
+ "pragmata-ps5": {
+  "id": "pragmata-ps5",
+  "name": "Pragmata",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#05071E,#5D5D5D,#A1A5A9)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PRAGMATA",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "pragmata",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "sci-fi",
+   "action"
+  ]
+ },
+ "pragmata-xbox": {
+  "id": "pragmata-xbox",
+  "name": "Pragmata",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#05071E,#5D5D5D,#A1A5A9)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PRAGMATA",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "pragmata",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "sci-fi",
+   "action"
+  ]
+ },
+ "bond-steam": {
+  "id": "bond-steam",
+  "name": "007 First Light",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#34332D,#DCC69B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "007 FIRST LIGHT",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "bond",
+  "region": "EU",
+  "tags": [
+   "james bond",
+   "io interactive",
+   "agent"
+  ]
+ },
+ "bond-ps5": {
+  "id": "bond-ps5",
+  "name": "007 First Light",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#34332D,#DCC69B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "007 FIRST LIGHT",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "bond",
+  "region": "EU",
+  "tags": [
+   "james bond",
+   "io interactive",
+   "agent"
+  ]
+ },
+ "bond-xbox": {
+  "id": "bond-xbox",
+  "name": "007 First Light",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#34332D,#DCC69B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "007 FIRST LIGHT",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "bond",
+  "region": "EU",
+  "tags": [
+   "james bond",
+   "io interactive",
+   "agent"
+  ]
+ },
+ "nioh3-steam": {
+  "id": "nioh3-steam",
+  "name": "Nioh 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1B0F11,#352E32,#A92B26)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NIOH 3",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "nioh3",
+  "region": "EU",
+  "tags": [
+   "team ninja",
+   "souls",
+   "samurai"
+  ]
+ },
+ "nioh3-ps5": {
+  "id": "nioh3-ps5",
+  "name": "Nioh 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1B0F11,#352E32,#A92B26)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NIOH 3",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "nioh3",
+  "region": "EU",
+  "tags": [
+   "team ninja",
+   "souls",
+   "samurai"
+  ]
+ },
+ "marathon-steam": {
+  "id": "marathon-steam",
+  "name": "Marathon",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#070610,#3C2A40,#AFDF13)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARATHON",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "marathon",
+  "region": "EU",
+  "tags": [
+   "bungie",
+   "extraction shooter"
+  ]
+ },
+ "marathon-ps5": {
+  "id": "marathon-ps5",
+  "name": "Marathon",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#070610,#3C2A40,#AFDF13)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARATHON",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "marathon",
+  "region": "EU",
+  "tags": [
+   "bungie",
+   "extraction shooter"
+  ]
+ },
+ "marathon-xbox": {
+  "id": "marathon-xbox",
+  "name": "Marathon",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#070610,#3C2A40,#AFDF13)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARATHON",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xbox",
+  "labels": [
+   "Xbox-Key"
+  ],
+  "grp": "marathon",
+  "region": "EU",
+  "tags": [
+   "bungie",
+   "extraction shooter"
+  ]
+ },
+ "gothic1r-steam": {
+  "id": "gothic1r-steam",
+  "name": "Gothic 1 Remake",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120406,#53201E,#D83002)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GOTHIC 1 REMAKE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "gothic1r",
+  "region": "EU",
+  "tags": [
+   "rpg",
+   "remake",
+   "piranha bytes"
+  ]
+ },
+ "acbfresynced-ubi": {
+  "id": "acbfresynced-ubi",
+  "name": "Assassin's Creed Black Flag Resynced",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#241C24,#476071,#56A2D6)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BLACK FLAG RESYNCED",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "acbfresynced",
+  "region": "EU",
+  "tags": [
+   "ubisoft",
+   "piraten",
+   "ac"
+  ]
+ },
+ "legobatman-steam": {
+  "id": "legobatman-steam",
+  "name": "LEGO Batman: Das Vermächtnis des Dunklen Ritters",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0B1D,#244982,#0A2D73)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LEGO BATMAN",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "legobatman",
+  "region": "EU",
+  "tags": [
+   "lego",
+   "batman",
+   "familie"
+  ]
+ },
+ "subnautica2-steam": {
+  "id": "subnautica2-steam",
+  "name": "Subnautica 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#011C2C,#043B52,#2D93A7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SUBNAUTICA 2",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "subnautica2",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "unterwasser",
+   "koop"
+  ]
+ },
+ "mhstories3-steam": {
+  "id": "mhstories3-steam",
+  "name": "Monster Hunter Stories 3: Twisted Reflection",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#22242C,#4F5F68,#A76660)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MONSTER HUNTER STORIES 3",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mhstories3",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "rpg"
+  ]
+ },
+ "sts2-steam": {
+  "id": "sts2-steam",
+  "name": "Slay the Spire 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   22.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#110D1C,#2B2F42,#EDCC58)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SLAY THE SPIRE 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "sts2",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "deckbuilder",
+   "indie"
+  ]
+ },
+ "mewgenics-steam": {
+  "id": "mewgenics-steam",
+  "name": "Mewgenics",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   28.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#181715,#635C54,#AA9683)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MEWGENICS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mewgenics",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "katzen",
+   "indie"
+  ]
+ },
+ "planetzoo2-steam": {
+  "id": "planetzoo2-steam",
+  "name": "Planet Zoo 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A271E,#466351,#65AACD)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PLANET ZOO 2",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "planetzoo2",
+  "region": "EU",
+  "tags": [
+   "zoo",
+   "aufbau",
+   "simulation"
+  ]
+ },
+ "transportfever3-steam": {
+  "id": "transportfever3-steam",
+  "name": "Transport Fever 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1F2126,#5C5D62,#B69B88)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TRANSPORT FEVER 3",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "transportfever3",
+  "region": "EU",
+  "tags": [
+   "aufbau",
+   "eisenbahn",
+   "simulation"
+  ]
+ },
+ "enshrouded-steam": {
+  "id": "enshrouded-steam",
+  "name": "Enshrouded",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E1311,#546058,#598893)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ENSHROUDED",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "enshrouded",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "koop",
+   "rpg"
+  ]
+ },
+ "fm26-steam": {
+  "id": "fm26-steam",
+  "name": "Football Manager 26",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#16141C,#3D5034,#8A9881)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FOOTBALL MANAGER 26",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "fm26",
+  "region": "EU",
+  "tags": [
+   "fußball",
+   "manager",
+   "sports interactive"
+  ]
+ },
+ "eu5-steam": {
+  "id": "eu5-steam",
+  "name": "Europa Universalis V",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F212E,#6E5A3F,#A68A60)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EUROPA UNIVERSALIS V",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "eu5",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "paradox",
+   "grand strategy"
+  ]
+ },
+ "anno117-ubi": {
+  "id": "anno117-ubi",
+  "name": "Anno 117: Pax Romana",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#30211C,#685B4C,#AE8C6A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ANNO 117: PAX ROMANA",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "anno117",
+  "region": "EU",
+  "tags": [
+   "aufbau",
+   "ubisoft",
+   "römer"
+  ]
+ },
+ "jwe3-steam": {
+  "id": "jwe3-steam",
+  "name": "Jurassic World Evolution 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1F2327,#2B3136,#5B6A76)",
+  "fg": "#fff",
+  "mark": {
+   "t": "JURASSIC WORLD EVOLUTION 3",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "jwe3",
+  "region": "EU",
+  "tags": [
+   "dinosaurier",
+   "aufbau",
+   "simulation"
+  ]
+ },
+ "tarkov-steam": {
+  "id": "tarkov-steam",
+  "name": "Escape from Tarkov",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#141924,#3A424D,#BED2D8)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ESCAPE FROM TARKOV",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "tarkov",
+  "region": "EU",
+  "tags": [
+   "extraction shooter",
+   "eft"
+  ]
+ },
+ "gt7-ps5": {
+  "id": "gt7-ps5",
+  "name": "Gran Turismo 7",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#640821,#0C4DAB)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GRAN TURISMO 7",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "gt7",
+  "region": "EU",
+  "tags": [
+   "rennspiel",
+   "racing",
+   "polyphony"
+  ]
+ },
+ "astrobot-ps5": {
+  "id": "astrobot-ps5",
+  "name": "Astro Bot",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#111A65,#76563E,#1D4EC2)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASTRO BOT",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ps5",
+  "labels": [
+   "PS5-Key"
+  ],
+  "grp": "astrobot",
+  "region": "EU",
+  "tags": [
+   "jump and run",
+   "platformer",
+   "team asobi"
+  ]
+ },
+ "mk8d-switch": {
+  "id": "mk8d-switch",
+  "name": "Mario Kart 8 Deluxe",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#232424,#4D4137,#9B3E40)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARIO KART 8 DELUXE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "mk8d",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "mario",
+   "rennspiel"
+  ]
+ },
+ "smashu-switch": {
+  "id": "smashu-switch",
+  "name": "Super Smash Bros. Ultimate",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D2433,#4D5F6B,#C57B63)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SUPER SMASH BROS. ULTIMATE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "smashu",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "fighting",
+   "smash"
+  ]
+ },
+ "zeldabotw-switch": {
+  "id": "zeldabotw-switch",
+  "name": "Zelda: Breath of the Wild",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A1915,#4F5E74,#E7CB98)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ZELDA: BREATH OF THE WILD",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "zeldabotw",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "zelda",
+   "botw"
+  ]
+ },
+ "smo-switch": {
+  "id": "smo-switch",
+  "name": "Super Mario Odyssey",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2D2125,#444E61,#E4180B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SUPER MARIO ODYSSEY",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "smo",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "mario"
+  ]
+ },
+ "pokemonkarmesin-switch": {
+  "id": "pokemonkarmesin-switch",
+  "name": "Pokémon Karmesin",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#371535,#A81B3D,#2635D5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "POKÉMON KARMESIN",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "pokemonkarmesin",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "pokemon",
+   "scarlet"
+  ]
+ },
+ "pokemonpurpur-switch": {
+  "id": "pokemonpurpur-switch",
+  "name": "Pokémon Purpur",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#271C4B,#486261,#DED15D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "POKÉMON PURPUR",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "pokemonpurpur",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "pokemon",
+   "violet"
+  ]
+ },
+ "splatoon3-switch": {
+  "id": "splatoon3-switch",
+  "name": "Splatoon 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D1E52,#71574D,#2727D3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SPLATOON 3",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "splatoon3",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "shooter",
+   "multiplayer"
+  ]
+ },
+ "luigismansion3-switch": {
+  "id": "luigismansion3-switch",
+  "name": "Luigi's Mansion 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#091012,#432A22,#30D62B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LUIGI'S MANSION 3",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "luigismansion3",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "luigi",
+   "abenteuer"
+  ]
+ },
+ "kirbyfl-switch": {
+  "id": "kirbyfl-switch",
+  "name": "Kirby und das vergessene Land",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#3F1723,#34683E,#1382AD)",
+  "fg": "#fff",
+  "mark": {
+   "t": "KIRBY UND DAS VERGESSENE LAND",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "kirbyfl",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "kirby",
+   "forgotten land"
+  ]
+ },
+ "switchsports-switch": {
+  "id": "switchsports-switch",
+  "name": "Nintendo Switch Sports",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#28222E,#5D5D5D,#00CFF3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NINTENDO SWITCH SPORTS",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "switchsports",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "sport",
+   "party"
+  ]
+ },
+ "zeldaeow-switch": {
+  "id": "zeldaeow-switch",
+  "name": "Zelda: Echoes of Wisdom",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1E2240,#496355,#3081C6)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ZELDA: ECHOES OF WISDOM",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "zeldaeow",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "zelda"
+  ]
+ },
+ "pikmin4-switch": {
+  "id": "pikmin4-switch",
+  "name": "Pikmin 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#172538,#4B6161,#C8946E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PIKMIN 4",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "pikmin4",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "strategie"
+  ]
+ },
+ "metroidprime4-switch": {
+  "id": "metroidprime4-switch",
+  "name": "Metroid Prime 4: Beyond",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#301D36,#6D537F,#A03360)",
+  "fg": "#fff",
+  "mark": {
+   "t": "METROID PRIME 4: BEYOND",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "metroidprime4",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "metroid",
+   "samus"
+  ]
+ },
+ "sm3dw-switch": {
+  "id": "sm3dw-switch",
+  "name": "Super Mario 3D World + Bowser's Fury",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#102639,#5D5D5D,#0E8874)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SUPER MARIO 3D WORLD",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch",
+  "labels": [
+   "Switch-Key"
+  ],
+  "grp": "sm3dw",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "mario",
+   "koop"
+  ]
+ },
+ "kirbyairriders-switch2": {
+  "id": "kirbyairriders-switch2",
+  "name": "Kirby Air Riders",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#3C1922,#6C585F,#52A8FB)",
+  "fg": "#fff",
+  "mark": {
+   "t": "KIRBY AIR RIDERS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch2",
+  "labels": [
+   "Switch 2-Key"
+  ],
+  "grp": "kirbyairriders",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "switch 2",
+   "rennspiel"
+  ]
+ },
+ "hyrulewarriorsaoi-switch2": {
+  "id": "hyrulewarriorsaoi-switch2",
+  "name": "Hyrule Warriors: Chronik der Versiegelung",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#261B13,#313C2A,#E0CF7D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HYRULE WARRIORS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch2",
+  "labels": [
+   "Switch 2-Key"
+  ],
+  "grp": "hyrulewarriorsaoi",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "switch 2",
+   "zelda",
+   "age of imprisonment"
+  ]
+ },
+ "pokopia-switch2": {
+  "id": "pokopia-switch2",
+  "name": "Pokémon Pokopia",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2D221D,#645D47,#B8DB66)",
+  "fg": "#fff",
+  "mark": {
+   "t": "POKÉMON POKOPIA",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch2",
+  "labels": [
+   "Switch 2-Key"
+  ],
+  "grp": "pokopia",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "switch 2",
+   "pokemon"
+  ]
+ },
+ "mariotennisfever-switch2": {
+  "id": "mariotennisfever-switch2",
+  "name": "Mario Tennis Fever",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#19243B,#515F63,#C73B2D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MARIO TENNIS FEVER",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "switch2",
+  "labels": [
+   "Switch 2-Key"
+  ],
+  "grp": "mariotennisfever",
+  "region": "EU",
+  "tags": [
+   "nintendo",
+   "switch 2",
+   "sport"
+  ]
+ },
+ "ck3-steam": {
+  "id": "ck3-steam",
+  "name": "Crusader Kings III",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#110604,#5D5D5D,#825835)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CRUSADER KINGS III",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ck3",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "paradox",
+   "mittelalter"
+  ]
+ },
+ "hoi4-steam": {
+  "id": "hoi4-steam",
+  "name": "Hearts of Iron IV",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#251412,#7B5444,#AB8669)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HEARTS OF IRON IV",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hoi4",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "paradox",
+   "weltkrieg"
+  ]
+ },
+ "stellaris-steam": {
+  "id": "stellaris-steam",
+  "name": "Stellaris",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0E1326,#2B3151,#BD4C42)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STELLARIS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "stellaris",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "paradox",
+   "weltraum"
+  ]
+ },
+ "twwh3-steam": {
+  "id": "twwh3-steam",
+  "name": "Total War: Warhammer III",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#151928,#2F4F78,#3E74A5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TOTAL WAR: WARHAMMER III",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "twwh3",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "warhammer",
+   "total war"
+  ]
+ },
+ "aoe4-steam": {
+  "id": "aoe4-steam",
+  "name": "Age of Empires IV",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C1728,#173252,#795F45)",
+  "fg": "#fff",
+  "mark": {
+   "t": "AGE OF EMPIRES IV",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "aoe4",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "echtzeit",
+   "rts"
+  ]
+ },
+ "aoe2de-steam": {
+  "id": "aoe2de-steam",
+  "name": "Age of Empires II: Definitive Edition",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   32.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1C1C1D,#2C3134,#8E5D44)",
+  "fg": "#fff",
+  "mark": {
+   "t": "AGE OF EMPIRES II",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "aoe2de",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "echtzeit",
+   "rts"
+  ]
+ },
+ "civ6-steam": {
+  "id": "civ6-steam",
+  "name": "Sid Meier's Civilization VI",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2F2213,#4E361E,#B58F61)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SID MEIER'S CIVILIZATION VI",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "civ6",
+  "region": "EU",
+  "tags": [
+   "strategie",
+   "firaxis",
+   "rundenstrategie"
+  ]
+ },
+ "anno1800-ubi": {
+  "id": "anno1800-ubi",
+  "name": "Anno 1800",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#09131B,#5E5D56,#807157)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ANNO 1800",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "anno1800",
+  "region": "EU",
+  "tags": [
+   "aufbau",
+   "ubisoft",
+   "wirtschaft"
+  ]
+ },
+ "manorlords-steam": {
+  "id": "manorlords-steam",
+  "name": "Manor Lords",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#19170C,#35351E,#838A56)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MANOR LORDS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "manorlords",
+  "region": "EU",
+  "tags": [
+   "aufbau",
+   "mittelalter",
+   "strategie"
+  ]
+ },
+ "frostpunk2-steam": {
+  "id": "frostpunk2-steam",
+  "name": "Frostpunk 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   44.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2C2C2C,#938073)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FROSTPUNK 2",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "frostpunk2",
+  "region": "EU",
+  "tags": [
+   "aufbau",
+   "survival",
+   "11 bit"
+  ]
+ },
+ "citiesskylines2-steam": {
+  "id": "citiesskylines2-steam",
+  "name": "Cities: Skylines II",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#20242E,#4F5363,#83A4DB)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CITIES: SKYLINES II",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "citiesskylines2",
+  "region": "EU",
+  "tags": [
+   "städtebau",
+   "aufbau",
+   "simulation"
+  ]
+ },
+ "planetcoaster2-steam": {
+  "id": "planetcoaster2-steam",
+  "name": "Planet Coaster 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#06234E,#406173,#1A78C0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PLANET COASTER 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "planetcoaster2",
+  "region": "EU",
+  "tags": [
+   "freizeitpark",
+   "aufbau",
+   "simulation"
+  ]
+ },
+ "planetzoo-steam": {
+  "id": "planetzoo-steam",
+  "name": "Planet Zoo",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   44.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#312114,#555F60,#4875B5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PLANET ZOO",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "planetzoo",
+  "region": "EU",
+  "tags": [
+   "zoo",
+   "aufbau",
+   "simulation"
+  ]
+ },
+ "twopointmuseum-steam": {
+  "id": "twopointmuseum-steam",
+  "name": "Two Point Museum",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B2A02,#3C6103,#798B1A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TWO POINT MUSEUM",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "twopointmuseum",
+  "region": "EU",
+  "tags": [
+   "aufbau",
+   "simulation",
+   "museum"
+  ]
+ },
+ "msfs2024-steam": {
+  "id": "msfs2024-steam",
+  "name": "Microsoft Flight Simulator 2024",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   79.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#102054,#624940,#467FD3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FLIGHT SIMULATOR 2024",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "msfs2024",
+  "region": "EU",
+  "tags": [
+   "flugsimulator",
+   "simulation",
+   "msfs"
+  ]
+ },
+ "ats-steam": {
+  "id": "ats-steam",
+  "name": "American Truck Simulator",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#050C2B,#495F76,#D7AE84)",
+  "fg": "#fff",
+  "mark": {
+   "t": "AMERICAN TRUCK SIMULATOR",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ats",
+  "region": "EU",
+  "tags": [
+   "lkw",
+   "simulation",
+   "scs"
+  ]
+ },
+ "beamng-steam": {
+  "id": "beamng-steam",
+  "name": "BeamNG.drive",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   22.5
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1B2434,#5F5C60,#BB474E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BEAMNG.DRIVE",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "beamng",
+  "region": "EU",
+  "tags": [
+   "simulation",
+   "autos",
+   "crash"
+  ]
+ },
+ "acc-steam": {
+  "id": "acc-steam",
+  "name": "Assetto Corsa Competizione",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2C2C30,#522E76)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASSETTO CORSA COMPETIZIONE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "acc",
+  "region": "EU",
+  "tags": [
+   "rennsimulation",
+   "racing",
+   "gt3"
+  ]
+ },
+ "wrc-ea": {
+  "id": "wrc-ea",
+  "name": "EA SPORTS WRC",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#172538,#4E5C80,#577BA6)",
+  "fg": "#fff",
+  "mark": {
+   "t": "EA SPORTS WRC",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "wrc",
+  "region": "EU",
+  "tags": [
+   "rallye",
+   "rennspiel",
+   "racing"
+  ]
+ },
+ "houseflipper2-steam": {
+  "id": "houseflipper2-steam",
+  "name": "House Flipper 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   37.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2A2225,#5D3F38,#8FBAD3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HOUSE FLIPPER 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "houseflipper2",
+  "region": "EU",
+  "tags": [
+   "simulation",
+   "renovieren"
+  ]
+ },
+ "supermarketsim-steam": {
+  "id": "supermarketsim-steam",
+  "name": "Supermarket Simulator",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#282325,#994324,#DD743C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SUPERMARKET SIMULATOR",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "supermarketsim",
+  "region": "EU",
+  "tags": [
+   "simulation",
+   "supermarkt"
+  ]
+ },
+ "tcgshop-steam": {
+  "id": "tcgshop-steam",
+  "name": "TCG Card Shop Simulator",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   20.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#08060C,#5A5E57,#7E2721)",
+  "fg": "#fff",
+  "mark": {
+   "t": "TCG CARD SHOP SIMULATOR",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "tcgshop",
+  "region": "EU",
+  "tags": [
+   "simulation",
+   "sammelkarten"
+  ]
+ },
+ "powerwash-steam": {
+  "id": "powerwash-steam",
+  "name": "PowerWash Simulator",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#192628,#595E5E,#357291)",
+  "fg": "#fff",
+  "mark": {
+   "t": "POWERWASH SIMULATOR",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "powerwash",
+  "region": "EU",
+  "tags": [
+   "simulation",
+   "entspannt"
+  ]
+ },
+ "schedule1-steam": {
+  "id": "schedule1-steam",
+  "name": "Schedule I",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.5
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#110A15,#392B42,#792248)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SCHEDULE I",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "schedule1",
+  "region": "EU",
+  "tags": [
+   "simulation",
+   "koop",
+   "indie"
+  ]
+ },
+ "sotf-steam": {
+  "id": "sotf-steam",
+  "name": "Sons Of The Forest",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   28.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#08080C,#EB1A01)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SONS OF THE FOREST",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "sotf",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "horror",
+   "koop"
+  ]
+ },
+ "7d2d-steam": {
+  "id": "7d2d-steam",
+  "name": "7 Days to Die",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   43.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#080A09,#2B322D,#A9CEC6)",
+  "fg": "#fff",
+  "mark": {
+   "t": "7 DAYS TO DIE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "7d2d",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "zombies",
+   "koop"
+  ]
+ },
+ "arksa-steam": {
+  "id": "arksa-steam",
+  "name": "ARK: Survival Ascended",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   44.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D1D21,#535F63,#988478)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ARK: SURVIVAL ASCENDED",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "arksa",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "dinosaurier"
+  ]
+ },
+ "dayz-steam": {
+  "id": "dayz-steam",
+  "name": "DayZ",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   47.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#121213,#332F31,#858992)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DAYZ",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dayz",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "zombies",
+   "multiplayer"
+  ]
+ },
+ "raft-steam": {
+  "id": "raft-steam",
+  "name": "Raft",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   20.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0D2735,#41626E,#5BAAB6)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RAFT",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "raft",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "koop",
+   "ozean"
+  ]
+ },
+ "subnautica-steam": {
+  "id": "subnautica-steam",
+  "name": "Subnautica",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B263D,#0E638E,#0B9CE3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SUBNAUTICA",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "subnautica",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "unterwasser"
+  ]
+ },
+ "greenhell-steam": {
+  "id": "greenhell-steam",
+  "name": "Green Hell",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   20.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#181913,#464A36,#A17F4E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GREEN HELL",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "greenhell",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "dschungel",
+   "koop"
+  ]
+ },
+ "vrising-steam": {
+  "id": "vrising-steam",
+  "name": "V Rising",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   34.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C16,#102450,#1B6295)",
+  "fg": "#fff",
+  "mark": {
+   "t": "V RISING",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "vrising",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "vampire"
+  ]
+ },
+ "lethalcompany-steam": {
+  "id": "lethalcompany-steam",
+  "name": "Lethal Company",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   9.75
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1A0101,#9C0605,#E3100C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LETHAL COMPANY",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "lethalcompany",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "horror",
+   "indie"
+  ]
+ },
+ "phasmophobia-steam": {
+  "id": "phasmophobia-steam",
+  "name": "Phasmophobia",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   18.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#06070C,#283044,#6B6B6E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PHASMOPHOBIA",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "phasmophobia",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "horror",
+   "geister"
+  ]
+ },
+ "drg-steam": {
+  "id": "drg-steam",
+  "name": "Deep Rock Galactic",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#13212A,#0F3637,#BD5C23)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DEEP ROCK GALACTIC",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "drg",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "shooter",
+   "zwerge"
+  ]
+ },
+ "repo-steam": {
+  "id": "repo-steam",
+  "name": "R.E.P.O.",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   9.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C13,#202424,#83673D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "R.E.P.O.",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "repo",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "horror",
+   "indie"
+  ]
+ },
+ "peak-steam": {
+  "id": "peak-steam",
+  "name": "PEAK",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   7.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#441221,#625876,#794CE5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PEAK",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "peak",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "klettern",
+   "indie"
+  ]
+ },
+ "dst-steam": {
+  "id": "dst-steam",
+  "name": "Don't Starve Together",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   14.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#241818,#96877A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DON'T STARVE TOGETHER",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dst",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "koop",
+   "indie"
+  ]
+ },
+ "zomboid-steam": {
+  "id": "zomboid-steam",
+  "name": "Project Zomboid",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   25.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0E,#2D2F43,#619AB9)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PROJECT ZOMBOID",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "zomboid",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "zombies"
+  ]
+ },
+ "thelongdark-steam": {
+  "id": "thelongdark-steam",
+  "name": "The Long Dark",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#18100F,#3E2C2B,#AD8EBC)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE LONG DARK",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "thelongdark",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "winter"
+  ]
+ },
+ "nms-steam": {
+  "id": "nms-steam",
+  "name": "No Man's Sky",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   58.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B2926,#1C6763,#2DBFB4)",
+  "fg": "#fff",
+  "mark": {
+   "t": "NO MAN'S SKY",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "nms",
+  "region": "EU",
+  "tags": [
+   "weltraum",
+   "survival",
+   "koop"
+  ]
+ },
+ "factorio-steam": {
+  "id": "factorio-steam",
+  "name": "Factorio",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   32
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#27231F,#57584A,#998E58)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FACTORIO",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "factorio",
+  "region": "EU",
+  "tags": [
+   "aufbau",
+   "fabrik",
+   "automation"
+  ]
+ },
+ "rimworld-steam": {
+  "id": "rimworld-steam",
+  "name": "RimWorld",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   31.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#734D30,#AA784B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RIMWORLD",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "rimworld",
+  "region": "EU",
+  "tags": [
+   "kolonie",
+   "aufbau",
+   "indie"
+  ]
+ },
+ "readyornot-steam": {
+  "id": "readyornot-steam",
+  "name": "Ready or Not",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#170404,#A73433,#AF1617)",
+  "fg": "#fff",
+  "mark": {
+   "t": "READY OR NOT",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "readyornot",
+  "region": "EU",
+  "tags": [
+   "taktik-shooter",
+   "swat",
+   "koop"
+  ]
+ },
+ "hunt-steam": {
+  "id": "hunt-steam",
+  "name": "Hunt: Showdown 1896",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0D0F,#253333,#767E79)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HUNT: SHOWDOWN 1896",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hunt",
+  "region": "EU",
+  "tags": [
+   "shooter",
+   "crytek",
+   "pvp"
+  ]
+ },
+ "outlasttrials-steam": {
+  "id": "outlasttrials-steam",
+  "name": "The Outlast Trials",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   38.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#100C0C,#442820,#F19927)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE OUTLAST TRIALS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "outlasttrials",
+  "region": "EU",
+  "tags": [
+   "horror",
+   "koop"
+  ]
+ },
+ "armareforger-steam": {
+  "id": "armareforger-steam",
+  "name": "Arma Reforger",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#091114,#213338,#77959F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ARMA REFORGER",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "armareforger",
+  "region": "EU",
+  "tags": [
+   "militär",
+   "shooter",
+   "simulation"
+  ]
+ },
+ "grounded2-xpc": {
+  "id": "grounded2-xpc",
+  "name": "Grounded 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1C0602,#544136,#B2804C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GROUNDED 2",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "grp": "grounded2",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "koop",
+   "obsidian"
+  ]
+ },
+ "dune-steam": {
+  "id": "dune-steam",
+  "name": "Dune: Awakening",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#341F19,#7C5345,#AD7454)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DUNE: AWAKENING",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dune",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "mmo",
+   "sci-fi"
+  ]
+ },
+ "sh2-steam": {
+  "id": "sh2-steam",
+  "name": "Silent Hill 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#242423,#5E5D5B,#D3CDC9)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SILENT HILL 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "sh2",
+  "region": "EU",
+  "tags": [
+   "horror",
+   "konami",
+   "remake"
+  ]
+ },
+ "re2-steam": {
+  "id": "re2-steam",
+  "name": "Resident Evil 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#090606,#24333D,#5DA1B7)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RESIDENT EVIL 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "re2",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "horror",
+   "remake"
+  ]
+ },
+ "revillage-steam": {
+  "id": "revillage-steam",
+  "name": "Resident Evil Village",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#07080A,#24323D,#C7D0D2)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RESIDENT EVIL VILLAGE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "revillage",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "horror",
+   "re8"
+  ]
+ },
+ "dmc5-steam": {
+  "id": "dmc5-steam",
+  "name": "Devil May Cry 5",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#181619,#2C344A,#6180A3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DEVIL MAY CRY 5",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dmc5",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "action",
+   "dmc"
+  ]
+ },
+ "mhworld-steam": {
+  "id": "mhworld-steam",
+  "name": "Monster Hunter: World",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#120C0C,#524C4F,#7FAFD0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MONSTER HUNTER: WORLD",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mhworld",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "koop",
+   "mhw"
+  ]
+ },
+ "mhrise-steam": {
+  "id": "mhrise-steam",
+  "name": "Monster Hunter Rise",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#040E0C,#303126,#928772)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MONSTER HUNTER RISE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "mhrise",
+  "region": "EU",
+  "tags": [
+   "capcom",
+   "koop"
+  ]
+ },
+ "sekiro-steam": {
+  "id": "sekiro-steam",
+  "name": "Sekiro: Shadows Die Twice – GOTY Edition",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#382E2C,#6B758B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SEKIRO",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "sekiro",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls",
+   "samurai"
+  ]
+ },
+ "ds3-steam": {
+  "id": "ds3-steam",
+  "name": "Dark Souls III",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0703,#3F2D10,#D6B828)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DARK SOULS III",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ds3",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "souls"
+  ]
+ },
+ "ac6-steam": {
+  "id": "ac6-steam",
+  "name": "Armored Core VI: Fires of Rubicon",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#161111,#634D45,#BF4773)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ARMORED CORE VI",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ac6",
+  "region": "EU",
+  "tags": [
+   "fromsoftware",
+   "mechs",
+   "action"
+  ]
+ },
+ "p3r-steam": {
+  "id": "p3r-steam",
+  "name": "Persona 3 Reload",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B0B1D,#4F5F6E,#10B1F5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PERSONA 3 RELOAD",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "p3r",
+  "region": "EU",
+  "tags": [
+   "atlus",
+   "rpg",
+   "jrpg"
+  ]
+ },
+ "p5r-steam": {
+  "id": "p5r-steam",
+  "name": "Persona 5 Royal",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#160202,#4E2329,#90151B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "PERSONA 5 ROYAL",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "p5r",
+  "region": "EU",
+  "tags": [
+   "atlus",
+   "rpg",
+   "jrpg"
+  ]
+ },
+ "metaphor-steam": {
+  "id": "metaphor-steam",
+  "name": "Metaphor: ReFantazio",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1B1211,#585F59,#8C3C24)",
+  "fg": "#fff",
+  "mark": {
+   "t": "METAPHOR: REFANTAZIO",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "metaphor",
+  "region": "EU",
+  "tags": [
+   "atlus",
+   "rpg",
+   "jrpg"
+  ]
+ },
+ "ladiw-steam": {
+  "id": "ladiw-steam",
+  "name": "Like a Dragon: Infinite Wealth",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#684D15,#968245)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LIKE A DRAGON: INFINITE WEALTH",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ladiw",
+  "region": "EU",
+  "tags": [
+   "yakuza",
+   "rpg",
+   "sega"
+  ]
+ },
+ "ff16-steam": {
+  "id": "ff16-steam",
+  "name": "Final Fantasy XVI",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F0F0D,#5A5E5E,#746760)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FINAL FANTASY XVI",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ff16",
+  "region": "EU",
+  "tags": [
+   "square enix",
+   "rpg",
+   "ff16"
+  ]
+ },
+ "gow2018-steam": {
+  "id": "gow2018-steam",
+  "name": "God of War",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1B1E1E,#233436,#2A6FAE)",
+  "fg": "#fff",
+  "mark": {
+   "t": "GOD OF WAR",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "gow2018",
+  "region": "EU",
+  "tags": [
+   "kratos",
+   "santa monica",
+   "playstation"
+  ]
+ },
+ "tlou1-steam": {
+  "id": "tlou1-steam",
+  "name": "The Last of Us Part I",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#191613,#765644,#D69664)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE LAST OF US PART I",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "tlou1",
+  "region": "EU",
+  "tags": [
+   "naughty dog",
+   "tlou",
+   "playstation"
+  ]
+ },
+ "daysgone-steam": {
+  "id": "daysgone-steam",
+  "name": "Days Gone",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#202020,#5A5956,#CBCFD0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DAYS GONE",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "daysgone",
+  "region": "EU",
+  "tags": [
+   "zombies",
+   "open world",
+   "playstation"
+  ]
+ },
+ "detroit-steam": {
+  "id": "detroit-steam",
+  "name": "Detroit: Become Human",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1C1835,#70565F,#CB97A8)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DETROIT: BECOME HUMAN",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "detroit",
+  "region": "EU",
+  "tags": [
+   "quantic dream",
+   "story",
+   "adventure"
+  ]
+ },
+ "hfw-steam": {
+  "id": "hfw-steam",
+  "name": "Horizon Forbidden West Complete Edition",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#391B23,#755270,#8E3435)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HORIZON FORBIDDEN WEST",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hfw",
+  "region": "EU",
+  "tags": [
+   "aloy",
+   "open world",
+   "playstation"
+  ]
+ },
+ "kcd1-steam": {
+  "id": "kcd1-steam",
+  "name": "Kingdom Come: Deliverance",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#08080B,#303035,#B65413)",
+  "fg": "#fff",
+  "mark": {
+   "t": "KINGDOM COME: DELIVERANCE",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "kcd1",
+  "region": "EU",
+  "tags": [
+   "warhorse",
+   "mittelalter",
+   "rpg"
+  ]
+ },
+ "skyrim-steam": {
+  "id": "skyrim-steam",
+  "name": "The Elder Scrolls V: Skyrim Special Edition",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2B3138,#9EA2A3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SKYRIM SPECIAL EDITION",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "skyrim",
+  "region": "EU",
+  "tags": [
+   "bethesda",
+   "rpg",
+   "tes"
+  ]
+ },
+ "fallout4-steam": {
+  "id": "fallout4-steam",
+  "name": "Fallout 4",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#212523,#5D5D5B,#7C95A3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FALLOUT 4",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "fallout4",
+  "region": "EU",
+  "tags": [
+   "bethesda",
+   "rpg",
+   "endzeit"
+  ]
+ },
+ "fallout76-steam": {
+  "id": "fallout76-steam",
+  "name": "Fallout 76",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2E4A66,#DEC55D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FALLOUT 76",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "fallout76",
+  "region": "EU",
+  "tags": [
+   "bethesda",
+   "rpg",
+   "online"
+  ]
+ },
+ "starfield-xpc": {
+  "id": "starfield-xpc",
+  "name": "Starfield",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#060709,#32353B,#885D43)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STARFIELD",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "grp": "starfield",
+  "region": "EU",
+  "tags": [
+   "bethesda",
+   "rpg",
+   "weltraum"
+  ]
+ },
+ "doometernal-steam": {
+  "id": "doometernal-steam",
+  "name": "DOOM Eternal",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#361B0E,#492F24,#ED9B2F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DOOM ETERNAL",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "doometernal",
+  "region": "EU",
+  "tags": [
+   "id software",
+   "shooter"
+  ]
+ },
+ "bl3-steam": {
+  "id": "bl3-steam",
+  "name": "Borderlands 3",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2A1D38,#5E5D53,#EDCB62)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BORDERLANDS 3",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "bl3",
+  "region": "EU",
+  "tags": [
+   "looter shooter",
+   "koop"
+  ]
+ },
+ "masseffectle-ea": {
+  "id": "masseffectle-ea",
+  "name": "Mass Effect Legendary Edition",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A1027,#24395F,#BD181C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MASS EFFECT LEGENDARY",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "masseffectle",
+  "region": "EU",
+  "tags": [
+   "bioware",
+   "rpg",
+   "sci-fi"
+  ]
+ },
+ "deadspace-ea": {
+  "id": "deadspace-ea",
+  "name": "Dead Space",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0D0908,#3B2E21,#76614A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DEAD SPACE",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ea",
+  "labels": [
+   "EA app-Key"
+  ],
+  "grp": "deadspace",
+  "region": "EU",
+  "tags": [
+   "horror",
+   "remake",
+   "sci-fi"
+  ]
+ },
+ "acvalhalla-ubi": {
+  "id": "acvalhalla-ubi",
+  "name": "Assassin's Creed Valhalla",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#221C1E,#5C5D60,#7C726D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ASSASSIN'S CREED VALHALLA",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "acvalhalla",
+  "region": "EU",
+  "tags": [
+   "ubisoft",
+   "wikinger",
+   "ac"
+  ]
+ },
+ "farcry6-ubi": {
+  "id": "farcry6-ubi",
+  "name": "Far Cry 6",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#411712,#670403,#EFA74D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FAR CRY 6",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "ubi",
+  "labels": [
+   "Ubisoft Connect-Key"
+  ],
+  "grp": "farcry6",
+  "region": "EU",
+  "tags": [
+   "ubisoft",
+   "shooter",
+   "open world"
+  ]
+ },
+ "legosw-steam": {
+  "id": "legosw-steam",
+  "name": "LEGO Star Wars: Die Skywalker Saga",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1226,#4F6064,#AE3B43)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LEGO STAR WARS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "legosw",
+  "region": "EU",
+  "tags": [
+   "lego",
+   "star wars",
+   "familie"
+  ]
+ },
+ "arkhamknight-steam": {
+  "id": "arkhamknight-steam",
+  "name": "Batman: Arkham Knight",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#382E25,#A29586)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BATMAN: ARKHAM KNIGHT",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "arkhamknight",
+  "region": "EU",
+  "tags": [
+   "batman",
+   "dc",
+   "action"
+  ]
+ },
+ "hitman-steam": {
+  "id": "hitman-steam",
+  "name": "Hitman: World of Assassination",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   69.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#2D3038,#B4C0D1)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HITMAN",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hitman",
+  "region": "EU",
+  "tags": [
+   "agent 47",
+   "io interactive",
+   "stealth"
+  ]
+ },
+ "stalker2-steam": {
+  "id": "stalker2-steam",
+  "name": "S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1F0D0A,#3A2E25,#D7A049)",
+  "fg": "#fff",
+  "mark": {
+   "t": "S.T.A.L.K.E.R. 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "stalker2",
+  "region": "EU",
+  "tags": [
+   "shooter",
+   "survival",
+   "stalker"
+  ]
+ },
+ "avowed-xpc": {
+  "id": "avowed-xpc",
+  "name": "Avowed",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#351E21,#605D54,#966A69)",
+  "fg": "#fff",
+  "mark": {
+   "t": "AVOWED",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "xpc",
+  "labels": [
+   "Xbox & PC-Key"
+  ],
+  "grp": "avowed",
+  "region": "EU",
+  "tags": [
+   "obsidian",
+   "rpg",
+   "fantasy"
+  ]
+ },
+ "khazan-steam": {
+  "id": "khazan-steam",
+  "name": "The First Berserker: Khazan",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   59.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#12090D,#392C39,#B57B6A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE FIRST BERSERKER: KHAZAN",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "khazan",
+  "region": "EU",
+  "tags": [
+   "souls",
+   "action",
+   "nexon"
+  ]
+ },
+ "atomfall-steam": {
+  "id": "atomfall-steam",
+  "name": "Atomfall",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   49.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#161810,#2A3326,#939C75)",
+  "fg": "#fff",
+  "mark": {
+   "t": "ATOMFALL",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "atomfall",
+  "region": "EU",
+  "tags": [
+   "survival",
+   "rebellion",
+   "action"
+  ]
+ },
+ "hades-steam": {
+  "id": "hades-steam",
+  "name": "Hades",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.5
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#82442C,#AD482C)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HADES",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hades",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "supergiant",
+   "indie"
+  ]
+ },
+ "hades2-steam": {
+  "id": "hades2-steam",
+  "name": "Hades II",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   28.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#0D453A,#55A27F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HADES II",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hades2",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "supergiant",
+   "indie"
+  ]
+ },
+ "hollowknight-steam": {
+  "id": "hollowknight-steam",
+  "name": "Hollow Knight",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   14.79
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#010441,#435B95,#0856B4)",
+  "fg": "#fff",
+  "mark": {
+   "t": "HOLLOW KNIGHT",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "hollowknight",
+  "region": "EU",
+  "tags": [
+   "metroidvania",
+   "team cherry",
+   "indie"
+  ]
+ },
+ "celeste-steam": {
+  "id": "celeste-steam",
+  "name": "Celeste",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   18.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#2B0728,#422932,#8C665D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CELESTE",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "celeste",
+  "region": "EU",
+  "tags": [
+   "jump and run",
+   "platformer",
+   "indie"
+  ]
+ },
+ "deadcells-steam": {
+  "id": "deadcells-steam",
+  "name": "Dead Cells",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#060A20,#08305B,#AD2C4B)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DEAD CELLS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "deadcells",
+  "region": "EU",
+  "tags": [
+   "roguelite",
+   "metroidvania",
+   "indie"
+  ]
+ },
+ "cuphead-steam": {
+  "id": "cuphead-steam",
+  "name": "Cuphead",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#3A1C11,#8D4C1E,#F7C910)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CUPHEAD",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "cuphead",
+  "region": "EU",
+  "tags": [
+   "run and gun",
+   "koop",
+   "indie"
+  ]
+ },
+ "balatro-steam": {
+  "id": "balatro-steam",
+  "name": "Balatro",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   13.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#142634,#503B43,#16559A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BALATRO",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "balatro",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "poker",
+   "deckbuilder"
+  ]
+ },
+ "vampiresurvivors-steam": {
+  "id": "vampiresurvivors-steam",
+  "name": "Vampire Survivors",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   4.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#250D0D,#611114,#BF5B33)",
+  "fg": "#fff",
+  "mark": {
+   "t": "VAMPIRE SURVIVORS",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "vampiresurvivors",
+  "region": "EU",
+  "tags": [
+   "roguelite",
+   "indie"
+  ]
+ },
+ "sts-steam": {
+  "id": "sts-steam",
+  "name": "Slay the Spire",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   22.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#221114,#392D31,#FCB544)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SLAY THE SPIRE",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "sts",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "deckbuilder",
+   "indie"
+  ]
+ },
+ "ror2-steam": {
+  "id": "ror2-steam",
+  "name": "Risk of Rain 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#012642,#5D5D5D,#014474)",
+  "fg": "#fff",
+  "mark": {
+   "t": "RISK OF RAIN 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "ror2",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "koop",
+   "indie"
+  ]
+ },
+ "brotato-steam": {
+  "id": "brotato-steam",
+  "name": "Brotato",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   4.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0A0808,#352E33,#75514F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BROTATO",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "brotato",
+  "region": "EU",
+  "tags": [
+   "roguelite",
+   "indie"
+  ]
+ },
+ "undertale-steam": {
+  "id": "undertale-steam",
+  "name": "Undertale",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   9.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#5D5D5D,#CECECE)",
+  "fg": "#fff",
+  "mark": {
+   "t": "UNDERTALE",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "undertale",
+  "region": "EU",
+  "tags": [
+   "rpg",
+   "indie"
+  ]
+ },
+ "discoelysium-steam": {
+  "id": "discoelysium-steam",
+  "name": "Disco Elysium – The Final Cut",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   37.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#17130E,#5D5E53,#B67E61)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DISCO ELYSIUM",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "discoelysium",
+  "region": "EU",
+  "tags": [
+   "rpg",
+   "story",
+   "indie"
+  ]
+ },
+ "outerwilds-steam": {
+  "id": "outerwilds-steam",
+  "name": "Outer Wilds",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   22.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#1D333B,#968D5F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "OUTER WILDS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "outerwilds",
+  "region": "EU",
+  "tags": [
+   "abenteuer",
+   "weltraum",
+   "indie"
+  ]
+ },
+ "davethediver-steam": {
+  "id": "davethediver-steam",
+  "name": "Dave the Diver",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   19.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0D1424,#456262,#36E2F3)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DAVE THE DIVER",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "davethediver",
+  "region": "EU",
+  "tags": [
+   "abenteuer",
+   "sushi",
+   "indie"
+  ]
+ },
+ "cultofthelamb-steam": {
+  "id": "cultofthelamb-steam",
+  "name": "Cult of the Lamb",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   22.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1C0C0C,#5F5D57,#DF292D)",
+  "fg": "#fff",
+  "mark": {
+   "t": "CULT OF THE LAMB",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "cultofthelamb",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "aufbau",
+   "indie"
+  ]
+ },
+ "littlenightmares3-steam": {
+  "id": "littlenightmares3-steam",
+  "name": "Little Nightmares III",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   39.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1D0D07,#4B2712,#C1925F)",
+  "fg": "#fff",
+  "mark": {
+   "t": "LITTLE NIGHTMARES III",
+   "s": 20,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "littlenightmares3",
+  "region": "EU",
+  "tags": [
+   "horror",
+   "koop",
+   "puzzle"
+  ]
+ },
+ "dredge-steam": {
+  "id": "dredge-steam",
+  "name": "Dredge",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   24.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#030805,#163629,#896247)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DREDGE",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dredge",
+  "region": "EU",
+  "tags": [
+   "angeln",
+   "horror",
+   "indie"
+  ]
+ },
+ "seaofstars-steam": {
+  "id": "seaofstars-steam",
+  "name": "Sea of Stars",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   33.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C1A33,#62596E,#E9B2A5)",
+  "fg": "#fff",
+  "mark": {
+   "t": "SEA OF STARS",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "seaofstars",
+  "region": "EU",
+  "tags": [
+   "rpg",
+   "retro",
+   "indie"
+  ]
+ },
+ "blueprince-steam": {
+  "id": "blueprince-steam",
+  "name": "Blue Prince",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   29.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C192B,#15314F,#366787)",
+  "fg": "#fff",
+  "mark": {
+   "t": "BLUE PRINCE",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "blueprince",
+  "region": "EU",
+  "tags": [
+   "puzzle",
+   "indie"
+  ]
+ },
+ "megabonk-steam": {
+  "id": "megabonk-steam",
+  "name": "Megabonk",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   9.75
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#33152B,#9C4205,#FEB10A)",
+  "fg": "#fff",
+  "mark": {
+   "t": "MEGABONK",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "megabonk",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "indie"
+  ]
+ },
+ "isaac-steam": {
+  "id": "isaac-steam",
+  "name": "The Binding of Isaac: Rebirth",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   14.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0C0C0C,#402D26,#7F6958)",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE BINDING OF ISAAC",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "isaac",
+  "region": "EU",
+  "tags": [
+   "roguelike",
+   "indie"
+  ]
+ },
+ "amongus-steam": {
+  "id": "amongus-steam",
+  "name": "Among Us",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   4.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0F1422,#252E54,#8E0E24)",
+  "fg": "#fff",
+  "mark": {
+   "t": "AMONG US",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "amongus",
+  "region": "EU",
+  "tags": [
+   "party",
+   "multiplayer",
+   "indie"
+  ]
+ },
+ "dispatch-steam": {
+  "id": "dispatch-steam",
+  "name": "Dispatch",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   28.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#211E22,#503834,#D8D177)",
+  "fg": "#fff",
+  "mark": {
+   "t": "DISPATCH",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "dispatch",
+  "region": "EU",
+  "tags": [
+   "story",
+   "superhelden",
+   "adventure"
+  ]
+ },
+ "overcooked2-steam": {
+  "id": "overcooked2-steam",
+  "name": "Overcooked! 2",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   22.99
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#04244A,#482E24,#55D9E8)",
+  "fg": "#fff",
+  "mark": {
+   "t": "OVERCOOKED! 2",
+   "s": 24,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "overcooked2",
+  "region": "EU",
+  "tags": [
+   "koop",
+   "party",
+   "kochen"
+  ]
+ },
+ "stray-steam": {
+  "id": "stray-steam",
+  "name": "Stray",
+  "cat": "keys",
+  "type": "key",
+  "amts": [
+   28.49
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#1F0C18,#541E28,#A23427)",
+  "fg": "#fff",
+  "mark": {
+   "t": "STRAY",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "plat": "steam",
+  "labels": [
+   "Steam-Key"
+  ],
+  "grp": "stray",
+  "region": "EU",
+  "tags": [
+   "katze",
+   "abenteuer",
+   "indie"
+  ]
+ },
+ "db": {
+  "id": "db",
+  "name": "Deutsche Bahn",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#EC0016",
+  "fg": "#fff",
+  "mark": {
+   "t": "DB",
+   "s": 60,
+   "w": 800,
+   "ls": ".02em"
+  },
+  "tags": [
+   "bahn",
+   "zug",
+   "bahnticket",
+   "reisen"
+  ],
+  "region": "DE"
+ },
+ "zara": {
+  "id": "zara",
+  "name": "Zara",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#000000",
+  "fg": "#fff",
+  "mark": {
+   "t": "ZARA",
+   "s": 46,
+   "w": 700,
+   "ls": ".08em"
+  },
+  "tags": [
+   "mode",
+   "fashion",
+   "kleidung"
+  ],
+  "region": "DE"
+ },
+ "ryanair": {
+  "id": "ryanair",
+  "name": "Ryanair",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#073590",
+  "fg": "#fff",
+  "mark": {
+   "t": "RYANAIR",
+   "s": 32,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "flug",
+   "fliegen",
+   "reisen",
+   "airline"
+  ],
+  "region": "DE"
+ },
+ "lidl": {
+  "id": "lidl",
+  "name": "Lidl",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   15,
+   30,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#0050AA",
+  "fg": "#FFF000",
+  "mark": {
+   "t": "Lidl",
+   "s": 46,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "supermarkt",
+   "lebensmittel",
+   "discounter",
+   "einkaufen"
+  ],
+  "region": "DE",
+  "si": "lidl"
+ },
+ "thenorthface": {
+  "id": "thenorthface",
+  "name": "The North Face",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100,
+   150,
+   200
+  ],
+  "disc": 0,
+  "bg": "#000000",
+  "fg": "#fff",
+  "mark": {
+   "t": "THE NORTH",
+   "s": 30,
+   "w": 800,
+   "ls": ".02em",
+   "two": "FACE"
+  },
+  "tags": [
+   "outdoor",
+   "jacken",
+   "mode",
+   "wandern"
+  ],
+  "region": "DE"
+ },
+ "newbalance": {
+  "id": "newbalance",
+  "name": "New Balance",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   75,
+   100,
+   150
+  ],
+  "disc": 0,
+  "bg": "#CF0A2C",
+  "fg": "#fff",
+  "mark": {
+   "t": "new balance",
+   "s": 30,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "sport",
+   "schuhe",
+   "sneaker",
+   "laufen"
+  ],
+  "region": "DE"
+ },
+ "dominos": {
+  "id": "dominos",
+  "name": "Domino's",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   10,
+   20,
+   30,
+   50
+  ],
+  "disc": 0,
+  "bg": "#006491",
+  "fg": "#fff",
+  "mark": {
+   "t": "Domino's",
+   "s": 34,
+   "w": 800,
+   "ls": "-.02em"
+  },
+  "tags": [
+   "pizza",
+   "essen",
+   "lieferung",
+   "lieferdienst"
+  ],
+  "region": "DE"
+ },
+ "uniqlo": {
+  "id": "uniqlo",
+  "name": "UNIQLO",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#E60012",
+  "fg": "#fff",
+  "mark": {
+   "t": "UNIQLO",
+   "s": 36,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "mode",
+   "kleidung",
+   "basics"
+  ],
+  "region": "DE"
+ },
+ "puma": {
+  "id": "puma",
+  "name": "PUMA",
+  "cat": "shopping",
+  "type": "card",
+  "amts": [
+   25,
+   50,
+   100
+  ],
+  "disc": 0,
+  "bg": "#1A1A1A",
+  "fg": "#fff",
+  "mark": {
+   "t": "PUMA",
+   "s": 46,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "tags": [
+   "sport",
+   "schuhe",
+   "sneaker",
+   "fußball"
+  ],
+  "region": "DE"
+ },
+ "ffxiv": {
+  "id": "ffxiv",
+  "name": "FINAL FANTASY XIV Spielzeit",
+  "cat": "subs",
+  "type": "sub",
+  "amts": [
+   25.98
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#0B1A33,#1D3B6E)",
+  "fg": "#fff",
+  "mark": {
+   "t": "FINAL FANTASY XIV",
+   "s": 12,
+   "w": 800,
+   "ls": ".04em"
+  },
+  "labels": [
+   "60 Tage"
+  ],
+  "tags": [
+   "ffxiv",
+   "square enix",
+   "mmo",
+   "game time"
+  ],
+  "region": "DE"
+ },
+ "win11home": {
+  "id": "win11home",
+  "name": "Windows 11 Home",
+  "cat": "software",
+  "type": "card",
+  "amts": [
+   145
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#00428A,#0067C0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "Windows 11",
+   "s": 30,
+   "w": 700,
+   "ls": "-.01em",
+   "two": "HOME"
+  },
+  "labels": [
+   "Vollversion · 1 PC"
+  ],
+  "tags": [
+   "windows",
+   "microsoft",
+   "betriebssystem",
+   "lizenz"
+  ],
+  "region": "DE"
+ },
+ "win11pro": {
+  "id": "win11pro",
+  "name": "Windows 11 Pro",
+  "cat": "software",
+  "type": "card",
+  "amts": [
+   259
+  ],
+  "disc": 0,
+  "bg": "linear-gradient(135deg,#002B5C,#0067C0)",
+  "fg": "#fff",
+  "mark": {
+   "t": "Windows 11",
+   "s": 30,
+   "w": 700,
+   "ls": "-.01em",
+   "two": "PRO"
+  },
+  "labels": [
+   "Vollversion · 1 PC"
+  ],
+  "tags": [
+   "windows",
+   "microsoft",
+   "betriebssystem",
+   "lizenz"
+  ],
+  "region": "DE"
+ },
+ "office2024home": {
+  "id": "office2024home",
+  "name": "Office Home 2024",
+  "cat": "software",
+  "type": "card",
+  "amts": [
+   149
+  ],
+  "disc": 0,
+  "bg": "#D83B01",
+  "fg": "#fff",
+  "mark": {
+   "t": "Office",
+   "s": 40,
+   "w": 700,
+   "ls": "-.01em",
+   "two": "HOME 2024"
+  },
+  "labels": [
+   "Einmalkauf · 1 PC oder Mac"
+  ],
+  "tags": [
+   "office",
+   "word",
+   "excel",
+   "microsoft"
+  ],
+  "region": "DE"
+ },
+ "office2024hb": {
+  "id": "office2024hb",
+  "name": "Office Home & Business 2024",
+  "cat": "software",
+  "type": "card",
+  "amts": [
+   299
+  ],
+  "disc": 0,
+  "bg": "#B7472A",
+  "fg": "#fff",
+  "mark": {
+   "t": "Office",
+   "s": 40,
+   "w": 700,
+   "ls": "-.01em",
+   "two": "HOME & BUSINESS 2024"
+  },
+  "labels": [
+   "Einmalkauf · 1 PC oder Mac"
+  ],
+  "tags": [
+   "office",
+   "outlook",
+   "excel",
+   "microsoft"
+  ],
+  "region": "DE"
+ },
+ "avastps": {
+  "id": "avastps",
+  "name": "Avast Premium Security",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   72.99,
+   99.99
+  ],
+  "disc": 0,
+  "bg": "#FF7800",
+  "fg": "#fff",
+  "mark": {
+   "t": "avast",
+   "s": 40,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "PREMIUM SECURITY"
+  },
+  "labels": [
+   "1 PC · 1 Jahr",
+   "10 Geräte · 1 Jahr"
+  ],
+  "tags": [
+   "antivirus",
+   "virenschutz",
+   "sicherheit"
+  ],
+  "region": "DE"
+ },
+ "avastult": {
+  "id": "avastult",
+  "name": "Avast Ultimate",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   104.99,
+   139.99
+  ],
+  "disc": 0,
+  "bg": "#E86A00",
+  "fg": "#fff",
+  "mark": {
+   "t": "avast",
+   "s": 40,
+   "w": 800,
+   "ls": "-.02em",
+   "two": "ULTIMATE"
+  },
+  "labels": [
+   "1 PC · 1 Jahr",
+   "10 Geräte · 1 Jahr"
+  ],
+  "tags": [
+   "antivirus",
+   "vpn",
+   "sicherheit"
+  ],
+  "region": "DE"
+ },
+ "trendmicro": {
+  "id": "trendmicro",
+  "name": "Trend Micro Maximum Security",
+  "cat": "software",
+  "type": "sub",
+  "amts": [
+   84.95
+  ],
+  "disc": 0,
+  "bg": "#D71921",
+  "fg": "#fff",
+  "mark": {
+   "t": "TREND MICRO",
+   "s": 26,
+   "w": 800,
+   "ls": ".04em",
+   "two": "MAXIMUM SECURITY"
+  },
+  "labels": [
+   "5 Geräte · 1 Jahr"
+  ],
+  "tags": [
+   "antivirus",
+   "virenschutz",
+   "sicherheit"
+  ],
+  "region": "DE"
+ },
+ "kauflandmobil": {
+  "id": "kauflandmobil",
+  "name": "Kaufland mobil",
+  "cat": "topup",
+  "type": "topup",
+  "amts": [
+   15,
+   30,
+   50
+  ],
+  "disc": 0,
+  "bg": "#E10915",
+  "fg": "#fff",
+  "mark": {
+   "t": "Kaufland",
+   "s": 32,
+   "w": 800,
+   "ls": "-.01em",
+   "two": "mobil"
+  },
+  "region": "DE",
+  "si": "kaufland",
+  "sit": "mobil"
  }
 }

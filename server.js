@@ -231,7 +231,7 @@ function shopCatalog() {
   for (const b of Object.values(CATALOG)) {
     const r = rows[b.id] || {};
     if (r.active === 0) continue;
-    if (RL_HIDE_PLAIN() && !b.rl && b.cat !== "topup" && !r.img) continue; // ohne Originalbild nicht anzeigen
+    if (RL_HIDE_PLAIN() && !b.rl && b.cat !== "topup" && !r.img && !(b.cat === "keys" && COVERS[b.id])) continue; // ohne Originalbild nicht anzeigen (Spiele haben offizielle Cover)
     const x = { ...b }; delete x.redeem; delete x.brand;
     if (!x.rl && !x.grp && x.cat !== "topup") x.grp = "g:" + grpKey(x.name);
     if (r.img) x.img = `/img/p/${b.id}.${r.img}?v=${r.img_v}`;

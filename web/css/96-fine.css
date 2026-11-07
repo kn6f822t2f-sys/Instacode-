@@ -17,7 +17,7 @@
 .h1{font-weight:370;letter-spacing:-.04em}
 .h2{font-weight:390;letter-spacing:-.03em}
 .h3{font-weight:470}
-.lead{font-weight:380}
+.lead{font-weight:400}
 .kb-t b,.bc-t b{font-weight:460;letter-spacing:-.024em}
 .kb-t small,.bc-t small,.tile-sub{font-weight:400}
 .tile-name{font-weight:460}
@@ -106,3 +106,7 @@ symbol[stroke-width="2.5"],symbol[stroke-width="2.6"]{stroke-width:1.9}
 .km:not(.bm){height:50%;width:calc(50% * var(--a,1))}
 @media (min-width:1100px){.bc-lg .kl{--s:32px}}
 .pd-tag .ico{color:var(--ink-2)}
+
+/* Tippflächen: Kopfzeilen-Knöpfe sehen schmal aus, treffen aber auf 44 px Höhe (Apple HIG) */
+.hgrp>.icon-btn{position:relative}
+.hgrp>.icon-btn::before{content:"";position:absolute;inset:-5px 0}
