@@ -444,8 +444,9 @@ let ABO = null; // Abo-Modul (abo.js), wird weiter unten eingerichtet
 app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   if (!stripe) return res.status(503).end();
   let ev;
-  try { ev = stripe.webhooks.constructEvent(req.body, req.get("stripe-signature"), E.STRIPE_WEBHOOK_SECRET); }
-  catch (err) { return res.status(400).send("Ungültige Signatur"); }
+  /* Geprüft wird gegen jedes bekannte Geheimnis (STRIPE_WEBHOOK_SECRET und das selbst angelegte) – so bleibt die Zustellung auch nach einem Schlüsselwechsel gültig */
+  for (const s of whSecrets()) { try { ev = stripe.webhooks.constructEvent(req.body, req.get("stripe-signature"), s); break; } catch (err) {} }
+  if (!ev) return res.status(400).send("Ungültige Signatur");
   /* Abo-Ereignisse (Checkout im Abo-Modus, Rechnungen, Abo-Änderungen): bei Fehlern 500, dann wiederholt Stripe die Zustellung */
   if (ABO && ABO.isEvent(ev)) {
     try { await ABO.webhook(ev); return res.json({ received: true }); }
@@ -1188,6 +1189,55 @@ fs.mkdirSync(RL_IMG, { recursive: true });
 const RL_COUNTRIES = (E.RELOADLY_COUNTRIES || "DE,AT,NL,FR,BE,IT,ES,IE,FI,PT,LU").split(",").map(x => x.trim().toUpperCase()).filter(Boolean);
 const kvGet = k => (db.prepare("SELECT v FROM kv WHERE k=?").get(k) || {}).v;
 const kvSet = (k, v) => db.prepare("INSERT INTO kv(k,v) VALUES(?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v").run(k, String(v));
+
+/* ---------- Stripe-Selbsteinrichtung ----------
+   Mit einem echten Stripe-Schlüssel legt der Shop beim Start selbst an, was sonst im Dashboard zu klicken wäre:
+   1. den Webhook (BASE/api/stripe/webhook) mit allen Ereignissen, die Shop und Abo auswerten – das Geheimnis wird
+      verschlüsselt in der Datenbank gespeichert. STRIPE_WEBHOOK_SECRET hat Vorrang, wenn gesetzt.
+   2. die Zahlungs-Domains (für Apple Pay, Google Pay, Link, PayPal …) für die Shop-Adresse und die Domain ohne www.
+   Fremde Webhooks auf dieselbe Adresse werden nie gelöscht; nur eigene (metadata.instantcodes = "1") werden erneuert. */
+const WH_EVENTS = ["checkout.session.completed", "checkout.session.async_payment_succeeded", "checkout.session.async_payment_failed",
+  "checkout.session.expired", "payment_intent.succeeded", "payment_intent.processing", "payment_intent.canceled", "payment_intent.payment_failed",
+  "charge.refunded", "customer.subscription.deleted", "customer.subscription.updated", "invoice.paid", "invoice.payment_succeeded", "invoice.payment_failed"];
+let WH_OWN; // Geheimnis des selbst angelegten Webhooks (verschlüsselt in kv „stripe_wh“), einmal gelesen
+const whOwn = () => { if (WH_OWN === undefined) { WH_OWN = null; const s = kvGet("stripe_wh"); if (s) { try { WH_OWN = dec(s); } catch (e) {} } } return WH_OWN; };
+const whSecrets = () => [E.STRIPE_WEBHOOK_SECRET, whOwn()].filter((x, i, a) => x && a.indexOf(x) === i);
+const stripeState = { webhook: null, domains: [], error: null };
+async function stripeSetup() {
+  if (!stripe || DEVPAY || !/^https:\/\//.test(BASE)) return;
+  const url = BASE.replace(/\/$/, "") + "/api/stripe/webhook";
+  try {
+    const all = (await stripe.webhookEndpoints.list({ limit: 100 })).data.filter(w => w.url === url);
+    const ours = all.find(w => w.metadata && w.metadata.instantcodes === "1"), foreign = all.filter(w => !(w.metadata && w.metadata.instantcodes === "1"));
+    if ((ours && whOwn()) || (foreign.length && E.STRIPE_WEBHOOK_SECRET)) {
+      if (ours) await stripe.webhookEndpoints.update(ours.id, { enabled_events: WH_EVENTS, disabled: false });
+      stripeState.webhook = ours && whOwn() ? "eigener Webhook aktiv" : "Webhook aus STRIPE_WEBHOOK_SECRET";
+    } else if (foreign.length && !E.STRIPE_WEBHOOK_SECRET) {
+      stripeState.webhook = "Es gibt schon einen Webhook auf diese Adresse – bitte dessen Geheimnis als STRIPE_WEBHOOK_SECRET setzen oder ihn löschen.";
+      console.warn("Stripe: " + stripeState.webhook);
+    } else {
+      if (ours) await stripe.webhookEndpoints.del(ours.id);
+      /* Ereignisse in der API-Version der eingebauten Stripe-Bibliothek – dieselbe Form, die der Shop auch beim Abruf bekommt */
+      const p = { url, enabled_events: WH_EVENTS, description: "instantcodes Shop (automatisch angelegt)", metadata: { instantcodes: "1" } };
+      if (Stripe.API_VERSION) p.api_version = Stripe.API_VERSION;
+      const w = await stripe.webhookEndpoints.create(p);
+      WH_OWN = w.secret; kvSet("stripe_wh", enc(w.secret)); stripeState.webhook = "Webhook angelegt";
+      console.log("Stripe: Webhook angelegt für " + url);
+    }
+  } catch (e) { stripeState.error = "Webhook: " + e.message; console.error("Stripe-Webhook: " + e.message); }
+  try {
+    const host = new URL(BASE).hostname, names = [host];
+    if (host.startsWith("www.")) names.push(host.slice(4));
+    for (const d of names) {
+      const ex = (await stripe.paymentMethodDomains.list({ domain_name: d, limit: 1 })).data[0];
+      const pmd = ex || await stripe.paymentMethodDomains.create({ domain_name: d, enabled: true });
+      if (!pmd.apple_pay || pmd.apple_pay.status !== "active") await stripe.paymentMethodDomains.validate(pmd.id).catch(() => {});
+      stripeState.domains.push(d);
+    }
+    console.log("Stripe: Zahlungs-Domains eingerichtet (" + stripeState.domains.join(", ") + ")");
+  } catch (e) { stripeState.error = (stripeState.error ? stripeState.error + " | " : "") + "Domains: " + e.message; console.error("Stripe-Domains: " + e.message); }
+}
+setTimeout(() => { stripeSetup().catch(e => console.error("Stripe-Einrichtung: " + e.message)); }, 4000);
 /* Klarna: nur für im Admin freigegebene Kategorien (Standard: aus). Stripe nennt Gutscheine als verbotene Kategorie – erst nach schriftlicher Freigabe durch Stripe einschalten. */
 /* Klarna (Rechnung, Raten, Sofort): Standard = alle Kategorien; im Admin einschränkbar, „-“ = aus */
 const ALL_CATS = ["topup", "keys", "gaming", "currency", "subs", "apps", "entertainment", "shopping", "software", "payment"];
@@ -1505,6 +1555,7 @@ app.get("/api/admin/overview", admin, wrap(async (req, res) => {
     mode: LIVE ? "live" : "test", stripe: !!stripe, payMethods: PAY_METHODS, base: BASE,
     reloadly: { on: RL.ON, active: RL_USE, sandbox: RL.SANDBOX, balance: RL.ON ? await RL.balance() : null, imported: db.prepare("SELECT COUNT(*) n FROM rl_catalog").get().n, lastImport: +kvGet("rl_import_v3") || null },
     mail: { on: !!E.RESEND_API_KEY, from: E.MAIL_FROM || null, support: SUPPORT },
+    stripeSetup: stripeState,
     orders: { today: sum(day), week: sum(week), processing: st.processing || 0, delivered: st.delivered || 0, refunded: st.refunded || 0 },
     catalog: { products: cat.length, groups: new Set(cat.map(b => b.grp || b.id)).size, stockFree: db.prepare("SELECT COUNT(*) n FROM codes WHERE status='free' AND is_test=0").get().n },
     auto: { on: AUTO, max: AUTO_MAX, day: AUTO_DAY, neverSoldout: NEVER_SOLDOUT }, klarna: KLARNA_INFO()
