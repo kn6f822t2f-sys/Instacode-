@@ -257,12 +257,40 @@ function soldoutMap() {
   }
   return soldout;
 }
+/* Lieferzeit ehrlich: „sofort“ nur für Produkte, die der Shop automatisch liefern kann (Lagercode für jeden Betrag, Reloadly oder Testcodes).
+   Sonst gilt die zugesagte Lieferzeit LIEFERZEIT (Standard „bis zu 24 Stunden“, steht hinter „Lieferzeit:“ bzw. „in“). 30 s zwischengespeichert. */
+const LIEFERZEIT = String(E.LIEFERZEIT || "").replace(/[<>"&]/g, "").trim().slice(0, 60) || "bis zu 24 Stunden";
+let delivCache = null;
+function deliveryInfo() {
+  if (delivCache && Date.now() - delivCache.at < 30000) return delivCache.v;
+  const all = Object.values(CATALOG), ids = [];
+  if (AUTO) {
+    const have = {};
+    if (!TEST_GEN) db.prepare("SELECT brand, face FROM codes WHERE status='free' AND is_test=? GROUP BY brand, face").all(TESTMODE ? 1 : 0).forEach(r => { have[`${r.brand}|${r.face}`] = 1; });
+    for (const b of all) if (b.cat === "topup" ? RL_USE : (TEST_GEN || b.amts.every(a => have[`${b.id}|${fc(a)}`] || rlHas(b.id, fc(a))))) ids.push(b.id);
+  }
+  const mode = !ids.length ? "manual" : ids.length === all.length ? "auto" : "mixed";
+  const v = { mode, text: LIEFERZEIT, share: all.length ? Math.round(ids.length / all.length * 100) / 100 : 0 };
+  if (mode === "mixed") v.ids = ids;
+  delivCache = { at: Date.now(), v };
+  return v;
+}
+const isInstant = id => { const d = deliveryInfo(); return d.mode === "auto" || (d.mode === "mixed" && d.ids.includes(id)); };
+const mostlyInstant = () => { const d = deliveryInfo(); return d.mode === "auto" || (d.mode === "mixed" && d.share >= 0.8); };
+/* KI-Telefonassistent (IONOS AI Frontdesk): Rufnummer für Hilfe-Seite und Fußzeile (SUPPORT_PHONE), Kennung des Website-Widgets (IONOS_VOICE_AGENT) */
+const PHONE = (() => {
+  const raw = String(E.SUPPORT_PHONE || "").trim(), d = raw.replace(/[^\d+]/g, "");
+  if (!/^\+?\d{6,16}$/.test(d)) return null;
+  const tel = d.startsWith("+") ? d : d.startsWith("00") ? "+" + d.slice(2) : d.startsWith("0") ? "+49" + d.slice(1) : "+" + d;
+  return { show: raw.replace(/[^\d +()\/-]/g, "").replace(/\s+/g, " ").slice(0, 32), tel };
+})();
+const VOICE = /^[\w.:-]{6,200}$/.test(String(E.IONOS_VOICE_AGENT || "").trim()) ? String(E.IONOS_VOICE_AGENT).trim() : null;
 const publicConfig = () => ({ site: (BASE_HOST || "").replace(/^www\./, ""), vat: VAT, fee: FEE, payments: !!stripe, express: !!stripe && !!(PK || DEVPAY), pk: PK || (DEVPAY ? "pk_test_attrappe" : null), devpay: DEVPAY,
-  google: E.GOOGLE_CLIENT_ID || null, auth: authMethods(), mail: !!E.RESEND_API_KEY, methods: PAY_METHODS, inline: inlineTypes(), paylogos: payLogos(), klarna: KLARNA_ON() ? KLARNA_CATS() : null, testmode: TESTMODE, support: SUPPORT, trustpilot: TP, base: BASE });
+  google: E.GOOGLE_CLIENT_ID || null, auth: authMethods(), deliv: deliveryInfo(), phone: PHONE, voice: VOICE, mail: !!E.RESEND_API_KEY, methods: PAY_METHODS, inline: inlineTypes(), paylogos: payLogos(), klarna: KLARNA_ON() ? KLARNA_CATS() : null, testmode: TESTMODE, support: SUPPORT, trustpilot: TP, base: BASE });
 
 /* Produktempfehlungen in Liefer-Mails: Abmeldung per signiertem Link */
 const unsubSig = e => crypto.createHmac("sha256", KEY).update("unsub|" + e).digest("base64url").slice(0, 24);
-mail.configure({ recs: E.MAIL_RECS !== "0", optedOut: e => !!db.prepare("SELECT 1 FROM optout WHERE email=?").get(norm(e)), unsubLink: e => `${BASE}/abmelden?e=${encodeURIComponent(norm(e))}&s=${unsubSig(norm(e))}`,
+mail.configure({ lieferzeit: LIEFERZEIT, recs: E.MAIL_RECS !== "0", optedOut: e => !!db.prepare("SELECT 1 FROM optout WHERE email=?").get(norm(e)), unsubLink: e => `${BASE}/abmelden?e=${encodeURIComponent(norm(e))}&s=${unsubSig(norm(e))}`,
   redeem: id => redeemLink(CATALOG[id]) }); // „Jetzt einlösen“ in Liefer-Mails: /go/<id> nur, wenn es eine geprüfte offizielle Seite gibt
 
 /* ---------- Code-Lager + Testcode-Generator ---------- */
@@ -272,8 +300,9 @@ const CODE_CH = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const testCode = () => "TEST-" + Array.from({ length: 3 }, () => Array.from({ length: 4 }, () => CODE_CH[crypto.randomInt(CODE_CH.length)]).join("")).join("-");
 const isCodeBrand = id => !!CATALOG[id] && CATALOG[id].cat !== "topup";
 const freeCount = (brand, face) => db.prepare("SELECT COUNT(*) n FROM codes WHERE brand=? AND face=? AND status='free' AND is_test=?").get(brand, face, TESTMODE ? 1 : 0).n;
-/* Reloadly: im Live-Betrieb echte Einkäufe; im Testmodus nur mit RELOADLY_SANDBOX=1 (nie echte Codes für Testzahlungen) */
-const RL_USE = RL.ON && (!TESTMODE || RL.SANDBOX);
+/* Reloadly passend zum Zahlungsmodus: echte Zahlungen nur mit echtem Reloadly, Testzahlungen nur mit der Sandbox.
+   So gibt es nie Sandbox-Codes für echtes Geld und nie echte Einkäufe für Testzahlungen. */
+const RL_USE = RL.ON && (TESTMODE ? RL.SANDBOX : !RL.SANDBOX);
 const rlMap = id => RL_USE ? db.prepare("SELECT * FROM rl_map WHERE id=? AND product_id IS NOT NULL").get(id) : null;
 const rlHas = (brand, face) => { const m = rlMap(brand); if (!m) return false; const a = JSON.parse(m.amts || "null"); return !a || a.includes(face / 100); };
 /* Nie „ausverkauft“: fehlende Codes werden nach der Zahlung bei Reloadly gekauft oder von Hand nachgeliefert (SOLDOUT=1 schaltet die Bestandsprüfung wieder ein) */
@@ -972,10 +1001,11 @@ const checkoutName = l => l.type === "topup" ? `${l.b.name} Aufladung ${optLabel
   : `${l.b.name} ${/^\d/.test(optLabel(l.b, l.a)) ? "Guthaben " : ""}${optLabel(l.b, l.a)}`;
 const checkoutDesc = l => {
   const where = `gültig in ${REGION_N[l.b.region] || "Deutschland"}`;
-  if (l.type === "topup") return `Handy-Guthaben für ${l.phone} · wird nach der Zahlung gebucht`;
+  const now = isInstant(l.b.id);
+  if (l.type === "topup") return `Handy-Guthaben für ${l.phone} · wird nach der Zahlung gebucht${now ? "" : " · Lieferzeit " + LIEFERZEIT}`;
   const gift = l.gift ? ` · als Geschenk per E-Mail an ${l.gift.to}` : "";
-  if (l.b.type === "key") return `Digitaler Key für ${PLAT_N[l.b.plat] || "PC"} · Aktivierung ${STORE_N[l.b.plat] || "beim Hersteller"} · ${where} · sofort per E-Mail${gift}`;
-  return `Digitaler Code · ${where} · sofort auf dem Bildschirm und per E-Mail${gift}`;
+  if (l.b.type === "key") return `Digitaler Key für ${PLAT_N[l.b.plat] || "PC"} · Aktivierung ${STORE_N[l.b.plat] || "beim Hersteller"} · ${where} · ${now ? "sofort per E-Mail" : "per E-Mail, Lieferzeit " + LIEFERZEIT}${gift}`;
+  return `Digitaler Code · ${where} · ${now ? "sofort auf dem Bildschirm und per E-Mail" : "per E-Mail und auf der Bestellseite, Lieferzeit " + LIEFERZEIT}${gift}`;
 };
 const checkoutImage = l => { if (l.b.rl && l.b.img) return /^https?:/.test(l.b.img) ? l.b.img : BASE + l.b.img; const r = prodRows()[l.b.id]; return r && r.img ? `${BASE}/img/p/${l.b.id}.${r.img}?v=${r.img_v}` : `${BASE}/cards/${l.b.id}.jpg`; };
 /* Stripe-Aufruf mit neuer API-Version; falls Konto oder Bibliothek sie (noch) nicht kennen, ohne die neuen Felder wiederholen */
@@ -1039,7 +1069,8 @@ app.post("/api/checkout", wrap(async (req, res) => {
       product_data: { name: checkoutName(l), description: checkoutDesc(l), images: [checkoutImage(l)], metadata: { product_id: l.b.id } } } }))
       .concat(P.fee ? [{ quantity: 1, price_data: { currency: "eur", unit_amount: P.fee, product_data: { name: "Servicegebühr", description: "Pro Bestellung, inkl. MwSt." } } }] : []),
     custom_text: {
-      submit: { message: "Nach der Zahlung erscheinen deine Codes sofort auf dem Bildschirm und kommen zusätzlich per E-Mail." },
+      submit: { message: P.lines.every(l => isInstant(l.b.id)) ? "Nach der Zahlung erscheinen deine Codes sofort auf dem Bildschirm und kommen zusätzlich per E-Mail."
+        : `Nach der Zahlung bekommst du deine Codes per E-Mail und auf der Bestellseite. Lieferzeit: ${LIEFERZEIT}.` },
       after_submit: { message: "Zahlung wird bestätigt – du wirst gleich zurück zu instantcodes geleitet." }
     },
     success_url: `${BASE}/r/${id}?k=${key}`,
@@ -1779,7 +1810,7 @@ const cardOf = id => { const b = CATALOG[id]; if (!b) return null; const r = pro
 ABO = require("./abo")({ app, db, stripe, stripeCall, STRIPE_V, mail, CATALOG, E, BASE, ADMINS, TESTMODE, TEST_GEN, clock, now, rnd, enc, dec, norm, emailOk, bad, wrap, need, admin, rateLimit,
   verifiedEmail, EV_MSG, isAdmin, safe, takeCodes, codeHash, supply, Stockout, RL_USE: () => RL_USE, rlHas, freeCount, optLabel, fc, isCodeBrand, cardOf, kvGet, kvSet });
 /* Mia, KI-Shopberaterin (ai.js): Chat mit Claude und Werkzeugen, Fallback ohne Schlüssel, Status im Admin */
-require("./ai")({ app, E, PROD, bad, admin, kvGet, kvSet, shopCatalog, unitPrice, optLabel, FEE, SUPPORT, PROMOS, payWords: () => payWords(), abo: () => ABO });
+require("./ai")({ app, E, PROD, bad, admin, kvGet, kvSet, shopCatalog, unitPrice, optLabel, FEE, SUPPORT, PROMOS, payWords: () => payWords(), abo: () => ABO, delivery: () => deliveryInfo() });
 
 /* Rückkehr nach Zahlungen mit Weiterleitung (z. B. PayPal, Klarna) */
 app.get("/r/:id", (req, res) => res.redirect(302, `/bestellung/${encodeURIComponent(req.params.id)}?k=${encodeURIComponent(String(req.query.k || ""))}`));
@@ -1819,6 +1850,9 @@ const sendIndex = (req, res) => {
     let html = pageCache.html.replace('<script type="application/json" id="boot"></script>', `<script type="application/json" id="boot">${data}</script>`);
     const gsv = String(E.GOOGLE_SITE_VERIFICATION || "").replace(/[^\w-]/g, "");
     if (gsv) html = html.replace("<head>", `<head>\n<meta name="google-site-verification" content="${gsv}">`);
+    /* Ohne automatische Lieferung: Titel, Beschreibungen und die Vertrauensleiste oben ohne Sofort-Versprechen */
+    if (!mostlyInstant()) html = html.replace(/<title>[^<]*<\/title>|<meta (name="description"|property="og:(title|description)") content="[^"]*">/g, nowFix)
+      .replace('<use href="#i-zap"/></svg>Codes meist in Sekunden per E-Mail</li>', `<use href="#i-mail"/></svg>Codes per E-Mail in ${LIEFERZEIT.replace("Stunden", "Std.")}</li>`);
     const raw = Buffer.from(html);
     pageOut = { data, mtime: pageCache.mtime, raw, br: zlib.brotliCompressSync(raw, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 5 } }), gz: zlib.gzipSync(raw, { level: 6 }) };
   }
@@ -1902,8 +1936,13 @@ function seoMeta(p) {
     "/kuendigen": ["Verträge hier kündigen", "Kündige dein instantcodes Abo ohne Anmeldung. Die Bestätigung bekommst du sofort auf dem Bildschirm und per E-Mail."], "/agb": ["AGB", "Allgemeine Geschäftsbedingungen von instantcodes."], "/datenschutz": ["Datenschutz", "Datenschutzerklärung von instantcodes."], "/widerruf": ["Widerrufsbelehrung", "Widerrufsbelehrung für digitale Inhalte bei instantcodes."] }[p];
   return P ? { t: `${P[0]} | instantcodes`, d: P[1], h1: P[0], url: BASE + p } : null;
 }
+/* Ohne automatische Lieferung keine Sofort-Versprechen in Titel, Beschreibung und strukturierten Daten */
+const nowFix = s => s.replace(/(Code|Key) sofort per E-Mail/g, "$1 per E-Mail").replace(/(in Sekunden|sofort) per E-Mail/g, "per E-Mail")
+  .replace(/, sofort gebucht/g, ", Guthaben wird gebucht").replace(/digital und per E-Mail/g, "digital per E-Mail");
 function sendSeo(req, res, next) {
-  const meta = seoMeta(req.path); if (!meta) return next();
+  const meta0 = seoMeta(req.path); if (!meta0) return next();
+  const pm = req.path.match(/^\/marke\/([\w-]+)$/), fast = pm ? isInstant(pm[1]) : mostlyInstant();
+  const meta = fast ? meta0 : JSON.parse(JSON.stringify(meta0), (k, v) => typeof v === "string" ? nowFix(v) : v);
   sendIndex({ get: () => "" }, { set() { return this; }, type() { return this; }, send(raw) {
     const key = req.path + "|" + pageOut.mtime + "|" + pageOut.data.length + "|" + (meta.ld ? crypto.createHash("sha1").update(JSON.stringify(meta.ld)).digest("base64url").slice(0, 12) : "");
     let out = seoCache.get(key);
@@ -2244,7 +2283,7 @@ app.listen(PORT, () => {
   loadPayMethods(); setInterval(loadPayMethods, 6 * 3600e3).unref();
   setTimeout(maintenance, 60e3); setInterval(maintenance, 24 * 3600e3).unref();
   console.log(`instantcodes läuft auf ${BASE} (Port ${PORT})${stripe ? "" : " – Zahlungen deaktiviert, STRIPE_SECRET_KEY fehlt"}${E.RESEND_API_KEY ? "" : " – E-Mails werden nur im Log ausgegeben"}`);
-  console.log(RL.ON ? `Reloadly: verbunden${RL.SANDBOX ? " (Sandbox)" : ""}${RL_USE ? "" : " – im Testmodus ohne RELOADLY_SANDBOX=1 deaktiviert"}` : "Reloadly: nicht eingerichtet (RELOADLY_CLIENT_ID fehlt)");
+  console.log(RL.ON ? `Reloadly: verbunden${RL.SANDBOX ? " (Sandbox)" : ""}${RL_USE ? "" : TESTMODE ? " – im Testmodus ohne RELOADLY_SANDBOX=1 deaktiviert" : " – Sandbox wird bei echten Zahlungen nicht genutzt (RELOADLY_SANDBOX entfernen und Live-Zugang eintragen)"}` : "Reloadly: nicht eingerichtet (RELOADLY_CLIENT_ID fehlt)");
   console.log(LIVE ? "LIVE-Betrieb: Auslieferung nur aus dem Code-Lager, Testcode-Generator gesperrt."
     : `Testmodus: Testkäufe erhalten ${TEST_GEN ? "Testcodes (Generator aktiv)" : "nur Testcodes aus dem Lager"}.`);
   console.log(stripe ? (PK || DEVPAY ? "Expresszahlung (Apple Pay, Google Pay …) aktiv." : "Expresszahlung aus: STRIPE_PUBLISHABLE_KEY fehlt.") : "");

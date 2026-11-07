@@ -23,7 +23,7 @@ function ckEmpty(){
  <section class="ck-empty">
   <div class="ck-fan" data-off aria-hidden="true">${fan.map((b,i)=>`<span class="ck-fc" style="--i:${i}"><i>${gc(b,{tilt:false,badge:false,plat:false})}</i></span>`).join("")}</div>
   <h1 class="ck-empty-h">Dein Warenkorb ist leer</h1>
-  <p class="ck-empty-p">Entdecke Gutscheine, Spielguthaben und Handy-Guthaben. Nach der Zahlung kommt dein Code meist in Sekunden per E-Mail.</p>
+  <p class="ck-empty-p">Entdecke Gutscheine, Spielguthaben und Handy-Guthaben. Nach der Zahlung kommt dein Code ${fastAll()?"meist in Sekunden per E-Mail.":`per E-Mail, Lieferzeit ${DLV().text}.`}</p>
   <div class="ck-empty-a"><button class="btn btn-primary btn-lg" data-a="browse">Jetzt stöbern</button><a class="btn btn-soft btn-lg" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></div>
   <nav class="ck-empty-c" aria-label="Kategorien">${cats.map(c=>`<a class="chip" href="/kategorie/${c.id}">${esc(c.name)}</a>`).join("")}<a class="chip" href="/angebote">Angebote</a></nav>
   ${trustBadges()}
@@ -49,7 +49,7 @@ function cartPage(_,qs){
    <h2 class="ck-col-h" id="ckSumH">Übersicht</h2>
    <div class="pb-sum" id="sumBox">${paySum()}</div>
    ${x?`<div class="ck-x"><div class="ck-x-h"><span class="ck-x-i" aria-hidden="true">${ic("i-zap")}</span><div><b>Schnell bezahlen</b><small>${esc(walletNames())} – ohne Kartendaten eintippen</small></div></div>${xpBox("cX",{fallback:true,cardBtn:true})}</div>`:""}
-   <ul class="ck-assure"><li>${ic("i-zap")}<span>Code meist in Sekunden per E-Mail und auf der Bestellseite</span></li><li>${ic("i-lock")}<span>Sichere Zahlung über Stripe</span></li><li>${ic("i-mail")}<span>Persönlicher Support per E-Mail</span></li></ul>
+   <ul class="ck-assure"><li>${S.cart.every(i=>instantOk(i.id))?`${ic("i-zap")}<span>Code meist in Sekunden per E-Mail und auf der Bestellseite</span>`:`${ic("i-mail")}<span>Code per E-Mail und auf der Bestellseite, Lieferzeit ${DLV().text}</span>`}</li><li>${ic("i-lock")}<span>Sichere Zahlung über Stripe</span></li><li>${ic("i-mail")}<span>Persönlicher Support per E-Mail</span></li></ul>
    ${payLogos(null,{klarna:klarnaCart()})}
   </div></aside>
   <section class="ck-pay" id="payBox" aria-label="E-Mail und Bezahlen">

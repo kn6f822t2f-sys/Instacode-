@@ -72,7 +72,10 @@ const pick=(base,n)=>{const l=base.filter(id=>byId(id));const pref=["steam","pla
   for(const b of BRANDS){if(l.length>=n)break;if(b.img&&!l.includes(b.id))l.push(b.id)}return l};
 var BEST0=["apple","steam","psn","amazon","netflix","gpu","nintendo","gplay","spotify","fortnite","roblox","disney","psplus-essential","xbox","zalando","paysafe","fcpoints","valorant","lieferando","ikea","dazn","ea"];var POP=[],FEAT=[];const refreshPicks=()=>{POP=pick(POP0,8);FEAT=pick(FEAT0,5)};
 var FAQ=[
-  {q:"Wie schnell kommt mein Code an?",a:"Meist sofort: Nach der Zahlung kommt dein Code automatisch per E-Mail. Manche Bestellungen prüfen wir zur Sicherheit kurz von Hand, dann dauert es etwas länger. Den Stand siehst du jederzeit auf der Bestellseite."},
+  {q:"Wie schnell kommt mein Code an?",get a(){const d=DLV();/* zugesagte Lieferzeit, „sofort“ nur bei automatischer Lieferung (10-components.js) */
+    return d.mode==="auto"?`Meist sofort: Nach der Zahlung kommt dein Code automatisch per E-Mail. Manche Bestellungen prüfen wir zur Sicherheit von Hand, dann beträgt die Lieferzeit ${d.text}. Den Stand siehst du jederzeit auf der Bestellseite.`
+     :d.mode==="mixed"?`Viele Codes kommen direkt nach der Zahlung per E-Mail. Was für dein Produkt gilt, steht auf der Produktseite unter „Lieferung“; sonst beträgt die Lieferzeit ${d.text}. Den Stand siehst du jederzeit auf der Bestellseite.`
+     :`Nach der Zahlung bekommst du deinen Code per E-Mail und auf der Bestellseite. Die Lieferzeit beträgt ${d.text} nach Zahlungseingang. Den Stand siehst du jederzeit auf der Bestellseite.`}},
   {q:"Wie löse ich einen Code ein?",a:"Öffne den Dienst der Marke, wähle „Code einlösen“ und gib den Code ein. Handy-Guthaben wird direkt auf die Nummer gebucht."},
   {q:"Welche Zahlungsarten gibt es?",get a(){return `${payNames()} – je nach Gerät direkt mit einem Klick. Die Zahlung läuft sicher über Stripe, deine Kartendaten sehen wir nie.`}},
   {q:"Für welche Region gelten die Codes?",a:"Das steht auf jeder Produktseite unter „Gültig in“. Gutscheine gelten meist für Deutschland, Spiele-Keys für Europa."},

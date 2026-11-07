@@ -23,7 +23,7 @@ const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=
   const lite=document.documentElement.classList.contains("lite"),nr=lite?2:3,per=lite?9:16;
   const rows=Array.from({length:nr},(_,r)=>mix.filter((b,i)=>i%nr===r).slice(0,per));
   const card=(b,dup)=>`<a class="cw-c" href="/marke/${b.id}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}</a>`;
-  return `<section class="cwall" data-off aria-label="Marken im Sortiment"><div class="sec cw-head"><div class="sec-head"><div><h2 class="h2">Alle Marken. Ein Shop.</h2><p>Gutscheine, Prepaid-Karten und Guthaben – offizielle Codes, meist in Sekunden per E-Mail.</p></div><div class="sh-r"><a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a></div></div></div>
+  return `<section class="cwall" data-off aria-label="Marken im Sortiment"><div class="sec cw-head"><div class="sec-head"><div><h2 class="h2">Alle Marken. Ein Shop.</h2><p>Gutscheine, Prepaid-Karten und Guthaben – offizielle Codes, ${fastAll()?"meist in Sekunden ":""}per E-Mail.</p></div><div class="sh-r"><a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a></div></div></div>
 <div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map(b=>card(b)).join("")}${r.map(b=>card(b,1)).join("")}</div></div>`).join("")}</div></div></section>`};
 function home(){
   const recent=S.recent.map(byId).filter(Boolean).filter(isRep).slice(0,10), c=ctry();
@@ -35,7 +35,7 @@ function home(){
   const aboSvc=["netflix","disney","spotify","dazn","gpu","psplus-essential","nso","crunchyroll","amazon"].map(byId).filter(Boolean);
   const quick=[["steam","Steam"],["psn","PlayStation"],["amazon","Amazon"],["netflix","Netflix"]].filter(([id])=>byId(id));
   const storyCards=["steam","psn","netflix","spotify","amazon","apple"].map(byId).filter(Boolean);
-  return {tab:"home",title:"Digitale Codes sofort per E-Mail",html:`<div class="home">
+  return {tab:"home",title:fastAll()?"Digitale Codes sofort per E-Mail":"Digitale Codes per E-Mail",html:`<div class="home">
 <section class="hero hro" data-mouse>
   <div class="hro-stage" aria-hidden="true">
     <div class="lq" data-off></div>
@@ -43,8 +43,8 @@ function home(){
   </div>
   <div class="hro-copy">
     <a class="hro-pill rv" href="/abo"><span>Neu</span>instantcodes Abo – 9 Dienste, ein Preis${ic("i-chev")}</a>
-    <h1 class="h1 rv" style="--d:80ms">Digitale Codes.<br>In Sekunden bei dir.</h1>
-    <p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${brandN()}">${brandN()}</b> Marken – sicher bezahlt, dein Code kommt meist direkt per E-Mail.</p>
+    <h1 class="h1 rv" style="--d:80ms">Digitale Codes.<br>${fastAll()?"In Sekunden bei dir.":"Einfach per E-Mail."}</h1>
+    <p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${brandN()}">${brandN()}</b> Marken – sicher bezahlt, dein Code kommt ${fastAll()?"meist direkt ":""}per E-Mail.</p>
     <button class="hro-search rv" style="--d:240ms" data-a="palOpen" aria-label="Suche öffnen">${ic("i-search")}<span>Marke oder Gutschein suchen</span><kbd class="kbdk">Strg K</kbd></button>
     <div class="hro-quick rv" style="--d:300ms">${quick.map(([id,t])=>`<a class="chip" href="/marke/${id}">${esc(t)}</a>`).join("")}<a class="chip" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></div>
     <div class="hro-trust rv" style="--d:360ms">${payLogos()}<p><span>${ic("i-lock")}TLS-verschlüsselt</span><span>${ic("i-shield")}3&#8209;D Secure</span><span class="ft-stripe">Zahlung über <img src="/pay/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></p></div>
@@ -60,7 +60,7 @@ ${cardWall()}
       <ol class="story-steps">
         <li data-s="0"><span class="how-n">1</span><b>Marke und Betrag wählen</b><span>Gutschein, Spiele-Key, Abo oder Handy-Guthaben – über ${brandN()} Marken und ${catCount("keys")} Spiele.</span></li>
         <li data-s="1"><span class="how-n">2</span><b>Schnell und sicher bezahlen</b><span>${payNames()}. Abgewickelt über Stripe.</span></li>
-        <li data-s="2"><span class="how-n">3</span><b>Code erhalten</b><span>Meist Sekunden nach der Zahlung – auf dem Bildschirm und per E-Mail.</span></li>
+        <li data-s="2"><span class="how-n">3</span><b>Code erhalten</b><span>${fastAll()?"Meist Sekunden nach der Zahlung – auf dem Bildschirm und per E-Mail.":`Per E-Mail und auf der Bestellseite. Lieferzeit: ${DLV().text}.`}</span></li>
       </ol>
       <div class="story-bar" aria-hidden="true"><i></i></div>
     </div>
@@ -110,11 +110,11 @@ ${keys.length?`<section class="sec hm-keys">${head("Spiele-Keys",`${keys.length}
 </section>`:""}
 ${deals.length?`<section class="sec">${head("Jetzt reduziert",`Bis zu ${off} % Rabatt auf ausgewählte Gutscheine.`,`<a class="more" href="/angebote">Alle${ic("i-chev")}</a>${railNav("dealRail")}`)}${rail("dealRail",deals)}</section>`:""}
 ${recent.length?`<section class="sec">${head("Zuletzt angesehen","",railNav("recentRail"))}${rail("recentRail",recent)}</section>`:""}
-<section class="sec hm-brandwall">${head("Marken im Sortiment","Offizielle Codes bekannter Marken – sofort per E-Mail.",`<a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a>`)}${brandWall(uniqLogos(24),{n:18})}</section>
+<section class="sec hm-brandwall">${head("Marken im Sortiment",`Offizielle Codes bekannter Marken – ${fastAll()?"sofort ":""}per E-Mail.`,`<a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a>`)}${brandWall(uniqLogos(24),{n:18})}</section>
 <section class="sec hm-why">
-  <p class="say" data-words>Offizielle Codes von autorisierten Distributoren, sicher bezahlt über Stripe und meist in Sekunden bei dir. Ohne Umwege, ohne Wartezeit.</p>
+  <p class="say" data-words>Offizielle Codes von autorisierten Distributoren, sicher bezahlt über Stripe und ${fastAll()?"meist in Sekunden bei dir. Ohne Umwege, ohne Wartezeit.":"per E-Mail bei dir. Ohne Umwege, ohne Versand."}</p>
   <ul class="why">
-    <li class="spot rv"><span class="si-ic">${ic("i-zap")}</span><b>In Sekunden geliefert</b><small>Meist erscheint der Code direkt nach der Zahlung auf dem Bildschirm und kommt per E-Mail.</small></li>
+    <li class="spot rv">${fastAll()?`<span class="si-ic">${ic("i-zap")}</span><b>In Sekunden geliefert</b><small>Meist erscheint der Code direkt nach der Zahlung auf dem Bildschirm und kommt per E-Mail.</small>`:`<span class="si-ic">${ic("i-mail")}</span><b>Per E-Mail geliefert</b><small>Der Code kommt per E-Mail und steht auf der Bestellseite. Lieferzeit: ${DLV().text}.</small>`}</li>
     <li class="spot rv" style="--d:70ms"><span class="si-ic">${ic("i-shield")}</span><b>Offizielle Codes</b><small>Bezogen über autorisierte Distributoren. Auf jeder Produktseite steht, wo der Code gilt.</small></li>
     <li class="spot rv" style="--d:140ms"><span class="si-ic">${ic("i-lock")}</span><b>Sicher bezahlt</b><small>Zahlungsabwicklung über Stripe mit 3&#8209;D Secure. Kartendaten sehen wir nie.</small></li>
     <li class="spot rv" style="--d:210ms"><span class="si-ic">${ic("i-mail")}</span><b>Persönlicher Support</b><small>Fragen zu Bestellung oder Einlösung beantworten wir per E-Mail: <a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></small></li>
@@ -151,8 +151,8 @@ function seoBlock(){
   const ent=L([["netflix","Netflix"],["spotify","Spotify"],["disney","Disney+"],["dazn","DAZN"],["apple","Apple Gift Card"],["gplay","Google Play"]]);
   const tel=L([["vodafone","Vodafone"],["telekom","Telekom"],["o2","o2"],["lebara","Lebara"],["lyca","Lycamobile"]]);
   return `<section class="sec hm-seo"><div class="seo">
-  <h2 class="h2">Gutscheine und Guthaben online kaufen – sofort per E-Mail</h2>
-  <p class="seo-lead">instantcodes ist dein Shop für digitale Gutscheine, Geschenkkarten und Guthabenkarten. Du wählst Marke und Betrag, bezahlst sicher und bekommst deinen Code in Sekunden per E-Mail – ohne Versand, ohne Wartezeit, rund um die Uhr.</p>
+  <h2 class="h2">Gutscheine und Guthaben online kaufen – ${fastAll()?"sofort ":""}per E-Mail</h2>
+  <p class="seo-lead">instantcodes ist dein Shop für digitale Gutscheine, Geschenkkarten und Guthabenkarten. Du wählst Marke und Betrag, bezahlst sicher und bekommst deinen Code ${fastAll()?"in Sekunden per E-Mail – ohne Versand, ohne Wartezeit, rund um die Uhr.":"per E-Mail – ohne Versand und rund um die Uhr bestellbar."}</p>
   <div class="seo-grid" id="seoGrid">
     <div><h3>Geschenkkarten und Shopping-Gutscheine</h3><p>${shop?shop+" als ":""}${C("shopping","digitale Geschenkkarten")} – ideal als Last-Minute-Geschenk zum Geburtstag, zu Weihnachten oder einfach so. Auf Wunsch schicken wir den Gutschein mit persönlicher Nachricht direkt an die beschenkte Person.</p></div>
     <div><h3>Gaming-Guthaben, V-Bucks und Spiele-Keys</h3><p>${game?game+": ":""}${C("gaming","Gaming-Guthaben")} für alle Plattformen. Dazu ${cur?cur+" und weitere ":""}${C("currency","Spielwährungen")}, ${subs?subs+" als ":""}${C("subs","Abo-Codes")} sowie ${C("keys","Spiele-Keys")} für PC und Konsole.</p></div>

@@ -16,7 +16,7 @@ function topup(_,qs){
   const mark=n=>`<span class="tu-n" aria-hidden="true"><b>${n}</b>${ic("i-check")}</span>`;
   return {tab:"topup",title:"Handy aufladen",html:`${crumb([["Handy aufladen"]])}
 <div class="tu">
-  <div class="tu-head"><h1 class="h1 page-h1">Handy aufladen</h1><p class="lead">Guthaben für ${ops.length} Anbieter. Nummer eingeben, Betrag wählen, bezahlen – das Guthaben wird direkt nach der Zahlung gebucht.</p></div>
+  <div class="tu-head"><h1 class="h1 page-h1">Handy aufladen</h1><p class="lead">Guthaben für ${ops.length} Anbieter. Nummer eingeben, Betrag wählen, bezahlen – das Guthaben wird ${topupFast()?"direkt nach der Zahlung gebucht.":`nach der Zahlung gebucht. Lieferzeit: ${DLV().text}.`}</p></div>
   <div class="tu-steps">
     <section class="tu-step tu-s1 spot" aria-labelledby="tuS1"><h2 class="tu-sh" id="tuS1">${mark(1)}<span>Land und Nummer</span></h2>
       <button class="sel" data-a="country" aria-label="Land: ${esc(c.n)}. Ändern">${flag(c.c,24)}<span>${esc(c.n)}</span>${ic("i-down")}</button>

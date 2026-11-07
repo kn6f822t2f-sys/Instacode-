@@ -51,7 +51,7 @@ document.addEventListener("pointerdown",e=>{if(reduce)return;const b=e.target.cl
 const prodUrl=id=>`${location.origin}/marke/${encodeURIComponent(id)}`;
 async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const a=document.createElement("textarea");a.value=t;a.style.cssText="position:fixed;opacity:0";document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(x){}a.remove();return ok}}
 A.copyLink=async id=>{if(await copyText(prodUrl(id)))toast("Link kopiert – jetzt einfügen und teilen");else toast(prodUrl(id))};
-A.share=id=>{const b=byId(id);if(!b)return;const url=prodUrl(id),text=`${b.name.replace(/ (Gift Card|Geschenkkarte)$/,"")} bei instantcodes – Code sofort per E-Mail`;
+A.share=id=>{const b=byId(id);if(!b)return;const url=prodUrl(id),text=`${b.name.replace(/ (Gift Card|Geschenkkarte)$/,"")} bei instantcodes – Code ${instantOk(id)?"sofort ":""}per E-Mail`;
   const u=encodeURIComponent(url),t=encodeURIComponent(text),L=(k,f)=>`<img src="/img/mark/logos/${k}.svg" alt="" onerror="this.replaceWith(document.createTextNode('${f}'))">`;
   const opts=[["WhatsApp",`https://wa.me/?text=${t}%20${u}`,L("whatsapp-icon","W")],["Telegram",`https://t.me/share/url?url=${u}&text=${t}`,L("telegram","T")],["X",`https://twitter.com/intent/tweet?url=${u}&text=${t}`,L("x","X")],
     ["Facebook",`https://www.facebook.com/sharer/sharer.php?u=${u}`,L("facebook","f")],["Pinterest",`https://pinterest.com/pin/create/button/?url=${u}&description=${t}`,L("pinterest","P")],["Reddit",`https://www.reddit.com/submit?url=${u}&title=${t}`,L("reddit-icon","R")],
@@ -61,7 +61,7 @@ A.share=id=>{const b=byId(id);if(!b)return;const url=prodUrl(id),text=`${b.name.
    ${navigator.share?`<button class="btn btn-primary btn-block btn-lg" data-a="shareNative" data-v="${esc(id)}">${ic("i-share")}Teilen über …</button>`:""}
    <div class="sh-grid">${opts.map(([n,h,i])=>`<a class="sh-opt" href="${h}" target="_blank" rel="noopener">${`<span>${i}</span>`}<small>${n}</small></a>`).join("")}</div>
    <button class="btn btn-soft btn-block" data-a="copyLink" data-v="${esc(id)}">${ic("i-copy")}Link kopieren</button></div>`)};
-A.shareNative=id=>{const b=byId(id);navigator.share({title:`${b.name} – instantcodes`,text:`${b.name} bei instantcodes – Code sofort per E-Mail`,url:prodUrl(id)}).then(()=>closeSheet()).catch(()=>{})};
+A.shareNative=id=>{const b=byId(id);navigator.share({title:`${b.name} – instantcodes`,text:`${b.name} bei instantcodes – Code ${instantOk(id)?"sofort ":""}per E-Mail`,url:prodUrl(id)}).then(()=>closeSheet()).catch(()=>{})};
 A.giftNow=()=>{const sw=$(".giftbox .switch");if(sw&&sw.getAttribute("aria-checked")!=="true")sw.click();const g=$(".giftbox");if(g)g.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>{const i=$("#gTo");i&&i.focus()},450)};
 
 /* ---------- Liquid Glass: Linse fließt zwischen den Knöpfen einer Gruppe (Morphing), Lichtpunkt folgt dem Finger ---------- */

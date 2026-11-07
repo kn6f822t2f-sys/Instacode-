@@ -296,8 +296,8 @@ const M = {
 
   welcome: (to, name) => ({ kind: "konto", to, hero: "welcome", why: WHY_ACC,
     subject: `Willkommen bei instantcodes${name ? ", " + String(name).split(" ")[0] : ""}`, pre: "Dein Konto ist bereit – und 10 % Rabatt warten auf dich.",
-    body: h1(`Schön, dass du da bist${name ? ", " + first(name) : ""}!`) + lead("Gutscheine, Spiele-Keys, Abos und Handy-Guthaben – bezahlt in Sekunden, der Code kommt direkt per E-Mail.") +
-      btn(`${BASE}/`, "Jetzt stöbern") + h2("So einfach geht’s") + steps(["Produkt und Betrag wählen", "Sicher bezahlen, zum Beispiel mit Apple Pay", "Code sofort auf dem Bildschirm und per E-Mail erhalten"]) +
+    body: h1(`Schön, dass du da bist${name ? ", " + first(name) : ""}!`) + lead("Gutscheine, Spiele-Keys, Abos und Handy-Guthaben – sicher bezahlt, der Code kommt per E-Mail.") +
+      btn(`${BASE}/`, "Jetzt stöbern") + h2("So einfach geht’s") + steps(["Produkt und Betrag wählen", "Sicher bezahlen, zum Beispiel mit Apple Pay", "Code per E-Mail und auf der Bestellseite erhalten"]) +
       h2("Dein Willkommensgeschenk") + p("10 % Rabatt auf deine erste Bestellung. Gib den Code einfach an der Kasse ein:") + codeBox("WILLKOMMEN10", "Dein Rabattcode") +
       small(`Tipp: Mit einem Passkey meldest du dich per Face ID oder Touch ID an – ohne Passwort. Einrichten kannst du ihn in deinem ${lnk(`${BASE}/konto/einstellungen`, "Konto", "font-weight:400")}.`, "margin:16px 0 4px") }),
 
@@ -355,9 +355,9 @@ const M = {
 
   /* Zahlung bestätigt, Bestellung wird noch geprüft (nicht automatisch ausgeliefert) */
   orderReceived: o => ({ ...withRecs(o), kind: "bestellung", to: o.email, hero: "clock", once: `received-${o.id}`, why: WHY_ORDER,
-    subject: `Zahlung erhalten – Bestellung ${o.id}`, pre: "Wir bereiten deine Codes vor und melden uns gleich wieder.",
+    subject: `Zahlung erhalten – Bestellung ${o.id}`, pre: `Wir bereiten deine Codes vor. Lieferzeit: ${LZ()}.`,
     body: h1("Danke! Deine Zahlung ist da.") + meta("Zahlung erhalten", "lav", `Bestellung ${esc(o.id)}`) +
-      lead("Wir bereiten deine Bestellung vor und sehen sie uns kurz an, bevor die Codes rausgehen. Sobald alles bereit ist, bekommst du eine zweite E-Mail mit deinen Codes.") +
+      lead(`Wir bereiten deine Bestellung vor und sehen sie uns kurz an, bevor die Codes rausgehen. Die Lieferzeit beträgt ${LZ()} nach Zahlungseingang. Sobald alles bereit ist, bekommst du eine zweite E-Mail mit deinen Codes.`) +
       btn(orderLink(o), "Bestellstatus ansehen") + h2("Deine Bestellung") + itemList(o, false) + receipt(o, [["Zahlung", "bezahlt über Stripe"]]) +
       small("Du hast beim Kauf zugestimmt, dass wir sofort liefern. Dein Widerrufsrecht erlischt mit der Lieferung der Codes.", "text-align:center;margin-top:14px") + legalLinks() }),
 
@@ -468,7 +468,7 @@ const M = {
       box(rows([["Vertragsnummer", esc(v.id)], ["Plan", `${esc(v.planName)} · ${eur(v.price)} ${aboTerm(v.months)}`], ["Bezahlt für", `${day(per.start)} – ${day(per.end)}`],
         ["Nächste Abbuchung", `${day(per.end)} · ${eur(v.price)}`], ["Kündbar zum", day(per.end)]])) +
       (plan && plan.items && plan.items.length ? h2("Das steckt in deinem Abo") + aboItems(plan.items.map(i => ({ brand: i.brand, name: i.name, label: i.label, face: i.face, note: i.every > 1 ? `alle ${i.every} Monate` : "jeden Monat" }))) : "") +
-      p("Jede Lieferung prüfen wir kurz von Hand, damit niemand dein Abo missbrauchen kann. Das dauert meist nur wenige Stunden. Danach kommen die Codes per E-Mail und liegen in deinem Abo.", "text-align:center;margin-top:16px") +
+      p(`Jede Lieferung prüfen wir kurz von Hand, damit niemand dein Abo missbrauchen kann. Das dauert ${LZ()}. Danach kommen die Codes per E-Mail und liegen in deinem Abo.`, "text-align:center;margin-top:16px") +
       btn(v.link, "Abo ansehen") + aboRules(v, per.end) +
       small(`Du hast zugestimmt, dass wir vor Ablauf der Widerrufsfrist mit der Lieferung beginnen. Dein Widerrufsrecht erlischt mit der ersten Lieferung der Codes. Es gelten unsere ${lnk(`${BASE}/agb`, "AGB", "font-weight:400")}.`, "text-align:center;margin-top:14px") }),
 
@@ -606,3 +606,5 @@ module.exports._sendSample = (id, to) => { const s = samples().find(x => x.id ==
   const m = M[s.key](...s.args); return deliver(Object.assign(m, { to, once: undefined, subject: "[Vorschau] " + m.subject })); };
 module.exports._keys = Object.keys(M);
 module.exports.configure = c => { CFG = Object.assign(CFG, c); };
+/* Zugesagte Lieferzeit für Bestellungen, die von Hand geliefert werden (LIEFERZEIT in server.js) */
+function LZ() { return (CFG && CFG.lieferzeit) || "bis zu 24 Stunden"; }

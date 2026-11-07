@@ -150,7 +150,7 @@ function orderView(o){
   const d=t=>t?new Date(t).toLocaleString("de-DE",{dateStyle:"medium",timeStyle:"short"}):"";
   const H={awaiting_payment:["Zahlung wird bestätigt …","Das dauert meist nur wenige Sekunden. Bitte lass diese Seite kurz offen."],
     payment_pending:["Zahlung in Bearbeitung","Deine Zahlungsart braucht etwas länger. Wir melden uns per E-Mail, sobald sie bestätigt ist."],
-    processing:["Wir bereiten deine Codes vor",`Deine Zahlung ist eingegangen. Meist dauert das nur Sekunden. Falls wir die Bestellung noch kurz prüfen, schicken wir die Codes an ${esc(o.email)}, sobald sie fertig sind. Du kannst diese Seite schließen.`],
+    processing:["Wir bereiten deine Codes vor",fastAll()?`Deine Zahlung ist eingegangen. Meist dauert das nur Sekunden. Falls wir die Bestellung noch kurz prüfen, schicken wir die Codes an ${esc(o.email)}, sobald sie fertig sind (Lieferzeit dann ${esc(DLV().text)}). Du kannst diese Seite schließen.`:`Deine Zahlung ist eingegangen. Die Lieferzeit beträgt ${esc(DLV().text)}. Sobald die Codes fertig sind, schicken wir sie an ${esc(o.email)} und zeigen sie hier. Du kannst diese Seite schließen.`],
     delivered:["Deine Codes sind da",`Sie stehen unten zum Kopieren bereit und wurden auch an ${esc(o.email)} gesendet.`],
     canceled:["Bestellung storniert","Die Zahlung wurde nicht abgeschlossen. Es wurde nichts abgebucht."],
     refunded:["Bestellung erstattet","Wir konnten leider nicht liefern und haben den Betrag erstattet."]}[o.status]||[esc(o.status),""];

@@ -68,13 +68,13 @@ function renderFooter(){
   const cats=CATSV();
   $("#ftr").innerHTML=`<div class="ft">
   <div class="ft-top"><a class="ft-logo" href="/" aria-label="instantcodes Startseite">${LOGO(40)}<span class="wordmark"><b>instant</b>codes</span></a>
-   <p>Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von ${BRANDS.length.toLocaleString("de-DE")} Produkten. Bezahlt in Sekunden, Code direkt per E-Mail.</p>
+   <p>Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von ${BRANDS.length.toLocaleString("de-DE")} Produkten. Bezahlt in Sekunden, Code ${fastAll()?"direkt ":""}per E-Mail.</p>
    ${payLogos()}${typeof nlFooter==="function"?nlFooter()/* Newsletter-Anmeldung (71-newsletter.js) */:""}</div>
   <div class="ft-cols">
    <div><h5>Sortiment</h5><ul>${cats.slice(0,7).map(c=>`<li><a href="/kategorie/${c.id}">${esc(c.name)}</a></li>`).join("")}</ul></div>
    <div><h5>Service</h5><ul><li><a href="/abo">instantcodes Abo</a></li><li><a href="/angebote">Angebote</a></li><li><a href="/hilfe">Hilfe und FAQ</a></li><li><a href="/konto">Mein Konto</a></li><li><button class="lnk" data-a="chatOpen">KI-Beraterin Mia</button></li></ul></div>
    <div><h5>Rechtliches</h5><ul><li><a href="https://mein.online-impressum.de/instacode/" target="_blank" rel="noopener">Impressum</a></li><li><a href="/agb">AGB</a></li><li><a href="/widerruf">Widerrufsbelehrung</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><button class="lnk" data-a="cookieOpen">Cookie-Einstellungen</button></li><li><a href="/kuendigen">Verträge hier kündigen</a></li></ul></div>
-   <div><h5>Kontakt</h5><ul><li><a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></li><li><a href="/hilfe">Hilfe und Kontakt</a></li>${CFG.trustpilot&&CFG.trustpilot.write?`<li><a href="${esc(CFG.trustpilot.write)}" target="_blank" rel="noopener">Bewerte uns auf Trustpilot<span class="sr"> (öffnet ein neues Fenster)</span></a></li>`:""}</ul></div>
+   <div><h5>Kontakt</h5><ul><li><a href="mailto:${esc(CFG.support)}">${esc(CFG.support)}</a></li>${ftVoice()}<li><a href="/hilfe">Hilfe und Kontakt</a></li>${CFG.trustpilot&&CFG.trustpilot.write?`<li><a href="${esc(CFG.trustpilot.write)}" target="_blank" rel="noopener">Bewerte uns auf Trustpilot<span class="sr"> (öffnet ein neues Fenster)</span></a></li>`:""}</ul></div>
   </div>
   <div class="ft-giant" aria-hidden="true"><b>instant</b>codes</div>
   <div class="ft-bottom"><span>© ${new Date().getFullYear()} ${esc(CFG.site||"instantcodes")}</span><span class="ft-stripe">Zahlungsabwicklung durch <img src="/pay/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></div>

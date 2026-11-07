@@ -30,6 +30,7 @@ ${wgRedeem()}
  <div class="hq">
   <button class="hq-i" data-a="chatOpen"><span class="si-ic">${ic("i-chat")}</span><span><b>Mia fragen</b><small>KI-Beraterin, antwortet sofort</small></span>${ic("i-chev")}</button>
   <a class="hq-i" href="mailto:${esc(CFG.support)}"><span class="si-ic">${ic("i-mail")}</span><span><b>E-Mail schreiben</b><small>${esc(CFG.support)}</small></span>${ic("i-chev")}</a>
+  ${hqVoice()/* KI-Telefonassistent: Nummer und „Mit KI sprechen“ (77-voice.js) */}
   <a class="hq-i" href="/konto/bestellungen"><span class="si-ic">${ic("i-receipt")}</span><span><b>Meine Bestellungen</b><small>Codes und Status ansehen</small></span>${ic("i-chev")}</a>
  </div></div>${wgPhone("mia")}</div>
  <nav class="hp-legal" aria-label="Rechtliches"><a href="/agb">AGB</a><a href="/widerruf">Widerrufsbelehrung</a><a href="/datenschutz">Datenschutz</a><a href="https://mein.online-impressum.de/instacode/" target="_blank" rel="noopener">Impressum${ic("i-arrow")}</a></nav></section>`,

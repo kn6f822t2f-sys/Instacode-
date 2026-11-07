@@ -14,7 +14,13 @@ const priceTxt=b=>allSold(b)?"Derzeit ausverkauft":`${b.amts.length>1?"ab ":""}$
    Nur wahre Aussagen (keine erfundenen Zahlen, Siegel oder Partnerschaften). */
 /* Marken zählen ohne Spiele: ein Spiel ist keine Marke */
 const brandN=()=>VIS().filter(b=>!isKey(b)).length;
-const TRUST=()=>[["i-shield","Offizielle Codes"],["i-zap","Meist in Sekunden per E-Mail"],["i-lock","Sicher bezahlt über Stripe"],["i-mail","Persönlicher Support"],["i-check",`${brandN()} Marken und ${catCount("keys")} Spiele`]];
+/* Lieferung: „sofort“ nur, wo der Shop automatisch liefert (Server: deliveryInfo) – sonst die zugesagte Lieferzeit (Standard „bis zu 24 Stunden“) */
+const DLV=()=>CFG.deliv||{mode:"manual",text:"bis zu 24 Stunden"};
+const instantOk=id=>{const d=DLV();return d.mode==="auto"||(d.mode==="mixed"&&(d.ids||[]).includes(id))};
+const fastAll=()=>{const d=DLV();return d.mode==="auto"||(d.mode==="mixed"&&d.share>=.8)};
+const lzShort=()=>DLV().text.replace(/Stunden/,"Std.").replace(/Minuten/,"Min.");
+const topupFast=()=>{const d=DLV();return d.mode==="auto"||(d.mode==="mixed"&&BRANDS.some(b=>b.cat==="topup"&&(d.ids||[]).includes(b.id)))};
+const TRUST=()=>[["i-shield","Offizielle Codes"],fastAll()?["i-zap","Meist in Sekunden per E-Mail"]:["i-mail","Per E-Mail in "+lzShort()],["i-lock","Sicher bezahlt über Stripe"],["i-mail","Persönlicher Support"],["i-check",`${brandN()} Marken und ${catCount("keys")} Spiele`]];
 /* Markenfarbe für Zeichen auf hellem Grund: zu helle Farben werden Graphit */
 const brandInk=b=>{const h=glowOf(b).replace("#","");const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),bl=parseInt(h.slice(4,6),16);return (r*.299+g*.587+bl*.114)>200?"#1B1E24":"#"+h};
 /* Laufband: Zusagen, echte Zahlungszeichen und Markenlogos im Wechsel (doppelt für die Endlosschleife) */
@@ -27,7 +33,7 @@ const trustBand=(o={})=>{const logos=VIS().filter(hasMark).slice(0,o.n||14);
   const set=`${TRUST().map(([i,t])=>`<span class="tb-i">${ic(i)}${esc(t)}</span>`).join("")}<span class="tb-pay">${PAYS().map(x=>x[3]==="revolut_pay"?`<b class="tb-rv"><img src="${markSrc("revolut")}" alt="" loading="lazy">Revolut Pay</b>`:MARK[x[3]]?`<img src="${markSrc(x[3])}" alt="${esc(x[0])}" loading="lazy">`:`<b>${esc(x[0])}</b>`).join("")}${CFG.klarna&&CFG.klarna.length&&!klarnaScope()?`<img class="tb-kl" src="${payLogo("klarna")||"/pay/klarna.svg"}" alt="Klarna" loading="lazy">`:""}</span>${logos.map(b=>brandMark(b,600,92,26,"tb-l")).join("")}`;
   return `<div class="tband${o.cls?" "+o.cls:""}" data-off role="note" aria-label="Darum instantcodes: offizielle Codes, Lieferung per E-Mail, sichere Zahlung über Stripe"><div class="tb-track" aria-hidden="true"><div class="tb-set">${set}</div><div class="tb-set">${set}</div></div></div>`};
 /* Abzeichen für Produkt und Kachel */
-const trustBadges=b=>`<ul class="tbadges" aria-label="Vorteile">${[["i-shield","Offizieller Code"],["i-zap",b&&b.cat==="topup"?"Direkt aufs Handy":"Meist sofort per E-Mail"],["i-lock","Sicher bezahlt"]].map(([i,t])=>`<li>${ic(i)}<span>${t}</span></li>`).join("")}</ul>`;
+const trustBadges=b=>`<ul class="tbadges" aria-label="Vorteile">${[["i-shield","Offizieller Code"],(b?instantOk(b.id):fastAll())?["i-zap",b&&b.cat==="topup"?"Direkt aufs Handy":"Meist sofort per E-Mail"]:["i-mail",(b&&b.cat==="topup"?"Aufs Handy in ":"Per E-Mail in ")+lzShort()],["i-lock","Sicher bezahlt"]].map(([i,t])=>`<li>${ic(i)}<span>${t}</span></li>`).join("")}</ul>`;
 /* Markenwand mit echten Markenzeichen in Markenfarbe */
 const brandWall=(list,o={})=>`<div class="bwall${o.cls?" "+o.cls:""}">${list.filter(hasMark).slice(0,o.n||24).map((b,i)=>`<a class="bw rv" href="/marke/${b.id}" style="--d:${(i%8)*40}ms;color:${brandInk(b)}" aria-label="${esc(b.name)}">${brandMark(b,1250,104,40,"bw-m")}<span>${esc(shortNm(b))}</span></a>`).join("")}</div>`;
 const shortNm=b=>b.name.replace(/ (Gift Card|Geschenkkarte|Guthaben)$/,"");

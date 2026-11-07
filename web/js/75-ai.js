@@ -64,7 +64,7 @@ function miaIntents(all){
   if(Object.keys(SIG.b).filter(id=>MIA_ABO.includes(id)).length>=2&&!SIG.abo&&p!=="/abo")
     L.push({k:"abo",p:40,text:"Mehrere Dienste im Blick? Das instantcodes Abo liefert jeden Monat ein Paket mit Codes und ist online kündbar.",acts:[["go","/abo","Abo ansehen"]],more:"Erzähl mir mehr über das Abo."});
   if(p!=="/aufladen"&&((SIG.top&&SIG.topD>=15e3&&now-SIG.top<30*60e3)||SIG.q.some(q=>/aufladen|prepaid|handy/i.test(q))))
-    L.push({k:"topup",p:30,text:"Handy aufladen? Nummer eingeben, der Anbieter wird meist erkannt, das Guthaben kommt direkt nach der Zahlung.",acts:[["go","/aufladen","Jetzt aufladen"]],more:"Ich möchte mein Handy aufladen."});
+    L.push({k:"topup",p:30,text:`Handy aufladen? Nummer eingeben, der Anbieter wird meist erkannt, das Guthaben ${topupFast()?"kommt direkt nach der Zahlung":"wird nach der Zahlung gebucht"}.`,acts:[["go","/aufladen","Jetzt aufladen"]],more:"Ich möchte mein Handy aufladen."});
   if(MI.ret&&p==="/"&&S.recent&&S.recent[0]&&byId(S.recent[0])&&!inCart(S.recent[0])){const b=byId(S.recent[0]);
     L.push({k:"return",id:b.id,p:20,text:`Willkommen zurück. Zuletzt hast du dir ${miaShort(b)} angesehen.`,acts:b.cat==="topup"?[["go","/aufladen?op="+b.id,"Aufladen"]]:[["qb",b.id,"Schnellkauf"],["go","/marke/"+b.id,"Ansehen"]],more:`Ich war vorhin bei ${miaShort(b)}.`})}
   return L.filter(x=>all||!SIG.shown.includes(x.k)).sort((a,b)=>b.p-a.p);

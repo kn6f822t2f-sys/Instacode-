@@ -13,6 +13,13 @@
 const crypto = require("crypto");
 
 module.exports = function setupAI(X) {
+  /* Lieferzeit so, wie der Shop sie zusagt: „in Sekunden“ nur, wenn automatisch geliefert wird (X.delivery aus server.js) */
+  const dlvFact = () => {
+    const d = (X.delivery && X.delivery()) || { mode: "manual", text: "bis zu 24 Stunden" };
+    if (d.mode === "auto") return `Codes kommen meist in Sekunden per E-Mail. Manche Bestellungen prüft das Team zur Sicherheit von Hand; die Lieferzeit beträgt dann ${d.text}.`;
+    if (d.mode === "mixed") return `Viele Codes kommen in Sekunden per E-Mail, andere liefert das Team von Hand mit einer Lieferzeit von ${d.text}. Was für ein Produkt gilt, steht auf der Produktseite unter „Lieferung“.`;
+    return `Codes kommen per E-Mail und auf der Bestellseite. Die Lieferzeit beträgt ${d.text} nach Zahlungseingang; versprich keine schnellere Lieferung.`;
+  };
   const { app, E, bad, admin, kvGet, kvSet } = X;
   const KEY = String(E.ANTHROPIC_API_KEY || "").trim();
   const MOCK = /attrappe$/i.test(KEY);
@@ -148,7 +155,7 @@ So arbeitest du:
 - Wenn du dir unsicher bist, sag das und verweise auf /hilfe oder den Support.
 
 Was du über den Shop weißt:
-- Lieferung: Codes kommen meist in Sekunden per E-Mail; manche Bestellungen prüft das Team zur Sicherheit kurz von Hand, dann dauert es länger. Den Stand zeigt die Bestellseite. Handy-Guthaben wird direkt auf die Nummer gebucht.
+- Lieferung: ${dlvFact()} Den Stand zeigt die Bestellseite. Handy-Guthaben wird auf die angegebene Nummer gebucht.
 - Bezahlung sicher über Stripe, je nach Gerät mit ${X.payWords ? X.payWords() : "Karte"}. Gastbestellung mit E-Mail-Adresse ist möglich, ein Konto ist freiwillig.
 - Verschenken: Auf jeder Produktseite „Als Geschenk senden“ aktivieren, E-Mail der beschenkten Person und eine Nachricht eingeben.
 - Gültigkeit: Jede Produktseite zeigt unter „Gültig in“, in welchem Land der Code gilt. Spiele-Keys gelten meist für Europa.
@@ -343,7 +350,7 @@ Was du über den Shop weißt:
       return { reply: `Das tut mir leid. Ich kann keine Bestellungen einsehen. Den Stand siehst du auf deiner Bestellseite (Link in der Bestätigungsmail) oder unter /konto/bestellungen. Schreib dem Support mit deiner Bestellnummer an ${sup}, dort hilft dir ein Mensch weiter.`, actions: [{ t: "link", href: "/konto/bestellungen", label: "Meine Bestellungen" }] };
     if (/widerruf|ruckgabe|umtausch|agb|recht/.test(t)) return { reply: "Digitale Codes sind nach der Lieferung in der Regel vom Umtausch ausgeschlossen. Die Einzelheiten stehen in der Widerrufsbelehrung unter /widerruf und in den /agb. Eine Rechtsberatung kann ich nicht geben." };
     if (/einlos|\blose\b.*\bein\b|aktivier|einsetzen|wie benutz/.test(t)) return { reply: "Öffne den Dienst oder die App der Marke, wähle „Code einlösen“ und gib den Code ein. Die genauen Schritte für dein Produkt stehen auf der Produktseite unter „Einlösen“. Deine gekauften Codes findest du in der E-Mail und unter /konto/bestellungen." };
-    if (/(wie (schnell|lange)|wann kommt|dauer|lieferzeit|ankommen|lieferung)/.test(t)) return { reply: "Meist sofort: Nach der Zahlung kommt dein Code automatisch per E-Mail. Manche Bestellungen prüfen wir zur Sicherheit kurz von Hand, dann dauert es etwas länger. Den Stand siehst du auf der Bestellseite." };
+    if (/(wie (schnell|lange)|wann kommt|dauer|lieferzeit|ankommen|lieferung)/.test(t)) return { reply: `${dlvFact().replace(/; versprich keine schnellere Lieferung\./, ".")} Den Stand siehst du auf der Bestellseite.` };
     if (/(zahlungsart|bezahlen|zahlen|paypal|kreditkarte|apple pay|google pay|klarna|rechnung|bezahlt)/.test(t)) return { reply: `Du bezahlst sicher über Stripe, je nach Gerät mit ${X.payWords ? X.payWords() : "Karte"}. Deine Kartendaten sieht instantcodes nicht.` };
     if (/(rabatt|gutscheincode|aktionscode|promo|coupon|sparen|billiger)/.test(t)) { const p = Object.entries(X.PROMOS || {}); return { reply: p.length ? `Für deine erste Bestellung gibt es den Aktionscode ${p[0][0]} (${Math.round(p[0][1] * 100)} %, einmal pro E-Mail-Adresse). Reduzierte Produkte findest du unter /angebote.` : "Reduzierte Produkte findest du unter /angebote." }; }
     if (/(konto|login|anmeld|registrier|passwort)/.test(t)) return { reply: "Du kannst ohne Konto bestellen, dann reicht deine E-Mail-Adresse. Mit Konto findest du Codes, Nummern und Favoriten jederzeit wieder.", actions: [{ t: "link", href: "/login", label: "Anmelden" }] };

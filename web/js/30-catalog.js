@@ -100,7 +100,7 @@ function category(id,qs){
     :TU?[["i-phone-f",`${uniq} Anbieter`],["i-zap","Direkt auf die Nummer"]]
     :[["i-grid-f",`${all} ${all===1?"Produkt":"Produkte"}`],["i-mail","Code per E&#8209;Mail"]];
   const text=K?`${esc(c.desc)}. Nach der Zahlung kommt dein Key per E&#8209;Mail, eingelöst wird er auf der jeweiligen Plattform.`
-    :TU?"Prepaid-Guthaben für deine Nummer: Nummer eingeben, Betrag wählen, das Guthaben wird direkt nach der Zahlung gebucht."
+    :TU?`Prepaid-Guthaben für deine Nummer: Nummer eingeben, Betrag wählen, das Guthaben wird ${topupFast()?"direkt nach der Zahlung gebucht.":`nach der Zahlung gebucht. Lieferzeit: ${DLV().text}.`}`
     :`${esc(c.desc)}. Nach der Zahlung kommt dein Code per E&#8209;Mail.`;
   const others=CATSV().filter(x=>x.id!==id);
   /* Eigene Bildwelt: Spiele-Keys als Cover-Wand, Aufladen mit Funkwellen, sonst Kartenfächer im Farbhauch der Kategorie mit echten Markenzeichen */
@@ -150,7 +150,7 @@ const STORE_IN={steam:"in Steam",pc:"beim Hersteller",ea:"in der EA app",bnet:"i
 const STORE={steam:"Steam",pc:"Hersteller-Launcher",ea:"EA app",bnet:"Battle.net",ubi:"Ubisoft Connect",rockstar:"Rockstar Games Launcher",ps5:"PlayStation Store",xbox:"Microsoft Store",xpc:"Microsoft Store",switch:"Nintendo eShop",switch2:"Nintendo eShop"};
 const descOf=b=>isKey(b)?`${b.name} als digitaler ${PLAT[b.plat]}-Key. Nach der Zahlung bekommst du den Key automatisch per E-Mail und löst ihn ${STORE_IN[b.plat]||"beim Hersteller"} ein. Der Key bleibt in deinem Konto gespeichert.`
   :b.type==="sub"?`${b.name} als digitaler Code. Nach der Zahlung kommt der Code per E-Mail, du löst ihn in deinem Konto ein und die Laufzeit startet. Kein Abo, keine automatische Verlängerung über instantcodes.`
-  :`Digitaler ${b.name}-Code zum sofortigen Einlösen. Nach der Zahlung bekommst du den Code automatisch per E-Mail. In deinem Konto bleibt er gespeichert.${regTag(b)?` Wichtig: Dieser Code gilt nur für ${regDE(b.region)} und funktioniert nur mit einem Konto aus diesem Land. Der Wert ist in der Landeswährung angegeben, der Preis in Euro.`:""}`;
+  :`Digitaler ${b.name}-Code zum sofortigen Einlösen. Nach der Zahlung bekommst du den Code ${instantOk(b.id)?"automatisch per E-Mail":`per E-Mail, Lieferzeit ${DLV().text}`}. In deinem Konto bleibt er gespeichert.${regTag(b)?` Wichtig: Dieser Code gilt nur für ${regDE(b.region)} und funktioniert nur mit einem Konto aus diesem Land. Der Wert ist in der Landeswährung angegeben, der Preis in Euro.`:""}`;
 const varName=(b,v)=>isKey(b)?PLAT[v.plat]:v.name.replace(/^PlayStation Plus /,"").replace(/^Microsoft 365 /,"");
 /* Offizielle Einlöse-Seite der Marke (b.ru = {url,label} aus redeemlinks.json). Der Link geht über /go/<id> (Server-Allowlist) und öffnet einen neuen Tab. */
 const ruDom=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return ""}};
@@ -191,7 +191,7 @@ function brandPage(id){
   const dis=avail.length?"":" disabled", region=REGION[b.region]||esc(regDE(b.region)||b.regionName||"Deutschland");
   const amtSub=a=>soldOut(id,a)?"<small>ausverkauft</small>":!card||Math.abs(price(b,a)-a)>.004?`<small>${money(price(b,a))}</small>`:"";
   const short=b.name.replace(/ (Gift Card|Geschenkkarte)$/,""), barSub=()=>short+(card||!P.a?"":" · "+tagRaw())+(P.q>1?` · ${P.q} Stück`:"")+(P.gift?" · als Geschenk":"");
-  const tiles=[["i-pin","Gültig in",region],["i-mail","Lieferung","Meist sofort per E&#8209;Mail"]].concat(K?[["i-monitor","Aktivierung",esc(STORE[b.plat]||PLAT[b.plat])],["i-key","Typ","Digitaler Key"]]:[["i-card-f","Format",b.type==="sub"?"Code mit fester Laufzeit":"Digitaler Code"]]);
+  const tiles=[["i-pin","Gültig in",region],["i-mail","Lieferung",instantOk(b.id)?"Meist sofort per E&#8209;Mail":"Per E&#8209;Mail in "+lzShort()]].concat(K?[["i-monitor","Aktivierung",esc(STORE[b.plat]||PLAT[b.plat])],["i-key","Typ","Digitaler Key"]]:[["i-card-f","Format",b.type==="sub"?"Code mit fester Laufzeit":"Digitaler Code"]]);
   return {tab:"cats",title:b.name+(K?` (${PLAT[b.plat]})`:""),buybar:true,html:`${crumb([[c.name,"/kategorie/"+c.id],[b.name]])}
 <div class="pd${K?" pd-key":""}" style="--gd:${DESIGNS[0][1]};--pg:${vivid(b)}">
   <div class="pd-media">
