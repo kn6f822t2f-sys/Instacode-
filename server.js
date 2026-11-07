@@ -35,7 +35,7 @@ const PK = E.STRIPE_PUBLISHABLE_KEY || "";
 const DEVPAY = /_attrappe$/.test(E.STRIPE_SECRET_KEY || "");   // nur Vorschau-Umgebung ohne echtes Stripe
 /* Uhr für die Abo-Logik. In der Vorschau (Stripe-Attrappe) kann eine Test-Uhr sie vorstellen, wie Stripe-Test-Clocks; live immer die echte Zeit. */
 const clock = () => Date.now() + (DEVPAY ? (+globalThis.__icClock || 0) : 0);
-const SUPPORT = E.SUPPORT_EMAIL || "support@instacode.store";
+const SUPPORT = E.SUPPORT_EMAIL || "info@instantcodes.de";
 /* Neuere Stripe-API-Version nur für Checkout und PaymentIntents (Branding, ausgeschlossene Zahlungsarten) */
 const STRIPE_V = "2025-09-30.clover";
 /* Klarna verbietet laut Stripe den Verkauf von Gutscheinen und Guthabenkarten – deshalb ausgeschlossen, außer alle Artikel
@@ -2108,7 +2108,7 @@ app.post("/api/admin/newsletter/unsub", admin, (req, res) => {
 
 /* ---------- Admin: alle Mail-Vorlagen mit Beispieldaten ansehen (nur Inhaber) ---------- */
 app.get("/api/admin/mails", admin, (req, res) => {
-  res.set("Cache-Control", "no-store").json({ mail: !!E.RESEND_API_KEY, from: E.MAIL_FROM || "hallo@instacode.store", support: SUPPORT,
+  res.set("Cache-Control", "no-store").json({ mail: !!E.RESEND_API_KEY, from: E.MAIL_FROM || "info@instantcodes.de", support: SUPPORT,
     mails: mail._samples().map(s => { const r = mail._render(s.key, ...s.args); return { id: s.id, group: s.group, key: s.key, name: s.name, trigger: s.trigger, subject: r.subject, pre: r.pre, ad: !!r.listUnsub, size: Buffer.byteLength(r.html) }; }) });
 });
 app.get("/admin/mail/:id", (req, res) => {

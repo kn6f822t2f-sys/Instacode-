@@ -1,6 +1,6 @@
 /* ---------- LIVE: echte Server-Anbindung ---------- */
 const STL={awaiting_payment:"Warte auf Zahlung",payment_pending:"Zahlung in Bearbeitung",processing:"In Bearbeitung",delivered:"Geliefert",canceled:"Storniert",refunded:"Erstattet"};
-let CFG=Object.assign({payments:false,google:null,support:"support@instacode.store"},BOOT.config||{}),pollT=null,lastResend=0;const ordCache={};
+let CFG=Object.assign({payments:false,google:null,support:"info@instantcodes.de"},BOOT.config||{}),pollT=null,lastResend=0;const ordCache={};
 async function API(p,o={}){
   const r=await fetch("/api"+p,{method:o.method||"GET",headers:{"Content-Type":"application/json","X-IC":"1"},body:o.body?JSON.stringify(o.body):undefined,credentials:"same-origin"});
   let j={};try{j=await r.json()}catch(e){}
@@ -262,7 +262,7 @@ A.delAccGo=async(_,el)=>{busy(el,true);try{await API("/me",{method:"DELETE"});se
 /* Rechtstexte – bei inhaltlichen Änderungen auch LEGAL_STAND anpassen */
 const LEGAL_STAND="November 2026";
 const IMP="https://mein.online-impressum.de/instacode/";
-const SUP=()=>(CFG.support)||"support@instacode.store";
+const SUP=()=>(CFG.support)||"info@instantcodes.de";
 const LEGAL={
  agb:["Allgemeine Geschäftsbedingungen",()=>`
 <h2>1. Geltungsbereich und Anbieter</h2>

@@ -4,17 +4,17 @@
    Chrom-Ring als Logo, schlanke Knöpfe (ein dunkler Hauptknopf pro Mail, sonst Linkknöpfe).
    Technik: Tabellen-Layout (Outlook, Gmail, Apple Mail), 600 px, mobile Schriftgrößen, Dark Mode (prefers-color-scheme
    und Outlook.com), Vorschautext, Textfassung. Titelbilder: /public/mail/h-*.jpg (Chrom-Ring auf Porzellan, 1200 × 400), Logo /public/mail/logo-ring.png.
-   Absender: MAIL_FROM (Standard hallo@instacode.store). Antworten der Kunden gehen an SUPPORT_EMAIL.
+   Absender: MAIL_FROM (Standard info@instantcodes.de). Antworten der Kunden gehen an SUPPORT_EMAIL.
    Ohne RESEND_API_KEY werden Mails nur im Log ausgegeben.
    Werbung (Newsletter, Aktionen, Bewertungsanfrage) nur mit Einwilligung, immer mit Abmeldelink und List-Unsubscribe-Kopfzeilen. */
 const BASE = (process.env.BASE_URL || "http://localhost:3000").replace(/\/$/, "");
 /* Absendername ist immer „instantcodes“, egal was in MAIL_FROM als Name steht */
-const FROM_ADDR = ((process.env.MAIL_FROM || "").match(/<([^>]+)>/) || [])[1] || (/@/.test(process.env.MAIL_FROM || "") ? process.env.MAIL_FROM.trim() : "hallo@instacode.store");
+const FROM_ADDR = ((process.env.MAIL_FROM || "").match(/<([^>]+)>/) || [])[1] || (/@/.test(process.env.MAIL_FROM || "") ? process.env.MAIL_FROM.trim() : "info@instantcodes.de");
 const FROM = `instantcodes <${FROM_ADDR}>`;
-const REPLY = process.env.SUPPORT_EMAIL || "support@instacode.store";
+const REPLY = process.env.SUPPORT_EMAIL || "info@instantcodes.de";
 const KEY = process.env.RESEND_API_KEY;
-const FOOT = process.env.MAIL_FOOTER || "instacode.store";
-const SELLER = (process.env.INVOICE_SELLER || "instacode.store").split(/\s*(?:\\n|\||·)\s*/).filter(Boolean);
+const FOOT = process.env.MAIL_FOOTER || "instantcodes.de";
+const SELLER = (process.env.INVOICE_SELLER || "instantcodes.de").split(/\s*(?:\\n|\||·)\s*/).filter(Boolean);
 const TAXNOTE = process.env.INVOICE_TAX_NOTE || "Alle Preise sind Endpreise.";
 const IMPRESSUM = "https://mein.online-impressum.de/instacode/";
 const HV = "6"; // Version der Titelbilder (Cache)
