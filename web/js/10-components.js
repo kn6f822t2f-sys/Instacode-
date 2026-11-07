@@ -16,10 +16,10 @@ const priceTxt=b=>allSold(b)?"Derzeit ausverkauft":`${b.amts.length>1?"ab ":""}$
 const brandN=()=>VIS().filter(b=>!isKey(b)).length;
 /* Lieferung: „sofort“ nur, wo der Shop automatisch liefert (Server: deliveryInfo) – sonst die zugesagte Lieferzeit (Standard „bis zu 24 Stunden“) */
 const DLV=()=>CFG.deliv||{mode:"manual",text:"bis zu 24 Stunden"};
-const instantOk=id=>{const d=DLV();return d.mode==="auto"||(d.mode==="mixed"&&(d.ids||[]).includes(id))};
+const instantOk=id=>{const d=DLV();return d.mode==="auto"||(d.mode==="mixed"&&(d.slow?!d.slow.includes(id):(d.ids||[]).includes(id)))};
 const fastAll=()=>{const d=DLV();return d.mode==="auto"||(d.mode==="mixed"&&d.share>=.8)};
 const lzShort=()=>DLV().text.replace(/Stunden/,"Std.").replace(/Minuten/,"Min.");
-const topupFast=()=>{const d=DLV();return d.mode==="auto"||(d.mode==="mixed"&&BRANDS.some(b=>b.cat==="topup"&&(d.ids||[]).includes(b.id)))};
+const topupFast=()=>BRANDS.some(b=>b.cat==="topup"&&instantOk(b.id));
 const TRUST=()=>[["i-shield","Offizielle Codes"],fastAll()?["i-zap","Meist in Sekunden per E-Mail"]:["i-mail","Per E-Mail in "+lzShort()],["i-lock","Sicher bezahlt über Stripe"],["i-mail","Persönlicher Support"],["i-check",`${brandN()} Marken und ${catCount("keys")} Spiele`]];
 /* Markenfarbe für Zeichen auf hellem Grund: zu helle Farben werden Graphit */
 const brandInk=b=>{const h=glowOf(b).replace("#","");const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),bl=parseInt(h.slice(4,6),16);return (r*.299+g*.587+bl*.114)>200?"#1B1E24":"#"+h};

@@ -275,11 +275,12 @@ function deliveryInfo() {
   }
   const mode = !ids.length ? "manual" : ids.length === all.length ? "auto" : "mixed";
   const v = { mode, text: LIEFERZEIT, share: all.length ? Math.round(ids.length / all.length * 100) / 100 : 0 };
-  if (mode === "mixed") v.ids = ids;
+  /* Gemischt: nur die kürzere Liste mitschicken (slow = nicht sofort, sonst ids = sofort) – spart Seitengröße */
+  if (mode === "mixed") { if (ids.length * 2 > all.length) { const fast = new Set(ids); v.slow = all.filter(b => !fast.has(b.id)).map(b => b.id); } else v.ids = ids; }
   delivCache = { at: Date.now(), v };
   return v;
 }
-const isInstant = id => { const d = deliveryInfo(); return d.mode === "auto" || (d.mode === "mixed" && d.ids.includes(id)); };
+const isInstant = id => { const d = deliveryInfo(); return d.mode === "auto" || (d.mode === "mixed" && (d.slow ? !d.slow.includes(id) : d.ids.includes(id))); };
 const mostlyInstant = () => { const d = deliveryInfo(); return d.mode === "auto" || (d.mode === "mixed" && d.share >= 0.8); };
 /* KI-Telefonassistent (IONOS AI Frontdesk): Rufnummer für Hilfe-Seite und Fußzeile (SUPPORT_PHONE), Kennung des Website-Widgets (IONOS_VOICE_AGENT) */
 const PHONE = (() => {
