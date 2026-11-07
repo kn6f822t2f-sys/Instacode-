@@ -144,10 +144,14 @@ const KEY = crypto.createHash("sha256").update(E.CODES_KEY || E.SESSION_SECRET |
 const enc = t => { const iv = crypto.randomBytes(12), c = crypto.createCipheriv("aes-256-gcm", KEY, iv); const d = Buffer.concat([c.update(t, "utf8"), c.final()]); return [iv, c.getAuthTag(), d].map(b => b.toString("base64")).join("."); };
 const dec = s => { const [iv, tag, d] = s.split(".").map(x => Buffer.from(x, "base64")); const c = crypto.createDecipheriv("aes-256-gcm", KEY, iv); c.setAuthTag(tag); return Buffer.concat([c.update(d), c.final()]).toString("utf8"); };
 const norm = e => String(e || "").trim().toLowerCase();
-const emailOk = e => typeof e === "string" && e.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+/* Konten ohne bestätigte E-Mail (Steam, Handy, Microsoft, Amazon …) haben eine Platzhalter-Adresse, an die nie etwas geht (auth.js) */
+const isPh = e => /@(ohne-email\.invalid|sms\.instacode\.store)$/i.test(String(e || ""));
+const emailOk = e => typeof e === "string" && e.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && !isPh(e);
 const bad = (res, msg, code = 400) => res.status(code).json({ error: msg });
-const isAdmin = u => !!u && u.verified && ADMINS.includes(u.email);
-const pub = u => u && { id: u.id, email: u.email, name: u.name, verified: !!u.verified, admin: isAdmin(u), loginAlerts: !!u.login_alerts, google: !!u.google_sub };
+const isAdmin = u => !!(u && u.verified && !isPh(u.email) && ADMINS.includes(u.email));
+let AUTH = null; // Anmeldung über Anbieter (auth.js), wird unten eingerichtet
+const pub = u => u && Object.assign({ id: u.id, email: isPh(u.email) ? "" : u.email, name: u.name, verified: !!u.verified && !isPh(u.email), admin: isAdmin(u), loginAlerts: !!u.login_alerts, google: !!u.google_sub },
+  AUTH ? AUTH.pubExtra(u) : {});
 const userById = id => db.prepare("SELECT * FROM users WHERE id=?").get(id);
 const userByEmail = e => db.prepare("SELECT * FROM users WHERE email=?").get(e);
 const safe = p => p.catch(err => console.error("Mail-Fehler:", err.message));
@@ -157,7 +161,7 @@ const cookies = req => Object.fromEntries((req.headers.cookie || "").split(";").
 const EV_TTL = 24 * 36e5;
 const evSign = (e, exp) => crypto.createHmac("sha256", KEY).update(`ev|${e}|${exp}`).digest("base64url");
 function verifiedEmail(req) {
-  if (req.user && req.user.verified) return req.user.email;
+  if (req.user && req.user.verified && !isPh(req.user.email)) return req.user.email;
   const v = cookies(req).ic_ev;
   if (!v) return null;
   const [e64, exp, sig] = v.split(".");
@@ -179,7 +183,7 @@ function endSession(req, res) {
   if (t) db.prepare("DELETE FROM sessions WHERE token_hash=?").run(sha(t));
   res.clearCookie("ic_sess", { path: "/" });
 }
-const linkOrders = (uid, email) => db.prepare("UPDATE orders SET user_id=? WHERE user_id IS NULL AND email=?").run(uid, email);
+const linkOrders = (uid, email) => isPh(email) ? null : db.prepare("UPDATE orders SET user_id=? WHERE user_id IS NULL AND email=?").run(uid, email);
 
 async function sendVerify(u) {
   const code = String(crypto.randomInt(100000, 1000000));
@@ -286,7 +290,7 @@ const PHONE = (() => {
 })();
 const VOICE = /^[\w.:-]{6,200}$/.test(String(E.IONOS_VOICE_AGENT || "").trim()) ? String(E.IONOS_VOICE_AGENT).trim() : null;
 const publicConfig = () => ({ site: (BASE_HOST || "").replace(/^www\./, ""), vat: VAT, fee: FEE, payments: !!stripe, express: !!stripe && !!(PK || DEVPAY), pk: PK || (DEVPAY ? "pk_test_attrappe" : null), devpay: DEVPAY,
-  google: E.GOOGLE_CLIENT_ID || null, auth: authMethods(), deliv: deliveryInfo(), phone: PHONE, voice: VOICE, mail: !!E.RESEND_API_KEY, methods: PAY_METHODS, inline: inlineTypes(), paylogos: payLogos(), klarna: KLARNA_ON() ? KLARNA_CATS() : null, testmode: TESTMODE, support: SUPPORT, trustpilot: TP, base: BASE });
+  google: AUTH ? AUTH.gisClientId() : null, auth: AUTH ? AUTH.methods() : {}, deliv: deliveryInfo(), phone: PHONE, voice: VOICE, mail: !!E.RESEND_API_KEY, methods: PAY_METHODS, inline: inlineTypes(), paylogos: payLogos(), klarna: KLARNA_ON() ? KLARNA_CATS() : null, testmode: TESTMODE, support: SUPPORT, trustpilot: TP, base: BASE });
 
 /* Produktempfehlungen in Liefer-Mails: Abmeldung per signiertem Link */
 const unsubSig = e => crypto.createHmac("sha256", KEY).update("unsub|" + e).digest("base64url").slice(0, 24);
@@ -625,13 +629,15 @@ app.post("/api/checkout/email/verify", lim, (req, res) => {
   db.prepare("UPDATE tokens SET used=1 WHERE id=?").run(t.id);
   const exp = now() + EV_TTL;
   res.cookie("ic_ev", `${Buffer.from(e).toString("base64url")}.${exp}.${evSign(e, exp)}`, { httpOnly: true, secure: PROD, sameSite: "lax", maxAge: EV_TTL, path: "/" });
-  res.json({ ok: true, email: e });
+  /* Angemeldet mit einem Konto ohne E-Mail (Steam, Handy …): die eben bestätigte Adresse wird zur Konto-Adresse */
+  const u = AUTH && AUTH.checkoutEmailVerified(req, res, e);
+  res.json(u ? { ok: true, email: e, user: pub(u) } : { ok: true, email: e });
 });
 app.get("/api/checkout/email", (req, res) => res.json({ email: verifiedEmail(req) }));
 
 app.post("/api/auth/verify", lim, wrap(async (req, res) => {
   const u = userByEmail(norm(req.body.email)), code = String(req.body.code || "").replace(/\D/g, "");
-  if (!u) return bad(res, "Der Code ist ungültig.");
+  if (!u || isPh(u.email)) return bad(res, "Der Code ist ungültig.");
   const t = db.prepare("SELECT * FROM tokens WHERE user_id=? AND kind='verify' AND used=0 AND expires_at>? ORDER BY id DESC").get(u.id, now());
   if (!t || t.tries >= 5) return bad(res, "Der Code ist abgelaufen. Fordere einen neuen an.");
   if (t.hash !== sha(code)) { db.prepare("UPDATE tokens SET tries=tries+1 WHERE id=?").run(t.id); return bad(res, "Der Code stimmt nicht."); }
@@ -645,7 +651,7 @@ app.post("/api/auth/verify", lim, wrap(async (req, res) => {
 
 app.post("/api/auth/resend", lim, wrap(async (req, res) => {
   const u = userByEmail(norm(req.body.email));
-  if (u && !u.verified) await sendVerify(u);
+  if (u && !u.verified && !isPh(u.email)) await sendVerify(u);
   res.json({ ok: true });
 }));
 
@@ -659,113 +665,21 @@ app.post("/api/auth/login", lim, wrap(async (req, res) => {
   res.json({ ok: true, user: pub(u) });
 }));
 
-app.post("/api/auth/google", lim, wrap(async (req, res) => {
-  if (!E.GOOGLE_CLIENT_ID) return bad(res, "Google-Login ist noch nicht eingerichtet.");
-  const r = await fetch("https://oauth2.googleapis.com/tokeninfo?id_token=" + encodeURIComponent(String(req.body.credential || "")));
-  const p = await r.json();
-  if (!r.ok || p.aud !== E.GOOGLE_CLIENT_ID || String(p.email_verified) !== "true") return bad(res, "Google-Anmeldung fehlgeschlagen.");
-  const e = norm(p.email); let u = userByEmail(e), first = false;
-  if (!u) { first = true; db.prepare("INSERT INTO users(email,name,verified,google_sub,created_at) VALUES(?,?,1,?,?)").run(e, (p.name || e.split("@")[0]).slice(0, 80), p.sub, now()); }
-  else db.prepare("UPDATE users SET verified=1, google_sub=? WHERE id=?").run(p.sub, u.id);
-  u = userByEmail(e); startSession(res, u.id); linkOrders(u.id, e);
-  safe(first ? mail.welcome(e, u.name) : (u.login_alerts ? mail.loginAlert(e, u.name, req.get("user-agent") || "") : Promise.resolve()));
-  res.json({ ok: true, user: pub(u) });
-}));
-
-/* ---------- Schnell-Login: E-Mail-Code, Apple, Discord, Twitch, SMS ---------- */
-/* Anmelden ohne Passwort: Code per E-Mail, danach /api/auth/verify wie bei der Registrierung */
+/* ---------- Anmelden ohne Passwort: Code per E-Mail, danach /api/auth/verify wie bei der Registrierung ---------- */
 app.post("/api/auth/code", lim, wrap(async (req, res) => {
   const e = norm(req.body.email); if (!emailOk(e)) return bad(res, "Bitte gib eine gültige E-Mail-Adresse ein.");
   let u = userByEmail(e);
   if (!u) { db.prepare("INSERT INTO users(email,name,verified,created_at) VALUES(?,?,0,?)").run(e, e.split("@")[0].slice(0, 80), now()); u = userByEmail(e); }
+  /* Unbestätigtes Konto: ein dort gesetztes Passwort hat nie jemand mit Zugriff aufs Postfach bestätigt → verwerfen (Schutz vor vorab angelegten Konten) */
+  else if (!u.verified && u.pw_hash) db.prepare("UPDATE users SET pw_hash=NULL WHERE id=? AND verified=0").run(u.id);
   await sendVerify(u); res.json({ ok: true });
 }));
-function identLogin(provider, sub, email, name) {
-  sub = String(sub || ""); if (!sub) throw new Error("Anmeldung fehlgeschlagen.");
-  const hit = db.prepare("SELECT user_id FROM idents WHERE provider=? AND sub=?").get(provider, sub);
-  let u = hit && userById(hit.user_id), first = false;
-  if (!u) {
-    const e = email ? norm(email) : null;
-    if (e) u = userByEmail(e);
-    if (!u) {
-      if (!e) throw new Error("Bitte gib dort eine bestätigte E-Mail-Adresse frei.");
-      first = true; db.prepare("INSERT INTO users(email,name,verified,created_at) VALUES(?,?,1,?)").run(e, String(name || e.split("@")[0]).slice(0, 80), now()); u = userByEmail(e);
-    } else db.prepare("UPDATE users SET verified=1 WHERE id=?").run(u.id);
-    db.prepare("INSERT OR IGNORE INTO idents(provider,sub,user_id,created_at) VALUES(?,?,?,?)").run(provider, sub, u.id, now());
-  }
-  return { u: userById(u.id), first };
-}
-const OSIG = v => crypto.createHmac("sha256", E.SESSION_SECRET || "dev-secret").update(v).digest("base64url").slice(0, 32);
-function appleSecret() {
-  const b = o => Buffer.from(JSON.stringify(o)).toString("base64url"), n = Math.floor(Date.now() / 1000);
-  const data = b({ alg: "ES256", kid: E.APPLE_KEY_ID }) + "." + b({ iss: E.APPLE_TEAM_ID, iat: n, exp: n + 3000, aud: "https://appleid.apple.com", sub: E.APPLE_CLIENT_ID });
-  return data + "." + crypto.sign("sha256", Buffer.from(data), { key: String(E.APPLE_PRIVATE_KEY).replace(/\\n/g, "\n"), dsaEncoding: "ieee-p1363" }).toString("base64url");
-}
-const OAUTH = {
-  apple: E.APPLE_CLIENT_ID && E.APPLE_TEAM_ID && E.APPLE_KEY_ID && E.APPLE_PRIVATE_KEY ? { name: "Apple", auth: "https://appleid.apple.com/auth/authorize", token: "https://appleid.apple.com/auth/token", scope: "name email", id: E.APPLE_CLIENT_ID, secret: appleSecret, formPost: true,
-    profile: async (t, x) => { const p = JSON.parse(Buffer.from(String(t.id_token || "").split(".")[1] || "", "base64url").toString() || "{}"); let name = null;
-      try { const n = JSON.parse(x.user || "{}").name || {}; name = [n.firstName, n.lastName].filter(Boolean).join(" ") || null; } catch (e) {}
-      return { sub: p.sub, email: (p.email_verified === true || p.email_verified === "true") ? p.email : null, name }; } } : null,
-  discord: E.DISCORD_CLIENT_ID && E.DISCORD_CLIENT_SECRET ? { name: "Discord", auth: "https://discord.com/oauth2/authorize", token: "https://discord.com/api/oauth2/token", scope: "identify email", id: E.DISCORD_CLIENT_ID, secret: () => E.DISCORD_CLIENT_SECRET,
-    profile: async t => { const p = await (await fetch("https://discord.com/api/users/@me", { headers: { Authorization: "Bearer " + t.access_token } })).json(); return { sub: p.id, email: p.verified ? p.email : null, name: p.global_name || p.username }; } } : null,
-  twitch: E.TWITCH_CLIENT_ID && E.TWITCH_CLIENT_SECRET ? { name: "Twitch", auth: "https://id.twitch.tv/oauth2/authorize", token: "https://id.twitch.tv/oauth2/token", scope: "user:read:email", id: E.TWITCH_CLIENT_ID, secret: () => E.TWITCH_CLIENT_SECRET,
-    profile: async t => { const p = ((await (await fetch("https://api.twitch.tv/helix/users", { headers: { Authorization: "Bearer " + t.access_token, "Client-Id": E.TWITCH_CLIENT_ID } })).json()).data || [])[0] || {}; return { sub: p.id, email: p.email || null, name: p.display_name }; } } : null,
-};
-const SMS_ON = !!(E.TWILIO_ACCOUNT_SID && E.TWILIO_AUTH_TOKEN && E.TWILIO_VERIFY_SID);
-const authMethods = () => ({ google: !!E.GOOGLE_CLIENT_ID, apple: !!OAUTH.apple, discord: !!OAUTH.discord, twitch: !!OAUTH.twitch, sms: SMS_ON, code: !!E.RESEND_API_KEY || !PROD, passkey: PK_RP });
-const safePath = r => /^\/[\w\-/?=&%.]*$/.test(String(r || "")) ? String(r) : "/konto";
-app.get("/auth/:p", (req, res) => {
-  const P = OAUTH[req.params.p]; if (!P) return res.redirect(302, "/login");
-  const st = rnd(16), r = safePath(req.query.r), v = `${req.params.p}.${st}.${Buffer.from(r).toString("base64url")}`;
-  res.cookie("ic_oa", `${v}.${OSIG(v)}`, { httpOnly: true, secure: PROD, sameSite: PROD ? "none" : "lax", maxAge: 10 * 60e3, path: "/auth" });
-  const q = new URLSearchParams({ client_id: P.id, redirect_uri: `${BASE}/auth/${req.params.p}/callback`, response_type: "code", scope: P.scope, state: st });
-  if (P.formPost) q.set("response_mode", "form_post");
-  res.redirect(302, `${P.auth}?${q}`);
-});
+/* Rücksprung nach der Anmeldung: nur Pfade dieser Seite (kein „//fremde.seite“, kein Backslash) */
+const safePath = r => { const s = String(r || ""); return /^\/(?![\/\\])[\w\-/?=&%.~+:,]*$/.test(s) && s.length <= 300 ? s : "/konto"; };
 const formBody = req => new Promise(ok => { if (req.body && Object.keys(req.body).length) return ok(req.body); let d = ""; req.on("data", c => { d += c; if (d.length > 3e4) req.destroy(); }); req.on("end", () => ok(Object.fromEntries(new URLSearchParams(d)))); req.on("error", () => ok({})); });
-const oauthCallback = wrap(async (req, res) => {
-  const P = OAUTH[req.params.p], x = req.method === "POST" ? await formBody(req) : req.query, fail = m => res.redirect(302, `/login?fehler=${encodeURIComponent(m)}`);
-  if (!P) return fail("Diese Anmeldung ist nicht eingerichtet.");
-  const raw = String(cookies(req).ic_oa || ""), i = raw.lastIndexOf("."), v = raw.slice(0, i), [pv, st, rb] = v.split(".");
-  res.clearCookie("ic_oa", { path: "/auth" });
-  if (!raw || OSIG(v) !== raw.slice(i + 1) || pv !== req.params.p || st !== String(x.state || "")) return fail("Die Anmeldung ist abgelaufen. Bitte versuch es noch einmal.");
-  if (!x.code) return fail(`${P.name}-Anmeldung abgebrochen.`);
-  const tr = await fetch(P.token, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
-    body: new URLSearchParams({ client_id: P.id, client_secret: P.secret(), code: String(x.code), grant_type: "authorization_code", redirect_uri: `${BASE}/auth/${req.params.p}/callback` }) });
-  const t = await tr.json().catch(() => ({}));
-  if (!tr.ok || (!t.access_token && !t.id_token)) { console.error(`${P.name}-Login:`, tr.status, JSON.stringify(t).slice(0, 200)); return fail(`${P.name}-Anmeldung fehlgeschlagen.`); }
-  try {
-    const pr = await P.profile(t, x), { u, first } = identLogin(req.params.p, pr.sub, pr.email, pr.name);
-    startSession(res, u.id); linkOrders(u.id, u.email);
-    safe(first ? mail.welcome(u.email, u.name) : (u.login_alerts ? mail.loginAlert(u.email, u.name, req.get("user-agent") || "") : Promise.resolve()));
-    res.redirect(302, safePath(Buffer.from(rb || "", "base64url").toString()));
-  } catch (e) { fail(e.message); }
-});
-app.get("/auth/:p/callback", oauthCallback);
-app.post("/auth/:p/callback", oauthCallback);
-/* SMS-Code über Twilio Verify */
-const telNorm = t => { let d = String(t || "").replace(/[^\d+]/g, ""); if (d.startsWith("00")) d = "+" + d.slice(2); else if (d.startsWith("0")) d = "+49" + d.slice(1); else if (!d.startsWith("+")) d = "+" + d; return /^\+\d{8,15}$/.test(d) ? d : null; };
-const twilio = (path, body) => fetch(`https://verify.twilio.com/v2/Services/${E.TWILIO_VERIFY_SID}/${path}`, { method: "POST",
-  headers: { Authorization: "Basic " + Buffer.from(`${E.TWILIO_ACCOUNT_SID}:${E.TWILIO_AUTH_TOKEN}`).toString("base64"), "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(body) }).then(r => r.json().then(j => ({ ok: r.ok, ...j })));
-app.post("/api/auth/sms/send", lim, wrap(async (req, res) => {
-  if (!SMS_ON) return bad(res, "SMS-Anmeldung ist noch nicht eingerichtet.");
-  const to = telNorm(req.body.phone); if (!to) return bad(res, "Bitte gib eine gültige Handynummer ein.");
-  const r = await twilio("Verifications", { To: to, Channel: "sms", Locale: "de" });
-  if (!r.ok) { console.error("Twilio:", r.code, r.message); return bad(res, "Die SMS konnte nicht gesendet werden. Prüfe die Nummer."); }
-  res.json({ ok: true, phone: to });
-}));
-app.post("/api/auth/sms/verify", lim, wrap(async (req, res) => {
-  if (!SMS_ON) return bad(res, "SMS-Anmeldung ist noch nicht eingerichtet.");
-  const to = telNorm(req.body.phone), code = String(req.body.code || "").replace(/\D/g, "");
-  if (!to || code.length < 4) return bad(res, "Bitte gib den Code aus der SMS ein.");
-  const r = await twilio("VerificationCheck", { To: to, Code: code });
-  if (!r.ok || r.status !== "approved") return bad(res, "Der Code stimmt nicht oder ist abgelaufen.");
-  let hit = db.prepare("SELECT user_id FROM idents WHERE provider='sms' AND sub=?").get(to), u = hit && userById(hit.user_id);
-  if (!u) { const e = `tel${to.replace(/\D/g, "")}@sms.instacode.store`; u = userByEmail(e);
-    if (!u) { db.prepare("INSERT INTO users(email,name,verified,created_at) VALUES(?,?,1,?)").run(e, `Kunde ···${to.slice(-4)}`, now()); u = userByEmail(e); }
-    db.prepare("INSERT OR IGNORE INTO idents(provider,sub,user_id,created_at) VALUES('sms',?,?,?)").run(to, u.id, now()); }
-  startSession(res, u.id); res.json({ ok: true, user: pub(u) });
-}));
+/* Schnell-Login und Konto-Erstellung über Anbieter (Apple, Google, PayPal, Microsoft, Discord, Twitch, Steam, Amazon, SMS) – auth.js */
+AUTH = require("./auth")({ app, db, E, PROD, LIVE, DEVPAY, BASE, BASE_HOST, mail, now, sha, rnd, norm, emailOk, bad, wrap, need, admin, lim, rateLimit, cookies,
+  startSession, linkOrders, userById, userByEmail, safe, isAdmin, formBody, safePath, isPh, pub: u => pub(u), pkRp: () => PK_RP });
 
 /* ---------- Passkeys (Face ID, Touch ID, Windows Hello) – WebAuthn ohne Zusatzpakete ----------
    rpId = Host aus BASE_URL (ohne „www.“), lokal „localhost“. Erlaubte Herkunft: BASE_URL (und die www-Variante).
@@ -932,7 +846,7 @@ app.post("/api/auth/logout", (req, res) => { endSession(req, res); res.json({ ok
 
 app.post("/api/auth/forgot", lim, wrap(async (req, res) => {
   const u = userByEmail(norm(req.body.email));
-  if (u) {
+  if (u && !isPh(u.email)) {
     const t = rnd(24);
     db.prepare("UPDATE tokens SET used=1 WHERE user_id=? AND kind='reset'").run(u.id);
     db.prepare("INSERT INTO tokens(user_id,kind,hash,expires_at) VALUES(?,?,?,?)").run(u.id, "reset", sha(t), now() + 30 * 60e3);
@@ -964,7 +878,7 @@ app.delete("/api/me", need, wrap(async (req, res) => {
   const u = req.user;
   db.prepare("DELETE FROM users WHERE id=?").run(u.id); // Bestellungen bleiben für die Buchhaltung erhalten (Aufbewahrungspflicht)
   res.clearCookie("ic_sess", { path: "/" });
-  safe(mail.deleted(u.email, u.name));
+  if (!isPh(u.email)) safe(mail.deleted(u.email, u.name));
   res.json({ ok: true });
 }));
 
@@ -2215,7 +2129,7 @@ app.post("/api/admin/mails/:id/test", admin, wrap(async (req, res) => {
   try { await mail._sendSample(String(req.params.id), req.user.email); res.json({ ok: true, to: req.user.email }); } catch (e) { bad(res, "Versand fehlgeschlagen: " + e.message); }
 }));
 /* Kasse, Konto, Bestellungen, Suche und Weiterleitungen zu fremden Seiten (/go/) gehören nicht in den Suchindex */
-app.get("/robots.txt", (req, res) => res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /r/\nDisallow: /go/\nDisallow: /kasse\nDisallow: /warenkorb\nDisallow: /konto\nDisallow: /login\nDisallow: /bestellung/\nDisallow: /verifizieren\nDisallow: /passwort\nDisallow: /suche\nDisallow: /newsletter/\nDisallow: /abmelden\n\nSitemap: ${BASE}/sitemap.xml\n`));
+app.get("/robots.txt", (req, res) => res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /auth/\nDisallow: /r/\nDisallow: /go/\nDisallow: /kasse\nDisallow: /warenkorb\nDisallow: /konto\nDisallow: /login\nDisallow: /bestellung/\nDisallow: /verifizieren\nDisallow: /passwort\nDisallow: /suche\nDisallow: /newsletter/\nDisallow: /abmelden\n\nSitemap: ${BASE}/sitemap.xml\n`));
 app.get("/sitemap.xml", (req, res) => {
   const day = new Date().toISOString().slice(0, 10);
   const urls = ["/", "/abo", "/kategorien", "/aufladen", "/angebote", "/hilfe", "/agb", "/datenschutz", "/widerruf", "/kuendigen"]

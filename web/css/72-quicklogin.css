@@ -52,3 +52,95 @@
 .od-acct-g{display:flex;justify-content:center;min-height:44px}
 .od-acct-q .qa-btn{min-height:44px}
 .od-acct-q .od-acct-f{margin:0 2px}
+
+/* ---------- Express-Anmeldung mit allen eingerichteten Anbietern (53-express.js) ----------
+   Face ID / Passkey groß oben, darunter Apple, Google und PayPal in voller Breite (Markenregeln: Titel „Mit … fortfahren“),
+   dann Microsoft, Discord, Twitch, Steam, Amazon, Handy und E-Mail-Code als Glas-Kacheln in zwei Spalten.
+   Kein backdrop-filter, keine Daueranimation (iPhone-Speicher). */
+@font-face{font-family:"Roboto GSI";src:url(/auth/roboto-500.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+2013-2014,U+2018-201E,U+20AC}
+.xa{display:grid;gap:10px}
+.xa-sim{display:flex;align-items:center;gap:8px;margin:0;padding:8px 12px;border-radius:12px;font-size:12.5px;font-weight:500;line-height:1.35;color:#6B4100;
+  background:repeating-linear-gradient(135deg,#FFF6DF 0 10px,#FFF0CC 10px 20px);box-shadow:inset 0 0 0 .5px rgba(184,110,0,.45)}
+.xa-sim .ico{width:15px;height:15px;flex:none;color:#B86E00}
+.xa-pk .ico{width:19px;height:19px}
+.xa-w{display:grid;gap:10px}
+.xa-b,.xa-c{position:relative;display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:var(--pill);text-decoration:none;-webkit-tap-highlight-color:transparent;
+  transition:transform .25s var(--spring),box-shadow .2s,background .2s,opacity .2s}
+.xa-b{gap:10px;padding:0 18px}
+.xa-b img{width:20px;height:20px;flex:none}
+.xa-b:active,.xa-c:active{transform:scale(.98)}
+.xa-b:focus-visible,.xa-c:focus-visible,.xa-i:focus-visible{outline:none;box-shadow:0 0 0 2px #fff,0 0 0 4px #7D5CF0}
+/* Apple: schwarz mit weißem Zeichen; Titel 43 % der Knopfhöhe in Systemschrift (Apple HIG) */
+.xa-apple{color:#fff;background:radial-gradient(120% 90% at 50% -40%,rgba(255,255,255,.2),rgba(255,255,255,0) 58%),#000;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 2px rgba(0,0,0,.2),0 10px 22px -14px rgba(0,0,0,.65);
+  font:500 19px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:-.015em}
+.xa-apple img{width:19px;height:19px;margin-top:-3px}
+/* Google: weiße Fläche, Rand #747775 innen, Schrift #1F1F1F Roboto Medium 14/20, farbiges „G“ (Google-Richtlinien) */
+.xa-google{gap:10px;padding:0 12px;color:#1F1F1F;background:#fff;box-shadow:inset 0 0 0 1px #747775;font:500 14px/20px "Roboto GSI",Roboto,Arial,sans-serif;letter-spacing:.25px}
+/* PayPal und die übrigen: helles Glas mit Haarlinie, offizielles farbiges Zeichen, dunkle Schrift */
+.xa-paypal,.xa-c{color:var(--ink);background:var(--g-gloss),linear-gradient(180deg,#fff,#F6F7F9);
+  box-shadow:inset 0 1px 0 #fff,inset 0 0 0 .5px rgba(14,16,20,.16),0 1px 2px rgba(14,16,20,.05),0 8px 18px -12px rgba(14,16,20,.22)}
+.xa-paypal{font-size:15px;font-weight:500;letter-spacing:-.01em}
+.xa-paypal img{width:auto;height:21px}
+@media (hover:hover){
+  .xa-apple:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 2px 4px rgba(0,0,0,.2),0 14px 26px -14px rgba(0,0,0,.7)}
+  .xa-google:hover{box-shadow:inset 0 0 0 1px #747775,0 1px 3px rgba(60,64,67,.18),0 6px 14px -8px rgba(60,64,67,.3)}
+  .xa-paypal:hover,.xa-c:hover{box-shadow:inset 0 1px 0 #fff,inset 0 0 0 .5px rgba(14,16,20,.24),0 2px 4px rgba(14,16,20,.06),0 14px 26px -14px rgba(14,16,20,.32)}
+}
+.xa-gis{display:flex;justify-content:center;min-height:44px}
+.xa-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.xa-g.odd>:last-child{grid-column:1/-1}
+.xa-c{gap:9px;padding:0 12px;font-size:14.5px;font-weight:500;letter-spacing:-.01em;font-family:inherit;width:100%}
+.xa-c img,.xa-c .ico{width:20px;height:20px;flex:none}
+.xa-c .ico{color:var(--ink)}
+.xa-c span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.xa-c[aria-expanded="true"]{background:var(--g-ink);color:#fff;box-shadow:var(--g-ink-edge),0 6px 14px -9px rgba(14,16,20,.5)}
+.xa-c[aria-expanded="true"] .ico{color:#fff}
+/* Weiterleitung läuft */
+.xa-b.go,.xa-c.go,.xa-i.go{opacity:.62;pointer-events:none}
+.xa-sms{margin-top:2px}
+.xa-sms .ql-row+div{margin-top:8px}
+.xa-sms #smsCodeW{margin-top:8px}
+.xa-fine{margin:8px 2px 0;font-size:12.5px;line-height:1.45;color:var(--ink-3)}
+.xa-sms .err{min-height:0;margin:6px 2px 0}
+.xa-sms .err:empty{margin:0}
+/* Anmelde-Fenster: etwas enger */
+.ql .xa{gap:9px}
+.ql .xa-w,.ql .xa-g{gap:9px}
+.ql-code[hidden]{display:none}
+.ql .ql-code .lbl{margin-top:16px}
+/* Bestellseite: schmale Spalte */
+.od-acct-q .xa{gap:8px}
+.od-acct-q .xa-w,.od-acct-q .xa-g{gap:8px}
+@media (max-width:359px){.xa-g{grid-template-columns:minmax(0,1fr)}.xa-g.odd>:last-child{grid-column:auto}.xa-apple{font-size:17px}}
+
+/* Kasse „Schneller:“ und Konto: runde Zeichen-Knöpfe */
+.xa-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ck-qa.xa-i,.xa-i{width:40px;height:40px;min-height:40px;padding:0;justify-content:center;gap:0;border-radius:50%;flex:none}
+.xa-i img,.xa-i .ico{width:20px;height:20px}
+.xa-i.ck-qa-apple{background:#000;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 8px 18px -12px rgba(0,0,0,.6)}
+.xa-i.ck-qa-apple img{filter:none;width:18px;height:18px;margin-top:-2px}
+.ck-qa.xa-i-google,.xa-i-google{background:#fff;box-shadow:inset 0 0 0 1px #747775}
+.xa-i[hidden]{display:none}
+.ck-pk .xa-row{flex:1 1 auto;min-width:0}
+.ck-g{min-height:40px}
+
+/* /konto/email: E-Mail nachtragen */
+.xm .lbl{margin-top:22px}
+.xm .ql-row .inp{min-height:48px}
+.xm .ql-row .btn{min-height:48px;margin-top:0}
+.xm .err{min-height:0;margin:8px 2px 0}
+.xm .err:empty{margin:0}
+.xm+.au-legal{margin-top:18px}
+
+/* Konto: Hinweis „E-Mail fehlt“ und Anmeldemethoden */
+.acc-need{display:flex;align-items:center;gap:14px;margin:14px 0 0;padding:14px 16px;text-decoration:none;color:var(--ink);
+  background:linear-gradient(180deg,#FFF8E8,#FFF2D6)!important;box-shadow:inset 0 0 0 .5px rgba(184,110,0,.4),0 10px 24px -18px rgba(184,110,0,.55)!important}
+.acc-need-i{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:12px;color:#fff;background:#B86E00}
+.acc-need-i .ico{width:19px;height:19px}
+.acc-need-t{flex:1;min-width:0}.acc-need-t b{display:block;font-size:15px;font-weight:560}.acc-need-t small{display:block;margin-top:2px;font-size:13px;color:#6B4100}
+.acc-need>.ico{width:18px;height:18px;flex:none;color:#6B4100}
+.lk-ic img{width:20px;height:20px}
+.lk-more{padding:14px 18px 16px;box-shadow:inset 0 1px 0 var(--line)}
+.lk-more p{margin:0 0 10px;font-size:13.5px;line-height:1.45;color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){.xa-b,.xa-c{transition:none}}

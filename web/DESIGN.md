@@ -55,6 +55,11 @@ Wenn ein Bauteil in deinem Bereich anders aussehen muss: **im Container deines B
 - `.lite` auf `<html>` = Touch oder schmal: kein Blur auf Karten, keine `.holo`, weniger Ebenen.
 - `prefers-reduced-motion` wird global respektiert.
 
+## Anmeldung (Express, js/53-express.js, css/72-quicklogin.css)
+- Ein Raster für Anmelde-Fenster, /login, Bestellseite (`xaGrid`) und eine runde Zeichen-Reihe für die Kasse „Schneller:“ (`xaRow`). Nur eingerichtete Anbieter (`CFG.auth`), nie tote Knöpfe.
+- Reihenfolge: Face ID/Passkey oben; auf Apple-Geräten Apple vor Google; dann PayPal, Microsoft, Discord, Twitch, Steam, Amazon, Handy, E-Mail-Code.
+- Markenregeln nicht „verglasen“: Apple schwarz mit weißem Zeichen, Titel 43 % der Knopfhöhe; Google weiß mit Rand #747775, Roboto Medium 14 px (`/auth/roboto-500.woff2`), farbiges „G“; Titel immer „Mit … fortfahren“. Zeichen nur aus `public/auth/`.
+
 ## Barrierefreiheit
 Echte `<button>`/`<a href>`; sichtbarer Fokus (`:focus-visible`, Lavendel); Touch-Ziele ≥ 32 px (WCAG 2.2 verlangt 24 px), Hauptaktionen 44 px; Text ≥ 4.5:1 (`--ink-3` ist die dunkelste erlaubte Textfarbe); `aria-label` an Icon-Knöpfen; dekorative Bühnen `aria-hidden`.
 

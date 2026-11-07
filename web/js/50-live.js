@@ -11,7 +11,7 @@ const eurc=c=>money((c||0)/100);
 const mask=c=>"•••• •••• •••• "+String(c).slice(-4);
 const stBadge=s=>`<span class="ostat" data-s="${esc(s)}">${esc(STL[s]||s)}</span>`;
 const brandOr=id=>byId(id)||{bg:"#0B0D1C",fg:"#fff",ini:"?",name:id};
-function setUser(u){S.user=u?{name:u.name||u.email.split("@")[0],email:u.email,provider:u.google?"google":"email",loginAlerts:!!u.loginAlerts}:null;if(u)S.acct=1;/* Gerät kennt ein Konto (Bestellseite: kein „Konto anlegen“) */save();renderAcc()}
+function setUser(u){S.user=u?{name:u.name||(u.email||"").split("@")[0]||"Kunde",email:u.email||"",provider:u.google?"google":"email",loginAlerts:!!u.loginAlerts,verified:u.verified!==false&&!u.needsEmail,needsEmail:!!u.needsEmail,emailHint:u.emailHint||"",logins:u.logins||[]}:null;if(u)S.acct=1;/* Gerät kennt ein Konto (Bestellseite: kein „Konto anlegen“) */save();renderAcc()}
 function busy(el,on,label){if(!el)return;if(on){el.dataset.t=el.innerHTML;el.innerHTML=`<span class="spin" style="display:inline-block;width:18px;height:18px;border-width:2.5px;margin:0"></span>${label||""}`;el.disabled=true}else if(el.dataset.t){el.innerHTML=el.dataset.t;el.disabled=false}}
 function boot(){
   $("#testbar").hidden=!(CFG.testmode&&CFG.payments);
@@ -42,29 +42,22 @@ function apiLogin(_,qs){
    ${a.code?`<div class="au-or">oder</div><button class="btn btn-soft btn-block" data-a="codeLogin" data-v="${esc(r)}">${ic("i-mail")}Ohne Passwort: Code per E-Mail</button>`:""}
    ${reg?"":`<button class="btn btn-ghost btn-block au-forgot" data-a="forgot">Passwort vergessen?</button>`}
    <p class="au-legal">Es gelten unsere <a href="/agb">AGB</a>. Wie wir mit deinen Daten umgehen, steht in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>`),
-   after(){if(CFG.google)gsi(r)}};
+   after(){if(CFG.google)gsi(r);xaPkPaint()}};
 }
-/* Schnell-Login: Passkey (wenn der Browser es kann) und nur eingerichtete Anbieter als Logo-Knöpfe; im Anmelde-Fenster (q.sheet) ist der Passkey der Hauptknopf */
-function quickAuth(r,q={}){const a=CFG.auth||{},rq=encodeURIComponent(r),L=k=>`<img src="/img/mark/logos/${k}.svg" alt="" onerror="this.remove()">`;
-  const o=[pkCan()&&`<button class="${q.sheet?"btn btn-primary btn-ink btn-lg btn-block ql-pk":"qa-btn qa-pk"}" data-a="pkLogin" data-v="${esc(r)}">${ic("i-face")}<span>Mit Passkey anmelden</span></button>`,
-    CFG.google&&`<div id="gbtn" class="au-g"></div>`,
-    a.apple&&`<a class="qa-btn qa-apple" href="/auth/apple?r=${rq}">${L("apple")}<span>Mit Apple fortfahren</span></a>`,
-    a.discord&&`<a class="qa-btn" href="/auth/discord?r=${rq}">${L("discord-icon")}<span>Mit Discord fortfahren</span></a>`,
-    a.twitch&&`<a class="qa-btn" href="/auth/twitch?r=${rq}">${L("twitch")}<span>Mit Twitch fortfahren</span></a>`,
-    a.sms&&`<button class="qa-btn" data-a="smsOpen" aria-expanded="false" aria-controls="smsBox">${ic("i-phone-f")}<span>Mit SMS-Code anmelden</span></button>`].filter(Boolean).join("");
+/* Schnell-Login und Konto-Erstellung: Face ID / Passkey und alle eingerichteten Anbieter (53-express.js); im Anmelde-Fenster (q.sheet) ist der Passkey der Hauptknopf.
+   q.mail: Zelle „E-Mail-Code“ (klappt im Fenster das E-Mail-Feld auf) */
+function quickAuth(r,q={}){
+  const g=xaGrid(r,{ctx:q.sheet?"sheet":"page",mail:!!q.mail});
   const err=new URLSearchParams(location.search).get("fehler");
-  return `${o?`<div class="au-q">${o}
-   ${a.sms?`<div class="au-sms" id="smsBox" hidden><label class="lbl" for="smsTel">Handynummer</label><div class="row"><input class="inp" id="smsTel" inputmode="tel" autocomplete="tel" placeholder="0151 2345678"><button class="btn btn-soft" data-a="smsSend">Code senden</button></div>
-   <div id="smsCodeW" hidden><div class="row"><input class="inp" id="smsCode" inputmode="numeric" autocomplete="one-time-code" maxlength="40" placeholder="Code aus der SMS" aria-label="Code aus der SMS"><button class="btn btn-primary" data-a="smsCheck" data-v="${esc(r)}">Anmelden</button></div></div><div class="err" id="smsErr" role="alert"></div></div>`:""}
-   </div><div class="au-or">oder mit E-Mail</div>`:""}${err?`<div class="err au-ferr" role="alert">${esc(err)}</div>`:""}`}
-A.smsOpen=(_,el)=>{const b=$("#smsBox");b.hidden=!b.hidden;el.setAttribute("aria-expanded",String(!b.hidden));if(!b.hidden)$("#smsTel").focus()};
+  return `${err?`<div class="err au-ferr" role="alert">${esc(err)}</div>`:""}${g?`<div class="au-q">${g}</div>${q.sheet?"":`<div class="au-or">oder mit E-Mail</div>`}`:""}`}
+A.smsOpen=(_,el)=>{const b=$("#smsBox");if(!b)return;b.hidden=!b.hidden;if(el)el.setAttribute("aria-expanded",String(!b.hidden));if(!b.hidden){$("#smsTel").focus();b.scrollIntoView&&b.scrollIntoView({block:"nearest",behavior:reduce?"auto":"smooth"})}};
 A.smsSend=async(_,el)=>{const e=$("#smsErr");e.textContent="";busy(el,true);try{const j=await API("/auth/sms/send",{method:"POST",body:{phone:$("#smsTel").value}});S.smsTel=j.phone;$("#smsCodeW").hidden=false;$("#smsCode").focus();toast("SMS-Code gesendet")}catch(x){e.textContent=x.message}busy(el,false)};
-A.smsCheck=async(r,el)=>{const e=$("#smsErr");e.textContent="";busy(el,true);try{const j=await API("/auth/sms/verify",{method:"POST",body:{phone:S.smsTel||$("#smsTel").value,code:$("#smsCode").value}});setUser(j.user);toast("Angemeldet");go(r||"/konto")}catch(x){e.textContent=x.message;busy(el,false)}};
+A.smsCheck=async(r,el)=>{const e=$("#smsErr");e.textContent="";busy(el,true);try{const j=await API("/auth/sms/verify",{method:"POST",body:{phone:S.smsTel||$("#smsTel").value,code:$("#smsCode").value}});busy(el,false);loggedIn(j.user,r||"/konto")}catch(x){e.textContent=x.message;busy(el,false)}};
 A.codeLogin=async(r,el)=>{const i=$("#aMail"),m=i.value.trim(),e=$("#aErr");e.textContent="";i.classList.remove("bad");if(!/^\S+@\S+\.\S+$/.test(m)){e.textContent="Gib deine E-Mail-Adresse ein – wir schicken dir einen Code.";i.classList.add("bad");i.focus();return}busy(el,true);
   try{await API("/auth/code",{method:"POST",body:{email:m}});S.pendingEmail=m;save();toast(`Code an ${m} geschickt`);go("/verifizieren?r="+encodeURIComponent(r||"/konto"))}catch(x){e.textContent=x.message;busy(el,false)}};
 /* Google-Knopf (Google Identity Services). el/opt: anderer Platz und Größe (Kasse, Bestellseite); Fehler landen im nächsten Fehlerfeld */
 function gsi(r,done,el,opt){
-  const init=()=>{try{const g=window.google.accounts.id,t=el||$("#gbtn");if(!t||!t.isConnected)return;g.initialize({client_id:CFG.google,callback:async x=>{try{const j=await API("/auth/google",{method:"POST",body:{credential:x.credential}});if(done)return done(j.user);setUser(j.user);toast(`Angemeldet als ${j.user.name}`);go(r)}catch(e){const er=(el&&el.closest(".ck-ev")&&$("#evErr"))||(el&&el.closest(".od-acct")&&$("#odaErr"))||$("#sheet #qlErr")||$("#aErr");if(er)er.textContent=e.message}}});g.renderButton(t,Object.assign({theme:"outline",size:"large",shape:"pill",text:"continue_with",locale:"de",width:300},opt||{}))}catch(e){}};
+  const init=()=>{try{const g=window.google.accounts.id,t=el||$("#gbtn");if(!t||!t.isConnected)return;g.initialize({client_id:CFG.google,callback:async x=>{try{const j=await API("/auth/google",{method:"POST",body:{credential:x.credential}});if(done)return done(j.user);loggedIn(j.user,r)}catch(e){const er=(el&&el.closest(".ck-ev")&&$("#evErr"))||(el&&el.closest(".od-acct")&&$("#odaErr"))||$("#sheet #qlErr")||$("#aErr");if(er)er.textContent=e.message}}});g.renderButton(t,Object.assign({theme:"outline",size:"large",shape:"pill",text:"continue_with",locale:"de",width:300},opt||{}))}catch(e){}};
   if(window.google&&window.google.accounts)return init();
   const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.onload=init;document.head.appendChild(s);
 }
@@ -220,7 +213,8 @@ A.reorderLive=id=>{const o=ordCache[id];if(!o)return;let n=0;o.items.forEach(i=>
 
 /* Konto */
 A.numDel=i=>{S.numbers.splice(+i,1);save();route(true);toast("Nummer gelöscht")};
-function apiAccount(tab){
+function apiAccount(tab,qs){
+  if(tab==="email")return xaEmail(qs);/* E-Mail nachtragen (53-express.js) */
   if(!S.user)return apiLogin(null,new URLSearchParams("r=/konto"+(tab?"/"+tab:"")));
   const u=S.user,T=[["bestellungen","Bestellungen","i-receipt"],["abos","Abos","i-repeat"],["favoriten","Favoriten","i-heart"],["nummern","Nummern","i-phone-f"],["einstellungen","Einstellungen","i-gear"]];
   if(!T.some(t=>t[0]===tab))tab="bestellungen";
@@ -229,22 +223,28 @@ function apiAccount(tab){
   if(tab==="nummern")body=S.numbers.length?`<div class="card acc-set">${S.numbers.map((x,i)=>{const o=byId(x.op),cc=COUNTRIES.find(c=>c.c===x.c)||COUNTRIES[0];return `<div class="setrow"><span class="si-ic">${flag(cc.c,22)}</span><div class="mid"><b>${cc.dial} ${esc(x.n)}</b><small>${o?esc(o.name):"Anbieter unbekannt"}</small></div><a class="btn btn-soft btn-sm" href="/aufladen?n=${encodeURIComponent(x.n)}&op=${encodeURIComponent(x.op||"")}">Aufladen</a><button class="acc-rm" data-a="numDel" data-v="${i}" aria-label="Nummer ${esc(x.n)} löschen">${ic("i-trash")}</button></div>`}).join("")}</div><p class="acc-fine">Gespeicherte Nummern liegen nur auf diesem Gerät.</p>`
     :`<div class="card acc-none">${empty("Noch keine Nummern","Nach einer Aufladung kannst du die Nummer hier speichern. Sie liegt nur auf diesem Gerät.",["/aufladen","Handy aufladen"])}</div>`;
   if(tab==="einstellungen")body=`<div class="card acc-set">
-   <div class="setrow"><span class="si-ic">${ic("i-mail")}</span><div class="mid"><b>E-Mail</b><small>${esc(u.email)}</small></div></div>
+   ${u.needsEmail?`<a class="setrow" href="/konto/email?r=/konto/einstellungen"><span class="si-ic">${ic("i-mail")}</span><div class="mid"><b>E-Mail</b><small>Noch nicht bestätigt – jetzt hinzufügen</small></div>${ic("i-chev")}</a>`
+     :`<div class="setrow"><span class="si-ic">${ic("i-mail")}</span><div class="mid"><b>E-Mail</b><small>${esc(u.email)}</small></div></div>`}
    <div class="setrow"><span class="si-ic">${ic("i-bell")}</span><div class="mid"><b id="alL">Anmelde-Hinweise per E-Mail</b><small>Wir schreiben dir bei jeder neuen Anmeldung.</small></div><button class="switch" role="switch" aria-checked="${!!u.loginAlerts}" data-a="alerts" aria-labelledby="alL"></button></div>
-   ${typeof consentRows==="function"?consentRows()/* Bewertungsanfragen + Newsletter (71-newsletter.js) */:""}
+   ${!u.needsEmail&&typeof consentRows==="function"?consentRows()/* Bewertungsanfragen + Newsletter (71-newsletter.js) */:""}
    <button class="setrow" data-a="country"><span class="si-ic">${flag(ctry().c,22)}</span><div class="mid"><b>Land für Aufladungen</b><small>${esc(ctry().n)}</small></div>${ic("i-chev")}</button></div>
+   <h2 class="acc-sh" id="lkH">Anmeldemethoden</h2>
+   <section class="card acc-set acc-lk" aria-labelledby="lkH"><div id="lkList" class="lk-list" aria-live="polite"><div class="pk-wait"><span class="spin"></span></div></div></section>
    <h2 class="acc-sh" id="pkH">Passkeys</h2>
    <section class="card acc-set acc-pk" aria-labelledby="pkH"><div id="pkList" class="pk-list" aria-live="polite"><div class="pk-wait"><span class="spin"></span></div></div>
     ${pkCan()?`<div class="pk-add"><p>Anmelden mit Face ID, Touch ID oder Windows Hello – ohne Passwort und ohne Code.</p><button class="btn btn-primary btn-sm" data-a="pkAdd">${ic("i-plus")}Passkey hinzufügen</button></div>`:`<p class="pk-none">In diesem Browser kannst du keinen Passkey anlegen.</p>`}</section>
    <div class="acc-out"><button class="btn btn-soft btn-block btn-lg" data-a="logout">${ic("i-logout")}Abmelden</button><button class="btn btn-ghost btn-block acc-del" data-a="delAcc">Konto löschen</button></div>`;
   return {title:"Mein Konto",html:`<div class="acc sec">
-<header class="acc-head rv"><span class="acc-av" data-off aria-hidden="true">${esc(initials(u.name))}</span><div class="acc-hi"><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Abos, Favoriten und Einstellungen.</p></div><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email)}</span></span><i class="gc-glare"></i><i class="rim"></i></span></header>
+<header class="acc-head rv"><span class="acc-av" data-off aria-hidden="true">${esc(initials(u.name))}</span><div class="acc-hi"><h1 class="acc-h">Hallo, ${esc(u.name.split(" ")[0])}</h1><p class="acc-p">Deine Bestellungen, Abos, Favoriten und Einstellungen.</p></div><span class="gc ink tilt acc-card" aria-hidden="true"><span class="art"><span class="mc-top">${LOGO(30)}instantcodes</span><span class="mc-name">${esc(u.name)}</span><span class="mc-mail">${esc(u.email||"E-Mail fehlt noch")}</span></span><i class="gc-glare"></i><i class="rim"></i></span></header>
+${u.needsEmail?`<a class="card acc-need rv" href="/konto/email?r=/konto"><span class="acc-need-i" aria-hidden="true">${ic("i-mail")}</span><span class="acc-need-t"><b>Bestätige noch deine E-Mail-Adresse</b><small>Dorthin schicken wir deine Codes. Ein Code genügt.</small></span>${ic("i-chev")}</a>`:""}
 ${accQaHTML(tab)/* Schnellaktionen (52-passkey.js) */}
 <nav class="acc-tabs" aria-label="Kontobereiche">${T.map(t=>`<a href="/konto/${t[0]}"${t[0]===tab?' aria-current="page"':""}>${ic(t[2])}<span>${t[1]}</span></a>`).join("")}</nav>
 <div class="acc-body">${body}</div></div>`,
   after(){
     const op=API("/orders");accQa(op);
-    if(tab==="einstellungen"){pkMount();if(typeof consentMount==="function")consentMount()}
+    if(tab==="einstellungen"){pkMount();lkMount();if(!u.needsEmail&&typeof consentMount==="function")consentMount();
+      /* Rücksprung vom Verbinden mit einem Anbieter (auth.js): ?verbunden=steam bzw. ?fehler=… */
+      const vb=qs&&qs.get("verbunden"),fe=qs&&qs.get("fehler");if(vb||fe){setTimeout(()=>toast(fe||`${lkName(vb)} ist jetzt verbunden`),300);try{history.replaceState(null,"","/konto/einstellungen")}catch(e){}}}
     if(tab==="abos")return aboAccount();
     if(tab!=="bestellungen")return;
     op.then(j=>{const el=$("#accBody");if(!el)return;j.orders.forEach(o=>ordCache[o.id]=o);el.classList.remove("acc-wait");
@@ -332,7 +332,7 @@ const LEGAL={
 <li><b>E-Mail-Versand:</b> Resend (Plus Five Five, Inc.), USA, für Bestellbestätigungen, Codes und Konto-E-Mails. Grundlage: EU-Standardvertragsklauseln.</li>
 <li><b>Bezug von Codes und Aufladungen:</b> Reloadly Inc., USA. Für Handy-Aufladungen übermitteln wir die Rufnummer und den Betrag, für Codes nur Produkt und Menge, keine Kundendaten. Grundlage: Art. 6 Abs. 1 lit. b DSGVO und EU-Standardvertragsklauseln.</li>
 <li><b>Domain und E-Mail-Postfach:</b> IONOS SE, Deutschland.</li>
-${CFG.google?`<li><b>Anmeldung mit Google:</b> Google Ireland Ltd. Nur wenn du diese Anmeldung wählst, erhalten wir Name und E-Mail von Google.</li>`:""}
+${xaPrivacy()/* Apple, Google, PayPal, Microsoft, Discord, Twitch, Steam, Amazon, SMS – nur eingerichtete (53-express.js) */}
 ${CFG.trustpilot&&CFG.trustpilot.widget?`<li><b>Trustpilot:</b> Trustpilot A/S, Dänemark. Das Bewertungs-Widget lädt nur nach deiner Einwilligung im Cookie-Banner.</li>`:""}
 </ul>
 <h2>4. Chat mit der KI-Beraterin (Anthropic)</h2>

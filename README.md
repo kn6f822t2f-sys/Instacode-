@@ -62,8 +62,7 @@ Empfehlung: **Railway** (railway.com), weil es dauerhaften Speicher für die Dat
 ## Weitere Einstellungen
 - **Support-Adresse:** über `SUPPORT_EMAIL` (Standard `support@instacode.store`).
 - **Datenschutz:** Stripe (Zahlung, Express-Buttons laden `js.stripe.com`) und – falls eingetragen – Trustpilot und Google-Login in der Datenschutzerklärung nennen. Trustpilot lädt erst nach Cookie-Zustimmung.
-- **Google-Login (optional):** Google Cloud Console › OAuth-Client-ID (Webanwendung), autorisierte JavaScript-Quelle = `BASE_URL`, ID als `GOOGLE_CLIENT_ID`. Google setzt dabei eigene Cookies – in der Datenschutzerklärung erwähnen.
-- **Apple-Login:** Braucht ein Apple-Developer-Konto (kostenpflichtig) und ist noch nicht eingebaut.
+- **Anmeldung mit Apple, Google, PayPal, Microsoft, Discord, Twitch, Steam, Amazon und SMS:** im Admin unter „Anmeldung“ einrichten (Anleitung, Redirect-URIs zum Kopieren, „Testen“ und „Probe-Anmeldung“). Zugangsdaten werden verschlüsselt gespeichert und wirken sofort; Railway-Variablen (siehe `.env.example`) haben Vorrang. Im Shop erscheinen nur eingerichtete Anbieter, die Datenschutzerklärung nennt sie automatisch. Code in `auth.js` und `web/js/53-express.js`.
 - **Produkte und Preise:** nur in `catalog.json` pflegen (Beträge `amts`, Anzeigenamen `labels`, Rabatt `disc`, Farben `bg`/`fg`, Logo-Text `mark`, Plattform `plat`, Region `region`, Suchbegriffe `tags`, `hot` für „beliebt“). Nach Änderungen den Server neu starten.
 - **Schrift:** Aus Datenschutzgründen lädt die Seite keine Google Fonts, sondern nutzt die Systemschrift. Für „Plus Jakarta Sans“ die Schriftdateien selbst in `public/` ablegen und per `@font-face` einbinden.
 - **Backups:** Die Datenbank liegt in `/data/instacode.db`, hochgeladene Produktbilder in `/data/img/`. Beides regelmäßig sichern.

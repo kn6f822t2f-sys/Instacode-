@@ -332,6 +332,14 @@ const M = {
       p("Warst du das nicht? Entferne den Passkey sofort in deinem Konto und antworte auf diese E-Mail.", "text-align:center;margin-top:16px") +
       btn(`${BASE}/konto/einstellungen`, "Passkeys verwalten") }),
 
+  /* Anmeldung über einen Anbieter (Apple, Google, Steam, Handy …) wurde mit dem Konto verbunden */
+  loginLinked: (to, name, prov, ua) => ({ kind: "sicherheit", to, hero: "shield", why: WHY_SEC,
+    subject: `${prov} ist jetzt mit deinem instantcodes-Konto verbunden`, pre: "Warst du das? Dann musst du nichts tun.",
+    body: h1("Neue Anmeldemethode") + lead(`${hi(name)}ab jetzt kannst du dich auch mit ${esc(prov)} bei instantcodes anmelden.`) +
+      box(rows([["Anmeldung", esc(prov)], ["Verbunden", dtime()], ["Gerät", device(ua)]])) +
+      p("Warst du das nicht? Entferne die Verbindung sofort in deinem Konto unter Einstellungen und antworte auf diese E-Mail.", "text-align:center;margin-top:16px") +
+      btn(`${BASE}/konto/einstellungen`, "Anmeldemethoden ansehen") }),
+
   passkeyRemoved: (to, name, pk) => ({ kind: "sicherheit", to, hero: "shield", why: WHY_SEC,
     subject: "Ein Passkey wurde aus deinem Konto entfernt", pre: "Mit diesem Passkey ist keine Anmeldung mehr möglich.",
     body: h1("Passkey entfernt") + lead(`${hi(name)}aus deinem Konto wurde ein Passkey entfernt. Mit ihm ist keine Anmeldung mehr möglich.`) +
@@ -568,6 +576,7 @@ function samples() {
     ["Konto", "loginAlert", "Neue Anmeldung", "Anmeldung (abschaltbar im Konto)", ["lena@example.com", "Lena", ua]],
     ["Konto", "passkeyAdded", "Passkey hinzugefügt", "Passkey im Konto angelegt", ["lena@example.com", "Lena", { name: "iCloud-Schlüsselbund · iPhone", created_at: Date.now() }, ua]],
     ["Konto", "passkeyRemoved", "Passkey entfernt", "Passkey im Konto gelöscht", ["lena@example.com", "Lena", { name: "iCloud-Schlüsselbund · iPhone" }]],
+    ["Konto", "loginLinked", "Anmeldemethode verbunden", "Apple, Google, Steam, Handy … mit einem bestehenden Konto verbunden", ["lena@example.com", "Lena", "Steam", ua]],
     ["Konto", "deleted", "Konto gelöscht", "Konto im Konto-Bereich gelöscht", ["lena@example.com", "Lena"]],
     ["Kauf", "orderCode", "Bestell-E-Mail bestätigen", "Code im Warenkorb vor der Zahlung", ["lena@example.com", "590172"]],
     ["Kauf", "orderPending", "Bestellung eingegangen", "Zahlung läuft noch (z. B. Lastschrift, PayPal in Prüfung)", [one]],

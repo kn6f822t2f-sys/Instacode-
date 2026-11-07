@@ -6,7 +6,7 @@
    A.loginOpen(r)   kompaktes Anmelde-Fenster: Express-Knöpfe (nur eingerichtete), Code per E-Mail, Link „Mit Passwort anmelden“.
                     Öffnet sich für Links auf /login (Kopfzeile, Menü …), nicht für „Konto erstellen“ und Links mit data-full.
    odAcct(o)        Bestellseite (Gast): „Konto mit einem Tipp anlegen“ – Code an die Bestell-E-Mail, verknüpft die Bestellung;
-                    daneben Google und Apple, wenn eingerichtet (odQuick).
+                    daneben alle eingerichteten Anbieter (odQuick, Raster aus 53-express.js).
                     Der Server antwortet für neue und bestehende Adressen gleich (keine Kontenaufzählung).
    accQaHTML/accQa  Konto: Schnellaktionen (Nochmal kaufen, Meine Codes, Passkey hinzufügen, Abo verwalten) */
 const b64u=b=>{const u=new Uint8Array(b);let s="";for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")};
@@ -32,7 +32,10 @@ const pkErrEl=el=>{const h=el&&el.closest&&el.closest("#sheet,.au-card,.ck-ev");
 const pkSay=(el,m)=>{const e=pkErrEl(el);if(e)e.textContent=m||"";else if(m)toast(m)};
 /* Nach jeder Express-Anmeldung: Fenster zu, auf der Seite bleiben (Kasse, Bestellung …) bzw. von /login weiter zum Ziel */
 function loggedIn(u,r,msg){
-  setUser(u);closeSheet(true);toast(msg||`Angemeldet als ${u.name||u.email}`);
+  setUser(u);closeSheet(true);
+  /* Konto ohne bestätigte E-Mail (Steam, Handy, Microsoft, Amazon …): zuerst die E-Mail nachtragen */
+  if(u&&u.needsEmail){toast("Angemeldet. Jetzt noch deine E-Mail bestätigen.");go("/konto/email?r="+encodeURIComponent(r&&r.startsWith("/")&&!/^\/(login|verifizieren|passwort)/.test(r)?r:"/konto"));return}
+  toast(msg||`Angemeldet als ${u.name||u.email}`);
   const here=location.pathname+location.search,auth=/^\/(login|verifizieren|passwort)/;
   if(auth.test(cur.path))go(r&&!auth.test(r)?r:"/konto");else if(r&&r!==here)go(r);else route(true);
 }
@@ -84,18 +87,19 @@ A.loginOpen=(r,el)=>{
   if(S.user){go("/konto");return}
   r=typeof r==="string"&&r.startsWith("/")?r:location.pathname+location.search;QL.r=r;QL.busy=false;
   try{closeMenu(true)}catch(e){}
-  const a=CFG.auth||{},pk=pkCan();
+  const a=CFG.auth||{},pk=pkCan(),many=xaOrder().length+(a.sms?1:0)>=3&&!!a.code;/* viele Anbieter: E-Mail-Feld hinter „E-Mail-Code“ */
   openSheet(`<div class="sheet-h"><h3>Anmelden</h3><button class="x" data-a="closeSheet" aria-label="Schließen">${ic("i-x")}</button></div>
    <p class="ql-lead">Ohne Passwort, in Sekunden. Neu hier? Dein Konto entsteht beim ersten Anmelden.</p>
-   ${quickAuth(r,{sheet:true})}
-   ${a.code?`<form class="ql-code" novalidate>
+   ${quickAuth(r,{sheet:true,mail:many})}
+   ${a.code&&!many&&(xaOrder().length||a.sms||pk)?`<div class="au-or">oder mit E-Mail</div>`:""}
+   ${a.code?`<form class="ql-code" id="qlCodeF" novalidate${many?" hidden":""}>
     <label class="lbl" for="qlMail">E-Mail – wir schicken dir einen Code</label>
     <div class="ql-row"><input class="inp" id="qlMail" type="email" autocomplete="email" inputmode="email" placeholder="name@beispiel.de" value="${esc(QL.mail||S.pendingEmail||S.lastEmail||"")}"><button type="submit" class="btn btn-primary${pk?"":" btn-ink"}" data-a="qlSend" id="qlSendB">Code senden</button></div>
     <div class="ql-otp" id="qlOtp" hidden><p class="ql-sent" id="qlSent" role="status"></p><div class="au-otpw"><span class="au-cells" aria-hidden="true">${"<i></i>".repeat(6)}</span><input class="inp otp au-otp" id="qlCode" inputmode="numeric" maxlength="40" autocomplete="one-time-code" placeholder="000000" aria-label="Code aus der E-Mail" aria-describedby="qlErr"></div></div>
    </form>`:""}
    <div class="err" id="qlErr" role="alert"></div>
    <p class="ql-alt"><a href="/login?r=${encodeURIComponent(r)}" data-full>Mit Passwort anmelden</a></p>`,
-  {cls:"sh ql",after(){if(CFG.google)gsi(r,u=>loggedIn(u,r))}});
+  {cls:"sh ql",after(){if(CFG.google)gsi(r,u=>loggedIn(u,r),null,{width:Math.min(360,Math.max(240,(($("#sheet .xa-w")||{}).clientWidth)||320))});xaPkPaint()}});
 };
 A.qlSend=async(_,el)=>{
   const i=$("#qlMail"),err=$("#qlErr");if(!i||el.disabled)return;const m=i.value.trim();err.textContent="";i.classList.remove("bad");
@@ -131,13 +135,13 @@ document.addEventListener("click",e=>{
    und alle Gastbestellungen dieser Adresse – auch diese – landen darin. Ausgeblendet, wenn auf diesem Gerät schon
    ein Konto angemeldet war. Ob es zur Adresse ein Konto gibt, verrät der Server nicht. */
 let ODA={};
-/* Neben dem E-Mail-Code: Google und Apple (nur wenn eingerichtet). Der Server legt dabei alle Gastbestellungen
-   derselben E-Mail-Adresse ins Konto (linkOrders) – deshalb der Hinweis auf die gleiche Adresse. */
-const odQuick=o=>{const a=CFG.auth||{},k=new URLSearchParams(location.search).get("k")||(S.keys||{})[o.id]||"",r=`/bestellung/${o.id}${k?"?k="+encodeURIComponent(k):""}`;
-  const q=[CFG.google&&`<div class="od-acct-g" id="odG"></div>`,a.apple&&`<a class="qa-btn qa-apple" href="/auth/apple?r=${encodeURIComponent(r)}"><img src="/logo/apple.svg" alt=""><span>Mit Apple fortfahren</span></a>`].filter(Boolean);
-  if(!q.length)return "";
-  if(CFG.google){let n=0;const t=()=>{const el=$("#odG");if(el&&!el.childElementCount)return gsi(r,u=>{setUser(u);toast(`Angemeldet als ${u.name||u.email}`);route(true)},el,{width:280});if(!el&&n++<20)setTimeout(t,100)};setTimeout(t,0)}
-  return `<div class="od-acct-q"><p class="od-acct-or">oder schneller</p>${q.join("")}<p class="od-acct-f">Mit Google oder Apple landet die Bestellung im Konto, wenn dort dieselbe E-Mail-Adresse hinterlegt ist.</p></div>`};
+/* Neben dem E-Mail-Code: alle eingerichteten Anbieter (53-express.js). Der Server legt dabei alle Gastbestellungen
+   derselben bestätigten E-Mail-Adresse ins Konto (linkOrders) – deshalb der Hinweis auf die gleiche Adresse. */
+const odQuick=o=>{const k=new URLSearchParams(location.search).get("k")||(S.keys||{})[o.id]||"",r=`/bestellung/${o.id}${k?"?k="+encodeURIComponent(k):""}`;
+  const g=xaGrid(r,{ctx:"order",gid:"odG"});
+  if(!g)return "";
+  if(CFG.google){let n=0;const t=()=>{const el=$("#odG");if(el&&!el.childElementCount)return gsi(r,u=>loggedIn(u,r),el,{width:280});if(!el&&n++<20)setTimeout(t,100)};setTimeout(t,0)}
+  return `<div class="od-acct-q"><p class="od-acct-or">oder schneller</p>${g}<p class="od-acct-f">Die Bestellung landet im Konto, wenn dort dieselbe E-Mail-Adresse bestätigt ist.</p></div>`};
 function odAcct(o){
   if(S.user||S.acct||!o||!o.email||["canceled","refunded"].includes(o.status))return "";
   const st=ODA.id===o.id&&ODA.sent;

@@ -118,16 +118,15 @@ const promoHTML=()=>S.promo?`<div class="ck-promo-on">${ic("i-tag")}<span><b>WIL
 /* E-Mail-Bestätigung vor der Kartenzahlung (Pflicht). Der Code wird in sechs Feldern angezeigt;
    darüber liegt unsichtbar ein echtes Eingabefeld (Einfügen, Autofill „one-time-code“, Screenreader). */
 const evMail=()=>(S.user&&S.user.verified!==false&&S.user.email)||CFG.ev||null;
-/* „Schneller: mit Google / Apple / Passkey fortfahren“ – nur eingerichtete Wege (CFG.google, CFG.auth.apple).
-   Google und Apple legen beim ersten Mal das Konto an (bestätigte E-Mail), danach geht es hier mit der Kasse weiter.
+/* „Schneller:“ – Face ID / Passkey und alle eingerichteten Anbieter als runde Zeichen-Knöpfe (53-express.js, xaRow).
+   Anbieter mit bestätigter E-Mail legen beim ersten Mal das Konto an, danach geht es hier mit der Kasse weiter;
+   ohne bestätigte E-Mail (Steam, Handy …) fragt der Shop einmal nach der E-Mail.
    Passkey nur, wenn das Gerät Face ID / Touch ID / Windows Hello kann und hier schon ein Konto bzw. Passkey benutzt wurde. */
 const ckPkOn=()=>pkCan()&&(S.pk||S.acct)&&PKUV!==false;
-const ckPkLine=()=>{if(S.user)return "";const a=CFG.auth||{},r=cur.path,pk=ckPkOn();
-  const o=[CFG.google&&`<span class="ck-g" id="ckG"></span>`,
-    a.apple&&`<a class="ck-qa ck-qa-apple" href="/auth/apple?r=${encodeURIComponent(r)}"><img src="/logo/apple.svg" alt=""><span>Mit Apple fortfahren</span></a>`,
-    pk&&`<button class="ck-qa" data-a="pkLogin" data-v="${esc(r)}" id="ckPkB"${PKUV?"":" hidden"}>${ic("i-face")}<span>Mit Passkey</span></button>`].filter(Boolean);
-  if(!o.length)return "";
-  return `<div class="ck-pk" id="ckPk"${CFG.google||a.apple||PKUV?"":" hidden"}><span class="ck-pk-t">Schneller:</span>${o.join("")}</div>`};
+const ckPkLine=()=>{if(S.user)return "";const r=cur.path,pk=ckPkOn(),o=xaRow(r,pk);
+  if(!o)return "";
+  const only=pk&&!xaOrder().length&&!(CFG.auth||{}).sms;
+  return `<div class="ck-pk" id="ckPk"${only&&!PKUV?" hidden":""}><span class="ck-pk-t">Schneller:</span><div class="xa-row">${o}</div></div>`};
 /* „oder mit Karte bezahlen“ (unter Schnell bezahlen): zur E-Mail, falls noch nicht bestätigt, sonst zum Zahlungsfeld */
 const ckToMail=()=>{const b=$("#evBox");if(!b)return;b.scrollIntoView({block:"center",behavior:reduce?"auto":"smooth"});const m=$("#payMail");m&&m.focus({preventScroll:true})};
 A.ckToCard=()=>{if(!evMail())return ckToMail();const w=$("#payElW");if(w&&w.hidden)return A.payMore();const t=$("#ckPay");t&&t.scrollIntoView({block:"start",behavior:reduce?"auto":"smooth"})};
@@ -136,7 +135,7 @@ const ckBrand=()=>`<div class="ck-brand">${LOGO(22)}<span class="ck-brand-w"><b>
 function evBox(){
   const m=evMail();
   if(m)return `<div class="ck-evok" id="evBox"><span class="ck-evok-i">${ic("i-check")}</span><div><small>Codes gehen an</small><b>${esc(m)}</b></div>${S.user?"":`<button class="btn btn-ghost" data-a="evChange">Ändern</button>`}</div>`;
-  return `<div class="ck-ev" id="evBox"><p class="ck-ev-t">Wir schicken dir einen 6-stelligen Code. An diese Adresse kommen auch deine Codes. Gelegentlich empfehlen wir dir dort ähnliche Produkte – dem kannst du jederzeit widersprechen.</p>
+  return `<div class="ck-ev" id="evBox"><p class="ck-ev-t">Wir schicken dir einen 6-stelligen Code. An diese Adresse kommen auch deine Codes.${S.user&&S.user.needsEmail?" Wir speichern sie auch in deinem Konto.":""} Gelegentlich empfehlen wir dir dort ähnliche Produkte – dem kannst du jederzeit widersprechen.</p>
    <div class="ck-ev-row"><input class="inp" id="payMail" type="email" autocomplete="email" inputmode="email" aria-label="E-Mail für deine Codes" placeholder="deine@email.de" value="${esc(S.lastEmail||"")}"><button class="btn btn-soft" data-a="evSend" id="evSendB">Code senden</button></div>
    ${ckPkLine()}
    <div class="ck-ev-code" id="evCodeW" hidden><label class="ck-ev-l" for="evCode">Code aus der E-Mail</label>
@@ -161,7 +160,7 @@ A.evCheck=async(_,el)=>{
   const m=(($("#payMail")||{}).value||"").trim().toLowerCase(),code=(($("#evCode")||{}).value||"").replace(/\D/g,""),err=$("#evErr");err.textContent="";
   if(code.length!==6){err.textContent="Bitte gib den 6-stelligen Code ein.";otpBad(true);return}
   if(el.disabled)return;busy(el,true," Prüfe …");
-  try{const r=await API("/checkout/email/verify",{method:"POST",body:{email:m,code}});CFG.ev=r.email;toast("E-Mail bestätigt");route(true)}
+  try{const r=await API("/checkout/email/verify",{method:"POST",body:{email:m,code}});CFG.ev=r.email;if(r.user)setUser(r.user);toast(r.user?"E-Mail bestätigt und im Konto gespeichert":"E-Mail bestätigt");route(true)}
   catch(x){err.textContent=x.message;otpBad(true);busy(el,false)}
 };
 A.evChange=()=>{CFG.ev=null;route(true)};
@@ -200,8 +199,8 @@ async function payAfter(){
   if(CFG.express)PAY.x=xpayMount($("#cX"),cartItems,{ctx:"cart",fallback:true,doneIn:$(".ck-x"),toKasse:ckToMail});
   const ok=$("#payOk");ok&&ok.addEventListener("change",()=>{if(ok.checked){const e=$("#payErr");if(e)e.textContent="";$("#payOkL").classList.remove("shake")}});
   PAY.mount=()=>{if(PAY.mounted)return;PAY.mounted=1;payMount()};
-  if($("#ckPkB")&&PKUV===null)pkUV().then(v=>{const p=$("#ckPkB"),row=$("#ckPk");if(p)p.hidden=!v;if(row)row.hidden=!v&&!$("#ckG,.ck-qa-apple",row)});
-  if($("#ckG")&&CFG.google)gsi(cur.path,u=>loggedIn(u,cur.path),$("#ckG"),{size:"medium",width:230});
+  if($("#ckPkB")&&PKUV===null)pkUV().then(v=>{const p=$("#ckPkB"),row=$("#ckPk");if(p){p.hidden=!v;p.setAttribute("aria-label",pkLabel());p.title=pkLabel()}if(row)row.hidden=!v&&!$("#ckG,.xa-i:not(#ckPkB)",row)});
+  if($("#ckG")&&CFG.google)gsi(cur.path,u=>loggedIn(u,cur.path),$("#ckG"),{type:"icon",shape:"circle",size:"large"});
   if(!$("#payElW")||!$("#payElW").hidden)PAY.mount();
   rcNav($(".ck"));
   /* Von „Zur Kasse“ kommend: auf dem Handy direkt zur Übersicht, darunter Schnell bezahlen, E-Mail und Bezahlen */

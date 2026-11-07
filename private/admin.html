@@ -92,6 +92,16 @@ table.pv{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}tabl
 details.adet{margin-top:10px}details.adet summary{cursor:pointer;font-weight:700;color:var(--m);font-size:14px}
 .alist{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}.alist td{padding:7px 6px;border-top:1px solid var(--b);vertical-align:top}
 .ok{color:var(--ok)}.bad{color:#B42318}
+/* Anmeldung: Anbieter-Karten */
+.auc{scroll-margin-top:72px}.auc .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.auc .hd img{width:26px;height:26px;object-fit:contain}.auc .hd b{font-size:17px}
+.ust{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px}.ust.ok{color:#067647;background:#DCFAE6}.ust.miss{color:#475467;background:#F2F4F7}.ust.err{color:#B42318;background:#FEE4E2}.ust.sim{color:#93370D;background:#FEF0C7}
+.auu{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px}.auu small{display:block;width:100%;color:var(--m);font-size:12.5px;font-weight:700;margin-top:4px}.auu code{margin:0;flex:1 1 240px;min-width:0}
+.aures{margin-top:10px;padding:10px 12px;border-radius:12px;font-size:13.5px}.aures.ok{background:#ECFDF3;color:#067647}.aures.bad{background:#FEF3F2;color:#B42318}.aures.info{background:#F2F4F7;color:#344054}
+.envnote{display:block;margin-top:4px;font-size:12px;color:var(--m)}.auf .sw{margin-top:12px}
+.auc ol{margin:8px 0 0;padding-left:20px}.auc ol li{margin:4px 0;font-size:14px}
+.p8{margin-top:6px;border:1.5px dashed rgba(109,75,255,.35);border-radius:14px;padding:12px;text-align:center;background:rgba(109,75,255,.04);cursor:pointer;font-size:14px}
+.ausum{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.ausum a{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--b);background:#fff;font-size:13px;font-weight:700;color:var(--t);text-decoration:none}
+.ausum img{width:16px;height:16px;object-fit:contain}
 /* E-Mails und Newsletter */
 .mv{display:grid;gap:12px;margin-top:12px}@media(min-width:900px){.mv{grid-template-columns:250px minmax(0,1fr);align-items:start}}
 .mv-l{display:grid;gap:4px;align-content:start}@media(min-width:900px){.mv-l{position:sticky;top:70px;max-height:calc(100vh - 90px);overflow:auto}}
@@ -113,7 +123,7 @@ const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const eur=c=>(c/100).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
 async function API(p,o={}){const r=await fetch("/api"+p,{method:o.method||"GET",headers:{"Content-Type":"application/json","X-IC":"1"},body:o.body?JSON.stringify(o.body):undefined,credentials:"same-origin"});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Fehler "+r.status);return j}
-const TABS=[["overview","Übersicht"],["processing","Prüfen"],["abos","Abos"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"],["mails","E-Mails"],["newsletter","Newsletter"]];
+const TABS=[["overview","Übersicht"],["processing","Prüfen"],["abos","Abos"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"],["anmeldung","Anmeldung"],["mails","E-Mails"],["newsletter","Newsletter"]];
 const STC={awaiting_payment:"#B54708",payment_pending:"#B54708",processing:"#3B5BDB",delivered:"#067647",canceled:"#6B7280",refunded:"#6B7280"};
 const STN={awaiting_payment:"Warte auf Zahlung",payment_pending:"Zahlung läuft",processing:"Prüfen",delivered:"Geliefert",canceled:"Storniert",refunded:"Erstattet"};
 let tab="overview",timer,tt,counts={},mode=null;
@@ -121,7 +131,8 @@ const toast=t=>{const el=$("#toast");el.textContent=t;el.classList.add("show");c
 const typing=()=>[...document.querySelectorAll("main input:not([type=checkbox]),main textarea")].some(i=>i.value);
 const setMode=j=>{if(j.testmode==null)return;mode=j;$("#mode").innerHTML=j.testmode?`<span class="mode test">Testmodus</span>`:`<span class="mode live">Live</span>`};
 let aboN=0,aboU=0; /* Abo-Lieferungen zur Freigabe, Kündigungen ohne Zuordnung */
-const badgeN=k=>k==="processing"?(counts.processing||0)+aboN:k==="abos"?aboN+aboU:0;
+let authErrN=0; /* Anmelde-Anbieter mit Fehler */
+const badgeN=k=>k==="processing"?(counts.processing||0)+aboN:k==="abos"?aboN+aboU:k==="anmeldung"?authErrN:0;
 const tabsHTML=()=>`<div class="tabs">${TABS.map(t=>`<button class="${t[0]===tab?"on":""}" data-tab="${t[0]}">${t[1]}${badgeN(t[0])?`<span class="n">${badgeN(t[0])}</span>`:""}</button>`).join("")}</div>`;
 
 async function load(force){
@@ -134,6 +145,7 @@ async function load(force){
   if(tab==="abos"){if(force)loadAbos();return}
   if(tab==="mails"){if(force)loadMails();return}
   if(tab==="newsletter"){if(force)loadNL();return}
+  if(tab==="anmeldung"){if(force)loadAuth();return}
   timer=setTimeout(()=>load(),30000);
   if(!force&&typing())return;
   try{const [j,ap]=await Promise.all([API("/admin/orders?status="+tab),API("/admin/abos/pending").catch(()=>null)]);counts=j.counts||{};if(ap){aboN=ap.count;aboU=ap.unmatched}setMode(j);render(j)}catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
@@ -559,10 +571,79 @@ document.addEventListener("click",async e=>{
   if(t.dataset.nlunsub){if(!confirm(`${t.dataset.nlunsub} vom Newsletter abmelden?`))return;try{await API("/admin/newsletter/unsub",{method:"POST",body:{email:t.dataset.nlunsub}});toast("Abgemeldet");loadNL()}catch(x){alert(x.message)}return}
   if(t.dataset.rvnow){t.disabled=true;try{const j=await API("/admin/review-mails/run",{method:"POST"});toast(j.sent?`${j.sent} Bewertungsanfrage(n) gesendet`:"Gerade keine fällig");loadNL()}catch(x){alert(x.message);t.disabled=false}return}
 });
+/* ---------- Anmeldung: Anbieter einrichten (Zugangsdaten nur schreiben, nie anzeigen) ---------- */
+let AU=null,AU_P8={};
+const AU_MARK={google:"/auth/google.svg",apple:"/auth/apple.svg",paypal:"/auth/paypal.svg",microsoft:"/auth/microsoft.svg",discord:"/auth/discord.svg",twitch:"/auth/twitch.svg",steam:"/auth/steam.svg",amazon:"/auth/amazon.svg"};
+const AU_ST={ok:["ok","eingerichtet"],missing:["miss","fehlt"],error:["err","Fehler"]};
+const auDate=t=>t?new Date(t).toLocaleString("de-DE",{dateStyle:"short",timeStyle:"short"}):"";
+async function loadAuth(){try{AU=await API("/admin/auth");authErrN=AU.providers.filter(p=>p.status==="error").length;drawAuth();
+  const qp=new URLSearchParams(location.search),pr=qp.get("probe");if(pr){const c=document.getElementById("au-"+pr);if(c)c.scrollIntoView({block:"start"});const v=AU.providers.find(x=>x.id===pr);
+    if(v)toast(v.last.err&&v.last.errAt>=(v.last.probeAt||0)?v.last.err:(v.last.probe||"Probe-Anmeldung beendet"));try{history.replaceState(null,"","/admin")}catch(e){}}}
+  catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+function auField(p,f){
+  const id=`au_${p}_${f.k}`,dis=f.env?" disabled":"",envN=f.env?`<span class="envnote">Kommt aus der Railway-Variable ${esc(f.env)} (hat Vorrang).</span>`:f.envName?`<span class="envnote">Alternativ als Railway-Variable ${esc(f.envName)}.</span>`:"";
+  if(f.type==="switch")return `<label class="sw"><input type="checkbox" id="${id}" data-f="${f.k}"${f.value?" checked":""}${dis}> ${esc(f.label)}</label>${f.env?envN:""}`;
+  if(f.type==="file")return `<label class="lbl" for="${id}">${esc(f.label)}</label><div class="p8" data-p8="${p}">${f.set?`<b>gesetzt</b> · `:""}<span id="${id}_n">${f.set?"Neue Datei wählen, um sie zu ersetzen":".p8-Datei hierher ziehen oder tippen"}</span></div><input type="file" id="${id}" data-p8file="${p}" accept="${esc(f.accept||"")}" hidden${dis}>${envN}`;
+  if(f.secret)return `<label class="lbl" for="${id}">${esc(f.label)}${f.opt?" (optional)":""}</label><input id="${id}" data-f="${f.k}" type="password" autocomplete="new-password" spellcheck="false" placeholder="${esc(f.set?f.hint+" – leer lassen = unverändert":"Wert einfügen")}"${dis}>${envN}`;
+  return `<label class="lbl" for="${id}">${esc(f.label)}${f.opt?" (optional)":""}</label><input id="${id}" data-f="${f.k}" value="${esc(f.value||"")}" placeholder="${esc(f.ph||"")}" spellcheck="false" autocomplete="off"${dis}>${envN}`;
+}
+function auCard(v){
+  const g=v.guide||{},st=AU_ST[v.status]||AU_ST.missing,l=v.last||{};
+  const uris=v.redirect.concat(v.origins).map(u=>`<div class="auu"><small>${esc(u.label)}</small><code>${esc(u.v)}</code><button class="btn g sm" data-copy="${esc(u.v)}">Kopieren</button></div>`).join("");
+  const res=[l.err?`<div class="aures bad"><b>Fehler${l.errAt?" · "+auDate(l.errAt):""}:</b> ${esc(l.err)}</div>`:"",
+    l.test?`<div class="aures ${l.testOk?"ok":"bad"}"><b>Test${l.testAt?" · "+auDate(l.testAt):""}:</b> ${esc(l.test)}</div>`:"",
+    l.probe?`<div class="aures ok"><b>${l.probeAt?auDate(l.probeAt)+" · ":""}</b>${esc(l.probe)}</div>`:"",
+    l.okAt&&!l.err?`<div class="aures info">Letzte echte Anmeldung: ${auDate(l.okAt)}</div>`:"",
+    v.decryptError?`<div class="aures bad">Die gespeicherten Daten lassen sich nicht entschlüsseln (CODES_KEY geändert?). Bitte neu eintragen.</div>`:""].join("");
+  return `<div class="card auc" id="au-${v.id}" data-auth="${v.id}">
+   <div class="row"><div class="hd">${AU_MARK[v.id]?`<img src="${AU_MARK[v.id]}" alt="">`:`<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path fill="#0E1122" fill-rule="evenodd" d="M9 2h6a3 3 0 013 3v14a3 3 0 01-3 3H9a3 3 0 01-3-3V5a3 3 0 013-3zm1.2 16a1 1 0 000 2h3.6a1 1 0 000-2z"/></svg>`}<b>${esc(v.name)}</b><span class="ust ${st[0]}">${st[1]}</span>${v.sim?`<span class="ust sim">Simulation aktiv</span>`:""}${v.gis?`<span class="ust miss">Google-Knopf (ohne Secret)</span>`:""}</div></div>
+   <p class="muted" style="margin:8px 0 0">${esc(g.note||"")}</p>
+   <p class="muted" style="margin:4px 0 0">Kosten: ${esc(g.cost||"–")}${v.missing.length&&v.status==="missing"?` · Es fehlt: ${esc(v.missing.join(", "))}`:""}</p>
+   ${res}
+   ${uris?`<div style="margin-top:10px"><b style="font-size:14px">${v.id==="steam"?"Adressen (nichts einzutragen)":"Diese Adressen beim Anbieter eintragen"}</b>${uris}</div>`:""}
+   <details class="adet"${v.status==="missing"?" open":""}><summary>Schritt für Schritt einrichten</summary><ol>${(g.steps||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+    ${g.url?`<div class="links"><a href="${esc(g.url)}" target="_blank" rel="noopener">${esc(g.link||"Konsole öffnen")}</a></div>`:""}</details>
+   <div class="auf">${v.fields.map(f=>auField(v.id,f)).join("")}</div>
+   <div class="acts"><button class="btn p" data-ausave="${v.id}">Speichern</button><button class="btn g" data-autest="${v.id}">Testen</button>${v.canProbe?`<a class="btn g" href="/auth/${v.id}?probe=1">Probe-Anmeldung</a>`:""}${v.fields.some(f=>f.set&&!f.env)?`<button class="btn r" data-audel="${v.id}">Gespeicherte Daten löschen</button>`:""}</div>
+  </div>`;
+}
+function drawAuth(){
+  const a=AU,ok=a.providers.filter(p=>p.status==="ok").length;
+  $("#m").innerHTML=tabsHTML()+`<div class="card"><b>Anmeldung und Konto-Erstellung</b>
+   <p class="muted" style="margin:6px 0 0">Kunden melden sich mit einem Tipp an – beim ersten Mal entsteht das Konto automatisch. Im Shop erscheinen nur Anbieter, die hier eingerichtet sind (${ok} von ${a.providers.length}). Änderungen gelten sofort, ohne Neustart. Schlüssel werden verschlüsselt gespeichert und hier nie wieder angezeigt; Railway-Variablen haben Vorrang.</p>
+   <p class="muted" style="margin:6px 0 0">Shop-Adresse: <b>${esc(a.origin)}</b>${a.alt?` (Zweitadresse ${esc(a.alt)})`:""}. Konten mit Steam, Handy, Microsoft oder Amazon bestätigen ihre E-Mail einmal per Code, bevor dorthin Codes gehen.</p>
+   ${a.sim?`<div class="warnbox"><b>Vorschau:</b> Anbieter ohne Zugangsdaten laufen gegen einen Simulator, damit alle Knöpfe getestet werden können. Live ist die Simulation immer aus.</div>`:""}
+   <div class="ausum">${a.providers.map(p=>`<a href="#au-${p.id}" data-aujump="${p.id}"><span class="dot ${p.status==="ok"?"ok":p.status==="error"?"bad":""}"></span>${esc(p.name)}</a>`).join("")}</div></div>
+  ${a.providers.map(auCard).join("")}
+  <div class="card"><b><span class="dot ${a.mail?"ok":"bad"}"></span>E-Mail-Code</b><p class="muted" style="margin:6px 0 0">${a.mail?"Aktiv: Kunden bekommen einen 6-stelligen Code per E-Mail (Resend).":"RESEND_API_KEY fehlt – ohne E-Mail-Versand gibt es keinen E-Mail-Code."} Nichts einzurichten.</p></div>
+  <div class="card"><b><span class="dot ok"></span>Passkey (Face ID, Touch ID, Windows Hello)</b><p class="muted" style="margin:6px 0 0">Aktiv für die Domain <b>${esc(a.passkey)}</b>. Kunden legen den Passkey im Konto an und melden sich danach mit einem Blick an. Nichts einzurichten.</p></div>
+  <div class="card"><b><span class="dot"></span>Klarna</b><p class="muted" style="margin:6px 0 0">„Mit Klarna anmelden“ gibt es nicht über Stripe, sondern nur mit einem eigenen Händlervertrag direkt bei Klarna. Deshalb nicht eingebaut.</p></div>`;
+  const on=document.querySelector(".tabs button.on");if(on&&on.scrollIntoView)on.scrollIntoView({inline:"center",block:"nearest"});
+}
+const auVals=p=>{const c=document.getElementById("au-"+p),v={};c.querySelectorAll("[data-f]").forEach(i=>{if(i.disabled)return;v[i.dataset.f]=i.type==="checkbox"?i.checked:i.value.trim()});if(AU_P8[p])v.privateKey=AU_P8[p].text;return v};
+const auReplace=(p,v)=>{const i=AU.providers.findIndex(x=>x.id===p);if(i>-1)AU.providers[i]=v;authErrN=AU.providers.filter(x=>x.status==="error").length;const c=document.getElementById("au-"+p);if(c)c.outerHTML=auCard(v)};
+function auP8(p,file){if(!file)return;if(file.size>8000){alert("Das ist keine .p8-Datei (zu groß).");return}const r=new FileReader();r.onload=()=>{AU_P8[p]={name:file.name,text:String(r.result||"")};
+  const n=document.getElementById(`au_${p}_privateKey_n`);if(n)n.textContent=`${file.name} gewählt – wird beim Speichern verschlüsselt`;
+  const m=/AuthKey_([A-Z0-9]{10})\.p8$/i.exec(file.name),k=document.getElementById(`au_${p}_keyId`);if(m&&k&&!k.value&&!k.disabled)k.value=m[1].toUpperCase()};r.readAsText(file)}
+document.addEventListener("click",e=>{const d=e.target.closest("[data-p8]");if(d){const i=document.querySelector(`[data-p8file="${d.dataset.p8}"]`);if(i&&!i.disabled)i.click()}});
+document.addEventListener("change",e=>{const i=e.target.closest("[data-p8file]");if(i){auP8(i.dataset.p8file,i.files[0]);i.value=""}});
+document.addEventListener("dragover",e=>{const d=e.target.closest("[data-p8]");if(d)e.preventDefault()});
+document.addEventListener("drop",e=>{const d=e.target.closest("[data-p8]");if(d){e.preventDefault();auP8(d.dataset.p8,e.dataTransfer.files[0])}});
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-ausave],[data-autest],[data-audel],[data-copy],[data-aujump]");if(!t)return;
+  if(t.dataset.aujump){e.preventDefault();const c=document.getElementById("au-"+t.dataset.aujump);c&&c.scrollIntoView({block:"start",behavior:"smooth"});return}
+  if(t.dataset.copy!=null){const v=t.dataset.copy;try{await navigator.clipboard.writeText(v)}catch(x){const a=document.createElement("textarea");a.value=v;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(y){}a.remove()}t.textContent="Kopiert";setTimeout(()=>{t.textContent="Kopieren"},1600);return}
+  const p=t.dataset.ausave||t.dataset.autest||t.dataset.audel;
+  if(t.dataset.ausave){t.disabled=true;try{const j=await API(`/admin/auth/${p}`,{method:"POST",body:{values:auVals(p)}});delete AU_P8[p];auReplace(p,j.provider);toast(j.changed?"Gespeichert – gilt sofort":"Keine Änderung")}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.dataset.autest){t.disabled=true;t.textContent="Prüfe …";try{const j=await API(`/admin/auth/${p}/test`,{method:"POST",body:{}});auReplace(p,j.provider);toast(j.ok?"Test bestanden":"Test fehlgeschlagen")}catch(x){alert(x.message);t.disabled=false;t.textContent="Testen"}return}
+  if(t.dataset.audel){if(!confirm("Gespeicherte Zugangsdaten für diesen Anbieter löschen? Der Knopf verschwindet sofort aus dem Shop (außer bei Railway-Variablen)."))return;try{const j=await API(`/admin/auth/${p}`,{method:"DELETE"});auReplace(p,j.provider);toast("Gelöscht")}catch(x){alert(x.message)}return}
+});
+
 (async()=>{
   try{const me=(await API("/me")).user;
     if(!me||!me.admin){$("#m").innerHTML=`<div class="card"><b>Kein Zugriff</b><p class="muted">Deine Sitzung ist abgelaufen.</p><a class="btn p" href="/">Zum Shop</a></div>`;return}
     try{const ap=await API("/admin/abos/pending");aboN=ap.count;aboU=ap.unmatched}catch(e){}
+    const qp=new URLSearchParams(location.search);if(qp.get("tab")==="anmeldung")tab="anmeldung";
     load(true);
   }catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
 })();
