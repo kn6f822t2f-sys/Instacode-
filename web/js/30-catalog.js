@@ -213,7 +213,8 @@ function brandPage(id){
   <div class="pd-side">
     <a class="pd-tag" href="/kategorie/${c.id}" style="--c:${CCOL[c.id]}">${ic(c.icon)}${esc(c.name)}</a>
     <h1 class="h1">${esc(b.name)}</h1>
-    <p class="pd-sub">${K?esc(PLAT[b.plat])+" · Digitaler Key":"Digitaler Code"} · Gültig in ${region}</p>
+    <p class="pd-sub">${K?esc(PLAT[b.plat])+" · Digitaler Key":"Digitaler Code"} · Gültig in ${region}</p>${b.desc?`
+    <p class="pd-desc">${esc(b.desc)}</p>`:""}
     <div class="pd-rev" id="pdRev" data-brand="${esc(b.id)}"></div>
     <div class="pact lg-group" role="group" aria-label="Aktionen">
       <button data-a="share" data-v="${id}">${ic("i-share")}<span>Teilen</span></button>

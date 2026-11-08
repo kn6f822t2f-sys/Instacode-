@@ -25,6 +25,9 @@ const cardWall=()=>{const seen=new Set(),list=VIS().filter(b=>!isKey(b)&&b.cat!=
   const card=(b,dup)=>`<a class="cw-c" href="/marke/${b.id}"${dup?' tabindex="-1" aria-hidden="true"':` aria-label="${esc(b.name)}"`}>${gc(b,{tilt:false,badge:false,plat:false})}</a>`;
   return `<section class="cwall" data-off aria-label="Marken im Sortiment"><div class="sec cw-head"><div class="sec-head"><div><h2 class="h2">Alle Marken. Ein Shop.</h2><p>Gutscheine, Prepaid-Karten und Guthaben – offizielle Codes, ${fastAll()?"meist in Sekunden ":""}per E-Mail.</p></div><div class="sh-r"><a class="more" href="/kategorien">Alle Marken${ic("i-chev")}</a></div></div></div>
 <div class="cw-stage"><div class="cw-rows">${rows.map((r,i)=>`<div class="cw-row${i%2?" rev":""}" style="--dur:${58+i*12}s"><div class="cw-track">${r.map(b=>card(b)).join("")}${r.map(b=>card(b,1)).join("")}</div></div>`).join("")}</div></div></section>`};
+/* Startseiten-Texte vom Design-Agenten (Admin › KI-Agenten). Vorschau eines Entwurfs: /?design=<nr>, nur für den Admin sichtbar */
+let HERO_PV=null;
+const heroTx=k=>{const h=HERO_PV||(CFG.theme&&CFG.theme.hero);return h&&h[k]?String(h[k]):""};
 function home(){
   const recent=S.recent.map(byId).filter(Boolean).filter(isRep).slice(0,10), c=ctry();
   const keys=VIS().filter(isKey), deals=DEALS(), best=pick(BEST0,14).map(byId).filter(Boolean);
@@ -43,8 +46,8 @@ function home(){
   </div>
   <div class="hro-copy">
     <a class="hro-pill rv" href="/abo"><span>Neu</span>instantcodes Abo – 9 Dienste, ein Preis${ic("i-chev")}</a>
-    <h1 class="h1 rv" style="--d:80ms">Digitale Codes.<br>${fastAll()?"In Sekunden bei dir.":"Einfach per E-Mail."}</h1>
-    <p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${brandN()}">${brandN()}</b> Marken – sicher bezahlt, dein Code kommt ${fastAll()?"meist direkt ":""}per E-Mail.</p>
+    <h1 class="h1 rv" style="--d:80ms">${heroTx("h1")?esc(heroTx("h1")).replace(/\n/g,"<br>"):`Digitale Codes.<br>${fastAll()?"In Sekunden bei dir.":"Einfach per E-Mail."}`}</h1>
+    ${heroTx("lead")?`<p class="lead rv" style="--d:160ms">${esc(heroTx("lead"))}</p>`:`<p class="lead rv" style="--d:160ms">Gutscheine, Spiele-Keys, Abos und Handy-Guthaben von <b data-count="${brandN()}">${brandN()}</b> Marken – sicher bezahlt, dein Code kommt ${fastAll()?"meist direkt ":""}per E-Mail.</p>`}
     <button class="hro-search rv" style="--d:240ms" data-a="palOpen" aria-label="Suche öffnen">${ic("i-search")}<span>Marke oder Gutschein suchen</span><kbd class="kbdk">Strg K</kbd></button>
     <div class="hro-quick rv" style="--d:300ms">${quick.map(([id,t])=>`<a class="chip" href="/marke/${id}">${esc(t)}</a>`).join("")}<a class="chip" href="/aufladen">${ic("i-phone-f")}Handy aufladen</a></div>
     <div class="hro-trust rv" style="--d:360ms">${payLogos()}<p><span>${ic("i-lock")}TLS-verschlüsselt</span><span>${ic("i-shield")}3&#8209;D Secure</span><span class="ft-stripe">Zahlung über <img src="/pay/stripe.svg" alt="Stripe" loading="lazy" onerror="this.replaceWith(document.createTextNode('Stripe'))"></span></p></div>

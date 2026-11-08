@@ -150,6 +150,7 @@ const emailOk = e => typeof e === "string" && e.length <= 254 && /^[^\s@]+@[^\s@
 const bad = (res, msg, code = 400) => res.status(code).json({ error: msg });
 const isAdmin = u => !!(u && u.verified && !isPh(u.email) && ADMINS.includes(u.email));
 let AUTH = null; // Anmeldung über Anbieter (auth.js), wird unten eingerichtet
+let AGENTS = null; // KI-Agenten (agents.js), werden unten eingerichtet
 const pub = u => u && Object.assign({ id: u.id, email: isPh(u.email) ? "" : u.email, name: u.name, verified: !!u.verified && !isPh(u.email), admin: isAdmin(u), loginAlerts: !!u.login_alerts, google: !!u.google_sub },
   AUTH ? AUTH.pubExtra(u) : {});
 const userById = id => db.prepare("SELECT * FROM users WHERE id=?").get(id);
@@ -243,6 +244,7 @@ function shopCatalog() {
     else brandLogo(x);
     const ru = redeemLink(b); if (ru) x.ru = { url: ru.url, label: ru.label };
     if (COVERS[b.id] && !x.img) { x.cov = 1; if (COVERS[b.id].h) x.covh = 1; if (COVERS[b.id].g) x.covg = 1; }
+    if (AGENTS) AGENTS.decorate(x); // Texte, Suchbegriffe, „beliebt“ vom Sortiment-Agenten
     out.push(x);
   }
   shopCache = { rows, n, out };
@@ -291,7 +293,7 @@ const PHONE = (() => {
 })();
 const VOICE = /^[\w.:-]{6,200}$/.test(String(E.IONOS_VOICE_AGENT || "").trim()) ? String(E.IONOS_VOICE_AGENT).trim() : null;
 const publicConfig = () => ({ site: (BASE_HOST || "").replace(/^www\./, ""), vat: VAT, fee: FEE, payments: !!stripe, express: !!stripe && !!(PK || DEVPAY), pk: PK || (DEVPAY ? "pk_test_attrappe" : null), devpay: DEVPAY,
-  google: AUTH ? AUTH.gisClientId() : null, auth: AUTH ? AUTH.methods() : {}, deliv: deliveryInfo(), phone: PHONE, voice: VOICE, mail: !!E.RESEND_API_KEY, methods: PAY_METHODS, inline: inlineTypes(), paylogos: payLogos(), klarna: KLARNA_ON() ? KLARNA_CATS() : null, testmode: TESTMODE, support: SUPPORT, trustpilot: TP, base: BASE });
+  google: AUTH ? AUTH.gisClientId() : null, auth: AUTH ? AUTH.methods() : {}, deliv: deliveryInfo(), phone: PHONE, voice: VOICE, mail: !!E.RESEND_API_KEY, methods: PAY_METHODS, inline: inlineTypes(), paylogos: payLogos(), klarna: KLARNA_ON() ? KLARNA_CATS() : null, testmode: TESTMODE, support: SUPPORT, trustpilot: TP, base: BASE, theme: AGENTS ? AGENTS.publicTheme() : null });
 
 /* Produktempfehlungen in Liefer-Mails: Abmeldung per signiertem Link */
 const unsubSig = e => crypto.createHmac("sha256", KEY).update("unsub|" + e).digest("base64url").slice(0, 24);
@@ -1214,11 +1216,17 @@ const TOP_BRANDS = [
   /\bdecathlon\b/, /\babout you\b/, /\blieferando\b/, /\buber\b/, /\bairbnb\b/, /\b(booking\.com|hotels\.com)\b/, /\b(rewe|lidl|aldi|edeka)\b/,
   /\bmicrosoft\b/, /\bnorton\b/, /\bmcafee\b/, /\bnordvpn\b/, /\bpaysafecard\b/];
 const RL_ALL = E.RL_ALL === "1";
+/* Zusätzliche Marken, die der Sortiment-Agent (agents.js) mit Freigabe ins Sortiment aufgenommen hat (exakter Markenname beim Lieferanten) */
+let extraCache = null;
+const extraBrands = () => extraCache || (extraCache = (() => { try { return JSON.parse(kvGet("rl_extra_brands") || "[]").filter(x => typeof x === "string"); } catch (e) { return []; } })());
+const setExtraBrands = l => { kvSet("rl_extra_brands", JSON.stringify([...new Set(l.map(x => String(x).toLowerCase().trim()).filter(Boolean))].slice(0, 300))); extraCache = null; };
 function rlAllowed(p) {
   if (RL_ALL) return true;
   if (!EU27.has((p.country && p.country.isoName) || "")) return false;
   const t = `${(p.brand && p.brand.brandName) || ""} ${p.productName || ""}`.toLowerCase();
-  return TOP_BRANDS.some(re => re.test(t));
+  if (TOP_BRANDS.some(re => re.test(t))) return true;
+  const bn = String((p.brand && p.brand.brandName) || "").toLowerCase().trim();
+  return !!bn && extraBrands().includes(bn);
 }
 const rlClean = n => String(n || "").replace(/\s*\((DE|AT|EU|EUR|Germany|Deutschland)\)\s*/gi, " ").replace(/\s+(DE|AT|EU|EUR|Germany|Deutschland|Austria|Österreich)$/i, "").replace(/\s+(DE|AT|EU|EUR|Germany|Deutschland)\s+/i, " ").replace(/\s{2,}/g, " ").trim();
 function rlAmts(p) {
@@ -1726,6 +1734,30 @@ ABO = require("./abo")({ app, db, stripe, stripeCall, STRIPE_V, mail, CATALOG, E
   verifiedEmail, EV_MSG, isAdmin, safe, takeCodes, codeHash, supply, Stockout, RL_USE: () => RL_USE, rlHas, freeCount, optLabel, fc, isCodeBrand, cardOf, kvGet, kvSet });
 /* Mia, KI-Shopberaterin (ai.js): Chat mit Claude und Werkzeugen, Fallback ohne Schlüssel, Status im Admin */
 require("./ai")({ app, E, PROD, bad, admin, kvGet, kvSet, shopCatalog, unitPrice, optLabel, FEE, SUPPORT, PROMOS, payWords: () => payWords(), abo: () => ABO, delivery: () => deliveryInfo() });
+/* KI-Agenten: Sortiment, Design, Shop-Wächter (agents.js, Admin › KI-Agenten) */
+async function shopHealth() {
+  const t = now(), cnt = (sql, ...a) => db.prepare(sql).get(...a);
+  const hold = cnt("SELECT COUNT(*) n, MIN(paid_at) oldest FROM orders WHERE status='processing'");
+  const so = soldoutMap();
+  const rv = cnt("SELECT COUNT(*) n, AVG(rating) avg FROM reviews WHERE hidden=0 AND created_at>?", t - 30 * 864e5);
+  const low = cnt("SELECT COUNT(*) n FROM reviews WHERE hidden=0 AND rating<=2 AND created_at>?", t - 7 * 864e5);
+  return {
+    modus: TESTMODE ? "Testmodus (Stripe-Testschlüssel)" : "Live",
+    pruefen: { anzahl: hold.n, aelteste_seit_stunden: hold.oldest ? Math.round((t - hold.oldest) / 36e5 * 10) / 10 : null },
+    zahlung_haengt: cnt("SELECT COUNT(*) n FROM orders WHERE status='payment_pending' AND created_at<?", t - 2 * 36e5).n,
+    bestellungen_24h: cnt("SELECT COUNT(*) n, COALESCE(SUM(total),0) cents FROM orders WHERE paid_at>?", t - 864e5),
+    bestellungen_7_tage: cnt("SELECT COUNT(*) n, COALESCE(SUM(total),0) cents FROM orders WHERE paid_at>?", t - 7 * 864e5),
+    ausverkaufte_betraege: Object.values(so).reduce((s, l) => s + l.length, 0),
+    ausverkaufte_produkte: Object.keys(so).slice(0, 15).map(id => (CATALOG[id] || {}).name || id),
+    lieferant: RL.ON ? { verbunden: true, aktiv: RL_USE, guthaben: await RL.balance().catch(e => ({ error: e.message })), letzter_import: +kvGet("rl_import_v3") || null } : { verbunden: false },
+    zahlungsarten: PAY_METHODS, stripe: !!stripe, emails: !!E.RESEND_API_KEY, automatische_lieferung: AUTO,
+    bewertungen_30_tage: { anzahl: rv.n, schnitt: rv.avg ? Math.round(rv.avg * 10) / 10 : null, schlechte_7_tage: low.n },
+    produkte_im_shop: shopCatalog().length,
+  };
+}
+AGENTS = require("./agents")({ app, db, E, admin, wrap, bad, kvGet, kvSet, CATALOG, RL, shopCatalog, prodRows: () => prodRows(), rlImport: () => rlImport(),
+  rlAllowed: p => rlAllowed(p), EU27, extraBrands: () => extraBrands().slice(), setExtraBrands, health: shopHealth,
+  resetCaches: () => { prodCache = null; shopCache = null; pageCache = null; } });
 
 /* Rückkehr nach Zahlungen mit Weiterleitung (z. B. PayPal, Klarna) */
 app.get("/r/:id", (req, res) => res.redirect(302, `/bestellung/${encodeURIComponent(req.params.id)}?k=${encodeURIComponent(String(req.query.k || ""))}`));
@@ -1764,6 +1796,8 @@ const sendIndex = (req, res) => {
   if (!pageOut || pageOut.data !== data || pageOut.mtime !== pageCache.mtime) {
     let html = pageCache.html.replace('<script type="application/json" id="boot"></script>', `<script type="application/json" id="boot">${data}</script>`);
     const gsv = String(E.GOOGLE_SITE_VERIFICATION || "").replace(/[^\w-]/g, "");
+    const th = AGENTS ? AGENTS.themeCSS() : ""; // veröffentlichtes Design des Design-Agenten (nur geprüfte Farb-Tokens)
+    if (th) html = html.replace("</head>", th + "\n</head>");
     if (gsv) html = html.replace("<head>", `<head>\n<meta name="google-site-verification" content="${gsv}">`);
     /* Ohne automatische Lieferung: Titel, Beschreibungen und die Vertrauensleiste oben ohne Sofort-Versprechen */
     if (!mostlyInstant()) html = html.replace(/<title>[^<]*<\/title>|<meta (name="description"|property="og:(title|description)") content="[^"]*">/g, nowFix)
