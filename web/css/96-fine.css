@@ -110,3 +110,8 @@ symbol[stroke-width="2.5"],symbol[stroke-width="2.6"]{stroke-width:1.9}
 /* Tippflächen: Kopfzeilen-Knöpfe sehen schmal aus, treffen aber auf 44 px Höhe (Apple HIG) */
 .hgrp>.icon-btn{position:relative}
 .hgrp>.icon-btn::before{content:"";position:absolute;inset:-5px 0}
+
+/* Design-Vorschau (Admin, /?design=<nr>) */
+.dpv{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9999;max-width:calc(100% - 32px);padding:10px 16px;border-radius:999px;background:#0E1014;color:#fff;font-size:13.5px;line-height:1.35;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.dpv span{opacity:.75;margin-left:6px}
+@media(max-width:600px){.dpv{border-radius:14px}.dpv span{display:block;margin:2px 0 0}}

@@ -34,6 +34,12 @@ setTimeout(()=>{reviewBand();logoStrip();payBand()},600);
 payTop();{let w=innerWidth;addEventListener("resize",()=>{if((w<900)!==(innerWidth<900)){w=innerWidth;payTop()}},{passive:true})}
 new MutationObserver(()=>requestAnimationFrame(bandsVis)).observe(app,{childList:true});
 
+/* Design-Vorschau für den Admin (/?design=<nr>): Farben und Startseiten-Texte eines Entwurfs nur in diesem Tab anwenden */
+(()=>{const id=new URLSearchParams(location.search).get("design");if(!/^\d{1,9}$/.test(id||""))return;
+  fetch("/api/admin/agents/design/"+id+"/preview",{credentials:"same-origin",headers:{"X-IC":"1"}}).then(r=>r.ok?r.json():null).then(j=>{if(!j)return;
+    const st=document.createElement("style");st.textContent=":root{"+Object.entries(j.tokens||{}).filter(([k,v])=>/^--[a-z0-9-]+$/.test(k)&&!/[;{}<]/.test(v)).map(([k,v])=>k+":"+v).join(";")+"}";document.head.appendChild(st);
+    HERO_PV=j.hero||{};const bar=document.createElement("div");bar.className="dpv";bar.setAttribute("role","status");
+    bar.innerHTML=`<b>Vorschau:</b> ${esc(j.name||"Design-Entwurf")} <span>Nur du siehst das. Veröffentlichen im Admin unter KI-Agenten.</span>`;document.body.appendChild(bar);route(true)}).catch(()=>{})})();
 if(!S.cookie)setTimeout(cookieShow,1600);
 setTimeout(nudgeShow,12000);
 })();

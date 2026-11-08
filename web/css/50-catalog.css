@@ -532,6 +532,7 @@ html:not(.lite) .pd-card .pd-glass{-webkit-backdrop-filter:blur(14px) saturate(1
 @media (min-width:800px){.pd-tag{background:#F6F7F9;box-shadow:inset 0 0 0 1px rgba(14,16,20,.06)}}
 .pd-side>.h1{margin-top:14px;font-size:clamp(32px,3.2vw,46px);line-height:1.02;overflow-wrap:anywhere}
 .pd-sub{margin:8px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink-2)}
+.pd-desc{margin:10px 0 0;font-size:14.5px;line-height:1.55;color:var(--ink-2);max-width:56ch}
 /* Platz für echte Bewertungen (füllt ein anderes Bauteil, leer = unsichtbar) */
 .pd-rev:empty{display:none}
 .pd-rev:not(:empty){margin-top:10px}

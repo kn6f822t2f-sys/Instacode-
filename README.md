@@ -68,6 +68,15 @@ Empfehlung: **Railway** (railway.com), weil es dauerhaften Speicher für die Dat
 - **Backups:** Die Datenbank liegt in `/data/instacode.db`, hochgeladene Produktbilder in `/data/img/`. Beides regelmäßig sichern.
 - **Ladezeit:** Die Startseite wird mit Katalog fertig ausgeliefert und vom Server komprimiert (ca. 65 KB statt 265 KB).
 
+## KI-Agenten (Admin › KI-Agenten)
+Drei Claude-Agenten arbeiten dauerhaft im Hintergrund am Shop. Der Server prüft alle 5 Minuten, wer fällig ist; es läuft immer nur einer gleichzeitig. Code in `agents.js`.
+- **Sortiment-Agent** (Standard alle 12 Std.): recherchiert per Websuche, was in Deutschland gefragt ist, sucht passende Marken beim Lieferanten Reloadly und schlägt sie vor. Nach der Freigabe lädt der Shop die Produkte mit **offiziellen Bildern und Einkaufspreisen vom Lieferanten** (plus `RL_MARGIN`). Bilder oder Texte aus dem Netz übernimmt er nie. Außerdem: Produkttexte und Suchbegriffe schreiben, Bestseller als „beliebt“ markieren, Unpassendes ausblenden, fehlende Produkte ohne Lieferanten als „Sortimentslücke“ melden.
+- **Design-Agent** (alle 72 Std.): entwirft Farbwelten und Startseiten-Überschrift passend zu Saison und Sortiment, nur mit freigegebenen Farb-Tokens aus `web/css/01-base.css` und nach `web/DESIGN.md`. Jeder Entwurf hat eine Vorschau (`/?design=<nr>`, nur für den Admin sichtbar). „Standard-Design wiederherstellen“ setzt alles zurück.
+- **Shop-Wächter** (täglich): prüft Prüffälle, hängende Zahlungen, Ausverkauftes, Lieferanten-Guthaben, Zahlungsarten und Bewertungen und schreibt eine priorisierte Aufgabenliste.
+- **Freigabe oder automatisch:** pro Agent einstellbar. Standard: Sortiment und Design nur mit Freigabe, der Wächter-Bericht automatisch. Alles steht im Verlauf; Ausblenden, Texte und Design lassen sich zurücknehmen.
+- **Kosten:** Tages-Budget in US-Dollar (Standard 5 $, `AGENT_DAILY_USD`), danach Pause bis Mitternacht. Modell `claude-opus-5-5` (änderbar auf Sonnet/Haiku). Bei einer Ablehnung durch die Sicherheitsfilter springt automatisch ein anderes Claude-Modell ein (server-side fallback).
+- Voraussetzung: `ANTHROPIC_API_KEY` in Railway. Für neue Marken mit Bildern und Preisen zusätzlich Reloadly (`RELOADLY_CLIENT_ID`/`_SECRET`).
+
 ## Lokal testen (für Entwickler)
 ```
 npm install

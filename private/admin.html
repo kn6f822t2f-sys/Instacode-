@@ -110,6 +110,16 @@ details.adet{margin-top:10px}details.adet summary{cursor:pointer;font-weight:700
 .mv-i b{display:block;font-size:13.5px}.mv-i small{display:block;color:var(--m);font-size:12px;line-height:1.35;margin-top:2px}.mv-i.on{border-color:var(--t);background:#fff}
 .mv-r{margin-top:0;min-width:0}.mv-f{margin-top:12px;overflow:auto;background:#E9EBEF;border-radius:14px;padding:12px 0;text-align:center}
 .mv-f iframe,.mv-pf{display:block;margin:0 auto;border:0;background:#F3F4F6;height:900px;max-width:none}.mv-pf{width:100%;margin-top:10px;border-radius:12px}
+/* KI-Agenten */
+.ag-grid{display:grid;gap:12px;margin-top:12px}@media(min-width:900px){.ag-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ag-grid .card{margin-top:0}.ag-h{display:flex;justify-content:space-between;gap:8px;align-items:center}.ag-h b{font-size:15px}
+.ag-f{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.ag-f label{font-size:12px;font-weight:700;color:var(--m)}.ag-f select,.ag-f input{margin-top:4px;padding:8px 10px}
+.ag-p{border-top:1px solid var(--b);padding:12px 0}.ag-p:first-of-type{border-top:0}.ag-p .muted{margin-top:4px;white-space:pre-wrap}
+.ag-k{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;background:#EEF2FF;color:#3538CD;margin-right:6px;vertical-align:1px}
+.ag-sw{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}.ag-sw i{display:inline-block;width:22px;height:22px;border-radius:7px;border:1px solid var(--b)}
+.ag-d{margin-top:8px;padding:10px 12px;border-radius:12px;background:#F6F7FA;font-size:14px;line-height:1.5}
+.ag-run{font-size:13px;padding:6px 0;border-top:1px solid var(--b)}.ag-run:first-child{border-top:0}
+.ag-warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:#FFFAEB;color:#93370D;font-size:14px}
 .mv-t{text-align:left;white-space:pre-wrap;font:13px/1.5 ui-monospace,Menlo,monospace;margin:0 12px;padding:14px;background:#fff;border-radius:10px;max-height:900px;overflow:auto}
 </style>
 </head>
@@ -123,7 +133,7 @@ const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const eur=c=>(c/100).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
 async function API(p,o={}){const r=await fetch("/api"+p,{method:o.method||"GET",headers:{"Content-Type":"application/json","X-IC":"1"},body:o.body?JSON.stringify(o.body):undefined,credentials:"same-origin"});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Fehler "+r.status);return j}
-const TABS=[["overview","Übersicht"],["processing","Prüfen"],["abos","Abos"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"],["anmeldung","Anmeldung"],["mails","E-Mails"],["newsletter","Newsletter"]];
+const TABS=[["overview","Übersicht"],["agents","KI-Agenten"],["processing","Prüfen"],["abos","Abos"],["payment_pending","Zahlung läuft"],["delivered","Geliefert"],["refunded","Erstattet"],["canceled","Storniert"],["all","Alle"],["stock","Code-Lager"],["products","Produkte"],["reviews","Bewertungen"],["reloadly","Reloadly"],["anmeldung","Anmeldung"],["mails","E-Mails"],["newsletter","Newsletter"]];
 const STC={awaiting_payment:"#B54708",payment_pending:"#B54708",processing:"#3B5BDB",delivered:"#067647",canceled:"#6B7280",refunded:"#6B7280"};
 const STN={awaiting_payment:"Warte auf Zahlung",payment_pending:"Zahlung läuft",processing:"Prüfen",delivered:"Geliefert",canceled:"Storniert",refunded:"Erstattet"};
 let tab="overview",timer,tt,counts={},mode=null;
@@ -132,7 +142,8 @@ const typing=()=>[...document.querySelectorAll("main input:not([type=checkbox]),
 const setMode=j=>{if(j.testmode==null)return;mode=j;$("#mode").innerHTML=j.testmode?`<span class="mode test">Testmodus</span>`:`<span class="mode live">Live</span>`};
 let aboN=0,aboU=0; /* Abo-Lieferungen zur Freigabe, Kündigungen ohne Zuordnung */
 let authErrN=0; /* Anmelde-Anbieter mit Fehler */
-const badgeN=k=>k==="processing"?(counts.processing||0)+aboN:k==="abos"?aboN+aboU:k==="anmeldung"?authErrN:0;
+let agN=0; /* offene Vorschläge der KI-Agenten */
+const badgeN=k=>k==="agents"?agN:k==="processing"?(counts.processing||0)+aboN:k==="abos"?aboN+aboU:k==="anmeldung"?authErrN:0;
 const tabsHTML=()=>`<div class="tabs">${TABS.map(t=>`<button class="${t[0]===tab?"on":""}" data-tab="${t[0]}">${t[1]}${badgeN(t[0])?`<span class="n">${badgeN(t[0])}</span>`:""}</button>`).join("")}</div>`;
 
 async function load(force){
@@ -146,6 +157,7 @@ async function load(force){
   if(tab==="mails"){if(force)loadMails();return}
   if(tab==="newsletter"){if(force)loadNL();return}
   if(tab==="anmeldung"){if(force)loadAuth();return}
+  if(tab==="agents"){loadAG();return}
   timer=setTimeout(()=>load(),30000);
   if(!force&&typing())return;
   try{const [j,ap]=await Promise.all([API("/admin/orders?status="+tab),API("/admin/abos/pending").catch(()=>null)]);counts=j.counts||{};if(ap){aboN=ap.count;aboU=ap.unmatched}setMode(j);render(j)}catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
@@ -639,11 +651,59 @@ document.addEventListener("click",async e=>{
   if(t.dataset.audel){if(!confirm("Gespeicherte Zugangsdaten für diesen Anbieter löschen? Der Knopf verschwindet sofort aus dem Shop (außer bei Railway-Variablen)."))return;try{const j=await API(`/admin/auth/${p}`,{method:"DELETE"});auReplace(p,j.provider);toast("Gelöscht")}catch(x){alert(x.message)}return}
 });
 
+/* ---------- KI-Agenten ---------- */
+let AG=null,agT=null;
+const AGK={product_text:"Text",product_hot:"Beliebt",product_hide:"Ausblenden",product_show:"Einblenden",brand_add:"Neue Marke",design_theme:"Design",note:"Sortimentslücke",report:"Bericht"};
+const agTime=t=>t?new Date(t).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"–";
+async function loadAG(){clearTimeout(agT);try{const [j,inf]=await Promise.all([API("/admin/agents"),API("/admin/agents/info")]);AG=j;AG.info=inf.items;agN=j.pending.length;if(!typing())drawAG();agT=setTimeout(()=>{if(tab==="agents")loadAG()},AG.running?5000:30000)}catch(e){$("#m").innerHTML=tabsHTML()+`<div class="card">${esc(e.message)}</div>`}}
+function agDetail(p){const d=p.data||{};
+  if(p.kind==="product_text")return `<div class="ag-d">${esc(d.desc)}${d.tags&&d.tags.length?`<div class="muted">Suchbegriffe: ${esc(d.tags.join(", "))}</div>`:""}</div>`;
+  if(p.kind==="design_theme")return `<div class="ag-sw">${Object.entries(d.tokens||{}).map(([k,v])=>`<i title="${esc(k)}: ${esc(v)}" style="background:${esc(v)}"></i>`).join("")}</div>${d.hero?`<div class="ag-d"><b>${esc(d.hero.h1||"").replace(/\n/g,"<br>")}</b>${d.hero.lead?`<div class="muted">${esc(d.hero.lead)}</div>`:""}</div>`:""}<div class="acts" style="margin-top:8px"><a class="btn g" href="/?design=${p.id}" target="_blank" rel="noopener">Vorschau im Shop</a></div>`;
+  return "";}
+const agProp=p=>`<div class="ag-p"><div><span class="ag-k">${AGK[p.kind]||esc(p.kind)}</span><b>${esc(p.title)}</b></div>${p.reason?`<div class="muted">${esc(p.reason)}</div>`:""}${agDetail(p)}
+  <div class="muted">${esc((AG.agents.find(a=>a.id===p.agent)||{}).name||p.agent)} · ${agTime(p.created_at)}</div>
+  ${p.status==="pending"?`<div class="acts" style="margin-top:8px"><button class="btn p" data-agp="${p.id}" data-act="apply">${p.kind==="design_theme"?"Veröffentlichen":"Übernehmen"}</button><button class="btn g" data-agp="${p.id}" data-act="reject">Ablehnen</button></div>`
+   :p.status==="info"?`<div class="acts" style="margin-top:8px"><button class="btn g" data-agp="${p.id}" data-act="done">Erledigt</button></div>`
+   :`<div class="muted">${p.status==="applied"?"Übernommen":p.status==="rejected"?"Abgelehnt":"Erledigt"}${p.decided_by==="agent"?" (automatisch)":""}${p.result?": "+esc(p.result):""} · ${agTime(p.decided_at)}</div>`}</div>`;
+function drawAG(){
+  const c=AG.cfg,eur=v=>Number(v).toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2})+" $";
+  const warn=!AG.key?`<div class="ag-warn"><b>Die Agenten ruhen:</b> In Railway unter Variables <code>ANTHROPIC_API_KEY</code> eintragen (Anthropic Console › API Keys). Danach arbeiten sie automatisch nach Zeitplan.</div>`
+    :AG.mock?`<div class="ag-warn"><b>Probelauf-Modus:</b> Der Schlüssel ist die Attrappe, die Agenten erzeugen nur Beispielvorschläge ohne KI.</div>`:"";
+  const sup=AG.supplier?"":`<div class="ag-warn">Der Lieferant Reloadly ist nicht verbunden. Der Sortiment-Agent kann dann keine neuen Marken mit Bildern und Preisen aufnehmen, nur Texte schreiben und Lücken melden.</div>`;
+  $("#m").innerHTML=tabsHTML()+warn+sup+`
+  <div class="card"><div class="ag-h"><b>Alle Agenten</b><label class="sw"><input type="checkbox" data-agcfg="on" ${c.on?"checked":""}>${c.on?"Arbeiten nach Zeitplan":"Pausiert"}</label></div>
+   <div class="ag-f"><label>Modell<select data-agcfg="model">${AG.models.map(m=>`<option ${m===c.model?"selected":""}>${m}</option>`).join("")}</select></label>
+   <label>Budget pro Tag (US-Dollar)<input type="number" min="0" step="0.5" value="${c.daily_usd}" data-agcfg="daily_usd"></label></div>
+   <p class="muted" style="margin-top:8px">Heute verbraucht: ${eur(AG.spent)} von ${eur(c.daily_usd)}. Ist das Budget erreicht, pausieren die Agenten bis Mitternacht.${AG.live?` Live-Design: „${esc(AG.live.name||"")}“ <button class="btn g" style="padding:4px 10px;margin-left:6px" data-agreset>Standard-Design wiederherstellen</button>`:""}</p></div>
+  <div class="ag-grid">${AG.agents.map(a=>{const x=c.agents[a.id],lr=a.lastRun,run=AG.running===a.id;return `<div class="card"><div class="ag-h"><b>${esc(a.name)}</b><label class="sw"><input type="checkbox" data-agon="${a.id}" ${x.on?"checked":""}>${x.on?"an":"aus"}</label></div>
+    <p class="muted" style="margin-top:6px">${esc(a.what)}</p>
+    <div class="ag-f"><label>Änderungen<select data-agmode="${a.id}"><option value="review" ${x.mode==="review"?"selected":""}>Mit Freigabe</option><option value="auto" ${x.mode==="auto"?"selected":""}>Automatisch</option></select></label>
+    <label>Alle … Stunden<input type="number" min="1" max="720" value="${x.every}" data-agevery="${a.id}"></label></div>
+    <p class="muted" style="margin-top:8px">${run?"<b>Arbeitet gerade …</b>":lr?`Letzter Lauf ${agTime(lr.started_at)}: ${esc(lr.status)}${lr.cost?` · ${eur(lr.cost)}`:""}${lr.error?` · ${esc(lr.error)}`:""}`:"Noch nie gelaufen"}${a.next&&c.on&&x.on&&!run?` · nächster ab ${agTime(a.next)}`:""}</p>
+    ${lr&&lr.summary&&!run?`<div class="ag-d">${esc(lr.summary)}</div>`:""}
+    <div class="acts" style="margin-top:10px"><button class="btn g" data-agrun="${a.id}" ${run||AG.running||!AG.key?"disabled":""}>Jetzt starten</button></div></div>`}).join("")}</div>
+  <div class="card"><b>Wartet auf deine Freigabe (${AG.pending.length})</b>${AG.pending.length?AG.pending.map(agProp).join(""):`<p class="muted">Nichts offen.</p>`}</div>
+  ${AG.info.length?`<div class="card"><b>Berichte und Hinweise</b>${AG.info.map(agProp).join("")}</div>`:""}
+  <div class="card"><b>Verlauf</b>${AG.history.length?AG.history.slice(0,30).map(agProp).join(""):`<p class="muted">Noch nichts entschieden.</p>`}</div>
+  <div class="card"><b>Letzte Läufe</b>${AG.runs.length?AG.runs.map(r=>`<div class="ag-run">${agTime(r.started_at)} · ${esc((AG.agents.find(a=>a.id===r.agent)||{}).name||r.agent)} · ${esc(r.status)} · ${r.steps} Schritte${r.searches?` · ${r.searches} Suchen`:""} · ${eur(r.cost||0)}${r.error?` · <span style="color:#B42318">${esc(r.error)}</span>`:""}</div>`).join(""):`<p class="muted">Noch keine.</p>`}</div>`;
+}
+const agSave=async body=>{try{await API("/admin/agents/cfg",{method:"POST",body});toast("Gespeichert");loadAG()}catch(x){alert(x.message)}};
+document.addEventListener("change",e=>{const t=e.target;if(tab!=="agents")return;
+  if(t.dataset.agcfg){const k=t.dataset.agcfg;agSave({[k]:k==="on"?t.checked:k==="daily_usd"?+t.value:t.value});return}
+  if(t.dataset.agon){agSave({agents:{[t.dataset.agon]:{on:t.checked}}});return}
+  if(t.dataset.agmode){if(t.value==="auto"&&!confirm("Automatisch: Vorschläge dieses Agenten gehen ohne deine Freigabe live (alles bleibt im Verlauf). Fortfahren?")){t.value="review";return}agSave({agents:{[t.dataset.agmode]:{mode:t.value}}});return}
+  if(t.dataset.agevery){agSave({agents:{[t.dataset.agevery]:{every:+t.value}}});return}});
+document.addEventListener("click",async e=>{const t=e.target.closest("[data-agrun],[data-agp],[data-agreset]");if(!t)return;
+  if(t.dataset.agrun){t.disabled=true;try{await API(`/admin/agents/${t.dataset.agrun}/run`,{method:"POST"});toast("Agent gestartet");setTimeout(loadAG,800)}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.dataset.agp){t.disabled=true;try{const j=await API(`/admin/agents/proposals/${t.dataset.agp}`,{method:"POST",body:{action:t.dataset.act}});toast(j.result||(t.dataset.act==="reject"?"Abgelehnt":"Erledigt"));loadAG()}catch(x){alert(x.message);t.disabled=false}return}
+  if(t.hasAttribute("data-agreset")){if(!confirm("Standard-Design wiederherstellen?"))return;try{await API("/admin/agents/design/reset",{method:"POST"});toast("Standard-Design aktiv");loadAG()}catch(x){alert(x.message)}}});
+
 (async()=>{
   try{const me=(await API("/me")).user;
     if(!me||!me.admin){$("#m").innerHTML=`<div class="card"><b>Kein Zugriff</b><p class="muted">Deine Sitzung ist abgelaufen.</p><a class="btn p" href="/">Zum Shop</a></div>`;return}
     try{const ap=await API("/admin/abos/pending");aboN=ap.count;aboU=ap.unmatched}catch(e){}
-    const qp=new URLSearchParams(location.search);if(qp.get("tab")==="anmeldung")tab="anmeldung";
+    const qp=new URLSearchParams(location.search);if(qp.get("tab")==="anmeldung")tab="anmeldung";if(qp.get("tab")==="agents")tab="agents";
+    API("/admin/agents").then(j=>{agN=j.pending.length}).catch(()=>{});
     load(true);
   }catch(e){$("#m").innerHTML=`<div class="card">${esc(e.message)}</div>`}
 })();
